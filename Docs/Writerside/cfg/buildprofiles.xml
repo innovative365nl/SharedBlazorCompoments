@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE buildprofiles SYSTEM "https://resources.jetbrains.com/writerside/1.0/build-profiles.dtd">
+<buildprofiles xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/build-profiles.xsd"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <shortcuts>
+        <src>keymap.xml</src>
+        <layout name="Windows" display-name="Windows"/>
+        <layout name="macOS" display-name="macOS"/>
+    </shortcuts>
+    <build-profile instance="in">
+        <variables>
+            <enable-contribution>true</enable-contribution>
+
+            <contribute-url>https://github.com/innovative365nl/Automate/edit/develop/Docs/Writerside</contribute-url>
+            <custom-css>custom.css</custom-css>
+            <color-preset>contrast</color-preset>
+            <primary-color>dracula</primary-color>
+            <header-logo>cropped-Innovative.png</header-logo>
+            <noindex-content>true</noindex-content>
+
+        </variables>
+        <footer>
+            <link href="https://innovative.nl">Innovatve Website</link>
+            <copyright>2025 - Innovative365 B.V.</copyright>
+        </footer>
+
+    </build-profile>
+
+</buildprofiles>
