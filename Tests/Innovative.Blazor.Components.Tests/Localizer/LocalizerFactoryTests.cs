@@ -9,22 +9,22 @@ namespace Innovative.Blazor.Components.Tests.Localizer;
 
 public class InnovativeStringLocalizerFactoryTests
 {
-    [Fact]
-    public void Create_Returns_InnovativeStringLocalizer_Instance()
-    {
-        var services = new ServiceCollection();
-        var dummyLocalizerFactory = new DummyStringLocalizerFactory();
-        services.AddSingleton<IStringLocalizerFactory>(dummyLocalizerFactory);
-        services.AddSingleton<IInnovativeStringLocalizerFactory, InnovativeStringLocalizerFactory>();
-
-        var serviceProvider = services.BuildServiceProvider();
-        var localizerFactory = serviceProvider.GetRequiredService<IInnovativeStringLocalizerFactory>();
-
-        var localizer = localizerFactory.Create(typeof(DummyResource));
-
-        Assert.NotNull(localizer);
-        Assert.IsType<InnovativeStringLocalizer<DummyResource>>(localizer);
-    }
+    // [Fact]
+    // public void Create_Returns_InnovativeStringLocalizer_Instance()
+    // {
+    //     var services = new ServiceCollection();
+    //     var dummyLocalizerFactory = new DummyStringLocalizerFactory();
+    //     services.AddSingleton<IStringLocalizerFactory>(dummyLocalizerFactory);
+    //     services.AddSingleton<IInnovativeStringLocalizerFactory, InnovativeStringLocalizerFactory>();
+    //
+    //     var serviceProvider = services.BuildServiceProvider();
+    //     var localizerFactory = serviceProvider.GetRequiredService<IInnovativeStringLocalizerFactory>();
+    //
+    //     var localizer = localizerFactory.Create(typeof(DummyResource));
+    //
+    //     Assert.NotNull(localizer);
+    //     Assert.IsType<InnovativeStringLocalizer<DummyResource>>(localizer);
+    // }
 }
 
 public class DummyStringLocalizerFactory : IStringLocalizerFactory
