@@ -158,7 +158,7 @@ jobs:
 
       - name: Run unit tests
         run: >
-          dotnet test Tests
+          dotnet test Tests/Innovative.Blazor.Components.Tests
           --configuration Release
           --no-build
           --verbosity normal
