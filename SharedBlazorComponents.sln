@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F8D9B030-BDF4-42C7-B940-2FF993B247A6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{35CC01F0-4C7D-40D3-8527-1F94A7FFFF81}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{977AF440-B65A-467A-9787-49E76330832E}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\deploy.yml = .github\workflows\deploy.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{A0B55B7E-8B4C-4A04-A930-A835AE72A8EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Innovative.Blazor.Components", "Src\Innovative.Blazor.Components\Innovative.Blazor.Components.csproj", "{17D46532-A365-49F8-B8B3-2567557A02FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{17D46532-A365-49F8-B8B3-2567557A02FC} = {A0B55B7E-8B4C-4A04-A930-A835AE72A8EA}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17D46532-A365-49F8-B8B3-2567557A02FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17D46532-A365-49F8-B8B3-2567557A02FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17D46532-A365-49F8-B8B3-2567557A02FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17D46532-A365-49F8-B8B3-2567557A02FC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

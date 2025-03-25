@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Update="Components\_Imports.razor">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.2"/>
+        <PackageReference Include="Radzen.Blazor" Version="6.3.0" />
+        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.0-rc.2.24474.3"/>
+        <PackageReference Include="Radzen.Blazor" Version="6.2.6"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <UpToDateCheckInput Remove="Components\Spinner\Spinner.razor"/>
+        <UpToDateCheckInput Remove="Components\UrlTracking\UrlTrackingComponent.razor"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+            <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\9.0.1\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.AspNetCore.WebUtilities">
+            <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\9.0.1\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+</Project>

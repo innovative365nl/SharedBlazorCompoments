@@ -1,0 +1,15 @@
+<div class="margin">
+    <RadzenCard class="card-container">
+        <RadzenText TextStyle="TextStyle.H3" Text="@Title"></RadzenText>
+        @if (IsLoading)
+        {
+            <RadzenStack AlignItems="AlignItems.Center">
+                <RadzenProgressBarCircular Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate"/>
+            </RadzenStack>
+        }
+        else
+        {
+            @ChildContent
+        }
+    </RadzenCard>
+</div>

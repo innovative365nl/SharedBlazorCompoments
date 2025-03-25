@@ -1,0 +1,66 @@
+@typeparam TModel
+
+<RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Start" Gap="0">
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween"
+                 AlignItems="AlignItems.Center"
+                 Style="width: 100%; padding: 1rem 1rem .5rem 1rem; border-bottom: #a0a0a0 solid .5px">
+
+        @if (ShowClose)
+        {
+            <button style="border: 0; cursor: pointer; background-color: transparent" id="rightSideDialogCloseButton"
+                    @onclick="@(args => DialogService.CloseSide())">
+                <RadzenIcon Icon="arrow_back" IconColor="black"/>
+            </button>
+        }
+        <div>
+            <RadzenText TextStyle="TextStyle.DisplayH6" Style="margin: 0">
+                @Title
+            </RadzenText>
+        </div>
+        <div>
+            <RadzenRow>
+                @TitleBarContent
+                @if (ShowEdit && !_isEditing && !_isCustomDialog)
+                {
+                    <button style="border: 0; cursor: pointer; background-color: transparent" id="rightSideDialogEditButton"
+                            @onclick="@(args => _isEditing = !_isEditing)">
+                        <RadzenIcon Icon="edit" IconColor="black"/>
+                    </button>
+                }
+                else if (ShowEdit && (_isEditing || _isCustomDialog))
+                {
+                    <button style="border: 0; cursor: pointer; background-color: transparent"
+                            @onclick="@HandleCancelClick">
+                        <RadzenIcon Icon="close" IconColor="black"/>
+                    </button>
+                    <button style="border: 0; cursor: pointer; background-color: transparent"
+                            @onclick="@HandleSaveClick">
+                        <RadzenIcon Icon="save" IconColor="black"/>
+                    </button>
+                }
+
+            </RadzenRow>
+        </div>
+    </RadzenStack>
+    <RadzenStack Orientation="Orientation.Vertical" Style="padding: 1rem; width: 100%; min-height: 500px;">
+        <CascadingValue Value="this">
+
+            @if (!_isEditing && !_isCustomDialog)
+            {
+                @ViewChildContent
+            }
+            else if (!_isCustomDialog)
+            {
+                @EditChildContent
+            }
+            else
+            {
+                @ActionChildContent
+            }
+
+        </CascadingValue>
+    </RadzenStack>
+    <RadzenRow Style="padding: 1rem; width: 100%;" Gap="10">
+        @BottomBarContent
+    </RadzenRow>
+</RadzenStack>
