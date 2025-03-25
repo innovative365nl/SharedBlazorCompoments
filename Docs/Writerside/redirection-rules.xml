@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rules SYSTEM "https://resources.jetbrains.com/writerside/1.0/redirection-rules.dtd">
+<rules>
+    <!-- format is as follows
+    <rule id="<unique id>">
+        <accepts>page.html</accepts>
+    </rule>
+    -->
+    <rule id="70723fab">
+        <description>Created after removal of "How to" from AutoMate</description>
+        <accepts>how-to.html</accepts>
+    </rule>
+    <rule id="291db917">
+        <description>Created after removal of "Omgeving" from BlazorCompoments</description>
+        <accepts>Omgeving.html</accepts>
+    </rule>
+    <rule id="7007e5ba">
+        <description>Created after removal of "Setup" from BlazorCompoments</description>
+        <accepts>Setup.html</accepts>
+    </rule>
+    <rule id="47bcf84b">
+        <description>Created after removal of "Infrastructuur" from BlazorCompoments</description>
+        <accepts>Infrastructuur.html</accepts>
+    </rule>
+</rules>
