@@ -12,12 +12,11 @@ using System.Reflection;
     public partial class DynamicFormView<TModel> : ComponentBase, IDynamicBaseComponent
     {
         private readonly Dictionary<string, object> _formValues = new Dictionary<string, object>();
-        private IInnovativeStringLocalizer _localizer;
-
-        [Parameter] public TModel Model { get; set; }
+        private IInnovativeStringLocalizer _localizer = null!;
+        [Parameter] public required TModel Model { get; set; }
         [Parameter] public EventCallback<TModel> OnSave { get; set; }
         [Parameter] public EventCallback OnCancel { get; set; }
-        [CascadingParameter] public RightSideDialog<TModel> ParentDialog { get; set; }
+        [CascadingParameter] public required RightSideDialog<TModel> ParentDialog { get; set; }
 
         [Inject] private IInnovativeStringLocalizerFactory LocalizerFactory { get; set; }
 

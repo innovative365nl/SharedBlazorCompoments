@@ -13,7 +13,7 @@ public class InnovativeDialogService(DialogService dialogService, IInnovativeStr
 
     public async Task<T> OpenDynamicFormDialog<T>(T model, SideDialogOptions? options = null) where T : class
     {
-        RightSideDialog<T> dialogRef = null;
+        RightSideDialog<T>? dialogRef = null;
 
         var viewContent = new RenderFragment(builder =>
         {
