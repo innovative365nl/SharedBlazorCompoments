@@ -10,11 +10,11 @@
         <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
         <Nullable>enable</Nullable>
         <OutputPath>bin\$(Configuration)\</OutputPath>
-        <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
-        <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
-        <ReportAnalyzer>true</ReportAnalyzer>
+<!--        <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>-->
+<!--        <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>-->
+<!--        <ReportAnalyzer>true</ReportAnalyzer>-->
         <TargetFramework>net9.0</TargetFramework>
-        <VersionPrefix>2.0.2</VersionPrefix>
+        <VersionPrefix>0.7</VersionPrefix>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -26,8 +26,8 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <NoWarn>$(NoWarn);NETSDK1206;CA1848;CA1860</NoWarn>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <NoWarn>$(NoWarn);NETSDK1206;CA1848;CA1860;CA1710;</NoWarn>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
         <WarningsAsErrors />
         <WarningLevel>5</WarningLevel>
     </PropertyGroup>

@@ -16,11 +16,11 @@ public abstract class UrlStateTrackerComponent : ComponentBase, IDisposable
 
     private bool _isInitialized;
     private bool _isUpdatingFromUrl;
-    [Inject] private NavigationManager NavigationManager { get; set; }
+    [Inject] private NavigationManager? NavigationManager { get; set; }
 
     public void Dispose()
     {
-        NavigationManager.LocationChanged -= HandleLocationChanged;
+        if (NavigationManager != null) NavigationManager.LocationChanged -= HandleLocationChanged!;
     }
 
     protected override void OnInitialized()
@@ -37,7 +37,7 @@ public abstract class UrlStateTrackerComponent : ComponentBase, IDisposable
             _trackedProperties[key: prop] = prop.GetValue(obj: this);
         }
 
-        NavigationManager.LocationChanged += HandleLocationChanged;
+        if (NavigationManager != null) NavigationManager.LocationChanged += HandleLocationChanged!;
         ReadFromUrl();
 
         _isInitialized = true;
@@ -139,7 +139,7 @@ public abstract class UrlStateTrackerComponent : ComponentBase, IDisposable
     /// <summary>
     ///     Helper to replace or key in a query string.
     /// </summary>
-    private string UpdateQueryStringParameter(string url, string key, string value)
+    private static string UpdateQueryStringParameter(string url, string key, string value)
     {
         if (!Uri.TryCreate(uriString: url, uriKind: UriKind.Absolute, result: out var uri))
             return url;

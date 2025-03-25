@@ -11,7 +11,7 @@ namespace Innovative.Blazor.Components.Services;
 public class InnovativeDialogService(DialogService dialogService, IInnovativeStringLocalizerFactory localizerFactory)
 {
 
-    public async Task<T> OpenDynamicFormDialog<T>(T model, SideDialogOptions options = null) where T : class
+    public async Task<T> OpenDynamicFormDialog<T>(T model, SideDialogOptions? options = null) where T : class
     {
         RightSideDialog<T> dialogRef = null;
 
@@ -54,7 +54,7 @@ public class InnovativeDialogService(DialogService dialogService, IInnovativeStr
         var result = await dialogService.OpenSideAsync<RightSideDialog<T>>(
             title: title,
             parameters: parameters,
-            options: dialogOptions);
+            options: dialogOptions).ConfigureAwait(false);
 
         dialogRef = result as RightSideDialog<T>;
 

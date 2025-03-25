@@ -26,8 +26,8 @@ permissions:
 
 # Environment variables
 env:
-  PACKAGE_PATH: './Src/InnovativeBlazor.Components'
-  SOLUTION_PATH: './Src/InnovativeBlazor.Components/Innovative.Blazor.Components.csproj'
+  PACKAGE_PATH: './Src/Innovative.Blazor.Components'
+  SOLUTION_PATH: './Src/IInnovative.Blazor.Components/Innovative.Blazor.Components.csproj'
   PACKAGE_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
 
 jobs:
