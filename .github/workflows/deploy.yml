@@ -48,7 +48,7 @@ jobs:
         shell: pwsh
         run: |
           # Verify Directory.Build.props exists
-          $PropsFilePath = "${{ env.PACKAGE_PATH }}/Directory.Build.props"
+          $PropsFilePath = "Directory.Build.props"
           If (-not(Test-Path -path $PropsFilePath)){
              echo "::error Directory.Build.props file not found"
              exit 1
