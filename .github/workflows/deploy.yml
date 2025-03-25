@@ -27,7 +27,8 @@ permissions:
 # Environment variables
 env:
   PACKAGE_PATH: './Src/Innovative.Blazor.Components'
-  TESTS_PATH: './Tests/Innovative.Blazor.Components.Tests'
+  TESTS_PATH: './Tests/Innovative.Blazor.Components.Tests/Innovative.Blazor.Components.Tests.csproj'
+  PROJECT_PAH: './Src/Innovative.Blazor.Components/Innovative.Blazor.Components.csproj'
   SOLUTION_PATH: './Innovative.Blazor.Components.sln'
   PACKAGE_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
 
@@ -113,20 +114,20 @@ jobs:
           echo "VERSIONSUFFIX = ${{ needs.GetVersions.outputs.versionsuffix }}"
 
       - name: Restore NuGet dependencies
-        run: dotnet restore ${{ env.SOLUTION_PATH }}
+        run: dotnet restore ${{ env.PROJECT_PAH }}
 
       - name: Build solution
-        run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
+        run: dotnet build ${{ env.PROJECT_PAH }} --configuration Release --no-restore
 
       - name: Create NuGet packages
         shell: pwsh
         run: |
           if ([String]::IsNullOrEmpty("${{ needs.GetVersions.outputs.versionsuffix }}")) {
             echo "Creating package without version suffix"
-            dotnet pack ${{ env.SOLUTION_PATH }} --configuration Release --no-build
+            dotnet pack ${{ env.PROJECT_PAH }} --configuration Release --no-build
           } else {
             echo "Creating package with version suffix: ${{ needs.GetVersions.outputs.versionsuffix }}"
-            dotnet pack ${{ env.SOLUTION_PATH }} --configuration Release --no-build -p:VersionSuffix="${{ needs.GetVersions.outputs.versionsuffix }}"
+            dotnet pack ${{ env.PROJECT_PAH }} --configuration Release --no-build -p:VersionSuffix="${{ needs.GetVersions.outputs.versionsuffix }}"
           }
 
       - name: Upload NuGet packages as artifacts
@@ -152,10 +153,10 @@ jobs:
           dotnet-version: ${{ needs.GetVersions.outputs.dotnetversion }}
 
       - name: Restore NuGet dependencies
-        run: dotnet restore ${{ env.SOLUTION_PATH }}
+        run: dotnet restore ${{ env.PROJECT_PAH }}
 
       - name: Build for testing
-        run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
+        run: dotnet build ${{ env.TESTS_PATH }} --configuration Release --no-restore
 
       - name: Run unit tests
         run: >
