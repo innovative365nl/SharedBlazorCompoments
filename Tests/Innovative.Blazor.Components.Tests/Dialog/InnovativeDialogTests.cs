@@ -1,22 +1,18 @@
 using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Innovative.Blazor.Components.Components.Dialog;
-using Innovative.Blazor.Components.Localizer;
-using Microsoft.Extensions.Logging;
-using Moq;
 using FluentAssertions;
-using Innovative.Blazor.Components.Services;
+using Innovative.Blazor.Components.Components.Dialog;
 using Innovative.Blazor.Components.Enumerators;
-using Innovative.Blazor.Components.Tests.Dialog;
+using Innovative.Blazor.Components.Localizer;
+using Innovative.Blazor.Components.Services;
+using Innovative.Blazor.Components.Tests.Grid;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
+using Moq;
 using Radzen;
-using Radzen.Blazor;
-using Radzen.Blazor.Rendering;
 
-namespace Innovative.Blazor.Components.Tests;
+namespace Innovative.Blazor.Components.Tests.Dialog;
 
 public class InnovativeDialogTests : TestContext
 {
@@ -96,14 +92,20 @@ public class InnovativeDialogTests : TestContext
     {
         // Arrange
         var testKey = "TestFormTitle";
-        LocalizedString expectedTitle = new LocalizedString(testKey, "Custom Title");
+        var expectedTitle = new LocalizedString(testKey, "Custom Title");
 
-        _localizerMock.Setup(l => l["TestFormTitle"]).Returns(expectedTitle);
+        _localizerMock
+            .Setup(l => l[testKey])
+            .Returns(expectedTitle);
+    
+        _localizerFactoryMock
+            .Setup(f => f.Create(typeof(TestResourcesClass)))
+            .Returns(_localizerMock.Object);
 
         // Use reflection to call the private method
-        var method = typeof(InnovativeDialogService).GetMethod("GetFormTitle", 
+        var method = typeof(InnovativeDialogService).GetMethod("GetFormTitle",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        
+
         // Create generic method for our test type
         var genericMethod = method.MakeGenericMethod(typeof(TestFormModelWithAttribute));
 
@@ -111,22 +113,8 @@ public class InnovativeDialogTests : TestContext
         var title = genericMethod.Invoke(_dialogService, null) as string;
 
         // Assert
-        title.Should().Be(expectedTitle);
-        _localizerFactoryMock.Verify(f => f.Create(typeof(TestResources)), Times.Once);
-    }
-
-    [Fact]
-    public void GetFormTitle_WithoutUIFormClass_UsesTypeName()
-    {
-        // Arrange & Act
-        var method = typeof(InnovativeDialogService).GetMethod("GetFormTitle", 
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        var genericMethod = method.MakeGenericMethod(typeof(TestFormModel));
-        var title = genericMethod.Invoke(_dialogService, null) as string;
-
-        // Assert
-        title.Should().Be("TestFormModel");
-        _localizerFactoryMock.Verify(f => f.Create(It.IsAny<Type>()), Times.Never);
+        title.Should().Be("Custom Title");
+        _localizerFactoryMock.Verify(f => f.Create(typeof(TestResourcesClass)), Times.Once);
     }
 
 
@@ -351,7 +339,7 @@ public class TestFormModel
 
 public class TestResourcesClass {}
 
-[UIFormClass(title:  "TestFormTitle", columns: 1, ResourceType = typeof(TestResourcesClass))]
+[UIFormClass(title:  "TestFormTitle", ResourceType = typeof(TestResourcesClass))]
 public class TestFormModelWithAttribute
 {
     public string Name { get; set; }

@@ -2,41 +2,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AngleSharp.Dom;
-using Innovative.Blazor.Components.Attributes;
-using Innovative.Blazor.Components.Components.Grid;
-using Innovative.Blazor.Components.Enumerators;
-using Innovative.Blazor.Components.Localizer;
-using Microsoft.Extensions.Logging;
-using Moq;
-using Radzen;
 using FluentAssertions;
-using Innovative.Blazor.Components.Components.Dialog;
+using Innovative.Blazor.Components.Components.Grid;
+using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.Localization;
-using Radzen.Blazor;
+using Microsoft.Extensions.Logging;
+using Moq;
+using Radzen;
 
-namespace Innovative.Blazor.Components.Tests;
+namespace Innovative.Blazor.Components.Tests.Grid;
 
-public class InnovativeGridTests : TestContext
+public class GridTests : TestContext
 {
     private readonly Mock<IInnovativeStringLocalizerFactory> _localizerFactoryMock;
     private readonly Mock<IInnovativeStringLocalizer> _localizerMock;
     private readonly Mock<ILogger<InnovativeGrid<TestModel>>> _loggerMock;
 
-    public InnovativeGridTests()
+    public GridTests()
     {
         _loggerMock = new Mock<ILogger<InnovativeGrid<TestModel>>>();
         _localizerMock = new Mock<IInnovativeStringLocalizer>();
         _localizerFactoryMock = new Mock<IInnovativeStringLocalizerFactory>();
 
-        // Setup localizer factory to return our localizer mock
         _localizerFactoryMock
             .Setup(f => f.Create(It.IsAny<Type>()))
             .Returns(_localizerMock.Object);
 
-        // Setup localizer to return the key as the value (for simple testing)
         _localizerMock
             .Setup(l => l[It.IsAny<string>()])
             .Returns<LocalizedString>(key => key);
@@ -109,7 +102,6 @@ public class InnovativeGridTests : TestContext
             gridInstance.SelectedItems = new List<TestModel> { testData.First() };
             await gridInstance.ReloadAsync();
 
-            // Assert within the same dispatcher context
             Assert.Single(selectedItems);
             Assert.Equal("TestValue1", selectedItems.First().TestProperty);
         });
@@ -142,7 +134,6 @@ public class InnovativeGridTests : TestContext
     [Fact]
 public async Task ApplyFilter_Calls_Methods_For_Different_Operators()
 {
-    // Arrange
     var testData = GetTestData();
     var filterColumnName = "TestProperty";
     var filterValue = "TestValue";
@@ -157,19 +148,16 @@ public async Task ApplyFilter_Calls_Methods_For_Different_Operators()
 
     foreach (var op in operators)
     {
-        // Create a new component instance for each test to avoid state issues
         var cut = RenderComponent<InnovativeGrid<TestModel>>(parameters => parameters
             .Add(p => p.Data, testData)
         );
 
-        // Act - We can only call the public method and verify logging behavior
         await cut.InvokeAsync(async () =>
         {
             var gridInstance = cut.Instance;
             await gridInstance.ApplyFilter(filterColumnName, filterValue, op);
         });
 
-        // Assert - We're verifying no warnings were logged (successful execution)
         _loggerMock.Verify(
             x => x.Log(
                 LogLevel.Warning,
@@ -184,7 +172,6 @@ public async Task ApplyFilter_Calls_Methods_For_Different_Operators()
     [Fact]
 public async Task ApplyFilter_With_Invalid_Column_Logs_Warning()
 {
-    // Arrange
     var testData = GetTestData();
     var invalidColumnName = "NonExistentColumn";
 
@@ -192,16 +179,13 @@ public async Task ApplyFilter_With_Invalid_Column_Logs_Warning()
         .Add(p => p.Data, testData)
     );
 
-    // Reset the mock to ensure we only count calls from this test
     _loggerMock.Reset();
 
-    // Act
     await cut.InvokeAsync(async () =>
     {
         await cut.Instance.ApplyFilter(invalidColumnName, "Value", FilterOperator.Equals);
     });
 
-    // Assert
     _loggerMock.Verify(
         x => x.Log(
             LogLevel.Warning,
@@ -215,23 +199,18 @@ public async Task ApplyFilter_With_Invalid_Column_Logs_Warning()
     [Fact]
 public async Task ClearFilter_Executes_Successfully()
 {
-    // Arrange
     var testData = GetTestData();
     var cut = RenderComponent<InnovativeGrid<TestModel>>(parameters => parameters
         .Add(p => p.Data, testData)
     );
 
-    // Reset the mock to ensure we only count calls from this test
     _loggerMock.Reset();
 
-    // Act - We can only call the public method and check for exceptions
     await cut.InvokeAsync(async () =>
     {
-        // This shouldn't throw an exception
         await cut.Instance.ClearFilter();
     });
 
-    // Assert - No warnings were logged, which means the operation succeeded
     _loggerMock.Verify(
         x => x.Log(
             LogLevel.Warning,
@@ -259,7 +238,6 @@ public void GetPropertiesWithAttributes_Returns_Only_Properties_With_UIGridField
         .Add(p => p.Data, testData)
     );
 
-    // The markup should contain the property with the attribute but not the one without
     var markup = cut.Markup;
     Assert.Contains("WithAttribute", markup);
     Assert.DoesNotContain("NoAttribute", markup);
@@ -306,7 +284,7 @@ public void GetPropertiesWithAttributes_Returns_Only_Properties_With_UIGridField
         {
             var markup = cut.Markup;
             Assert.Contains("CustomValue", markup);
-            Assert.Contains("test", markup); // CustomParam value
+            Assert.Contains("test", markup); 
             return Task.CompletedTask;
         });
     }
@@ -321,13 +299,11 @@ public void GetPropertiesWithAttributes_Returns_Only_Properties_With_UIGridField
             .Add(p => p.MinHeightOption, GridHeight.Minimal)
         );
 
-        // Act - with Max height
         var cutMax = RenderComponent<InnovativeGrid<TestModel>>(parameters => parameters
             .Add(p => p.Data, testData)
             .Add(p => p.MinHeightOption, GridHeight.Max)
         );
 
-        // Assert
         Assert.DoesNotContain("--min-height: 1162px", cutMinimal.Markup);
         Assert.Contains("--max-height: 1162px", cutMinimal.Markup);
 
@@ -338,19 +314,16 @@ public void GetPropertiesWithAttributes_Returns_Only_Properties_With_UIGridField
     [Fact]
     public void Grid_Uses_Localizer_From_Factory()
     {
-        // Arrange
         var testData = GetTestData();
         var testKey = "TestKey";
         LocalizedString testValue = new LocalizedString(testKey, "Test Value");
         
         _localizerMock.Setup(l => l[testKey]).Returns(testValue);
 
-        // Act
         var cut = RenderComponent<InnovativeGrid<TestModel>>(parameters => parameters
             .Add(p => p.Data, testData)
         );
 
-        // Assert
         _localizerFactoryMock.Verify(f => f.Create(It.IsAny<Type>()), Times.Once);
     }
 
@@ -358,19 +331,16 @@ public void GetPropertiesWithAttributes_Returns_Only_Properties_With_UIGridField
     [Fact]
 public void Grid_Respects_UIGridClass_AllowSorting()
 {
-    // Arrange
     var testData = new List<TestModelWithGridClass>
     {
         new TestModelWithGridClass { TestProperty = "Value1", AnotherProperty = "Another1" },
         new TestModelWithGridClass { TestProperty = "Value2", AnotherProperty = "Another2" }
     };
 
-    // Act
     var cut = RenderComponent<InnovativeGrid<TestModelWithGridClass>>(parameters => parameters
         .Add(p => p.Data, testData)
     );
 
-    // Assert - The grid should not have sortable columns
     var markup = cut.Markup;
     Assert.DoesNotContain("rz-column-sortable", markup);
 }
@@ -399,18 +369,15 @@ public void Grid_Respects_UIGridClass_AllowSorting()
     [Fact]
 public void Grid_Uses_ResourceType_From_UIGridClass_For_Localization()
 {
-    // Arrange
     var testData = new List<TestModelWithGridClass>
     {
         new TestModelWithGridClass { TestProperty = "Value1" }
     };
 
-    // Act
     var cut = RenderComponent<InnovativeGrid<TestModelWithGridClass>>(parameters => parameters
         .Add(p => p.Data, testData)
     );
 
-    // Assert - Verify the factory was called with the TestResources type
     _localizerFactoryMock.Verify(f => f.Create(typeof(TestResources)), Times.Once);
 }
 
@@ -429,7 +396,6 @@ public class TestModelWithMixedAttributes
     [UIGridField(ShowByDefault = true)]
     public string PropertyWithAttribute { get; set; }
 
-    // No attribute here
     public string PropertyWithoutAttribute { get; set; }
 }
 
@@ -448,9 +414,7 @@ public class TestModel
 
 
 
-// Optional mock resource class
 public class TestResources {}
-// Add this class with UIGridClass attribute
 [UIGridClass(AllowSorting = false, DefaultSortField = "TestProperty", ResourceType = typeof(TestResources))]
 public class TestModelWithGridClass
 {

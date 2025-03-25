@@ -82,7 +82,7 @@ public class InnovativeDialogService(DialogService dialogService, IInnovativeStr
     {
         var size = width switch
         {
-            SideDialogWidth.Normal     => "15vw",
+            SideDialogWidth.Normal     => "40vw",
             SideDialogWidth.Large      => "60vw",
             SideDialogWidth.ExtraLarge => "80vw",
             _                          => "30vw"

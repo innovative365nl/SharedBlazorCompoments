@@ -1,5 +1,7 @@
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Localization;
 
+[assembly: InternalsVisibleTo("Innovative.Blazor.Components.Tests") ]
 namespace Innovative.Blazor.Components.Localizer;
 
 /// <summary>
@@ -17,7 +19,6 @@ public interface IInnovativeStringLocalizer : IStringLocalizer
 /// <typeparam name="T"></typeparam>
 public interface IInnovativeStringLocalizer<T> : IInnovativeStringLocalizer
 {}
-
 internal class InnovativeStringLocalizer<T> : IInnovativeStringLocalizer<T>
 {
     private readonly IStringLocalizerFactory _factory;

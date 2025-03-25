@@ -3,13 +3,8 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
 
 <instance-profile id="in"
-                 name="AutoMate"
->
+                 name="BlazorCompoments"
+                  start-page="General.md">
 
-    <toc-element topic="Algemeen.md"/>
-    <toc-element topic="Omgeving.md"/>
-    <toc-element toc-title="Deployment">
-        <toc-element topic="Setup.md"/>
-        <toc-element topic="Infrastructuur.md"/>
-    </toc-element>
+    <toc-element topic="General.md"/>
 </instance-profile>

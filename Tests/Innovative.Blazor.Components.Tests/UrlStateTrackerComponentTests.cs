@@ -43,6 +43,79 @@ namespace Innovative.Blazor.Components.Tests;
         }
         
         [Fact]
+public void UpdateQueryStringParameter_PreservesExistingParameters()
+{
+    // Arrange
+    var navigationManager = Services.GetRequiredService<NavigationManager>() as FakeNavigationManager;
+    navigationManager?.NavigateTo("https://example.com/?existing=value&other=123");
+    
+    var cut = RenderComponent<TestUrlStateTrackerComponent>();
+    
+    // Act
+    cut.Instance.UpdateTrackedProperty("NewValue");
+    
+    // Assert
+    var uri = new Uri(navigationManager?.Uri);
+    var query = QueryHelpers.ParseQuery(uri.Query);
+    
+    // Verify dataset parameter was added
+    Assert.True(query.TryGetValue("dataset", out var base64Value));
+    
+    // Verify existing parameters were preserved
+    Assert.True(query.TryGetValue("existing", out var existingValue));
+    Assert.Equal("value", existingValue);
+    
+    Assert.True(query.TryGetValue("other", out var otherValue));
+    Assert.Equal("123", otherValue);
+    
+    // Verify the tracked data was correctly encoded
+    var json = Encoding.UTF8.GetString(Convert.FromBase64String(base64Value));
+    var state = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
+    Assert.Equal("NewValue", state["TestProperty"].GetString());
+}
+
+[Fact]
+public void UpdateQueryStringParameter_UpdatesExistingDatasetParameter()
+{
+    // Arrange
+    var initialState = new Dictionary<string, object>
+    {
+        ["TestProperty"] = "InitialValue",
+        ["TestIntProperty"] = 42
+    };
+    
+    var json = JsonSerializer.Serialize(initialState);
+    var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
+    
+    var navigationManager = Services.GetRequiredService<NavigationManager>() as FakeNavigationManager;
+    navigationManager?.NavigateTo($"https://example.com/?dataset={base64}&other=param");
+    
+    var cut = RenderComponent<TestUrlStateTrackerComponent>();
+    
+    // Act
+    cut.Instance.UpdateIntProperty(100);
+    
+    // Assert
+    var uri = new Uri(navigationManager?.Uri);
+    var query = QueryHelpers.ParseQuery(uri.Query);
+    
+    // Verify dataset parameter was updated
+    Assert.True(query.TryGetValue("dataset", out var updatedBase64));
+    Assert.NotEqual(base64, updatedBase64.ToString());
+    
+    // Verify the other parameter was preserved
+    Assert.True(query.TryGetValue("other", out var otherValue));
+    Assert.Equal("param", otherValue);
+    
+    // Verify the dataset was correctly updated
+    var updatedJson = Encoding.UTF8.GetString(Convert.FromBase64String(updatedBase64));
+    var updatedState = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(updatedJson);
+    
+    Assert.Equal("InitialValue", updatedState["TestProperty"].GetString());
+    Assert.Equal(100, updatedState["TestIntProperty"].GetInt32());
+}
+        
+        [Fact]
         public void Property_Change_Updates_URL()
         {
             var navigationManager = Services.GetRequiredService<NavigationManager>() as FakeNavigationManager;

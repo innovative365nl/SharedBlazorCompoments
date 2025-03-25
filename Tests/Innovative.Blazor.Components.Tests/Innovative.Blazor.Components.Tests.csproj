@@ -34,17 +34,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Innovative.Blazor.Components\Innovative.Blazor.Components.csproj" />
+      <ProjectReference Include="..\..\Src\Innovative.Blazor.Components\Innovative.Blazor.Components.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <Reference Include="Microsoft.AspNetCore.WebUtilities">
         <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\9.0.1\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
       </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Grid\" />
     </ItemGroup>
 
     <ItemGroup>

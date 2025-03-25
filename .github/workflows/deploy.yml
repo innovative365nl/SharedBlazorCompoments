@@ -175,7 +175,7 @@ jobs:
 
 
       - name: Generate test report
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2
         if: always()
         with:
           name: 'Test Results'
@@ -189,8 +189,9 @@ jobs:
           filename: '**/coverage.cobertura.xml'
           badge: true
           hide_branch_rate: false
-          hide_complexity: false
+          hide_complexity: true
           indicators: true
+          thresholds: '80 90'
           format: 'markdown'
           output: 'both'
 

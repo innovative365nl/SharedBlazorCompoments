@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Innovative.Blazor.Components.Components.Dialog;
 using Innovative.Blazor.Components.Services;
-using ManagementPortal.Website.Components.Example;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 
