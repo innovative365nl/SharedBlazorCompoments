@@ -9,17 +9,15 @@ using Microsoft.Extensions.Primitives;
 
 namespace Innovative.Blazor.Components.Components.TrackInUrl;
 
-internal abstract class UrlStateTracker(NavigationManager navigationManager) : ComponentBase, IDisposable
+public abstract class UrlStateTracker(NavigationManager navigationManager) : ComponentBase, IDisposable
 {
     private readonly Dictionary<PropertyInfo, object?> _trackedProperties = new ();
 
     private bool _isInitialized;
     private bool _isUpdatingFromUrl;
+    private bool _disposed;
 
-    public void Dispose()
-    {
-        navigationManager.LocationChanged -= HandleLocationChanged!;
-    }
+    
 
     protected override void OnInitialized()
     {
@@ -161,5 +159,25 @@ internal abstract class UrlStateTracker(NavigationManager navigationManager) : C
         var newQuery = QueryString.Create(parameters: updatedParams);
 
         return baseUri + newQuery;
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                // Dispose managed resources
+                navigationManager.LocationChanged -= HandleLocationChanged!;
+            }
+            
+            // Dispose unmanaged resources (none in this case)
+            _disposed = true;
+        }
+    }
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 }
