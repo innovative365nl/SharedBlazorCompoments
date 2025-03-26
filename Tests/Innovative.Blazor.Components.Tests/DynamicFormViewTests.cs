@@ -118,20 +118,18 @@ public class DynamicFormViewTests : LocalizedTestBase
 
             // Assert
             var orderedGroups = component.GetOrderedColumnGroups();
-            Assert.Equal(2, orderedGroups.Count);
+            Assert.Equal(2, orderedGroups!.Count);
             
             var group1 = orderedGroups.FirstOrDefault(g => g.Key == "Group1");
-            Assert.NotNull(group1);
             Assert.Single(group1.Value);
             Assert.Equal("GroupedProperty1", group1.Value[0].Name);
             
             var group2 = orderedGroups.FirstOrDefault(g => g.Key == "Group2");
-            Assert.NotNull(group2);
             Assert.Single(group2.Value);
             Assert.Equal("GroupedProperty2", group2.Value[0].Name);
             
-            Assert.Single(component.GetUngroupedProperties());
-            Assert.Equal("UngroupedProperty", component.GetUngroupedProperties().First().Name);
+            Assert.Single(component.GetUngroupedProperties()!);
+            Assert.Equal("UngroupedProperty", component.GetUngroupedProperties()!.First().Name);
         }
 
         [Fact]
@@ -215,11 +213,11 @@ public class DynamicFormViewTests : LocalizedTestBase
             method?.Invoke(component, null);
         }
 
-        public static object GetFormValue<T>(this DynamicFormView<T> component, string propertyName)
+        public static object? GetFormValue<T>(this DynamicFormView<T> component, string propertyName)
         {
             var formValuesField = typeof(DynamicFormView<T>).GetField("_formValues", 
                 BindingFlags.NonPublic | BindingFlags.Instance);
-            var formValues = (Dictionary<string, object>)formValuesField?.GetValue(component);
+            var formValues = (Dictionary<string, object>)formValuesField?.GetValue(component)!;
             return formValues?.TryGetValue(propertyName, out var value) == true ? value : null;
         }
 
@@ -230,24 +228,24 @@ public class DynamicFormViewTests : LocalizedTestBase
             setValueMethod?.Invoke(component, new[] { propertyName, value });
         }
 
-        public static IReadOnlyCollection<PropertyInfo> GetUngroupedProperties<T>(this DynamicFormView<T> component)
+        public static IReadOnlyCollection<PropertyInfo>? GetUngroupedProperties<T>(this DynamicFormView<T> component)
         {
             var property = typeof(DynamicFormView<T>).GetProperty("UngroupedProperties", 
                 BindingFlags.NonPublic | BindingFlags.Instance);
-            return (IReadOnlyCollection<PropertyInfo>)property?.GetValue(component);
+            return (IReadOnlyCollection<PropertyInfo>)property?.GetValue(component)!;
         }
 
-        public static IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> GetOrderedColumnGroups<T>(this DynamicFormView<T> component)
+        public static IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>>? GetOrderedColumnGroups<T>(this DynamicFormView<T> component)
         {
             var property = typeof(DynamicFormView<T>).GetProperty("OrderedColumnGroups", 
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-            return (IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>>)property?.GetValue(component);
+            return (IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>>)property?.GetValue(component)!;
         }
 
         public static string CallGetColumnWidthClass<T>(this DynamicFormView<T> component, string columnGroup)
         {
             var method = typeof(DynamicFormView<T>).GetMethod("GetColumnWidthClass", 
                 BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-            return (string)method?.Invoke(component, new[] { columnGroup });
+            return (string)method?.Invoke(component, new[] { columnGroup }) ?? string.Empty;
         }
     }
