@@ -1,9 +1,10 @@
+using Innovative.Blazor.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 
 namespace Innovative.Blazor.Components.Components.Dialog;
 
-public partial class RightSideDialog<TModel>(DialogService dialogService) : ComponentBase
+public partial class RightSideDialog<TModel>(ICustomDialogService dialogService) : ComponentBase
 {
     private IDynamicBaseComponent? _formComponent;
     private bool _isCustomDialog;
@@ -44,7 +45,7 @@ public partial class RightSideDialog<TModel>(DialogService dialogService) : Comp
 
     private Task HandleCloseClick()
     {
-        dialogService.CloseSide();
+     //   dialogService.CloseSide();
         return Task.CompletedTask;
     }
 

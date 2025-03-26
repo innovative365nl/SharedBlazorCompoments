@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
     using Innovative.Blazor.Components.Attributes;
@@ -123,6 +124,8 @@ using System.Reflection;
                 OrderedColumnGroups = groupedProperties.ToList()!;
             }
         }
+        
+        [ExcludeFromCodeCoverage]
 
         protected RenderFragment RenderPropertyField(PropertyInfo property) => builder =>
         {

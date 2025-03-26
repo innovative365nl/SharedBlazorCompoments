@@ -1,7 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
 using Innovative.Blazor.Components.Attributes;
 
 namespace Innovative.Blazor.Components.Components.Dialog;
-
+[ExcludeFromCodeCoverage]
 [AttributeUsage(validOn: AttributeTargets.Property)]
 public sealed class UIFormFieldAttribute : UIField
 {

@@ -8,10 +8,16 @@ using Radzen;
 
 namespace Innovative.Blazor.Components.Services;
 
-public sealed class InnovativeDialogService(DialogService dialogService, IInnovativeStringLocalizerFactory localizerFactory): IDisposable
+public interface IInnovativeDialogService
+{
+    Task<T> OpenDynamicFormDialog<T>(T model) where T : class;
+    void Dispose();
+}
+
+internal sealed class InnovativeDialogService(ICustomDialogService dialogService, IInnovativeStringLocalizerFactory localizerFactory): IDisposable, IInnovativeDialogService
 {
 
-    public async Task<T> OpenDynamicFormDialog<T>(T model, SideDialogOptions? options = null) where T : class
+    public async Task<T> OpenDynamicFormDialog<T>(T model) where T : class
     {
         RightSideDialog<T>? dialogRef = null;
 
@@ -41,7 +47,6 @@ public sealed class InnovativeDialogService(DialogService dialogService, IInnova
             {"EditChildContent", editContent}
         };
 
-        options ??= new SideDialogOptions();
         var dialogOptions = new SideDialogOptions
         {
             Width = GetWidth(width: SideDialogWidth.Normal),
@@ -92,6 +97,6 @@ public sealed class InnovativeDialogService(DialogService dialogService, IInnova
 
     public void Dispose()
     {
-        dialogService.Dispose();
+      //  dialogService.Dispose();
     }
 }

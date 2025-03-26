@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Innovative.Blazor.Components.Attributes;
 using Innovative.Blazor.Components.Components.Grid;
@@ -121,6 +122,7 @@ public partial class DynamicDisplayView<TModel> : ComponentBase
         await OnActionExecuted.InvokeAsync(arg: method.Name).ConfigureAwait(false);
     }
 
+    [ExcludeFromCodeCoverage]
     private static RenderFragment RenderViewComponent(object? value, UIFormFieldAttribute attribute)
     {
         return builder =>

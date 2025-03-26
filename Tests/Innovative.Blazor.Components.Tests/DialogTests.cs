@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Innovative.Blazor.Components.Components.Dialog;
 using Innovative.Blazor.Components.Enumerators;
@@ -17,9 +19,13 @@ namespace Innovative.Blazor.Components.Tests;
 
 public class DialogTests : LocalizedTestBase
 {
-    private readonly InnovativeDialogService _dialogService;
+    private readonly Mock<ICustomDialogService> _dialogServiceMock;
     private readonly DialogService _radzenDialogService;
+    private readonly InnovativeDialogService _dialogService;
+    
     private readonly ITestOutputHelper _testOutputHelper;
+    private readonly Mock<DialogService> _radzenDialogServiceMock;
+
 
     public DialogTests(ITestOutputHelper testOutputHelper)
     {
@@ -30,6 +36,9 @@ public class DialogTests : LocalizedTestBase
         var iJsRuntime = new Mock<IJSRuntime>();
         // Create a real DialogService
         _radzenDialogService = new DialogService(navigationManager, iJsRuntime.Object);
+        _radzenDialogServiceMock = new Mock<DialogService>(navigationManager, iJsRuntime.Object);
+        _dialogServiceMock = new Mock<ICustomDialogService>();
+
 
         // Setup localizer for specific tests that need it
         LocalizerMock
@@ -37,47 +46,39 @@ public class DialogTests : LocalizedTestBase
             .Returns((string name) => new LocalizedString(name, name));
 
         // Create service instance with real DialogService
-        _dialogService = new InnovativeDialogService(_radzenDialogService, LocalizerFactoryMock.Object);
+        _dialogService = new InnovativeDialogService(_dialogServiceMock.Object, LocalizerFactoryMock.Object);
     }
 
-    // [Fact]
-    // public async Task OpenPersonDialog_ShouldCloseWhenCloseButtonClicked()
-    // {
-    //     using var ctx = new TestContext();
-    //     ctx.JSInterop.Mode = JSRuntimeMode.Loose;
-    //
-    //     // Create a real NavigationManager and JSRuntime
-    //     var navigationManager = new TestNavigationManager();
-    //     var jsRuntimeMock = new Mock<IJSRuntime>();
-    //     var dialogService = new DialogService(navigationManager, jsRuntimeMock.Object);
-    //
-    //     // Register required services
-    //     ctx.Services.AddSingleton(dialogService);
-    //     ctx.Services.AddSingleton<InnovativeDialogService>(new InnovativeDialogService(dialogService, _localizerFactoryMock.Object));
-    //     ctx.Services.AddSingleton<IInnovativeStringLocalizerFactory>(_localizerFactoryMock.Object);
-    //     ctx.Services.AddSingleton<IInnovativeStringLocalizer>(_localizerMock.Object);
-    //     ctx.Services.AddRadzenComponents();
-    //
-    //     // Render the component
-    //     var component = ctx.RenderComponent<InnovativeDialogServiceTest>();
-    //
-    //     // Open the dialog
-    //     var openDialogButton = component.Find("button");
-    //     openDialogButton.Click();
-    //     await Task.Delay(100); // Wait for rendering
-    //
-    //     // Verify the close button is present
-    //     var closeButton = component.FindAll("#rightSideDialogCloseButton").FirstOrDefault();
-    //     closeButton.Should().NotBeNull("The rightSideDialogCloseButton should appear after opening the dialog.");
-    //
-    //     // Close the dialog
-    //     closeButton.Click();
-    //     await Task.Delay(100); // Wait for rendering
-    //
-    //     // Ensure the close button is gone
-    //     var buttonAfterClose = component.FindAll("#rightSideDialogCloseButton").FirstOrDefault();
-    //     buttonAfterClose.Should().BeNull("The close button should no longer be present after closing the dialog.");
-    // }
+
+    [Fact]
+    public async Task OpenDynamicFormDialogOpensDialogWithCorrectParameters()
+    {
+        // Arrange
+        var model = new TestDynamicFormModel { TestProperty = "Initial Value" };
+        Dictionary<string, object>? capturedParameters = null;
+        string? capturedTitle = null;
+        var expectedTitle = "Test Form";
+            
+        _dialogServiceMock
+            .Setup(x => x.OpenSideAsync<RightSideDialog<TestDynamicFormModel>>(
+                It.IsAny<string>(),
+                It.IsAny<Dictionary<string, object>>(),
+                It.IsAny<SideDialogOptions>()))
+            .ReturnsAsync((string title, Dictionary<string, object> parameters, SideDialogOptions options) =>
+            {
+                capturedTitle = title;
+                capturedParameters = parameters;
+                return new RightSideDialog<TestDynamicFormModel>(_dialogServiceMock.Object);
+            });
+            
+        // Act
+        await _dialogService.OpenDynamicFormDialog<TestDynamicFormModel>(model);
+            
+        // Assert
+        Assert.NotNull(capturedParameters);
+        Assert.Equal(expectedTitle, capturedTitle);
+        Assert.Equal(expectedTitle, capturedParameters["Title"]);
+    }
 
     [Fact]
     public void GetFormTitleWithUIFormClassUsesLocalizer()
@@ -256,6 +257,8 @@ public class DialogTests : LocalizedTestBase
 
         clicked.Should().BeTrue();
     }
+    
+    
 
     [Theory]
     [InlineData(SideDialogWidth.Normal, "40vw;")]
@@ -273,27 +276,7 @@ public class DialogTests : LocalizedTestBase
         // Assert
         result.Should().Be(expected);
     }
-
-    // [Fact]
-    // public async Task OpenDynamicFormDialog_WithCustomOptions_UsesOptions()
-    // {
-    //     // Arrange
-    //     var testModel = new TestFormModel { Name = "Test" };
-    //     var options = new SideDialogOptions
-    //     {
-    //         Width = "50vw",
-    //         ShowTitle = true,
-    //         ShowMask = true,
-    //         CloseDialogOnOverlayClick = true
-    //     };
-    //
-    //     // Act
-    //     var result = await _dialogService.OpenDynamicFormDialog(testModel, options);
-    //
-    //     // Assert
-    //     result.Should().NotBeNull();
-    //     result.Should().BeSameAs(testModel);
-    // }
+    
 
     protected override void Dispose(bool disposing)
     {

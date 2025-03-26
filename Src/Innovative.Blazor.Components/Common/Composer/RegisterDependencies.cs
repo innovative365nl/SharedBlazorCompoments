@@ -10,7 +10,7 @@ public static class RegisterDependencies
 {
     public static IServiceCollection RegisterInnovativeComponents(this IServiceCollection services)
     {
-        services.AddScoped<InnovativeDialogService>();
+        services.AddScoped<IInnovativeDialogService, InnovativeDialogService>();
         return services;
     }
     public static IServiceCollection AddCustomLocalizer<TFallback>(this IServiceCollection services)
