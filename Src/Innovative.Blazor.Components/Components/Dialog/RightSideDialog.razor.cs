@@ -42,13 +42,6 @@ public partial class RightSideDialog<TModel>(ICustomDialogService dialogService)
         _isCustomDialog = isCustom;
         StateHasChanged();
     }
-
-    private Task HandleCloseClick()
-    {
-     //   dialogService.CloseSide();
-        return Task.CompletedTask;
-    }
-
     private async Task HandleSaveClick()
     {
         if (_formComponent != null) await _formComponent.OnSubmitPressed().ConfigureAwait(false);
