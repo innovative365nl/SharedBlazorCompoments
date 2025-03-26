@@ -141,7 +141,7 @@ jobs:
   # Job 3: Run unit and integration tests
   # ============================================================
   Test:
-    needs: [GetVersions, Build]
+    needs: [ GetVersions, Build ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -200,7 +200,7 @@ jobs:
   # Job 4: Publish NuGet packages to NuGet.org
   # ============================================================
   Publish:
-    needs: [GetVersions, Build, Test]
+    needs: [ GetVersions, Build, Test ]
     runs-on: ubuntu-latest
     if: success()
     steps:

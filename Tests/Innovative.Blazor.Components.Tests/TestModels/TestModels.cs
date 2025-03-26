@@ -1,18 +1,22 @@
+#region
+
 using System;
 using Innovative.Blazor.Components.Components.Dialog;
 using Innovative.Blazor.Components.Components.Grid;
 
+#endregion
+
 namespace Innovative.Blazor.Components.Tests.TestModels
 {
     /// <summary>
-    /// Resource class used for tests.
+    ///     Resource class used for tests.
     /// </summary>
     public class TestResources
     {
     }
 
     /// <summary>
-    /// Standard test model with UIGridField attributes.
+    ///     Standard test model with UIGridField attributes.
     /// </summary>
     public class TestModel
     {
@@ -27,7 +31,7 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     }
 
     /// <summary>
-    /// Test model with mixed properties - some with UIGridField attributes, some without.
+    ///     Test model with mixed properties - some with UIGridField attributes, some without.
     /// </summary>
     public class TestModelWithMixedAttributes
     {
@@ -37,7 +41,7 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     }
 
     /// <summary>
-    /// Test model with UIGridClass attribute.
+    ///     Test model with UIGridClass attribute.
     /// </summary>
     [UIGridClass(AllowSorting = false, DefaultSortField = "TestProperty", ResourceType = typeof(TestResources))]
     public class TestModelWithGridClass
@@ -49,7 +53,7 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     }
 
     /// <summary>
-    /// Model for testing forms with form attributes.
+    ///     Model for testing forms with form attributes.
     /// </summary>
     [UIFormClass(title: "Test Form", ResourceType = typeof(TestResources))]
     public class TestDynamicFormModel
@@ -63,7 +67,7 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     }
 
     /// <summary>
-    /// Resource class for specific form testing.
+    ///     Resource class for specific form testing.
     /// </summary>
     public class TestResourcesClass
     {

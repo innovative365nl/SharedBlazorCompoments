@@ -1,5 +1,9 @@
+#region
+
 using System.Diagnostics.CodeAnalysis;
 using Innovative.Blazor.Components.Attributes;
+
+#endregion
 
 namespace Innovative.Blazor.Components.Components.Dialog;
 

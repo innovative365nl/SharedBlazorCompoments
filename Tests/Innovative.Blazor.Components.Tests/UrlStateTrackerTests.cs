@@ -1,3 +1,5 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,11 +10,13 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using TestContext = Bunit.TestContext;
 
+#endregion
+
 namespace Innovative.Blazor.Components.Tests;
 
 public class UrlStateTrackerTests : TestContext
 {
-    private FakeNavigationManager _navigationManager;
+    private readonly FakeNavigationManager _navigationManager;
 
     public UrlStateTrackerTests()
     {

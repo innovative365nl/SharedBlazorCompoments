@@ -1,8 +1,12 @@
+#region
+
 using System.Collections.Generic;
 using System.Linq;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.Extensions.Localization;
 using Moq;
+
+#endregion
 
 namespace Innovative.Blazor.Components.Tests.Localizer;
 

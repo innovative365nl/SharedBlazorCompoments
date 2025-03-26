@@ -1,4 +1,8 @@
+#region
+
 using Microsoft.AspNetCore.Components;
+
+#endregion
 
 namespace Innovative.Blazor.Components.Components.Card;
 

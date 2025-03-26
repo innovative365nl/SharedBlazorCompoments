@@ -1,9 +1,12 @@
 // File: InnovativeStringLocalizerFactoryTests.cs
 
+#region
+
 using System;
 using System.Collections.Generic;
-using Innovative.Blazor.Components.Localizer;
 using Microsoft.Extensions.Localization;
+
+#endregion
 
 namespace Innovative.Blazor.Components.Tests.Localizer;
 

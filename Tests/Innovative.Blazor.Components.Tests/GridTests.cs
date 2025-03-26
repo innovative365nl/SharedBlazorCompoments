@@ -1,10 +1,11 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Innovative.Blazor.Components.Components.Grid;
-using Innovative.Blazor.Components.Localizer;
 using Innovative.Blazor.Components.Tests.TestBase;
 using Innovative.Blazor.Components.Tests.TestModels;
 using Microsoft.AspNetCore.Components;
@@ -14,19 +15,20 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Radzen;
 using static Xunit.Assert;
-using TestContext = Bunit.TestContext;
+
+#endregion
 
 namespace Innovative.Blazor.Components.Tests;
 
 /// <summary>
-/// Unit tests for the InnovativeGrid component.
+///     Unit tests for the InnovativeGrid component.
 /// </summary>
 public class GridTests : LocalizedTestBase
 {
     private readonly Mock<ILogger<InnovativeGrid<TestModel>>> _loggerMock;
 
     /// <summary>
-    /// Setup common testing infrastructure for all grid tests.
+    ///     Setup common testing infrastructure for all grid tests.
     /// </summary>
     public GridTests()
     {
@@ -44,7 +46,7 @@ public class GridTests : LocalizedTestBase
     #region Rendering Tests
 
     /// <summary>
-    /// Tests that the grid renders correctly with supplied data.
+    ///     Tests that the grid renders correctly with supplied data.
     /// </summary>
     [Fact]
     public void GridRendersWithData()
@@ -61,7 +63,7 @@ public class GridTests : LocalizedTestBase
     }
 
     /// <summary>
-    /// Tests that the grid shows a no data message when there's no data.
+    ///     Tests that the grid shows a no data message when there's no data.
     /// </summary>
     [Fact]
     public void GridShowsNoDataMessageWhenEmpty()
@@ -75,7 +77,7 @@ public class GridTests : LocalizedTestBase
     }
 
     /// <summary>
-    /// Tests that a loading indicator appears when the grid is in loading state.
+    ///     Tests that a loading indicator appears when the grid is in loading state.
     /// </summary>
     [Fact]
     public void GridShowsLoadingIndicatorWhenIsLoadingTrue()
@@ -92,7 +94,7 @@ public class GridTests : LocalizedTestBase
     }
 
     /// <summary>
-    /// Tests that the grid applies different height settings based on MinHeightOption.
+    ///     Tests that the grid applies different height settings based on MinHeightOption.
     /// </summary>
     [Fact]
     public void GridUsesCorrectHeightBasedOnMinHeightOption()
@@ -115,7 +117,7 @@ public class GridTests : LocalizedTestBase
     }
 
     /// <summary>
-    /// Tests that custom component renders correctly within the grid.
+    ///     Tests that custom component renders correctly within the grid.
     /// </summary>
     [Fact]
     public async Task RenderCustomComponentRendersCorrectly()
@@ -148,7 +150,7 @@ public class GridTests : LocalizedTestBase
     #region Selection Tests
 
     /// <summary>
-    /// Tests that the selection changed event is triggered when items are selected.
+    ///     Tests that the selection changed event is triggered when items are selected.
     /// </summary>
     [Fact]
     public async Task SelectionChangedEventIsTriggered()
@@ -178,7 +180,7 @@ public class GridTests : LocalizedTestBase
     }
 
     /// <summary>
-    /// Tests that clearing selection empties the selected items collection.
+    ///     Tests that clearing selection empties the selected items collection.
     /// </summary>
     [Fact]
     public async Task ClearSelectionEmptiesSelectedItems()
@@ -205,7 +207,7 @@ public class GridTests : LocalizedTestBase
     #region Filter Tests
 
     /// <summary>
-    /// Tests that applying a filter with valid column and operator works correctly.
+    ///     Tests that applying a filter with valid column and operator works correctly.
     /// </summary>
     [Fact]
     public async Task ApplyFilterCallsDataGridMethods()
@@ -233,7 +235,7 @@ public class GridTests : LocalizedTestBase
     }
 
     /// <summary>
-    /// Tests filter operations with different filter operators.
+    ///     Tests filter operations with different filter operators.
     /// </summary>
     [Fact]
     public async Task ApplyFilterCallsMethodsForDifferentOperators()
@@ -278,7 +280,7 @@ public class GridTests : LocalizedTestBase
     }
 
     /// <summary>
-    /// Tests that applying a filter with an invalid column logs a warning.
+    ///     Tests that applying a filter with an invalid column logs a warning.
     /// </summary>
     [Fact]
     public async Task ApplyFilterWithInvalidColumnLogsWarning()
@@ -309,7 +311,7 @@ public class GridTests : LocalizedTestBase
     }
 
     /// <summary>
-    /// Tests that clearing a filter executes without errors.
+    ///     Tests that clearing a filter executes without errors.
     /// </summary>
     [Fact]
     public async Task ClearFilterExecutesSuccessfully()
@@ -340,7 +342,7 @@ public class GridTests : LocalizedTestBase
     #region Attribute Tests
 
     /// <summary>
-    /// Tests that only properties with UIGridField attributes are displayed in the grid.
+    ///     Tests that only properties with UIGridField attributes are displayed in the grid.
     /// </summary>
     [Fact]
     public void GetPropertiesWithAttributesReturnsOnlyPropertiesWithUIGridField()
@@ -367,7 +369,7 @@ public class GridTests : LocalizedTestBase
     }
 
     /// <summary>
-    /// Tests that the grid respects the AllowSorting property from UIGridClass attribute.
+    ///     Tests that the grid respects the AllowSorting property from UIGridClass attribute.
     /// </summary>
     [Fact]
     public void GridRespectsUIGridClassAllowSorting()
@@ -390,7 +392,7 @@ public class GridTests : LocalizedTestBase
     }
 
     /// <summary>
-    /// Tests that the grid uses the ResourceType from UIGridClass for localization.
+    ///     Tests that the grid uses the ResourceType from UIGridClass for localization.
     /// </summary>
     [Fact]
     public void GridUsesResourceTypeFromUIGridClassForLocalization()
@@ -411,7 +413,7 @@ public class GridTests : LocalizedTestBase
     }
 
     /// <summary>
-    /// Tests that the grid uses the localizer from the factory.
+    ///     Tests that the grid uses the localizer from the factory.
     /// </summary>
     [Fact]
     public void GridUsesLocalizerFromFactory()
@@ -435,7 +437,7 @@ public class GridTests : LocalizedTestBase
     #region Helper Methods
 
     /// <summary>
-    /// Creates a standard test data set.
+    ///     Creates a standard test data set.
     /// </summary>
     private static List<TestModel> GetTestData()
     {
@@ -447,9 +449,9 @@ public class GridTests : LocalizedTestBase
     }
 
     /// <summary>
-    /// Helper method to render a grid component with common parameters to reduce code duplication.
+    ///     Helper method to render a grid component with common parameters to reduce code duplication.
     /// </summary>
-    private Bunit.IRenderedComponent<InnovativeGrid<TestModel>> RenderGridComponent(
+    private IRenderedComponent<InnovativeGrid<TestModel>> RenderGridComponent(
         IEnumerable<TestModel> data,
         string? title = null,
         bool isLoading = false,
@@ -484,7 +486,7 @@ public class GridTests : LocalizedTestBase
 }
 
 /// <summary>
-/// Custom component for testing rendering of custom components in the grid.
+///     Custom component for testing rendering of custom components in the grid.
 /// </summary>
 internal sealed class TestCustomComponent : ComponentBase
 {

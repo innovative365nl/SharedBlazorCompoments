@@ -1,10 +1,13 @@
+#region
+
 using System.Reflection;
-using Innovative.Blazor.Components.Attributes;
 using Innovative.Blazor.Components.Components.Dialog;
 using Innovative.Blazor.Components.Enumerators;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
 using Radzen;
+
+#endregion
 
 namespace Innovative.Blazor.Components.Services;
 
@@ -14,8 +17,14 @@ public interface IInnovativeDialogService
     void Dispose();
 }
 
-internal sealed class InnovativeDialogService(ICustomDialogService dialogService, IInnovativeStringLocalizerFactory localizerFactory): IDisposable, IInnovativeDialogService
+internal sealed class InnovativeDialogService(
+    ICustomDialogService dialogService,
+    IInnovativeStringLocalizerFactory localizerFactory) : IDisposable, IInnovativeDialogService
 {
+    public void Dispose()
+    {
+        //  dialogService.Dispose();
+    }
 
     public async Task<T> OpenDynamicFormDialog<T>(T model) where T : class
     {
@@ -34,17 +43,17 @@ internal sealed class InnovativeDialogService(ICustomDialogService dialogService
             builder.AddAttribute(sequence: 1, name: "Model", value: model);
             builder.CloseComponent();
         });
-        
+
         var title = GetFormTitle<T>();
 
         var parameters = new Dictionary<string, object>
         {
-            {"Title", title},
-            {"Model", model},
-            {"ShowEdit", true},
-            {"ShowClose", true},
-            {"ViewChildContent", viewContent},
-            {"EditChildContent", editContent}
+            { "Title", title },
+            { "Model", model },
+            { "ShowEdit", true },
+            { "ShowClose", true },
+            { "ViewChildContent", viewContent },
+            { "EditChildContent", editContent }
         };
 
         var dialogOptions = new SideDialogOptions
@@ -74,11 +83,12 @@ internal sealed class InnovativeDialogService(ICustomDialogService dialogService
         if (formAttribute != null && !string.IsNullOrEmpty(formAttribute.Title))
         {
             var resourceType = formAttribute.ResourceType ?? typeof(T);
-            
+
             var localizer = localizerFactory.Create(resourceType);
-            
+
             return localizer[formAttribute.Title];
         }
+
         return type.Name;
     }
 
@@ -87,16 +97,11 @@ internal sealed class InnovativeDialogService(ICustomDialogService dialogService
     {
         var size = width switch
         {
-            SideDialogWidth.Normal     => "40vw",
-            SideDialogWidth.Large      => "60vw",
+            SideDialogWidth.Normal => "40vw",
+            SideDialogWidth.Large => "60vw",
             SideDialogWidth.ExtraLarge => "80vw",
-            _                          => "30vw"
+            _ => "30vw"
         };
         return $"{size};";
-    }
-
-    public void Dispose()
-    {
-      //  dialogService.Dispose();
     }
 }

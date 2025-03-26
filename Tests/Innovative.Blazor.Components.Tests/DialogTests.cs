@@ -1,5 +1,8 @@
+#region
+
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Innovative.Blazor.Components.Components.Dialog;
@@ -15,16 +18,18 @@ using Moq;
 using Radzen;
 using Xunit.Abstractions;
 
+#endregion
+
 namespace Innovative.Blazor.Components.Tests;
 
 public class DialogTests : LocalizedTestBase
 {
+    private readonly InnovativeDialogService _dialogService;
     private readonly Mock<ICustomDialogService> _dialogServiceMock;
     private readonly DialogService _radzenDialogService;
-    private readonly InnovativeDialogService _dialogService;
-    
-    private readonly ITestOutputHelper _testOutputHelper;
     private readonly Mock<DialogService> _radzenDialogServiceMock;
+
+    private readonly ITestOutputHelper _testOutputHelper;
 
 
     public DialogTests(ITestOutputHelper testOutputHelper)
@@ -58,7 +63,7 @@ public class DialogTests : LocalizedTestBase
         Dictionary<string, object>? capturedParameters = null;
         string? capturedTitle = null;
         var expectedTitle = "Test Form";
-            
+
         _dialogServiceMock
             .Setup(x => x.OpenSideAsync<RightSideDialog<TestDynamicFormModel>>(
                 It.IsAny<string>(),
@@ -70,10 +75,10 @@ public class DialogTests : LocalizedTestBase
                 capturedParameters = parameters;
                 return new RightSideDialog<TestDynamicFormModel>(_dialogServiceMock.Object);
             });
-            
+
         // Act
         await _dialogService.OpenDynamicFormDialog<TestDynamicFormModel>(model);
-            
+
         // Assert
         Assert.NotNull(capturedParameters);
         Assert.Equal(expectedTitle, capturedTitle);
@@ -97,7 +102,7 @@ public class DialogTests : LocalizedTestBase
 
         // Use reflection to call the private method
         var method = typeof(InnovativeDialogService).GetMethod("GetFormTitle",
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            BindingFlags.NonPublic | BindingFlags.Instance);
 
         if (method == null)
         {
@@ -132,7 +137,7 @@ public class DialogTests : LocalizedTestBase
         ctx.Services.AddSingleton(customDialogServiceMock.Object);
         ctx.Services.AddSingleton(LocalizerFactoryMock.Object);
         ctx.Services.AddSingleton(LocalizerMock.Object);
-        
+
         ctx.Services.AddRadzenComponents();
 
         // Render the component
@@ -168,7 +173,7 @@ public class DialogTests : LocalizedTestBase
     {
         using var ctx = new TestContext();
         ctx.JSInterop.Mode = JSRuntimeMode.Loose;
-        
+
         var customDialogServiceMock = new Mock<ICustomDialogService>();
 
         // Register the base Microsoft string localizer factory
@@ -263,8 +268,7 @@ public class DialogTests : LocalizedTestBase
 
         clicked.Should().BeTrue();
     }
-    
-    
+
 
     [Theory]
     [InlineData(SideDialogWidth.Normal, "40vw;")]
@@ -274,7 +278,7 @@ public class DialogTests : LocalizedTestBase
     {
         // Arrange
         var method = typeof(InnovativeDialogService).GetMethod("GetWidth",
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+            BindingFlags.NonPublic | BindingFlags.Static);
 
         // Act
         var result = method?.Invoke(null, [width]) as string;
@@ -282,7 +286,7 @@ public class DialogTests : LocalizedTestBase
         // Assert
         result.Should().Be(expected);
     }
-    
+
 
     protected override void Dispose(bool disposing)
     {

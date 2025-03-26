@@ -1,5 +1,4 @@
 @using System.Reflection
-@using Innovative.Blazor.Components.Attributes
 @using Microsoft.Extensions.Localization
 @typeparam TModel
 
@@ -16,7 +15,8 @@
                     var actionName = actionAttribute?.Name ?? property.Name;
                     var translatedActionName = _localizer.GetString(actionName);
 
-                    <RadzenButton Text="@translatedActionName" Click="@(() => HandleActionProperty(property: property, actionAttribute: actionAttribute!))"
+                    <RadzenButton Text="@translatedActionName"
+                                  Click="@(() => HandleActionProperty(property: property, actionAttribute: actionAttribute!))"
                                   ButtonStyle="ButtonStyle.Primary"/>
                 }
             }
@@ -53,11 +53,11 @@
             <RadzenText TextStyle="TextStyle.Subtitle2">@_localizer.GetString(fieldAttribute!.Name!)</RadzenText>
             @if (fieldAttribute?.ViewComponent != null)
             {
-                @RenderViewComponent( value: value, attribute: fieldAttribute)
+                @RenderViewComponent(value: value, attribute: fieldAttribute)
             }
             else if (fieldAttribute!.UseWysiwyg && property.PropertyType == typeof(string) && value != null)
             {
-                <div class="html-content">@((MarkupString) (value.ToString() ?? string.Empty))</div>
+                <div class="html-content">@((MarkupString)(value.ToString() ?? string.Empty))</div>
             }
             else
             {

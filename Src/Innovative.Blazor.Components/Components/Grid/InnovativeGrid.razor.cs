@@ -1,3 +1,5 @@
+#region
+
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -6,6 +8,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Radzen;
 using Radzen.Blazor;
+
+#endregion
 
 namespace Innovative.Blazor.Components.Components.Grid;
 
@@ -17,7 +21,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     private readonly ILogger<InnovativeGrid<TItem>> _logger;
 
 #pragma warning disable CA1859
-    private   IList<TItem> _selectedItems = new List<TItem>();
+    private IList<TItem> _selectedItems = new List<TItem>();
 #pragma warning restore CA1859
     public InnovativeGrid(ILogger<InnovativeGrid<TItem>> logger, IInnovativeStringLocalizerFactory localizerFactory)
     {
@@ -30,7 +34,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         _localizer = LocalizerFactory.Create(resourceType);
     }
 
-    private  IInnovativeStringLocalizerFactory LocalizerFactory { get; init; }
+    private IInnovativeStringLocalizerFactory LocalizerFactory { get; }
 
     /// <summary>
     ///     Data to be displayed in the grid
@@ -63,8 +67,8 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     /// <summary>
     ///     The event that is triggered when the row selection changes
     /// </summary>
-   [Parameter]
-   public EventCallback<IEnumerable<TItem>> OnSelectionChanged { get; set; }
+    [Parameter]
+    public EventCallback<IEnumerable<TItem>> OnSelectionChanged { get; set; }
 
     /// <summary>
     ///     Optional resource type to use for localization instead of TItem
@@ -79,12 +83,13 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     /// </summary>
 
     public IEnumerable<TItem> SelectedItems => _selectedItems;
-    
+
     public async Task SetSelectedItemsAsync(IEnumerable<TItem> items)
     {
         Debug.Assert(items != null, nameof(items) + " != null");
         await OnSelectAsync(items: items).ConfigureAwait(false);
     }
+
     public async Task AddSelectedItemAsync(TItem item)
     {
         _selectedItems.Add(item);
@@ -92,14 +97,14 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     }
 
     /// <summary>
-/// Applies a filter to the grid
-/// </summary>
-/// <param name="columnName"></param>
-/// <param name="value"></param>
-/// <param name="filterOperator"></param>
+    ///     Applies a filter to the grid
+    /// </summary>
+    /// <param name="columnName"></param>
+    /// <param name="value"></param>
+    /// <param name="filterOperator"></param>
     public async Task ApplyFilter(string columnName, object value, FilterOperator filterOperator)
     {
-        if ( DataGrid is { ColumnsCollection: not null })
+        if (DataGrid is { ColumnsCollection: not null })
         {
             var column = (DataGrid.ColumnsCollection).FirstOrDefault(c => c.Property == columnName);
             if (column != null)
@@ -116,7 +121,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     }
 
     /// <summary>
-    /// Clears the filter on the grid
+    ///     Clears the filter on the grid
     /// </summary>
     /// <returns></returns>
     public Task ClearFilter()
@@ -135,6 +140,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         var localizedString = _localizer[name: attribute.Name];
         return localizedString.ResourceNotFound ? property.Name : localizedString.Value;
     }
+
     /// <summary>
     ///     Gets the localized column title using the TranslationKey from the UiFieldGrid attribute
     ///     or falls back to the property name if no key is specified
@@ -186,29 +192,34 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 
     private async Task OnSelectAsync(IEnumerable<TItem> items)
     {
-        if(_selectedItems == null)
+        if (_selectedItems == null)
             _selectedItems = new List<TItem>();
         _selectedItems.Clear();
         foreach (var item in items)
         {
             _selectedItems.Add(item);
         }
+
         await OnSelectionChanged.InvokeAsync(arg: _selectedItems).ConfigureAwait(false);
     }
 
     private static IEnumerable<PropertyWithAttribute> GetPropertiesWithAttributes()
     {
         return typeof(TItem).GetProperties()
-            .Select(selector: p => new {Property = p, Attribute = p.GetCustomAttribute<UIGridField>()})
+            .Select(selector: p => new { Property = p, Attribute = p.GetCustomAttribute<UIGridField>() })
             .Where(predicate: x => x.Attribute != null) // Only include properties with the UiFieldGrid attribute
-            .Select(selector: x => new PropertyWithAttribute(PropertyInfo: x.Property, Name: x.Property.Name, GridField: x.Attribute!));
+            .Select(selector: x =>
+                new PropertyWithAttribute(PropertyInfo: x.Property, Name: x.Property.Name, GridField: x.Attribute!));
     }
 
     private string GetGridStyle()
     {
         var minHeight = MinHeightOption == GridHeight.Max ? "1162px" : "";
-        return string.IsNullOrEmpty(minHeight) ? "--max-height: 1162px;" : $"--max-height: 1162px; --min-height: {minHeight};";
+        return string.IsNullOrEmpty(minHeight)
+            ? "--max-height: 1162px;"
+            : $"--max-height: 1162px; --min-height: {minHeight};";
     }
+
     [ExcludeFromCodeCoverage]
     private static RenderFragment RenderCustomComponent(PropertyInfo property, object context, UIGridField gridField)
     {
@@ -246,6 +257,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 
                         builder.CloseComponent();
                     }
+
                     builder.CloseElement();
                 }
                 else
@@ -266,6 +278,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
                             }
                         }
                     }
+
                     builder.CloseComponent();
                 }
             }
@@ -273,7 +286,8 @@ public partial class InnovativeGrid<TItem> : ComponentBase
             catch (Exception ex)
 #pragma warning restore CA1031
             {
-                builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
+                builder.AddMarkupContent(sequence: 0,
+                    markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
             }
         };
     }

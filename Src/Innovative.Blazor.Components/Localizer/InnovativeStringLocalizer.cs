@@ -1,7 +1,12 @@
+#region
+
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Localization;
 
-[assembly: InternalsVisibleTo("Innovative.Blazor.Components.Tests") ]
+#endregion
+
+[assembly: InternalsVisibleTo("Innovative.Blazor.Components.Tests")]
+
 namespace Innovative.Blazor.Components.Localizer;
 
 /// <summary>
@@ -18,7 +23,9 @@ public interface IInnovativeStringLocalizer : IStringLocalizer
 /// </summary>
 /// <typeparam name="T"></typeparam>
 public interface IInnovativeStringLocalizer<T> : IInnovativeStringLocalizer
-{}
+{
+}
+
 internal class InnovativeStringLocalizer<T> : IInnovativeStringLocalizer<T>
 {
     private readonly IStringLocalizerFactory _factory;
@@ -95,7 +102,8 @@ internal class InnovativeStringLocalizer<T> : IInnovativeStringLocalizer<T>
                 allStrings.Add(item: str);
             }
 
-            allStrings.AddRange(collection: fallbackStrings.Where(predicate: str => !primaryStringKeys.Contains(item: str.Name)));
+            allStrings.AddRange(
+                collection: fallbackStrings.Where(predicate: str => !primaryStringKeys.Contains(item: str.Name)));
 
             return allStrings;
         }

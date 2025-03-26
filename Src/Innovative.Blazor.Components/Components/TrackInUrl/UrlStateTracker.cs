@@ -1,3 +1,5 @@
+#region
+
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -7,17 +9,24 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
 
+#endregion
+
 namespace Innovative.Blazor.Components.Components.TrackInUrl;
 
 public abstract class UrlStateTracker(NavigationManager navigationManager) : ComponentBase, IDisposable
 {
-    private readonly Dictionary<PropertyInfo, object?> _trackedProperties = new ();
+    private readonly Dictionary<PropertyInfo, object?> _trackedProperties = new();
+    private bool _disposed;
 
     private bool _isInitialized;
     private bool _isUpdatingFromUrl;
-    private bool _disposed;
 
-    
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
 
     protected override void OnInitialized()
     {
@@ -113,11 +122,13 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
                     {
                         if (dict.TryGetValue(key: prop.Name, value: out var jsonElement))
                         {
-                            var typedValue = JsonSerializer.Deserialize(json: jsonElement.GetRawText(), returnType: prop.PropertyType);
+                            var typedValue = JsonSerializer.Deserialize(json: jsonElement.GetRawText(),
+                                returnType: prop.PropertyType);
                             prop.SetValue(obj: this, value: typedValue);
                             _trackedProperties[key: prop] = typedValue;
                         }
                     }
+
                     StateHasChanged();
                 }
             }
@@ -170,14 +181,9 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
                 // Dispose managed resources
                 navigationManager.LocationChanged -= HandleLocationChanged!;
             }
-            
+
             // Dispose unmanaged resources (none in this case)
             _disposed = true;
         }
-    }
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
     }
 }

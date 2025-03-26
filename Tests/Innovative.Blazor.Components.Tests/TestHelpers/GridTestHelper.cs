@@ -1,19 +1,22 @@
+#region
+
 using System;
 using System.Collections.Generic;
-using Bunit;
 using Innovative.Blazor.Components.Components.Grid;
 using Radzen;
+
+#endregion
 
 namespace Innovative.Blazor.Components.Tests.TestHelpers
 {
     /// <summary>
-    /// Helper class for testing InnovativeGrid components.
-    /// Provides methods for rendering grid components with various configurations.
+    ///     Helper class for testing InnovativeGrid components.
+    ///     Provides methods for rendering grid components with various configurations.
     /// </summary>
     public static class GridTestHelper
     {
         /// <summary>
-        /// Helper method to render a grid component with common parameters to reduce code duplication.
+        ///     Helper method to render a grid component with common parameters to reduce code duplication.
         /// </summary>
         public static IRenderedComponent<InnovativeGrid<T>> RenderGridComponent<T>(
             this TestContext? testContext,

@@ -1,14 +1,17 @@
+#region
+
 using System;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.Extensions.Localization;
 using Moq;
-using Bunit;
+
+#endregion
 
 namespace Innovative.Blazor.Components.Tests.TestBase
 {
     /// <summary>
-    /// Base class for tests that require localization services.
-    /// Provides common setup for localizer mocks.
+    ///     Base class for tests that require localization services.
+    ///     Provides common setup for localizer mocks.
     /// </summary>
     public abstract class LocalizedTestBase : TestContext
     {
@@ -39,7 +42,7 @@ namespace Innovative.Blazor.Components.Tests.TestBase
         protected Mock<IInnovativeStringLocalizer> LocalizerMock { get; set; }
 
         /// <summary>
-        /// Configure the localizer mock to return a specific value for a key.
+        ///     Configure the localizer mock to return a specific value for a key.
         /// </summary>
         /// <param name="key">The localization key</param>
         /// <param name="value">The localized value to return</param>

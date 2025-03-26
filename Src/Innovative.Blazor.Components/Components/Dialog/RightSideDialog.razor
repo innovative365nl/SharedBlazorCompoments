@@ -22,7 +22,8 @@
                 @TitleBarContent
                 @if (ShowEdit && !_isEditing && !_isCustomDialog)
                 {
-                    <button style="border: 0; cursor: pointer; background-color: transparent" id="rightSideDialogEditButton"
+                    <button style="border: 0; cursor: pointer; background-color: transparent"
+                            id="rightSideDialogEditButton"
                             @onclick="@(args => _isEditing = !_isEditing)">
                         <RadzenIcon Icon="edit" IconColor="black"/>
                     </button>

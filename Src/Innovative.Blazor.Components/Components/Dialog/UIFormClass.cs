@@ -1,4 +1,8 @@
+#region
+
 using Innovative.Blazor.Components.Attributes;
+
+#endregion
 
 namespace Innovative.Blazor.Components.Components.Dialog;
 
@@ -6,7 +10,7 @@ namespace Innovative.Blazor.Components.Components.Dialog;
 public sealed class UIFormClass(string title) : UIClass
 {
     /// <summary>
-    /// a Title for the form as a resource key
+    ///     a Title for the form as a resource key
     /// </summary>
     public string Title { get; } = title;
 

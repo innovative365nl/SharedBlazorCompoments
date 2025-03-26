@@ -1,6 +1,10 @@
+#region
+
 using Innovative.Blazor.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Radzen;
+
+#endregion
 
 namespace Innovative.Blazor.Components.Components.Dialog;
 
@@ -42,6 +46,7 @@ public partial class RightSideDialog<TModel>(ICustomDialogService dialogService)
         _isCustomDialog = isCustom;
         StateHasChanged();
     }
+
     private async Task HandleSaveClick()
     {
         if (_formComponent != null) await _formComponent.OnSubmitPressed().ConfigureAwait(false);
@@ -51,6 +56,7 @@ public partial class RightSideDialog<TModel>(ICustomDialogService dialogService)
 
         await SaveClicked.InvokeAsync().ConfigureAwait(false);
     }
+
     private Task HandleCancelClick()
     {
         _isEditing = false;

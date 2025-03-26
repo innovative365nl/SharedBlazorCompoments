@@ -1,24 +1,28 @@
+#region
+
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Innovative.Blazor.Components.Attributes;
 using Innovative.Blazor.Components.Components.Grid;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
+
+#endregion
 
 namespace Innovative.Blazor.Components.Components.Dialog;
 
 public partial class DynamicDisplayView<TModel> : ComponentBase
 {
-   public DynamicDisplayView(IInnovativeStringLocalizerFactory localizerFactory)
+    private readonly IInnovativeStringLocalizer _localizer;
+
+    public DynamicDisplayView(IInnovativeStringLocalizerFactory localizerFactory)
     {
         var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIGridClass>();
         var resourceType = uiClassAttribute?.ResourceType ?? typeof(TModel);
         Debug.Assert(localizerFactory != null, nameof(localizerFactory) + " != null");
         _localizer = localizerFactory.Create(resourceType);
-
     }
-    private IInnovativeStringLocalizer _localizer;
+
     [Parameter] public TModel? Model { get; set; }
     [Parameter] public EventCallback<string> OnActionExecuted { get; set; }
     [CascadingParameter] private RightSideDialog<TModel>? ParentDialog { get; set; }
@@ -85,7 +89,7 @@ public partial class DynamicDisplayView<TModel> : ComponentBase
     }
 
     /// <summary>
-    /// Extracts component details from a property with UiFormViewAction attribute
+    ///     Extracts component details from a property with UiFormViewAction attribute
     /// </summary>
     /// <param name="propertyName">The name of the property to get action details from</param>
     /// <returns>A tuple with the Component type, Parameters dictionary, and Title</returns>
