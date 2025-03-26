@@ -11,7 +11,7 @@ using System.Reflection;
     
     public partial class DynamicFormView<TModel> : ComponentBase, IDynamicBaseComponent
     {
-        private readonly Dictionary<string, object> _formValues = new Dictionary<string, object>();
+        private readonly Dictionary<string, object?> _formValues = new Dictionary<string, object?>();
         private IInnovativeStringLocalizer _localizer = null!;
         [Parameter] public required TModel Model { get; set; }
         [Parameter] public EventCallback<TModel> OnSave { get; set; }
@@ -231,7 +231,7 @@ using System.Reflection;
             return null;
         }
 
-        private void SetValue(string propertyName, object value)
+        private void SetValue(string propertyName, object? value)
         {
             _formValues[key: propertyName] = value;
         }

@@ -6,24 +6,33 @@ using Innovative.Blazor.Components.Components.TrackInUrl;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using TestContext = Bunit.TestContext;
 
 namespace Innovative.Blazor.Components.Tests;
 
-  public class UrlStateTrackerComponentTests : TestContext
+  public class UrlStateTrackerTests : TestContext
     {
-        [Fact]
-        public void Component_Initializes_With_Default_Values_When_No_URL_Parameters()
+        public UrlStateTrackerTests()
         {
-            var navigationManager = Services.GetRequiredService<NavigationManager>() as FakeNavigationManager;
-            navigationManager?.NavigateTo("https://example.com/");
+            if(Services.GetRequiredService<NavigationManager>() is not FakeNavigationManager navigationManager)
+                throw new InvalidOperationException("NavigationManager is not FakeNavigationManager");
+            _navigationManager = navigationManager;
+        }
+
+        private FakeNavigationManager _navigationManager;
+        
+        [Fact]
+        public void ComponentInitializesWithDefaultValuesWhenNoUrlParameters()
+        {
+            _navigationManager.NavigateTo("https://example.com/");
             
-            var cut = RenderComponent<TestUrlStateTrackerComponent>();
+            var cut = RenderComponent<TestUrlStateTracker>();
             
             cut.MarkupMatches("<div>TestProperty: InitialValue, TestIntProperty: 42</div>");
         }
         
         [Fact]
-        public void Component_Reads_Values_From_URL_On_Initialization()
+        public void ComponentReadsValuesFromURLOnInitialization()
         {
             var state = new Dictionary<string, object>
             {
@@ -34,32 +43,34 @@ namespace Innovative.Blazor.Components.Tests;
             var json = JsonSerializer.Serialize(state);
             var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
             
-            var navigationManager = Services.GetRequiredService<NavigationManager>() as FakeNavigationManager;
-            navigationManager?.NavigateTo($"https://example.com/?dataset={base64}");
+            _navigationManager.NavigateTo($"https://example.com/?dataset={base64}");
             
-            var cut = RenderComponent<TestUrlStateTrackerComponent>();
+            var cut = RenderComponent<TestUrlStateTracker>();
             
             cut.MarkupMatches("<div>TestProperty: FromUrl, TestIntProperty: 99</div>");
         }
         
         [Fact]
-public void UpdateQueryStringParameter_PreservesExistingParameters()
+public void UpdateQueryStringParameterPreservesExistingParameters()
 {
     // Arrange
-    var navigationManager = Services.GetRequiredService<NavigationManager>() as FakeNavigationManager;
-    navigationManager?.NavigateTo("https://example.com/?existing=value&other=123");
+    _navigationManager.NavigateTo("https://example.com/?existing=value&other=123");
     
-    var cut = RenderComponent<TestUrlStateTrackerComponent>();
+    var cut = RenderComponent<TestUrlStateTracker>();
     
     // Act
     cut.Instance.UpdateTrackedProperty("NewValue");
     
     // Assert
-    var uri = new Uri(navigationManager?.Uri);
+    var uri = new Uri(_navigationManager.Uri);
     var query = QueryHelpers.ParseQuery(uri.Query);
     
     // Verify dataset parameter was added
     Assert.True(query.TryGetValue("dataset", out var base64Value));
+    if(string.IsNullOrEmpty(base64Value))
+    {
+        throw new InvalidOperationException("dataset parameter not found in URL");
+    }
     
     // Verify existing parameters were preserved
     Assert.True(query.TryGetValue("existing", out var existingValue));
@@ -69,13 +80,15 @@ public void UpdateQueryStringParameter_PreservesExistingParameters()
     Assert.Equal("123", otherValue);
     
     // Verify the tracked data was correctly encoded
-    var json = Encoding.UTF8.GetString(Convert.FromBase64String(base64Value));
+    
+    var json = Encoding.UTF8.GetString(Convert.FromBase64String(base64Value!));
+
     var state = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
-    Assert.Equal("NewValue", state["TestProperty"].GetString());
+    Assert.Equal("NewValue", state!["TestProperty"].GetString());
 }
 
 [Fact]
-public void UpdateQueryStringParameter_UpdatesExistingDatasetParameter()
+public void UpdateQueryStringParameterUpdatesExistingDatasetParameter()
 {
     // Arrange
     var initialState = new Dictionary<string, object>
@@ -87,16 +100,15 @@ public void UpdateQueryStringParameter_UpdatesExistingDatasetParameter()
     var json = JsonSerializer.Serialize(initialState);
     var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
     
-    var navigationManager = Services.GetRequiredService<NavigationManager>() as FakeNavigationManager;
-    navigationManager?.NavigateTo($"https://example.com/?dataset={base64}&other=param");
+    _navigationManager?.NavigateTo($"https://example.com/?dataset={base64}&other=param");
     
-    var cut = RenderComponent<TestUrlStateTrackerComponent>();
+    var cut = RenderComponent<TestUrlStateTracker>();
     
     // Act
     cut.Instance.UpdateIntProperty(100);
     
     // Assert
-    var uri = new Uri(navigationManager?.Uri);
+    var uri = new Uri(_navigationManager!.Uri);
     var query = QueryHelpers.ParseQuery(uri.Query);
     
     // Verify dataset parameter was updated
@@ -108,42 +120,49 @@ public void UpdateQueryStringParameter_UpdatesExistingDatasetParameter()
     Assert.Equal("param", otherValue);
     
     // Verify the dataset was correctly updated
-    var updatedJson = Encoding.UTF8.GetString(Convert.FromBase64String(updatedBase64));
+    var updatedJson = Encoding.UTF8.GetString(Convert.FromBase64String(updatedBase64!));
     var updatedState = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(updatedJson);
     
-    Assert.Equal("InitialValue", updatedState["TestProperty"].GetString());
+    Assert.Equal("InitialValue", updatedState!["TestProperty"].GetString());
     Assert.Equal(100, updatedState["TestIntProperty"].GetInt32());
 }
         
         [Fact]
-        public void Property_Change_Updates_URL()
+        public void PropertyChangeUpdatesUrl()
         {
             var navigationManager = Services.GetRequiredService<NavigationManager>() as FakeNavigationManager;
-            navigationManager?.NavigateTo("https://example.com/");
+            if(navigationManager == null)
+            {
+                throw new InvalidOperationException("NavigationManager is not FakeNavigationManager");
+            }
+            navigationManager.NavigateTo("https://example.com/");
             
-            var cut = RenderComponent<TestUrlStateTrackerComponent>();
+            var cut = RenderComponent<TestUrlStateTracker>();
             
             cut.Instance.UpdateTrackedProperty("UpdatedValue");
             
-            var uri = new Uri(navigationManager?.Uri);
+            var uri = new Uri(navigationManager.Uri);
             var query = QueryHelpers.ParseQuery(uri.Query);
             
             Assert.True(query.TryGetValue("dataset", out var base64Value));
+            if(string.IsNullOrEmpty(base64Value))
+            {
+                throw new InvalidOperationException("dataset parameter not found in URL");
+            }
             
-            var json = Encoding.UTF8.GetString(Convert.FromBase64String(base64Value));
+            var json = Encoding.UTF8.GetString(Convert.FromBase64String(base64Value!));
             var state = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
             
-            Assert.Equal("UpdatedValue", state["TestProperty"].GetString());
+            Assert.Equal("UpdatedValue", state!["TestProperty"].GetString());
             Assert.Equal(42, state["TestIntProperty"].GetInt32());
         }
         
         [Fact]
-        public void URL_Change_Updates_Properties()
+        public void UrlChangeUpdatesProperties()
         {
-            var navigationManager = Services.GetRequiredService<NavigationManager>() as FakeNavigationManager;
-            navigationManager?.NavigateTo("https://example.com/");
+            _navigationManager.NavigateTo("https://example.com/");
             
-            var cut = RenderComponent<TestUrlStateTrackerComponent>();
+            var cut = RenderComponent<TestUrlStateTracker>();
             
             cut.MarkupMatches("<div>TestProperty: InitialValue, TestIntProperty: 42</div>");
             
@@ -156,13 +175,13 @@ public void UpdateQueryStringParameter_UpdatesExistingDatasetParameter()
             var json = JsonSerializer.Serialize(state);
             var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
             
-            navigationManager?.NavigateTo($"https://example.com/?dataset={base64}");
+            _navigationManager?.NavigateTo($"https://example.com/?dataset={base64}");
             
             cut.MarkupMatches("<div>TestProperty: ChangedFromUrl, TestIntProperty: 123</div>");
         }
     }
-    
-  public class TestUrlStateTrackerComponent : UrlStateTrackerComponent
+
+internal sealed class TestUrlStateTracker : UrlStateTracker
   {
       [Parameter]
       [TrackInUrl]

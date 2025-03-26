@@ -9,7 +9,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace Innovative.Blazor.Components.Components.TrackInUrl;
 
-public abstract class UrlStateTrackerComponent : ComponentBase, IDisposable
+public abstract class UrlStateTracker : ComponentBase, IDisposable
 {
 
     private readonly Dictionary<PropertyInfo, object> _trackedProperties = new Dictionary<PropertyInfo, object>();

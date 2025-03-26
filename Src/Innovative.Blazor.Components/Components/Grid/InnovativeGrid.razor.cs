@@ -12,18 +12,24 @@ namespace Innovative.Blazor.Components.Components.Grid;
 public partial class InnovativeGrid<TItem> : ComponentBase
 {
     private bool _allowSorting;
-    private string _defaultSortField;
+    private string? _defaultSortField;
     private IInnovativeStringLocalizer _localizer;
     private ILogger<InnovativeGrid<TItem>> _logger;
 
     private Type _resourceType;
     private IList<TItem> _selectedItems = new List<TItem>();
-    public InnovativeGrid(ILogger<InnovativeGrid<TItem>> logger)
+    public InnovativeGrid(ILogger<InnovativeGrid<TItem>> logger, IInnovativeStringLocalizerFactory localizerFactory)
     {
+        LocalizerFactory = localizerFactory;
         _logger = logger;
+        var uiClassAttribute = typeof(TItem).GetCustomAttribute<UIGridClass>();
+        _allowSorting = uiClassAttribute?.AllowSorting ?? true;
+        _defaultSortField = uiClassAttribute?.DefaultSortField;
+        var resourceType = ResourceType ?? uiClassAttribute?.ResourceType ?? typeof(TItem);
+        _localizer = LocalizerFactory.Create(resourceType);
     }
 
-    [Inject] private IInnovativeStringLocalizerFactory LocalizerFactory { get; set; }
+    private  IInnovativeStringLocalizerFactory LocalizerFactory { get; init; }
 
     /// <summary>
     ///     Data to be displayed in the grid
@@ -111,31 +117,6 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         return Task.CompletedTask;
     }
 
-    protected override void OnInitialized()
-    {
-        var uiClassAttribute = typeof(TItem).GetCustomAttribute<UIGridClass>();
-        _allowSorting = uiClassAttribute?.AllowSorting ?? true;
-        _defaultSortField = uiClassAttribute?.DefaultSortField;
-
-
-        
-        
-        // Get resource type from the UiClass attribute or parameter
-        var resourceType = ResourceType ?? uiClassAttribute?.ResourceType ?? typeof(TItem);
-
-        // Create localizer for the appropriate resource type
-        _localizer = LocalizerFactory.Create(resourceType);
-        
-        // // Initialize localizer with resource type from attribute
-        // if (resourceType != null && Localizer != null)
-        // {
-        //     Localizer.SetResourceType(resourceType: resourceType);
-        // }
-
-        base.OnInitialized();
-    }
-
-
     private string GetColumnTitle(PropertyInfo property, UIGridField attribute)
     {
         if (_localizer == null || string.IsNullOrEmpty(value: attribute?.Name))
@@ -217,7 +198,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         return $"--max-height: 1162px; --min-height: {minHeight};";
     }
 
-    private RenderFragment RenderCustomComponent(PropertyInfo property, object context, UIGridField gridField)
+    private static RenderFragment RenderCustomComponent(PropertyInfo property, object context, UIGridField gridField)
     {
         return builder =>
         {

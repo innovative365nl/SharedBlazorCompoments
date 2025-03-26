@@ -8,7 +8,7 @@ using Radzen;
 
 namespace Innovative.Blazor.Components.Services;
 
-public class InnovativeDialogService(DialogService dialogService, IInnovativeStringLocalizerFactory localizerFactory)
+public class InnovativeDialogService(DialogService dialogService, IInnovativeStringLocalizerFactory localizerFactory): IDisposable
 {
 
     public async Task<T> OpenDynamicFormDialog<T>(T model, SideDialogOptions? options = null) where T : class
@@ -88,5 +88,10 @@ public class InnovativeDialogService(DialogService dialogService, IInnovativeStr
             _                          => "30vw"
         };
         return $"{size};";
+    }
+    
+    public void Dispose()
+    {
+        dialogService.Dispose();
     }
 }

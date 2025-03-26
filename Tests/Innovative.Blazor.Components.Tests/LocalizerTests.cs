@@ -6,15 +6,13 @@ using Moq;
 
 namespace Innovative.Blazor.Components.Tests.Localizer;
 
-public class DummyResource { }
-public class FallbackResource { }
 
 public class InnovativeStringLocalizerTests
 {
     [Fact]
-    public void Indexer_Uses_Fallback_When_Primary_NotFound()
+    public void IndexerUsesFallbackWhenPrimaryNotFound()
     {
-        var key = "TestKey";
+        const string key = "TestKey";
         var primaryLocalizedResult = new LocalizedString(key, string.Empty, resourceNotFound: true);
         var fallbackLocalizedResult = new LocalizedString(key, "Fallback value", resourceNotFound: false);
 
@@ -40,10 +38,10 @@ public class InnovativeStringLocalizerTests
     }
 
     [Fact]
-    public void Indexer_Uses_Primary_When_Found()
+    public void IndexerUsesPrimaryWhenFound()
     {
         // Arrange
-        var key = "TestKey";
+        const string key = "TestKey";
         var primaryLocalizedResult = new LocalizedString(key, "Primary value", resourceNotFound: false);
         var fallbackLocalizedResult = new LocalizedString(key, "Fallback value", resourceNotFound: false);
 
@@ -70,7 +68,7 @@ public class InnovativeStringLocalizerTests
     }
 
     [Fact]
-    public void GetAllStrings_Returns_Merged_Values_From_Primary_And_Fallback()
+    public void GetAllStringsReturnsMergedValuesFromPrimaryAndFallback()
     {
         var primaryStrings = new List<LocalizedString>
         {
@@ -109,9 +107,9 @@ public class InnovativeStringLocalizerTests
     }
     
        [Fact]
-        public void SetFallbackLocalizer_Updates_FallbackBehavior()
+        public void SetFallbackLocalizerUpdatesFallbackBehavior()
         {
-            var key = "TestKey";
+            const string key = "TestKey";
             var primaryResult = new LocalizedString(key, string.Empty, resourceNotFound: true);
             var fallbackResult = new LocalizedString(key, "Fallback value", resourceNotFound: false);
             
@@ -137,9 +135,9 @@ public class InnovativeStringLocalizerTests
         }
         
         [Fact]
-        public void SetResourceType_Updates_PrimaryLocalizer()
+        public void SetResourceTypeUpdatesPrimaryLocalizer()
         {
-            var key = "TestKey";
+            const string key = "TestKey";
             var originalResult = new LocalizedString(key, "Original primary value", resourceNotFound: false);
             var newResult = new LocalizedString(key, "New primary value", resourceNotFound: false);
             
@@ -163,8 +161,11 @@ public class InnovativeStringLocalizerTests
             var updatedResult = localizer[key];
             Assert.Equal("New primary value", updatedResult.Value);
         }
-        public class DummyResource { }
-        public class AlternateResource { }
+        private sealed class DummyResource { }
+        private sealed class AlternateResource { }
+    
+        private sealed  class FallbackResource { }
+
     }
 
 

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Innovative.Blazor.Components.Attributes;
 
 namespace Innovative.Blazor.Components.Components.Grid;
@@ -10,20 +11,20 @@ public class UIGridField : UIField
     {
         ShowByDefault = showByDefault;
     }
-
+    [ExcludeFromCodeCoverage]
     public UIGridField(Type componentType, bool showByDefault = true)
     {
         CustomComponentType = componentType;
         ShowByDefault = true;
     }
-
+    [ExcludeFromCodeCoverage]
     public UIGridField(Type componentType, params string[] parameters)
     {
         CustomComponentType = componentType;
         Parameters = parameters;
         ShowByDefault = true;
     }
-
+    [ExcludeFromCodeCoverage]
     public UIGridField(Type componentType, bool showByDefault = true, params string[] parameters)
     {
         CustomComponentType = componentType;
