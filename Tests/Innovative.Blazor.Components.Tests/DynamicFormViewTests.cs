@@ -246,6 +246,6 @@ public class DynamicFormViewTests : LocalizedTestBase
         {
             var method = typeof(DynamicFormView<T>).GetMethod("GetColumnWidthClass", 
                 BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-            return (string)method?.Invoke(component, new[] { columnGroup }) ?? string.Empty;
+            return (string)method!.Invoke(component, new[] { columnGroup})! ?? string.Empty;
         }
     }
