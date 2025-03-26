@@ -9,7 +9,7 @@ namespace Innovative.Blazor.Components.Components.Dialog;
 
 public partial class DynamicDisplayView<TModel> : ComponentBase
 {
-   public DynamicDisplayView(InnovativeStringLocalizerFactory localizerFactory)
+   public DynamicDisplayView(IInnovativeStringLocalizerFactory localizerFactory)
     {
         var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIGridClass>();
         var resourceType = uiClassAttribute?.ResourceType ?? typeof(TModel);

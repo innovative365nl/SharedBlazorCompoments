@@ -23,6 +23,7 @@ namespace Innovative.Blazor.Components.Tests.TestBase
             // Setup common mocks for localization
             LocalizerMock = new Mock<IInnovativeStringLocalizer>();
             LocalizerFactoryMock = new Mock<IInnovativeStringLocalizerFactory>();
+            
 
             // Setup localizer factory to return our localizer mock
             LocalizerFactoryMock

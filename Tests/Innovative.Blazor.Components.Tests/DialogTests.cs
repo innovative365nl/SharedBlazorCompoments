@@ -2,6 +2,7 @@ using System;
 using FluentAssertions;
 using Innovative.Blazor.Components.Components.Dialog;
 using Innovative.Blazor.Components.Enumerators;
+using Innovative.Blazor.Components.Localizer;
 using Innovative.Blazor.Components.Services;
 using Innovative.Blazor.Components.Tests.TestBase;
 using Innovative.Blazor.Components.Tests.TestHelpers;
@@ -165,14 +166,15 @@ public class DialogTests : LocalizedTestBase
         using var ctx = new TestContext();
         ctx.JSInterop.Mode = JSRuntimeMode.Loose;
         
-        // Register required services
-        ctx.Services.AddSingleton(_radzenDialogService);
-        ctx.Services.AddSingleton<InnovativeDialogService>();
-        ctx.Services.AddSingleton(LocalizerFactoryMock.Object);
-        ctx.Services.AddSingleton(LocalizerMock.Object);
+        // Register the base Microsoft string localizer factory
+        var mockStringLocalizerFactory = new Mock<IStringLocalizerFactory>();
+        ctx.Services.AddSingleton<IStringLocalizerFactory>(mockStringLocalizerFactory.Object);
+    
+        // Register custom localizer factory
+        ctx.Services.AddSingleton<IInnovativeStringLocalizerFactory>(sp =>
+            LocalizerFactoryMock.Object
+        );
         ctx.Services.AddRadzenComponents();
-        // Register necessary services, e\.g\.:
-        // ctx.Services.AddSingleton<IInnovativeStringLocalizerFactory, InnovativeStringLocalizerFactory>();
 
         var testModel = new TestDynamicFormModel
         {
@@ -207,51 +209,53 @@ public class DialogTests : LocalizedTestBase
     {
         using var ctx = new TestContext();
         ctx.JSInterop.Mode = JSRuntimeMode.Loose;
-        
-        // Register required services
+
+        // Register the base Microsoft string localizer factory
+        var mockStringLocalizerFactory = new Mock<IStringLocalizerFactory>();
+        ctx.Services.AddSingleton<IStringLocalizerFactory>(mockStringLocalizerFactory.Object);
+    
+        // Register custom localizer factory
+        ctx.Services.AddSingleton<IInnovativeStringLocalizerFactory>(sp =>
+            LocalizerFactoryMock.Object
+        );
+
+        // Register other required services
         ctx.Services.AddSingleton(_radzenDialogService);
         ctx.Services.AddSingleton(_dialogService);
-        ctx.Services.AddSingleton(LocalizerFactoryMock.Object);
         ctx.Services.AddSingleton(LocalizerMock.Object);
         ctx.Services.AddRadzenComponents();
-        // Register necessary services, e\.g\.:
-        // ctx.Services.AddSingleton<IInnovativeStringLocalizerFactory, InnovativeStringLocalizerFactory>();
 
+        // Rest of the test remains the same
         var clicked = false;
         var testModel = new TestDynamicFormModel
-            {
-                TestProperty = "TestProperty1",
-                CustomProperty = "CustomProperty1"
-            };
+        {
+            TestProperty = "TestProperty1",
+            CustomProperty = "CustomProperty1"
+        };
 
         testModel.TestAction += () =>
         {
             _testOutputHelper.WriteLine("TestAction clicked");
             clicked = true;
-            
         };
-        
-        // Render the right side dialog with DynamicDisplayView
+
+        // Render the component
         var cut = ctx.RenderComponent<RightSideDialog<TestDynamicFormModel>>(parameters =>
         {
-            parameters.Add(p => p.Model, new TestDynamicFormModel());
+            parameters.Add(p => p.Model, testModel);
             parameters.Add(p => p.ViewChildContent, builder =>
             {
                 builder.OpenComponent<DynamicDisplayView<TestDynamicFormModel>>(0);
-                builder.AddAttribute(1, "Model",  testModel);
+                builder.AddAttribute(1, "Model", testModel);
                 builder.CloseComponent();
             });
         });
 
-        // Verify the button text and click
         var button = cut.Find("button:contains('Test Action')");
         button.Click();
 
-        // Add any assertions related to the action performed
         clicked.Should().BeTrue();
-        
     }
-
     [Theory]
     [InlineData(SideDialogWidth.Normal, "40vw;")]
     [InlineData(SideDialogWidth.Large, "60vw;")]

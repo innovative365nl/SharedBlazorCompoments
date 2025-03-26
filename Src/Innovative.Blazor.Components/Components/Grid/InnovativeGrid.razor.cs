@@ -17,7 +17,9 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     private readonly IInnovativeStringLocalizer _localizer;
     private readonly ILogger<InnovativeGrid<TItem>> _logger;
 
-    private   IList<TItem> _selectedItems = null!;
+#pragma warning disable CA1859
+    private   IList<TItem> _selectedItems = new List<TItem>();
+#pragma warning restore CA1859
     public InnovativeGrid(ILogger<InnovativeGrid<TItem>> logger, IInnovativeStringLocalizerFactory localizerFactory)
     {
         LocalizerFactory = localizerFactory;
@@ -185,6 +187,8 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 
     private async Task OnSelectAsync(IEnumerable<TItem> items)
     {
+        if(_selectedItems == null)
+            _selectedItems = new List<TItem>();
         _selectedItems.Clear();
         foreach (var item in items)
         {
