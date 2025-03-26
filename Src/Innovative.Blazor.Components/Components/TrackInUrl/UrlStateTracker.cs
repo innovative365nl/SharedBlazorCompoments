@@ -11,8 +11,6 @@ namespace Innovative.Blazor.Components.Components.TrackInUrl;
 
 internal abstract class UrlStateTracker(NavigationManager navigationManager) : ComponentBase, IDisposable
 {
-    private readonly NavigationManager _navigationManager = navigationManager;
-
     private readonly Dictionary<PropertyInfo, object?> _trackedProperties = new ();
 
     private bool _isInitialized;
@@ -20,7 +18,7 @@ internal abstract class UrlStateTracker(NavigationManager navigationManager) : C
 
     public void Dispose()
     {
-        _navigationManager.LocationChanged -= HandleLocationChanged!;
+        navigationManager.LocationChanged -= HandleLocationChanged!;
     }
 
     protected override void OnInitialized()
@@ -37,7 +35,7 @@ internal abstract class UrlStateTracker(NavigationManager navigationManager) : C
             _trackedProperties[key: prop] = prop.GetValue(obj: this)!;
         }
 
-        _navigationManager.LocationChanged += HandleLocationChanged!;
+        navigationManager.LocationChanged += HandleLocationChanged!;
         ReadFromUrl();
 
         _isInitialized = true;
@@ -88,10 +86,10 @@ internal abstract class UrlStateTracker(NavigationManager navigationManager) : C
         var json = JsonSerializer.Serialize(value: updatedState);
         var base64 = Convert.ToBase64String(inArray: Encoding.UTF8.GetBytes(s: json));
 
-        var currentUri = _navigationManager.Uri;
+        var currentUri = navigationManager.Uri;
         var newUri = UpdateQueryStringParameter(url: currentUri, key: "dataset", value: base64);
 
-        _navigationManager.NavigateTo(uri: newUri, forceLoad: false);
+        navigationManager.NavigateTo(uri: newUri, forceLoad: false);
     }
 
     /// <summary>
@@ -102,7 +100,7 @@ internal abstract class UrlStateTracker(NavigationManager navigationManager) : C
         _isUpdatingFromUrl = true;
         try
         {
-            var uri = _navigationManager.ToAbsoluteUri(relativeUri: _navigationManager.Uri);
+            var uri = navigationManager.ToAbsoluteUri(relativeUri: navigationManager.Uri);
             var query = QueryHelpers.ParseQuery(queryString: uri.Query);
 
             if (query.TryGetValue(key: "dataset", value: out var base64Values))
