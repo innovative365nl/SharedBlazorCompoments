@@ -8,7 +8,7 @@
                 <RadzenDataGrid @ref="DataGrid"
                                 TItem="TItem"
                                 Data="@Data"
-                                @bind-Value="@SelectedItems"
+                                @bind-Value="@_selectedItems"
                                 AllowRowSelectOnRowClick="EnableRowSelection"
                                 AllowPaging="@(Data.Count() > 20)"
                                 ShowPagingSummary="true" PagingSummaryFormat="<strong>{2}</strong> items"

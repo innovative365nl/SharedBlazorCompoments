@@ -8,7 +8,7 @@ public sealed class UIFormClass(string title) : UIClass
     /// <summary>
     /// a Title for the form as a resource key
     /// </summary>
-    public string Title { get; set; } = title;
+    public string Title { get; } = title;
 
     public string[]? ColumnOrder { get; set; }
     public string[]? ColumnWidthNames { get; set; }

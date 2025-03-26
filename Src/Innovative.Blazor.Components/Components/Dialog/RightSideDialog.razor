@@ -8,7 +8,7 @@
         @if (ShowClose)
         {
             <button style="border: 0; cursor: pointer; background-color: transparent" id="rightSideDialogCloseButton"
-                    @onclick="@(args => DialogService.CloseSide())">
+                    @onclick="@(args => dialogService.CloseSide())">
                 <RadzenIcon Icon="arrow_back" IconColor="black"/>
             </button>
         }

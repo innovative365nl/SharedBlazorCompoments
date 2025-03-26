@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Reflection;
     using Innovative.Blazor.Components.Attributes;
     using Innovative.Blazor.Components.Components.Grid;
@@ -9,7 +10,7 @@ using System.Reflection;
     
     namespace Innovative.Blazor.Components.Components.Dialog;
     
-    public partial class DynamicFormView<TModel> : ComponentBase, IDynamicBaseComponent
+    public partial class DynamicFormView<TModel>(IInnovativeStringLocalizerFactory localizerFactory) : ComponentBase, IDynamicBaseComponent
     {
         private readonly Dictionary<string, object?> _formValues = new Dictionary<string, object?>();
         private IInnovativeStringLocalizer _localizer = null!;
@@ -18,10 +19,9 @@ using System.Reflection;
         [Parameter] public EventCallback OnCancel { get; set; }
         [CascadingParameter] public required RightSideDialog<TModel> ParentDialog { get; set; }
 
-        [Inject] private IInnovativeStringLocalizerFactory LocalizerFactory { get; set; }
+        private IReadOnlyCollection<PropertyInfo> UngroupedProperties { get; set; } = new List<PropertyInfo>();
 
-        protected List<PropertyInfo> UngroupedProperties { get; private set; } = new List<PropertyInfo>();
-        protected List<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; private set; } = new List<KeyValuePair<string, List<PropertyInfo>>>();
+        protected IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; private set; } = new List<KeyValuePair<string, List<PropertyInfo>>>();
 
         public async Task OnSubmitPressed()
         {
@@ -34,12 +34,12 @@ using System.Reflection;
                 }
             }
     
-            await OnSave.InvokeAsync();
+            await OnSave.InvokeAsync().ConfigureAwait(false);
         }
 
         public async Task OnCancelPressed()
         {
-            await OnCancel.InvokeAsync();
+            await OnCancel.InvokeAsync().ConfigureAwait(false);
         }
 
         protected string GetColumnWidthClass(string columnGroup)
@@ -70,7 +70,7 @@ using System.Reflection;
 
             var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
             var resourceType = uiClassAttribute?.ResourceType ?? typeof(TModel);
-            _localizer = LocalizerFactory.Create(resourceType);
+            _localizer = localizerFactory.Create(resourceType);
     
             base.OnInitialized();
         }
@@ -79,7 +79,7 @@ using System.Reflection;
         {
             if (Model != null)
             {
-                foreach (var prop in GetPropertiesWithUiFormField())
+                foreach (var prop in DynamicFormView<TModel>.GetPropertiesWithUiFormField())
                 {
                     _formValues[key: prop.Name] = prop.GetValue(obj: Model);
                 }
@@ -92,14 +92,14 @@ using System.Reflection;
 
         private void OrganizePropertiesByGroups()
         {
-            var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
+            var propertiesWithAttributes = DynamicFormView<TModel>.GetPropertiesWithUiFormField().ToList();
             var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
             var columnOrder = formClassAttribute?.ColumnOrder;
     
             var groupedProperties = propertiesWithAttributes
                 .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup != null)
-                .GroupBy(p => p.GetCustomAttribute<UIFormFieldAttribute>().ColumnGroup)
-                .ToDictionary(g => g.Key, g => g.ToList());
+                .GroupBy(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup)
+                .ToDictionary(g => g.Key!, g => g.ToList());
     
             UngroupedProperties = propertiesWithAttributes
                 .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup == null)
@@ -115,12 +115,12 @@ using System.Reflection;
                         groupedProperties[columnGroup]))
                     .Concat(groupedProperties
                         .Where(g => !columnOrder.Contains(g.Key))
-                        .Select(g => g))
+                        .Select(g => g)!)
                     .ToList();
             }
             else
             {
-                OrderedColumnGroups = groupedProperties.ToList();
+                OrderedColumnGroups = groupedProperties.ToList()!;
             }
         }
 
@@ -131,14 +131,14 @@ using System.Reflection;
     
             builder.OpenComponent<RadzenLabel>(0);
             builder.AddAttribute(1, "Component", propName);
-            builder.AddAttribute(2, "Text", _localizer.GetString(fieldAttribute.Name));
+            if (fieldAttribute?.Name != null) builder.AddAttribute(2, "Text", _localizer.GetString(fieldAttribute.Name));
             builder.CloseComponent();
     
             if (property.PropertyType == typeof(string))
             {
                 var value = GetStringValue(propertyName: propName);
     
-                if (fieldAttribute.UseWysiwyg)
+                if (fieldAttribute is { UseWysiwyg: true })
                 {
                     builder.OpenComponent<RadzenHtmlEditor>(3);
                     builder.AddAttribute(4, "Value", value);
@@ -146,7 +146,6 @@ using System.Reflection;
                         val => SetValue(propertyName: propName, value: val)));
                     builder.AddAttribute(6, "Style", "height: 250px;");
                     builder.AddAttribute(7, "Name", propName);
-                    builder.CloseComponent();
                 }
                 else
                 {
@@ -155,7 +154,6 @@ using System.Reflection;
                     builder.AddAttribute(10, "ValueChanged", EventCallback.Factory.Create<string>(this,
                         val => SetValue(propertyName: propName, value: val)));
                     builder.AddAttribute(11, "Name", propName);
-                    builder.CloseComponent();
                 }
             }
             else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(int?))
@@ -169,7 +167,6 @@ using System.Reflection;
                     val => SetValue(propertyName: propName, value: val)));
                 builder.AddAttribute(15, "Name", propName);
                 builder.AddAttribute(16, "ReadOnly", readOnly);
-                builder.CloseComponent();
             }
             else if (property.PropertyType == typeof(bool) || property.PropertyType == typeof(bool?))
             {
@@ -180,7 +177,6 @@ using System.Reflection;
                 builder.AddAttribute(19, "ValueChanged", EventCallback.Factory.Create<bool?>(this,
                     val => SetValue(propertyName: propName, value: val)));
                 builder.AddAttribute(20, "Name", propName);
-                builder.CloseComponent();
             }
             else if (property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?))
             {
@@ -191,24 +187,24 @@ using System.Reflection;
                 builder.AddAttribute(23, "ValueChanged", EventCallback.Factory.Create<DateTime?>(this,
                     val => SetValue(propertyName: propName, value: val)));
                 builder.AddAttribute(24, "Name", propName);
-                builder.CloseComponent();
             }
+            builder.CloseComponent();
         };
 
         private string GetStringValue(string propertyName)
         {
             if (_formValues.TryGetValue(key: propertyName, value: out var value))
             {
-                return value?.ToString();
+                return value?.ToString() ?? string.Empty;
             }
-            return null;
+            return null!;
         }
 
         private int? GetIntValue(string propertyName)
         {
             if (_formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
             {
-                return Convert.ToInt32(value: value);
+                return Convert.ToInt32(value: value, CultureInfo.InvariantCulture);
             }
             return null;
         }
@@ -217,7 +213,7 @@ using System.Reflection;
         {
             if (_formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
             {
-                return Convert.ToBoolean(value: value);
+                return Convert.ToBoolean(value: value, CultureInfo.InvariantCulture);
             }
             return null;
         }
@@ -226,7 +222,7 @@ using System.Reflection;
         {
             if (_formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
             {
-                return Convert.ToDateTime(value: value);
+                return Convert.ToDateTime(value: value, CultureInfo.InvariantCulture);
             }
             return null;
         }
@@ -236,7 +232,7 @@ using System.Reflection;
             _formValues[key: propertyName] = value;
         }
 
-        private PropertyInfo[] GetPropertiesWithUiFormField()
+        private static PropertyInfo[] GetPropertiesWithUiFormField()
         {
             return typeof(TModel).GetProperties()
                 .Where(predicate: p => p.GetCustomAttribute<UIFormFieldAttribute>() != null)

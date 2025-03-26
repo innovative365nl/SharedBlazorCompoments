@@ -4,7 +4,7 @@ using Innovative.Blazor.Components.Attributes;
 namespace Innovative.Blazor.Components.Components.Grid;
 
 [AttributeUsage(validOn: AttributeTargets.Property)]
-public class UIGridField : UIField
+public sealed class UIGridField : UIField
 {
 
     public UIGridField(bool showByDefault = true)
@@ -17,24 +17,11 @@ public class UIGridField : UIField
         CustomComponentType = componentType;
         ShowByDefault = true;
     }
-    [ExcludeFromCodeCoverage]
-    public UIGridField(Type componentType, params string[] parameters)
-    {
-        CustomComponentType = componentType;
-        Parameters = parameters;
-        ShowByDefault = true;
-    }
-    [ExcludeFromCodeCoverage]
-    public UIGridField(Type componentType, bool showByDefault = true, params string[] parameters)
-    {
-        CustomComponentType = componentType;
-        Parameters = parameters;
-        ShowByDefault = true;
-    }
-    public bool ShowByDefault { get; set; } = true;
-    public bool IsSticky { get; set; } = false;
+    public bool ShowByDefault { get;  }
+    public bool IsSticky { get; set; } 
     public Type? CustomComponentType { get; set; }
     public bool Sortable { get; set; }
     public bool? Filterable { get; set; }
-    public string[]? Parameters { get; set; }
+    public string[]? Parameters { get;  set; }
+    public Type? ComponentType { get; internal set; }
 }

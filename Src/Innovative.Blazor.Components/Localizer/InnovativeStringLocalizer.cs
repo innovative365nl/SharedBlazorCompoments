@@ -43,8 +43,7 @@ internal class InnovativeStringLocalizer<T> : IInnovativeStringLocalizer<T>
 
     public void SetResourceType(Type resourceType)
     {
-        if (resourceType == null)
-            throw new ArgumentNullException(paramName: nameof(resourceType));
+        ArgumentNullException.ThrowIfNull(resourceType);
 
         PrimaryLocalizer = _factory.Create(resourceSource: resourceType);
     }

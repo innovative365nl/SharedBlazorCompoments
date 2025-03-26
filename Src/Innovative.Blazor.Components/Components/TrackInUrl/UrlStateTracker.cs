@@ -9,18 +9,18 @@ using Microsoft.Extensions.Primitives;
 
 namespace Innovative.Blazor.Components.Components.TrackInUrl;
 
-public abstract class UrlStateTracker : ComponentBase, IDisposable
+internal abstract class UrlStateTracker(NavigationManager navigationManager) : ComponentBase, IDisposable
 {
+    private readonly NavigationManager _navigationManager = navigationManager;
 
-    private readonly Dictionary<PropertyInfo, object> _trackedProperties = new Dictionary<PropertyInfo, object>();
+    private readonly Dictionary<PropertyInfo, object?> _trackedProperties = new ();
 
     private bool _isInitialized;
     private bool _isUpdatingFromUrl;
-    [Inject] private NavigationManager? NavigationManager { get; set; }
 
     public void Dispose()
     {
-        if (NavigationManager != null) NavigationManager.LocationChanged -= HandleLocationChanged!;
+        _navigationManager.LocationChanged -= HandleLocationChanged!;
     }
 
     protected override void OnInitialized()
@@ -34,10 +34,10 @@ public abstract class UrlStateTracker : ComponentBase, IDisposable
 
         foreach (var prop in trackedProps)
         {
-            _trackedProperties[key: prop] = prop.GetValue(obj: this);
+            _trackedProperties[key: prop] = prop.GetValue(obj: this)!;
         }
 
-        if (NavigationManager != null) NavigationManager.LocationChanged += HandleLocationChanged!;
+        _navigationManager.LocationChanged += HandleLocationChanged!;
         ReadFromUrl();
 
         _isInitialized = true;
@@ -65,7 +65,7 @@ public abstract class UrlStateTracker : ComponentBase, IDisposable
     private void UpdateUrlIfNeeded()
     {
         var anyChange = false;
-        var updatedState = new Dictionary<string, object>();
+        var updatedState = new Dictionary<string, object?>();
 
         foreach (var kvp in _trackedProperties)
         {
@@ -88,10 +88,10 @@ public abstract class UrlStateTracker : ComponentBase, IDisposable
         var json = JsonSerializer.Serialize(value: updatedState);
         var base64 = Convert.ToBase64String(inArray: Encoding.UTF8.GetBytes(s: json));
 
-        var currentUri = NavigationManager.Uri;
+        var currentUri = _navigationManager.Uri;
         var newUri = UpdateQueryStringParameter(url: currentUri, key: "dataset", value: base64);
 
-        NavigationManager.NavigateTo(uri: newUri, forceLoad: false);
+        _navigationManager.NavigateTo(uri: newUri, forceLoad: false);
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ public abstract class UrlStateTracker : ComponentBase, IDisposable
         _isUpdatingFromUrl = true;
         try
         {
-            var uri = NavigationManager.ToAbsoluteUri(relativeUri: NavigationManager.Uri);
+            var uri = _navigationManager.ToAbsoluteUri(relativeUri: _navigationManager.Uri);
             var query = QueryHelpers.ParseQuery(queryString: uri.Query);
 
             if (query.TryGetValue(key: "dataset", value: out var base64Values))
@@ -126,7 +126,9 @@ public abstract class UrlStateTracker : ComponentBase, IDisposable
                 }
             }
         }
+#pragma warning disable CA1031
         catch (Exception ex)
+#pragma warning restore CA1031
         {
             Console.WriteLine(value: $"Error reading state from URL: {ex.Message}");
         }

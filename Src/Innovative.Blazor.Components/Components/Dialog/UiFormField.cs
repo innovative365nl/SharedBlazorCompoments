@@ -3,7 +3,7 @@ using Innovative.Blazor.Components.Attributes;
 namespace Innovative.Blazor.Components.Components.Dialog;
 
 [AttributeUsage(validOn: AttributeTargets.Property)]
-public class UIFormFieldAttribute : UIField
+public sealed class UIFormFieldAttribute : UIField
 {
     public string? ColumnGroup { get; set; }
     public bool UseWysiwyg { get; set; }

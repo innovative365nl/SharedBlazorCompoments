@@ -169,7 +169,7 @@ public class GridTests : LocalizedTestBase
         await cut.InvokeAsync(async () =>
         {
             var gridInstance = cut.Instance;
-            gridInstance.SelectedItems = new List<TestModel> { testData.First() };
+            await gridInstance.SetSelectedItemsAsync( new List<TestModel> { testData.First() }).ConfigureAwait(false);
             await gridInstance.ReloadAsync().ConfigureAwait(false);
 
             Single(selectedItems);
@@ -188,10 +188,10 @@ public class GridTests : LocalizedTestBase
         var cut = RenderGridComponent(testData, enableRowSelection: true);
 
         // Act & Assert
-        await cut.InvokeAsync(() =>
+        await cut.InvokeAsync(async () =>
         {
             var gridInstance = cut.Instance;
-            gridInstance.SelectedItems = new List<TestModel> { testData.First() };
+            await gridInstance.SetSelectedItemsAsync( new List<TestModel> { testData.First() }).ConfigureAwait(false);
 
             gridInstance.ClearSelection();
 

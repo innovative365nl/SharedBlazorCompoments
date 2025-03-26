@@ -6,17 +6,17 @@
 <RadzenStack Orientation="Orientation.Vertical" Gap="1rem">
     <RadzenStack Orientation="Orientation.Horizontal" Gap="1rem" JustifyContent="JustifyContent.Start" Class="mb-2">
         @{
-            var actionProperties = GetPropertiesWithViewAction().OrderBy(keySelector: p => p.GetCustomAttribute<UIFormViewAction>().Order).ToList();
+            var actionProperties = GetPropertiesWithViewAction().OrderBy(keySelector: p => p.GetCustomAttribute<UIFormViewAction>()!.Order).ToList();
 
             if (actionProperties.Count <= 2)
             {
                 foreach (var property in actionProperties)
                 {
                     var actionAttribute = property.GetCustomAttribute<UIFormViewAction>();
-                    var actionName = actionAttribute.Name ?? property.Name;
+                    var actionName = actionAttribute?.Name ?? property.Name;
                     var translatedActionName = _localizer.GetString(actionName);
 
-                    <RadzenButton Text="@translatedActionName" Click="@(() => HandleActionProperty(property: property, actionAttribute: actionAttribute))"
+                    <RadzenButton Text="@translatedActionName" Click="@(() => HandleActionProperty(property: property, actionAttribute: actionAttribute!))"
                                   ButtonStyle="ButtonStyle.Primary"/>
                 }
             }
@@ -24,20 +24,20 @@
             {
                 var primaryProperty = actionProperties.First();
                 var primaryAttribute = primaryProperty.GetCustomAttribute<UIFormViewAction>();
-                var primaryName = primaryAttribute.Name ?? primaryProperty.Name;
+                var primaryName = primaryAttribute?.Name ?? primaryProperty.Name;
                 var translatedPrimaryName = _localizer.GetString(primaryName);
 
                 <RadzenSplitButton Text="@translatedPrimaryName"
-                                   Click="@(() => HandleActionProperty(property: primaryProperty, actionAttribute: primaryAttribute))"
+                                   Click="@(() => HandleActionProperty(property: primaryProperty, actionAttribute: primaryAttribute!))"
                                    ButtonStyle="ButtonStyle.Primary">
                     @foreach (var property in actionProperties.Skip(count: 1))
                     {
                         var actionAttribute = property.GetCustomAttribute<UIFormViewAction>();
-                        var actionName = actionAttribute.Name ?? property.Name;
+                        var actionName = actionAttribute?.Name ?? property.Name;
                         var translatedActionName = _localizer.GetString(actionName);
 
                         <RadzenSplitButtonItem Text="@translatedActionName"
-                                               Click="@(() => HandleActionProperty(property: property, actionAttribute: actionAttribute))"/>
+                                               Click="@(() => HandleActionProperty(property: property, actionAttribute: actionAttribute!))"/>
                     }
                 </RadzenSplitButton>
             }
@@ -50,14 +50,14 @@
         var value = property.GetValue(obj: Model);
 
         <RadzenStack Orientation="Orientation.Vertical" Gap="0.25rem">
-            <RadzenText TextStyle="TextStyle.Subtitle2">@_localizer.GetString(fieldAttribute.Name)</RadzenText>
-            @if (fieldAttribute.ViewComponent != null)
+            <RadzenText TextStyle="TextStyle.Subtitle2">@_localizer.GetString(fieldAttribute!.Name!)</RadzenText>
+            @if (fieldAttribute?.ViewComponent != null)
             {
                 @RenderViewComponent( value: value, attribute: fieldAttribute)
             }
-            else if (fieldAttribute.UseWysiwyg && property.PropertyType == typeof(string) && value != null)
+            else if (fieldAttribute!.UseWysiwyg && property.PropertyType == typeof(string) && value != null)
             {
-                <div class="html-content">@((MarkupString) value.ToString())</div>
+                <div class="html-content">@((MarkupString) (value.ToString() ?? string.Empty))</div>
             }
             else
             {

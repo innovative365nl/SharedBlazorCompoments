@@ -174,8 +174,10 @@ public class DialogTests : LocalizedTestBase
         // Register necessary services, e\.g\.:
         // ctx.Services.AddSingleton<IInnovativeStringLocalizerFactory, InnovativeStringLocalizerFactory>();
 
-        var testModel = new TestDynamicFormModel();
-        testModel.TestProperty = "TestProperty";
+        var testModel = new TestDynamicFormModel
+        {
+            TestProperty = "TestProperty"
+        };
 
         var cut = ctx.RenderComponent<RightSideDialog<TestDynamicFormModel>>(parameters =>
         {

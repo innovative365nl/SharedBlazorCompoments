@@ -3,31 +3,28 @@ using Radzen;
 
 namespace Innovative.Blazor.Components.Components.Dialog;
 
-public partial class RightSideDialog<TModel> : ComponentBase
+public partial class RightSideDialog<TModel>(DialogService dialogService) : ComponentBase
 {
-
-    private IDynamicBaseComponent _formComponent;
+    private IDynamicBaseComponent? _formComponent;
     private bool _isCustomDialog;
 
-
     private bool _isEditing;
-    [Inject] private DialogService DialogService { get; set; }
 
     [Parameter] public bool ShowClose { get; set; } = true;
     [Parameter] public bool ShowEdit { get; set; } = true;
 
     [Parameter] public EventCallback SaveClicked { get; set; }
-    [Parameter] public SideDialogOptions Options { get; set; }
-    [Parameter] public RenderFragment TitleBarContent { get; set; }
-    [Parameter] public RenderFragment BottomBarContent { get; set; }
-    [Parameter] public RenderFragment ViewChildContent { get; set; }
+    [Parameter] public SideDialogOptions? Options { get; set; }
+    [Parameter] public RenderFragment? TitleBarContent { get; set; }
+    [Parameter] public RenderFragment? BottomBarContent { get; set; }
+    [Parameter] public RenderFragment? ViewChildContent { get; set; }
 
-    [Parameter] public RenderFragment ActionChildContent { get; set; }
-    [Parameter] public RenderFragment EditChildContent { get; set; }
-    [Parameter] public TModel Model { get; set; }
+    [Parameter] public RenderFragment? ActionChildContent { get; set; }
+    [Parameter] public RenderFragment? EditChildContent { get; set; }
+    [Parameter] public TModel? Model { get; set; }
 
-    [Parameter] public string Title { get; set; }
-    public object ComponentInstance { get; private set; }
+    [Parameter] public string? Title { get; set; }
+    public object? ComponentInstance { get; private set; }
 
     public void SetFormComponent(IDynamicBaseComponent formComponent)
     {
@@ -45,31 +42,26 @@ public partial class RightSideDialog<TModel> : ComponentBase
         StateHasChanged();
     }
 
-    private Task HanldeCloseClick()
+    private Task HandleCloseClick()
     {
-        DialogService.CloseSide();
+        dialogService.CloseSide();
         return Task.CompletedTask;
     }
 
     private async Task HandleSaveClick()
     {
-        if (_formComponent != null)
-        {
-            await _formComponent.OnSubmitPressed();
-        }
+        if (_formComponent != null) await _formComponent.OnSubmitPressed().ConfigureAwait(false);
         _isCustomDialog = false;
         _isEditing = false;
 
 
-        await SaveClicked.InvokeAsync();
+        await SaveClicked.InvokeAsync().ConfigureAwait(false);
     }
-    private async Task HandleCancelClick()
+    private Task HandleCancelClick()
     {
-        if (_formComponent != null)
-        {
-            _isEditing = false;
-            _isCustomDialog = false;
-            ActionChildContent = null;
-        }
+        _isEditing = false;
+        _isCustomDialog = false;
+        ActionChildContent = null;
+        return Task.CompletedTask;
     }
 }

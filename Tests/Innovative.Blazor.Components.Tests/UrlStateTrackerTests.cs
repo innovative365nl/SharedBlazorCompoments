@@ -181,8 +181,8 @@ public void UpdateQueryStringParameterUpdatesExistingDatasetParameter()
         }
     }
 
-internal sealed class TestUrlStateTracker : UrlStateTracker
-  {
+internal sealed class TestUrlStateTracker(NavigationManager navigationManager) : UrlStateTracker(navigationManager)
+{
       [Parameter]
       [TrackInUrl]
       public string TestProperty { get; set; } = "InitialValue";

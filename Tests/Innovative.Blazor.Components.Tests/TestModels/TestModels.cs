@@ -14,11 +14,11 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     /// </summary>
     public class TestModel
     {
-        [UIGridField(ShowByDefault = true, Sortable = true)]
+        [UIGridField(showByDefault:  true, Sortable = true)]
         public string? TestProperty { get; set; }
 
         [UIGridField(
-            ShowByDefault = true,
+            showByDefault:  true,
             CustomComponentType = typeof(TestCustomComponent),
             Parameters = new[] { "CustomParam:test" })]
         public string? CustomProperty { get; set; }
@@ -29,7 +29,7 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     /// </summary>
     public class TestModelWithMixedAttributes
     {
-        [UIGridField(ShowByDefault = true)]
+        [UIGridField(showByDefault:  true)]
         public string? PropertyWithAttribute { get; set; }
 
         public string? PropertyWithoutAttribute { get; set; }
@@ -41,10 +41,10 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     [UIGridClass(AllowSorting = false, DefaultSortField = "TestProperty", ResourceType = typeof(TestResources))]
     public class TestModelWithGridClass
     {
-        [UIGridField(ShowByDefault = true, Sortable = true)]
+        [UIGridField(showByDefault: true, Sortable = true)]
         public string? TestProperty { get; set; }
 
-        [UIGridField(ShowByDefault = true)]
+        [UIGridField(showByDefault: true)]
         public string? AnotherProperty { get; set; }
     }
 
@@ -61,15 +61,6 @@ namespace Innovative.Blazor.Components.Tests.TestModels
 
         [UIFormViewAction(Name = "Test Action")]
         public Action? TestAction { get; set; }
-    }
-
-    /// <summary>
-    /// Test model with specific title for form testing.
-    /// </summary>
-    [UIFormClass(title: "TestFormTitle", ResourceType = typeof(TestResourcesClass))]
-    public class TestFormModelWithAttribute
-    {
-        public string? Name { get; set; }
     }
 
     /// <summary>
