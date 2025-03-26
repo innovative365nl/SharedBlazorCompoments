@@ -121,16 +121,18 @@ public class DialogTests : LocalizedTestBase
     {
         // Brief explanation: This test verifies that the edit button switches
         // the dialog to editing mode and renders the EditChildContent.
+        var customDialogServiceMock = new Mock<ICustomDialogService>();
 
         using var ctx = new TestContext();
         ctx.JSInterop.Mode = JSRuntimeMode.Loose;
 
         // var dialogService = new DialogService(navigationManager, jsRuntimeMock.Object);
         ctx.Services.AddSingleton(_dialogService);
-        ctx.Services.AddSingleton<InnovativeDialogService>(
-        );
+        ctx.Services.AddSingleton<InnovativeDialogService>();
+        ctx.Services.AddSingleton(customDialogServiceMock.Object);
         ctx.Services.AddSingleton(LocalizerFactoryMock.Object);
         ctx.Services.AddSingleton(LocalizerMock.Object);
+        
         ctx.Services.AddRadzenComponents();
 
         // Render the component
@@ -166,11 +168,13 @@ public class DialogTests : LocalizedTestBase
     {
         using var ctx = new TestContext();
         ctx.JSInterop.Mode = JSRuntimeMode.Loose;
+        
+        var customDialogServiceMock = new Mock<ICustomDialogService>();
 
         // Register the base Microsoft string localizer factory
         var mockStringLocalizerFactory = new Mock<IStringLocalizerFactory>();
         ctx.Services.AddSingleton<IStringLocalizerFactory>(mockStringLocalizerFactory.Object);
-
+        ctx.Services.AddSingleton(customDialogServiceMock.Object);
         // Register custom localizer factory
         ctx.Services.AddSingleton<IInnovativeStringLocalizerFactory>(sp =>
             LocalizerFactoryMock.Object
@@ -208,6 +212,7 @@ public class DialogTests : LocalizedTestBase
     [Fact]
     public void ShouldFindTestActionButtonAndClickIt()
     {
+        var customDialogServiceMock = new Mock<ICustomDialogService>();
         using var ctx = new TestContext();
         ctx.JSInterop.Mode = JSRuntimeMode.Loose;
 
@@ -224,6 +229,7 @@ public class DialogTests : LocalizedTestBase
         ctx.Services.AddSingleton(_radzenDialogService);
         ctx.Services.AddSingleton(_dialogService);
         ctx.Services.AddSingleton(LocalizerMock.Object);
+        ctx.Services.AddSingleton(customDialogServiceMock.Object);
         ctx.Services.AddRadzenComponents();
 
         // Rest of the test remains the same
