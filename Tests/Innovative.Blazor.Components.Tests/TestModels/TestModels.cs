@@ -7,18 +7,20 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     /// <summary>
     /// Resource class used for tests.
     /// </summary>
-    public class TestResources { }
+    public class TestResources
+    {
+    }
 
     /// <summary>
     /// Standard test model with UIGridField attributes.
     /// </summary>
     public class TestModel
     {
-        [UIGridField(showByDefault:  true, Sortable = true)]
+        [UIGridField(showByDefault: true, Sortable = true)]
         public string? TestProperty { get; set; }
 
         [UIGridField(
-            showByDefault:  true,
+            showByDefault: true,
             CustomComponentType = typeof(TestCustomComponent),
             Parameters = new[] { "CustomParam:test" })]
         public string? CustomProperty { get; set; }
@@ -29,8 +31,7 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     /// </summary>
     public class TestModelWithMixedAttributes
     {
-        [UIGridField(showByDefault:  true)]
-        public string? PropertyWithAttribute { get; set; }
+        [UIGridField(showByDefault: true)] public string? PropertyWithAttribute { get; set; }
 
         public string? PropertyWithoutAttribute { get; set; }
     }
@@ -44,8 +45,7 @@ namespace Innovative.Blazor.Components.Tests.TestModels
         [UIGridField(showByDefault: true, Sortable = true)]
         public string? TestProperty { get; set; }
 
-        [UIGridField(showByDefault: true)]
-        public string? AnotherProperty { get; set; }
+        [UIGridField(showByDefault: true)] public string? AnotherProperty { get; set; }
     }
 
     /// <summary>
@@ -54,8 +54,7 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     [UIFormClass(title: "Test Form", ResourceType = typeof(TestResources))]
     public class TestDynamicFormModel
     {
-        [UIFormField(Name = "Test Property")]
-        public string? TestProperty { get; set; }
+        [UIFormField(Name = "Test Property")] public string? TestProperty { get; set; }
 
         public string? CustomProperty { get; set; }
 
@@ -66,5 +65,7 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     /// <summary>
     /// Resource class for specific form testing.
     /// </summary>
-    public class TestResourcesClass { }
+    public class TestResourcesClass
+    {
+    }
 }

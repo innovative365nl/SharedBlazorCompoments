@@ -68,7 +68,7 @@ public class GridTests : LocalizedTestBase
     {
         // Arrange & Act
         var cut = RenderGridComponent(new List<TestModel>());
-        
+
         // Assert
         var content = cut.Find("p").TextContent;
         cut.Find("p").TextContent.Should().Contain("No records to\n                            display.");
@@ -87,7 +87,7 @@ public class GridTests : LocalizedTestBase
         var cut = RenderGridComponent(testData, isLoading: true);
 
         // Assert
-        Contains("""<circle class="rz-progressbar-circular-background" r="15.91549" fill="none"></circle>""", 
+        Contains("""<circle class="rz-progressbar-circular-background" r="15.91549" fill="none"></circle>""",
             cut.Markup, StringComparison.Ordinal);
     }
 
@@ -169,7 +169,7 @@ public class GridTests : LocalizedTestBase
         await cut.InvokeAsync(async () =>
         {
             var gridInstance = cut.Instance;
-            await gridInstance.SetSelectedItemsAsync( new List<TestModel> { testData.First() }).ConfigureAwait(false);
+            await gridInstance.SetSelectedItemsAsync(new List<TestModel> { testData.First() }).ConfigureAwait(false);
             await gridInstance.ReloadAsync().ConfigureAwait(false);
 
             Single(selectedItems);
@@ -191,7 +191,7 @@ public class GridTests : LocalizedTestBase
         await cut.InvokeAsync(async () =>
         {
             var gridInstance = cut.Instance;
-            await gridInstance.SetSelectedItemsAsync( new List<TestModel> { testData.First() }).ConfigureAwait(false);
+            await gridInstance.SetSelectedItemsAsync(new List<TestModel> { testData.First() }).ConfigureAwait(false);
 
             gridInstance.ClearSelection();
 
@@ -322,10 +322,7 @@ public class GridTests : LocalizedTestBase
         _loggerMock.Reset();
 
         // Act
-        await cut.InvokeAsync(async () =>
-        {
-            await cut.Instance.ClearFilter().ConfigureAwait(false);
-        });
+        await cut.InvokeAsync(async () => { await cut.Instance.ClearFilter().ConfigureAwait(false); });
 
         // Assert - No warnings should be logged
         _loggerMock.Verify(
@@ -351,13 +348,13 @@ public class GridTests : LocalizedTestBase
         // Arrange
         var testData = new List<TestModelWithMixedAttributes>
         {
-            new TestModelWithMixedAttributes 
-            { 
-                PropertyWithAttribute = "WithAttribute", 
-                PropertyWithoutAttribute = "NoAttribute" 
+            new TestModelWithMixedAttributes
+            {
+                PropertyWithAttribute = "WithAttribute",
+                PropertyWithoutAttribute = "NoAttribute"
             }
         };
-        
+
         // Act
         var cut = RenderComponent<InnovativeGrid<TestModelWithMixedAttributes>>(parameters => parameters
             .Add(p => p.Data, testData)
@@ -423,7 +420,7 @@ public class GridTests : LocalizedTestBase
         var testData = GetTestData();
         var testKey = "TestKey";
         LocalizedString testValue = new LocalizedString(testKey, "Test Value");
-        
+
         LocalizerMock.Setup(l => l[testKey]).Returns(testValue);
 
         // Act
@@ -464,21 +461,21 @@ public class GridTests : LocalizedTestBase
         return RenderComponent<InnovativeGrid<TestModel>>(parameters =>
         {
             parameters.Add(p => p.Data, data);
-            
+
             if (title != null)
                 parameters.Add(p => p.Title, title);
-                
+
             if (isLoading)
                 parameters.Add(p => p.IsLoading, true);
-                
+
             if (enableRowSelection)
                 parameters.Add(p => p.EnableRowSelection, true);
-                
+
             parameters.Add(p => p.SelectionMode, selectionMode);
-            
+
             if (onSelectionChanged != null)
                 parameters.Add<IEnumerable<TestModel>>(p => p.OnSelectionChanged, onSelectionChanged);
-                
+
             parameters.Add(p => p.MinHeightOption, minHeightOption);
         });
     }
@@ -491,11 +488,9 @@ public class GridTests : LocalizedTestBase
 /// </summary>
 internal sealed class TestCustomComponent : ComponentBase
 {
-    [Parameter]
-    public string? Value { get; set; }
+    [Parameter] public string? Value { get; set; }
 
-    [Parameter]
-    public string? CustomParam { get; set; }
+    [Parameter] public string? CustomParam { get; set; }
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
@@ -505,4 +500,3 @@ internal sealed class TestCustomComponent : ComponentBase
         builder.CloseElement();
     }
 }
-

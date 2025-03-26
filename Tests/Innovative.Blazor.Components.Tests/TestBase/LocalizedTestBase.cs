@@ -12,18 +12,12 @@ namespace Innovative.Blazor.Components.Tests.TestBase
     /// </summary>
     public abstract class LocalizedTestBase : TestContext
     {
-        protected Mock<IInnovativeStringLocalizerFactory> LocalizerFactoryMock { get; set; }
-        protected  Mock<IInnovativeStringLocalizer> LocalizerMock {
-            get;
-            set;
-        }
-
         protected LocalizedTestBase()
         {
             // Setup common mocks for localization
             LocalizerMock = new Mock<IInnovativeStringLocalizer>();
             LocalizerFactoryMock = new Mock<IInnovativeStringLocalizerFactory>();
-            
+
 
             // Setup localizer factory to return our localizer mock
             LocalizerFactoryMock
@@ -39,6 +33,10 @@ namespace Innovative.Blazor.Components.Tests.TestBase
             Services.AddSingleton(LocalizerFactoryMock.Object);
             Services.AddSingleton(LocalizerMock.Object);
         }
+
+        protected Mock<IInnovativeStringLocalizerFactory> LocalizerFactoryMock { get; set; }
+
+        protected Mock<IInnovativeStringLocalizer> LocalizerMock { get; set; }
 
         /// <summary>
         /// Configure the localizer mock to return a specific value for a key.

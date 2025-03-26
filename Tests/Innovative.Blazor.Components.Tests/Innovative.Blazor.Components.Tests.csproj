@@ -15,9 +15,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="bunit" Version="1.38.5" />
-        <PackageReference Include="FluentAssertions" Version="8.2.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+        <PackageReference Include="bunit" Version="1.38.5"/>
+        <PackageReference Include="FluentAssertions" Version="8.2.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0"/>
         <PackageReference Include="coverlet.collector" Version="6.0.4">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
@@ -25,9 +25,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Moq" Version="4.20.72" />
-        <PackageReference Include="Radzen.Blazor" Version="6.3.2" />
-        <PackageReference Include="xunit" Version="2.9.3" />
+        <PackageReference Include="Moq" Version="4.20.72"/>
+        <PackageReference Include="Radzen.Blazor" Version="6.3.2"/>
+        <PackageReference Include="xunit" Version="2.9.3"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="3.0.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -35,32 +35,32 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Src\Innovative.Blazor.Components\Innovative.Blazor.Components.csproj" />
+        <ProjectReference Include="..\..\Src\Innovative.Blazor.Components\Innovative.Blazor.Components.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.WebUtilities">
-        <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\9.0.1\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
-      </Reference>
+        <Reference Include="Microsoft.AspNetCore.WebUtilities">
+            <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\9.0.1\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Dialog\Examples.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Examples.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
+        <EmbeddedResource Update="Dialog\Examples.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Examples.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Dialog\Examples.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Examples.resx</DependentUpon>
-      </Compile>
+        <Compile Update="Dialog\Examples.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Examples.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Localizer\" />
+        <Folder Include="Localizer\"/>
     </ItemGroup>
 
 

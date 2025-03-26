@@ -39,11 +39,14 @@ public class DummyStringLocalizerFactory : IStringLocalizerFactory
         return new DummyStringLocalizer();
     }
 }
+
 public class DummyStringLocalizer : IStringLocalizer
 {
-    public LocalizedString this[string name] => new LocalizedString(name, $"Dummy value for {name}", resourceNotFound: false);
+    public LocalizedString this[string name] =>
+        new LocalizedString(name, $"Dummy value for {name}", resourceNotFound: false);
 
-    public LocalizedString this[string name, params object[] arguments] => new LocalizedString(name, $"Dummy value for {name}", resourceNotFound: false);
+    public LocalizedString this[string name, params object[] arguments] =>
+        new LocalizedString(name, $"Dummy value for {name}", resourceNotFound: false);
 
     public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
     {

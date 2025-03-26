@@ -1,7 +1,6 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Innovative.Blazor.Components.Attributes;
-using Innovative.Blazor.Components.Enumerators;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
@@ -210,7 +209,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         var minHeight = MinHeightOption == GridHeight.Max ? "1162px" : "";
         return string.IsNullOrEmpty(minHeight) ? "--max-height: 1162px;" : $"--max-height: 1162px; --min-height: {minHeight};";
     }
-
+    [ExcludeFromCodeCoverage]
     private static RenderFragment RenderCustomComponent(PropertyInfo property, object context, UIGridField gridField)
     {
         return builder =>

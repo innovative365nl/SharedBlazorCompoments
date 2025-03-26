@@ -5,7 +5,6 @@ using Innovative.Blazor.Components.Enumerators;
 using Innovative.Blazor.Components.Localizer;
 using Innovative.Blazor.Components.Services;
 using Innovative.Blazor.Components.Tests.TestBase;
-using Innovative.Blazor.Components.Tests.TestHelpers;
 using Innovative.Blazor.Components.Tests.TestModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -18,20 +17,20 @@ namespace Innovative.Blazor.Components.Tests;
 
 public class DialogTests : LocalizedTestBase
 {
-    private readonly ITestOutputHelper _testOutputHelper;
     private readonly InnovativeDialogService _dialogService;
-    private readonly DialogService _radzenDialogService;  
+    private readonly DialogService _radzenDialogService;
+    private readonly ITestOutputHelper _testOutputHelper;
 
     public DialogTests(ITestOutputHelper testOutputHelper)
     {
         _testOutputHelper = testOutputHelper;
-        
+
         // Create a real NavigationManager for testing
         var navigationManager = new TestNavigationManager();
         var iJsRuntime = new Mock<IJSRuntime>();
         // Create a real DialogService
         _radzenDialogService = new DialogService(navigationManager, iJsRuntime.Object);
-        
+
         // Setup localizer for specific tests that need it
         LocalizerMock
             .Setup(l => l[It.IsAny<string>()])
@@ -40,7 +39,7 @@ public class DialogTests : LocalizedTestBase
         // Create service instance with real DialogService
         _dialogService = new InnovativeDialogService(_radzenDialogService, LocalizerFactoryMock.Object);
     }
-    
+
     // [Fact]
     // public async Task OpenPersonDialog_ShouldCloseWhenCloseButtonClicked()
     // {
@@ -90,7 +89,7 @@ public class DialogTests : LocalizedTestBase
         LocalizerMock
             .Setup(l => l[testKey])
             .Returns(expectedTitle);
-    
+
         LocalizerFactoryMock
             .Setup(f => f.Create(typeof(TestResourcesClass)))
             .Returns(LocalizerMock.Object);
@@ -125,7 +124,7 @@ public class DialogTests : LocalizedTestBase
         using var ctx = new TestContext();
         ctx.JSInterop.Mode = JSRuntimeMode.Loose;
 
-       // var dialogService = new DialogService(navigationManager, jsRuntimeMock.Object);
+        // var dialogService = new DialogService(navigationManager, jsRuntimeMock.Object);
         ctx.Services.AddSingleton(_dialogService);
         ctx.Services.AddSingleton<InnovativeDialogService>(
         );
@@ -160,16 +159,17 @@ public class DialogTests : LocalizedTestBase
         cut.Markup.Contains("Edit form content here", StringComparison.Ordinal).Should().BeTrue();
         cut.Markup.Contains("View content here", StringComparison.Ordinal).Should().BeFalse();
     }
+
     [Fact]
     public void RightSideDialogShouldRenderViewAndEditChildContent()
     {
         using var ctx = new TestContext();
         ctx.JSInterop.Mode = JSRuntimeMode.Loose;
-        
+
         // Register the base Microsoft string localizer factory
         var mockStringLocalizerFactory = new Mock<IStringLocalizerFactory>();
         ctx.Services.AddSingleton<IStringLocalizerFactory>(mockStringLocalizerFactory.Object);
-    
+
         // Register custom localizer factory
         ctx.Services.AddSingleton<IInnovativeStringLocalizerFactory>(sp =>
             LocalizerFactoryMock.Object
@@ -199,7 +199,7 @@ public class DialogTests : LocalizedTestBase
         });
 
         // Verify the rendered view content
-        
+
         cut.Markup.Contains("TestProperty", StringComparison.Ordinal).Should().BeTrue();
         // Check if edit content is hidden initially, etc.
     }
@@ -213,7 +213,7 @@ public class DialogTests : LocalizedTestBase
         // Register the base Microsoft string localizer factory
         var mockStringLocalizerFactory = new Mock<IStringLocalizerFactory>();
         ctx.Services.AddSingleton<IStringLocalizerFactory>(mockStringLocalizerFactory.Object);
-    
+
         // Register custom localizer factory
         ctx.Services.AddSingleton<IInnovativeStringLocalizerFactory>(sp =>
             LocalizerFactoryMock.Object
@@ -256,6 +256,7 @@ public class DialogTests : LocalizedTestBase
 
         clicked.Should().BeTrue();
     }
+
     [Theory]
     [InlineData(SideDialogWidth.Normal, "40vw;")]
     [InlineData(SideDialogWidth.Large, "60vw;")]
@@ -263,7 +264,7 @@ public class DialogTests : LocalizedTestBase
     public void GetWidthReturnsCorrectWidthString(SideDialogWidth width, string expected)
     {
         // Arrange
-        var method = typeof(InnovativeDialogService).GetMethod("GetWidth", 
+        var method = typeof(InnovativeDialogService).GetMethod("GetWidth",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
         // Act
@@ -271,20 +272,6 @@ public class DialogTests : LocalizedTestBase
 
         // Assert
         result.Should().Be(expected);
-    }
-
-// Add this helper class to your test project
-private sealed class TestNavigationManager : NavigationManager
-    {
-        public TestNavigationManager()
-        {
-            Initialize("https://test.com/", "https://test.com/");
-        }
-
-        protected override void NavigateToCore(string uri, bool forceLoad)
-        {
-            NotifyLocationChanged(false);
-        }
     }
 
     // [Fact]
@@ -315,15 +302,29 @@ private sealed class TestNavigationManager : NavigationManager
             _dialogService.Dispose();
             _radzenDialogService.Dispose();
         }
+
         base.Dispose(disposing);
+    }
+
+// Add this helper class to your test project
+    private sealed class TestNavigationManager : NavigationManager
+    {
+        public TestNavigationManager()
+        {
+            Initialize("https://test.com/", "https://test.com/");
+        }
+
+        protected override void NavigateToCore(string uri, bool forceLoad)
+        {
+            NotifyLocationChanged(false);
+        }
     }
 }
 
 [UIFormClass(title: "Test Form", ResourceType = typeof(TestResources))]
 internal sealed class TestDynamicFormModel
 {
-    [UIFormField(Name = "Test Property")]
-    public string? TestProperty { get; set; }
+    [UIFormField(Name = "Test Property")] public string? TestProperty { get; set; }
 
     public string? CustomProperty { get; set; }
 
@@ -331,9 +332,11 @@ internal sealed class TestDynamicFormModel
     public Action? TestAction { get; set; }
 }
 
-internal sealed class TestResourcesClass {}
+internal sealed class TestResourcesClass
+{
+}
 
-[UIFormClass(title:  "TestFormTitle", ResourceType = typeof(TestResourcesClass))]
+[UIFormClass(title: "TestFormTitle", ResourceType = typeof(TestResourcesClass))]
 internal sealed class TestFormModelWithAttribute
 {
     public string? Name { get; set; }

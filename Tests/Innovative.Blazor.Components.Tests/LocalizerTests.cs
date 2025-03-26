@@ -6,7 +6,6 @@ using Moq;
 
 namespace Innovative.Blazor.Components.Tests.Localizer;
 
-
 public class InnovativeStringLocalizerTests
 {
     [Fact]
@@ -105,67 +104,72 @@ public class InnovativeStringLocalizerTests
         Assert.Contains(allStrings, ls => ls.Name == "Test2" && ls.Value == "Primary value 2");
         Assert.Contains(allStrings, ls => ls.Name == "Test3" && ls.Value == "Fallback value 3");
     }
-    
-       [Fact]
-        public void SetFallbackLocalizerUpdatesFallbackBehavior()
-        {
-            const string key = "TestKey";
-            var primaryResult = new LocalizedString(key, string.Empty, resourceNotFound: true);
-            var fallbackResult = new LocalizedString(key, "Fallback value", resourceNotFound: false);
-            
-            var primaryMock = new Mock<IStringLocalizer>();
-            primaryMock.Setup(l => l[key]).Returns(primaryResult);
-            
-            var fallbackMock = new Mock<IStringLocalizer>();
-            fallbackMock.Setup(l => l[key]).Returns(fallbackResult);
-            
-            var factoryMock = new Mock<IStringLocalizerFactory>();
-            factoryMock.Setup(f => f.Create(typeof(DummyResource))).Returns(primaryMock.Object);
-            
-            var localizer = new InnovativeStringLocalizer<DummyResource>(factoryMock.Object, fallbackResourceType: null);
-            
-            var resultBefore = localizer[key];
-            Assert.True(resultBefore.ResourceNotFound);
-            
-            localizer.SetFallbackLocalizer(fallbackMock.Object);
-            
-            var resultAfter = localizer[key];
-            Assert.False(resultAfter.ResourceNotFound);
-            Assert.Equal("Fallback value", resultAfter.Value);
-        }
-        
-        [Fact]
-        public void SetResourceTypeUpdatesPrimaryLocalizer()
-        {
-            const string key = "TestKey";
-            var originalResult = new LocalizedString(key, "Original primary value", resourceNotFound: false);
-            var newResult = new LocalizedString(key, "New primary value", resourceNotFound: false);
-            
-            var originalMock = new Mock<IStringLocalizer>();
-            originalMock.Setup(l => l[key]).Returns(originalResult);
-            
-            var newLocalizerMock = new Mock<IStringLocalizer>();
-            newLocalizerMock.Setup(l => l[key]).Returns(newResult);
-            
-            var factoryMock = new Mock<IStringLocalizerFactory>();
-            factoryMock.Setup(f => f.Create(typeof(DummyResource))).Returns(originalMock.Object);
-            factoryMock.Setup(f => f.Create(typeof(AlternateResource))).Returns(newLocalizerMock.Object);
-            
-            var localizer = new InnovativeStringLocalizer<DummyResource>(factoryMock.Object, fallbackResourceType: null);
-            
-            var initialResult = localizer[key];
-            Assert.Equal("Original primary value", initialResult.Value);
-            
-            localizer.SetResourceType(typeof(AlternateResource));
-            
-            var updatedResult = localizer[key];
-            Assert.Equal("New primary value", updatedResult.Value);
-        }
-        private sealed class DummyResource { }
-        private sealed class AlternateResource { }
-    
-        private sealed  class FallbackResource { }
 
+    [Fact]
+    public void SetFallbackLocalizerUpdatesFallbackBehavior()
+    {
+        const string key = "TestKey";
+        var primaryResult = new LocalizedString(key, string.Empty, resourceNotFound: true);
+        var fallbackResult = new LocalizedString(key, "Fallback value", resourceNotFound: false);
+
+        var primaryMock = new Mock<IStringLocalizer>();
+        primaryMock.Setup(l => l[key]).Returns(primaryResult);
+
+        var fallbackMock = new Mock<IStringLocalizer>();
+        fallbackMock.Setup(l => l[key]).Returns(fallbackResult);
+
+        var factoryMock = new Mock<IStringLocalizerFactory>();
+        factoryMock.Setup(f => f.Create(typeof(DummyResource))).Returns(primaryMock.Object);
+
+        var localizer = new InnovativeStringLocalizer<DummyResource>(factoryMock.Object, fallbackResourceType: null);
+
+        var resultBefore = localizer[key];
+        Assert.True(resultBefore.ResourceNotFound);
+
+        localizer.SetFallbackLocalizer(fallbackMock.Object);
+
+        var resultAfter = localizer[key];
+        Assert.False(resultAfter.ResourceNotFound);
+        Assert.Equal("Fallback value", resultAfter.Value);
     }
 
+    [Fact]
+    public void SetResourceTypeUpdatesPrimaryLocalizer()
+    {
+        const string key = "TestKey";
+        var originalResult = new LocalizedString(key, "Original primary value", resourceNotFound: false);
+        var newResult = new LocalizedString(key, "New primary value", resourceNotFound: false);
 
+        var originalMock = new Mock<IStringLocalizer>();
+        originalMock.Setup(l => l[key]).Returns(originalResult);
+
+        var newLocalizerMock = new Mock<IStringLocalizer>();
+        newLocalizerMock.Setup(l => l[key]).Returns(newResult);
+
+        var factoryMock = new Mock<IStringLocalizerFactory>();
+        factoryMock.Setup(f => f.Create(typeof(DummyResource))).Returns(originalMock.Object);
+        factoryMock.Setup(f => f.Create(typeof(AlternateResource))).Returns(newLocalizerMock.Object);
+
+        var localizer = new InnovativeStringLocalizer<DummyResource>(factoryMock.Object, fallbackResourceType: null);
+
+        var initialResult = localizer[key];
+        Assert.Equal("Original primary value", initialResult.Value);
+
+        localizer.SetResourceType(typeof(AlternateResource));
+
+        var updatedResult = localizer[key];
+        Assert.Equal("New primary value", updatedResult.Value);
+    }
+
+    private sealed class DummyResource
+    {
+    }
+
+    private sealed class AlternateResource
+    {
+    }
+
+    private sealed class FallbackResource
+    {
+    }
+}
