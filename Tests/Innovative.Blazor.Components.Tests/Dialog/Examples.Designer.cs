@@ -8,6 +8,9 @@
 //------------------------------------------------------------------------------
 
 namespace Innovative.Blazor.Components.Tests.Dialog {
+    using System;
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -25,7 +28,7 @@ namespace Innovative.Blazor.Components.Tests.Dialog {
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("ManagementPortal.Website.Components.Example.Examples", typeof(Examples).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Innovative.Blazor.Components.Tests.Dialog.Examples", typeof(Examples).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
