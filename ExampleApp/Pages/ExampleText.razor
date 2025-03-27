@@ -1,0 +1,62 @@
+@page "/text"
+@using System.ComponentModel
+@using Innovative.Blazor.Components.Components.Text
+@using TagName = Innovative.Blazor.Components.Components.Text.TagName
+@using TextAlign = Innovative.Blazor.Components.Components.Text.TextAlign
+@using TextStyle = Innovative.Blazor.Components.Components.Text.TextStyle
+
+
+<InnovativeText For="@person" Property="Name" TextStyle="TextStyle.H2" />
+<RadzenButton Click="(() => ChangeName())">Change Name</RadzenButton> 
+
+<InnovativeText For="@person" Property="Age" Format="Age: {0} years" TextStyle="TextStyle.Body2" />
+<InnovativeText Text="Centered Heading" TextStyle="TextStyle.DisplayH1" TextAlign="TextAlign.Center" />
+<InnovativeText Text="Right-aligned Text" TextStyle="TextStyle.Body1" TextAlign="TextAlign.Right" />
+<InnovativeText Text="Custom Button Text" TagName="TagName.Button" Class="my-custom-button" Style="padding: 10px;" />
+<InnovativeText Text="Section Title" TextStyle="TextStyle.H2" Anchor="section1" />
+@code {
+    
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+    private async Task ChangeName()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    {
+        person.Name = "Jane Smith";
+        person.Age = 31;
+
+    }
+    public class Person : INotifyPropertyChanged
+    {
+        private string _name = "John Doe";
+        private int _age = 30; 
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (_name != value)
+                {
+                    _name = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Name)));
+                }
+            }
+        }
+        
+        public int Age // Add Age property
+        {
+            get => _age;
+            set
+            {
+                if (_age != value)
+                {
+                    _age = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Age)));
+                }
+            }
+        }
+    }
+    
+    private Person person = new Person();
+}
