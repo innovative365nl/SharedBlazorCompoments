@@ -20,11 +20,6 @@ public partial class DynamicFormView<TModel> : ComponentBase, IDynamicBaseCompon
 
     public DynamicFormView(IInnovativeStringLocalizerFactory localizerFactory)
     {
-        if (ParentDialog != null)
-        {
-            ParentDialog.SetFormComponent(formComponent: this);
-        }
-
         var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
         var resourceType = uiClassAttribute?.ResourceType ?? typeof(TModel);
         Debug.Assert(localizerFactory != null, nameof(localizerFactory) + " != null");
@@ -40,6 +35,12 @@ public partial class DynamicFormView<TModel> : ComponentBase, IDynamicBaseCompon
 
     protected IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; private set; } =
         new List<KeyValuePair<string, List<PropertyInfo>>>();
+
+    protected override void OnInitialized()
+    {
+        ParentDialog.SetFormComponent(formComponent: this);
+        base.OnInitialized();
+    }
 
     public async Task OnSubmitPressed()
     {
