@@ -5,15 +5,14 @@ using Radzen;
 
 namespace ExampleApp.Pages;
  
-public partial class ExampleGrid
+public partial class ExampleGrid(NavigationManager NavigationManager)
 {
-    private readonly string[] _cities = { "New York", "London", "Paris", "Tokyo", "Berlin" };
-    private readonly string[] _statuses = { "Active", "Pending", "Complete", "Rejected" };
+    private readonly string[] _cities = ["New York", "London", "Paris", "Tokyo", "Berlin"];
+    private readonly string[] _statuses = ["Active", "Pending", "Complete", "Rejected"];
     private readonly string[] _streets = ["Main St", "Oak Ave", "Park Rd", "Cedar Ln", "Maple Dr"];
 
     private InnovativeGrid<InnovativeTestClass>? _grid;
     List<InnovativeTestClass>? _items;
-    [Inject] private NavigationManager? NavigationManager { get; set; }
     protected override async Task OnInitializedAsync()
     {
         _items = Enumerable.Range(1, 40)

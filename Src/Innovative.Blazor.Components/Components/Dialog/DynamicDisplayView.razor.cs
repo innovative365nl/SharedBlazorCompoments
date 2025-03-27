@@ -14,6 +14,7 @@ namespace Innovative.Blazor.Components.Components.Dialog;
 public partial class DynamicDisplayView<TModel> : ComponentBase
 {
     private readonly IInnovativeStringLocalizer _localizer;
+    const int StartSequenceNumberLoop = 4;
 
     public DynamicDisplayView(IInnovativeStringLocalizerFactory localizerFactory)
     {
@@ -120,11 +121,11 @@ public partial class DynamicDisplayView<TModel> : ComponentBase
             .ToArray();
     }
 
-    private async Task InvokeAction(MethodInfo method)
-    {
-        method.Invoke(obj: Model, parameters: null);
-        await OnActionExecuted.InvokeAsync(arg: method.Name).ConfigureAwait(false);
-    }
+    // private async Task InvokeAction(MethodInfo method)
+    // {
+    //     method.Invoke(obj: Model, parameters: null);
+    //     await OnActionExecuted.InvokeAsync(arg: method.Name).ConfigureAwait(false);
+    // }
 
     [ExcludeFromCodeCoverage]
     private static RenderFragment RenderViewComponent(object? value, UIFormFieldAttribute attribute)
@@ -145,7 +146,7 @@ public partial class DynamicDisplayView<TModel> : ComponentBase
 
                 if (attribute.ViewParameters?.Length > 0)
                 {
-                    var index = 4;
+                    var index = StartSequenceNumberLoop;
                     foreach (var param in attribute.ViewParameters)
                     {
                         var parts = param.Split(separator: '=', count: 2);

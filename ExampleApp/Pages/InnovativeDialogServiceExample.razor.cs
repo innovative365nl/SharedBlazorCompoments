@@ -49,12 +49,9 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
         var result = await dialogService.OpenDynamicFormDialog(
             _person).ConfigureAwait(false);
 
-        if (result != null)
-        {
-            _person = result;
+        _person = result;
             
-            StateHasChanged();
-        }
+        StateHasChanged();
     }
 }
 
