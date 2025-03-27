@@ -1,0 +1,29 @@
+@page "/changetracker"
+@using Innovative.Blazor.Components.Components.TrackInUrl
+@inherits UrlStateTracker
+
+@code {
+    public ExampleChangeTracker(NavigationManager navigationManager) : base(navigationManager)
+    {
+    }
+}
+
+<h3>Change Tracking Example
+    </h3>
+
+<div>
+    <label>Name:
+        <input @bind="Name" @bind:event="oninput" @onchange="() => OnPropertyPossiblyChanged()" />
+    </label>
+</div>
+
+<div>
+    <label>Age:
+        <input type="number" @bind="Age" @bind:event="oninput" @onchange="() => OnPropertyPossiblyChanged()" />
+    </label>
+</div>
+
+<div>
+    <button @onclick="ChangeColor">Change Color to Blue</button>
+    <p>Color: @Color</p>
+</div>
