@@ -5,7 +5,7 @@ using Radzen;
 
 namespace ExampleApp.Pages;
  
-public partial class ExampleGrid(NavigationManager NavigationManager)
+public partial class ExampleGrid(NotificationService notificationService)
 {
     private readonly string[] _cities = ["New York", "London", "Paris", "Tokyo", "Berlin"];
     private readonly string[] _statuses = ["Active", "Pending", "Complete", "Rejected"];
@@ -32,6 +32,6 @@ public partial class ExampleGrid(NavigationManager NavigationManager)
 
     private void OnRowSelected(IEnumerable<InnovativeTestClass> obj)
     {
-        NotificationService.Notify(NotificationSeverity.Success, $"Selected {obj.First().Name}");
+        notificationService.Notify(NotificationSeverity.Success, $"Selected {obj.First().Name}");
     }
 }

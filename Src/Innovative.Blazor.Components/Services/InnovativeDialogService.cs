@@ -23,7 +23,7 @@ internal sealed class InnovativeDialogService(
 {
     public void Dispose()
     {
-        //  dialogService.Dispose();
+        dialogService.Dispose();
     }
 
     public async Task<T> OpenDynamicFormDialog<T>(T model) where T : class

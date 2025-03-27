@@ -1,5 +1,7 @@
 @using System.Reflection
 @using Microsoft.Extensions.Localization
+@using Innovative.Blazor.Components.Components.Text
+@using TextStyle = Innovative.Blazor.Components.Components.Text.TextStyle
 @typeparam TModel
 
 <RadzenStack Orientation="Orientation.Vertical" Gap="1rem">
@@ -50,7 +52,7 @@
         var value = property.GetValue(obj: Model);
 
         <RadzenStack Orientation="Orientation.Vertical" Gap="0.25rem">
-            <RadzenText TextStyle="TextStyle.Subtitle2">@_localizer.GetString(fieldAttribute!.Name!)</RadzenText>
+            <InnovativeText TextStyle="TextStyle.Subtitle2">@_localizer.GetString(fieldAttribute!.Name!)</InnovativeText>
             @if (fieldAttribute?.ViewComponent != null)
             {
                 @RenderViewComponent(value: value, attribute: fieldAttribute)
@@ -61,7 +63,7 @@
             }
             else
             {
-                <RadzenText TextStyle="TextStyle.Body1">@(value?.ToString() ?? "-")</RadzenText>
+                <InnovativeText TextStyle="TextStyle.Body1">@(value?.ToString() ?? "-")</InnovativeText>
             }
         </RadzenStack>
     }
