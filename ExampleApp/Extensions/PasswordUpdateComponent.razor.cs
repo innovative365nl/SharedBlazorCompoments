@@ -6,7 +6,7 @@ namespace ExampleApp.Extensions;
 
 public partial class PasswordUpdateComponent : ComponentBase, IDynamicBaseComponent
 {
-    private int _resultValue = 123;
+    private const int ResultValue = 123;
     [Parameter] public object? Model { get; set; }
     [Parameter] public string? ActionProperty { get; set; }
     [Parameter]public EventCallback<int> OnSave { get; set; }
