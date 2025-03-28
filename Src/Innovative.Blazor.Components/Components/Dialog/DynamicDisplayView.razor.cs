@@ -14,7 +14,8 @@ namespace Innovative.Blazor.Components.Components.Dialog;
 public partial class DynamicDisplayView<TModel> : ComponentBase
 {
     private readonly IInnovativeStringLocalizer _localizer;
-    const int StartSequenceNumberLoop = 4;
+    private const int StartSequenceNumberLoop = 4;
+    private const int MaxNumberOfButtonsBesideEachOther = 2;
 
     public DynamicDisplayView(IInnovativeStringLocalizerFactory localizerFactory)
     {

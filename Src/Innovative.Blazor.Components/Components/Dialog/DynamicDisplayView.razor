@@ -9,7 +9,7 @@
         @{
             var actionProperties = GetPropertiesWithViewAction().OrderBy(keySelector: p => p.GetCustomAttribute<UIFormViewAction>()!.Order).ToList();
 
-            if (actionProperties.Count <= 2)
+            if (actionProperties.Count <= MaxNumberOfButtonsBesideEachOther)
             {
                 foreach (var property in actionProperties)
                 {
