@@ -1,3 +1,4 @@
+using ExampleApp.Extensions;
 using Innovative.Blazor.Components.Components.Grid;
 
 namespace ExampleApp.Pages;
@@ -21,4 +22,7 @@ public class InnovativeTestClass
 
     // [UIGridField(typeof(CustomColorStyle), Parameters =  ["Color1:orange", "Color2:gray", "Color3:lightgreen"])]
     public string? Status2 { get; set; }
+    
+     [UIGridField(typeof(CustomBoolStyle))]
+    public bool IsActive { get; set; } = true;
 }

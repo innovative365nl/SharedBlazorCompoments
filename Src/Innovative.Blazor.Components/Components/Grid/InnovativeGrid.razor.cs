@@ -264,7 +264,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
                 {
                     if (gridField.CustomComponentType != null)
                         builder.OpenComponent(sequence: 0, componentType: gridField.CustomComponentType);
-                    builder.AddAttribute(sequence: 1, name: "Value", value: value.ToString());
+                    builder.AddAttribute(sequence: 1, name: "Value", value: value);
 
                     if (gridField.Parameters?.Length > 0)
                     {
