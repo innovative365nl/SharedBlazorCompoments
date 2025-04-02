@@ -53,6 +53,14 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
             
         StateHasChanged();
     }
+    private async Task OpenNewPersonDialog()
+    {
+        var result = await dialogService.OpenDynamicFormDialog<PersonModel>().ConfigureAwait(false);
+
+        _person = result;
+            
+        StateHasChanged();
+    }
 }
 
 [UIFormClass( title: nameof(Example.DialogService_Person), 
@@ -61,21 +69,22 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
     ColumnWidthValues = new[] {1, 1, 3})]
 public class PersonModel
 {
-    [UIFormField(Name = "First Name", ColumnGroup = "Name")]
+    [UIFormField(name: "First Name", ColumnGroup = "Name")]
     public string? FirstName { get; set; }
 
-    [UIFormField(Name = "Last Name", ColumnGroup = "Name")]
+    [UIFormField(name: "Last Name", ColumnGroup = "Name")]
     public string? LastName { get; set; }
 
-    [UIFormField(Name = "Age", ColumnGroup = "EmployeeInfo")] public int? Age => DateTime.Now.Year - BirthDate!.Value.Year;
+   // [UIFormField(name: "Age", ColumnGroup = "EmployeeInfo")]
+    //public int? Age => DateTime.Now.Year - BirthDate!.Value.Year;
 
-    [UIFormField(Name = "Is Active", ViewComponent = typeof(CustomBoolStyle), ColumnGroup = "EmployeeInfo")]
+    [UIFormField(name: "Is Active", ViewComponent = typeof(CustomBoolStyle), ColumnGroup = "EmployeeInfo")]
     public bool IsActive { get; set; }
 
-    [UIFormField(Name = "Birth Date",  ColumnGroup = "EmployeeInfo")]
+    [UIFormField(name: "Birth Date",  ColumnGroup = "EmployeeInfo")]
     public DateTime? BirthDate { get; set; }
 
-    [UIFormField(Name = "Description", UseWysiwyg = true, ColumnGroup = "Description")]
+    [UIFormField(name : "Description", UseWysiwyg = true, ColumnGroup = "Description")]
     public string? Description { get; set; }
 
     [UIFormViewAction(Name = "Update Password", Order = 1)]

@@ -9,8 +9,13 @@ namespace Innovative.Blazor.Components.Components.Dialog;
 
 [ExcludeFromCodeCoverage]
 [AttributeUsage(validOn: AttributeTargets.Property)]
+[SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
 public sealed class UIFormFieldAttribute : UIField
 {
+    public UIFormFieldAttribute(string name)
+    {
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+    }
     public string? ColumnGroup { get; set; }
     public bool UseWysiwyg { get; set; }
     public Type? ViewComponent { get; set; }

@@ -13,7 +13,7 @@ public partial class RightSideDialog<TModel>(ICustomDialogService dialogService)
     private IDynamicBaseComponent? _formComponent;
     private bool _isCustomDialog;
 
-    private bool _isEditing;
+    [Parameter] public bool IsEditing { get; set; } 
 
     [Parameter] public bool ShowClose { get; set; } = true;
     [Parameter] public bool ShowEdit { get; set; } = true;
@@ -51,7 +51,7 @@ public partial class RightSideDialog<TModel>(ICustomDialogService dialogService)
     {
         if (_formComponent != null) await _formComponent.OnSubmitPressed().ConfigureAwait(false);
         _isCustomDialog = false;
-        _isEditing = false;
+        IsEditing = false;
 
 
         await SaveClicked.InvokeAsync().ConfigureAwait(false);
@@ -59,7 +59,7 @@ public partial class RightSideDialog<TModel>(ICustomDialogService dialogService)
 
     private Task HandleCancelClick()
     {
-        _isEditing = false;
+        IsEditing = false;
         _isCustomDialog = false;
         ActionChildContent = null;
         return Task.CompletedTask;

@@ -317,7 +317,7 @@ public class DialogTests : LocalizedTestBase
 [UIFormClass(title: "Test Form", ResourceType = typeof(TestResources))]
 internal sealed class TestDynamicFormModel
 {
-    [UIFormField(Name = "Test Property")] public string? TestProperty { get; set; }
+    [UIFormField(name:"Test Property")] public string? TestProperty { get; set; }
 
     public string? CustomProperty { get; set; }
 

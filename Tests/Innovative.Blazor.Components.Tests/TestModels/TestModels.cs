@@ -58,7 +58,7 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     [UIFormClass(title: "Test Form", ResourceType = typeof(TestResources))]
     public class TestDynamicFormModel
     {
-        [UIFormField(Name = "Test Property")] public string? TestProperty { get; set; }
+        [UIFormField(name: "Test Property")] public string? TestProperty { get; set; }
 
         public string? CustomProperty { get; set; }
 
