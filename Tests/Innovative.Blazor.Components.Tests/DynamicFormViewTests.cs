@@ -161,11 +161,11 @@ public class DynamicFormViewTests : LocalizedTestBase
 [UIFormClass("testFormGroupModel", ColumnOrder = new[] { "Group1", "Group2" })]
 public class TestFormGroupModel
 {
-    [UIFormField(ColumnGroup = "Group1")] public string GroupedProperty1 { get; set; } = string.Empty;
+    [UIFormField(name:nameof(GroupedProperty1), ColumnGroup = "Group1")] public string GroupedProperty1 { get; set; } = string.Empty;
 
-    [UIFormField(ColumnGroup = "Group2")] public string GroupedProperty2 { get; set; } = string.Empty;
+    [UIFormField(name:nameof(GroupedProperty2), ColumnGroup = "Group2")] public string GroupedProperty2 { get; set; } = string.Empty;
 
-    [UIFormField] public string UngroupedProperty { get; set; } = string.Empty;
+    [UIFormField(name: nameof(UngroupedProperty))] public string UngroupedProperty { get; set; } = string.Empty;
 }
 
 [UIFormClass("TestFormColumnWidthModel",
@@ -173,20 +173,20 @@ public class TestFormGroupModel
     ColumnWidthValues = new[] { 3, 0 })]
 public class TestFormColumnWidthModel
 {
-    [UIFormField(ColumnGroup = "Col1")] public string Property1 { get; set; } = string.Empty;
+    [UIFormField(name:nameof(Property1), ColumnGroup = "Col1")] public string Property1 { get; set; } = string.Empty;
 
-    [UIFormField(ColumnGroup = "Col2")] public string Property2 { get; set; } = string.Empty;
+    [UIFormField(name: nameof(Property2), ColumnGroup = "Col2")] public string Property2 { get; set; } = string.Empty;
 }
 
 public class TestFormModel
 {
-    [UIFormField] public string StringProperty { get; set; } = string.Empty;
+    [UIFormField(name: nameof(StringProperty))] public string StringProperty { get; set; } = string.Empty;
 
-    [UIFormField] public int IntProperty { get; set; }
+    [UIFormField(name: nameof(IntProperty))] public int IntProperty { get; set; }
 
-    [UIFormField] public bool BoolProperty { get; set; }
+    [UIFormField(name: nameof(BoolProperty))] public bool BoolProperty { get; set; }
 
-    [UIFormField] public DateTime DateProperty { get; set; }
+    [UIFormField(name: nameof(DateProperty))] public DateTime DateProperty { get; set; }
 }
 
 // Extension methods to access private methods/properties for testing

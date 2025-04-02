@@ -20,15 +20,15 @@
         <div>
             <RadzenRow>
                 @TitleBarContent
-                @if (ShowEdit && !_isEditing && !_isCustomDialog)
+                @if (ShowEdit && !IsEditing && !_isCustomDialog)
                 {
                     <button style="border: 0; cursor: pointer; background-color: transparent"
                             id="rightSideDialogEditButton"
-                            @onclick="@(args => _isEditing = !_isEditing)">
+                            @onclick="@(args => IsEditing = !IsEditing)">
                         <RadzenIcon Icon="edit" IconColor="black"/>
                     </button>
                 }
-                else if (ShowEdit && (_isEditing || _isCustomDialog))
+                else if (ShowEdit && (IsEditing || _isCustomDialog))
                 {
                     <button style="border: 0; cursor: pointer; background-color: transparent"
                             @onclick="@HandleCancelClick">
@@ -46,7 +46,7 @@
     <RadzenStack Orientation="Orientation.Vertical" Style="padding: 1rem; width: 100%; min-height: 500px;">
         <CascadingValue Value="this">
 
-            @if (!_isEditing && !_isCustomDialog)
+            @if (!IsEditing && !_isCustomDialog)
             {
                 @ViewChildContent
             }

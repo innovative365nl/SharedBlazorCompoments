@@ -15,6 +15,7 @@ public interface IInnovativeDialogService
 {
     Task<T> OpenDynamicFormDialog<T>(T model) where T : class;
     void Dispose();
+    Task<T> OpenDynamicFormDialog<T>() where T : class;
 }
 
 internal sealed class InnovativeDialogService(
@@ -26,7 +27,20 @@ internal sealed class InnovativeDialogService(
         dialogService.Dispose();
     }
 
+    public async Task<T> OpenDynamicFormDialog<T>() where T : class
+    {
+        var model = Activator.CreateInstance<T>();
+        return await OpenDynamicFormDialogWithOptions(model: model,  isNewModel: true).ConfigureAwait(false);
+    }
+
     public async Task<T> OpenDynamicFormDialog<T>(T model) where T : class
+    {
+        return await OpenDynamicFormDialogWithOptions(model: model,  isNewModel: false).ConfigureAwait(false);
+    }
+
+
+
+    private async Task<T> OpenDynamicFormDialogWithOptions<T>(T model,  bool isNewModel) where T : class
     {
         RightSideDialog<T>? dialogRef = null;
 
@@ -53,7 +67,8 @@ internal sealed class InnovativeDialogService(
             { "ShowEdit", true },
             { "ShowClose", true },
             { "ViewChildContent", viewContent },
-            { "EditChildContent", editContent }
+            { "EditChildContent", editContent },
+            { "IsEditing", isNewModel}
         };
 
         var dialogOptions = new SideDialogOptions
