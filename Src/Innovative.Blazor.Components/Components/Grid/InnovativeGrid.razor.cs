@@ -84,6 +84,11 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 
     public IEnumerable<TItem> SelectedItems => _selectedItems;
 
+    public async Task SetSelectedItemsAsync(TItem item)
+    {
+
+        await OnSelectAsync(new List<TItem>() {item} ).ConfigureAwait(false);
+    }
     public async Task SetSelectedItemsAsync(IEnumerable<TItem> items)
     {
         Debug.Assert(items != null, nameof(items) + " != null");
@@ -192,8 +197,6 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 
     private async Task OnSelectAsync(IEnumerable<TItem> items)
     {
-        if (_selectedItems == null)
-            _selectedItems = new List<TItem>();
         _selectedItems.Clear();
         foreach (var item in items)
         {
