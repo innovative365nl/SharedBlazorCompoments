@@ -14,7 +14,7 @@ on:
       - develop
       - 'release*'
     paths:
-      - 'Src/InnovativeBlazor.Components/**'
+      - 'Src/Innovative.Blazor.Components/**'
   workflow_dispatch:  # Allow manual triggering
 
 # Permissions
