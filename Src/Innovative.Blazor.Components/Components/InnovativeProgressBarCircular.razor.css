@@ -1,0 +1,131 @@
+.innovative-progressbar-circular {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.innovative-progressbar-circular-viewbox {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.innovative-progressbar-circular-background {
+    stroke: #e9ecef;
+    stroke-width: 4px;
+}
+
+.innovative-progressbar-circular-value {
+    stroke: currentColor;
+    stroke-width: 4px;
+    stroke-dasharray: 100;
+    transition: stroke-dashoffset 0.3s ease;
+}
+
+.innovative-progressbar-circular-label {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Size variants */
+.innovative-progressbar-circular-xs {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.65rem;
+}
+
+.innovative-progressbar-circular-sm {
+    width: 3rem;
+    height: 3rem;
+    font-size: 0.75rem;
+}
+
+.innovative-progressbar-circular-md {
+    width: 4rem;
+    height: 4rem;
+}
+
+.innovative-progressbar-circular-lg {
+    width: 6rem;
+    height: 6rem;
+    font-size: 1rem;
+}
+
+/* Color styles */
+.innovative-progressbar-primary {
+    color: #007bff;
+}
+
+.innovative-progressbar-secondary {
+    color: #6c757d;
+}
+
+.innovative-progressbar-success {
+    color: #28a745;
+}
+
+.innovative-progressbar-info {
+    color: #17a2b8;
+}
+
+.innovative-progressbar-warning {
+    color: #ffc107;
+}
+
+.innovative-progressbar-danger {
+    color: #dc3545;
+}
+
+.innovative-progressbar-light {
+    color: #f8f9fa;
+}
+
+.innovative-progressbar-dark {
+    color: #343a40;
+}
+
+/* Indeterminate animation */
+.innovative-progressbar-circular-indeterminate {
+    stroke-dasharray: 100;
+    animation: innovative-circular-indeterminate 1.5s linear infinite;
+    transform-origin: center;
+}
+
+@keyframes innovative-circular-indeterminate {
+    0% {
+        stroke-dashoffset: 100;
+    }
+    25% {
+        stroke-dashoffset: 50;
+    }
+    50% {
+        stroke-dashoffset: 25;
+    }
+    75% {
+        stroke-dashoffset: 50;
+    }
+    100% {
+        stroke-dashoffset: 100;
+    }
+}
+
+/* Remove the old animation that was attempting to transform the whole SVG */
+.innovative-progressbar-indeterminate .innovative-progressbar-circular-viewbox {
+    animation: innovative-circular-rotate 2s linear infinite;
+}
+
+@keyframes innovative-circular-rotate {
+    0% {
+        transform: rotate(-90deg);
+    }
+    100% {
+        transform: rotate(270deg);
+    }
+}

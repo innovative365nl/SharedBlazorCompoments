@@ -1,0 +1,30 @@
+@if (Visible)
+{
+    <div @ref="Element" style="@Style" aria-valuemax="@Max" aria-valuemin="@Min" role="progressbar" @attributes="Attributes" class="@GetCssClass()"
+         aria-valuenow="@Value" id="@GetId()">
+        <svg class="innovative-progressbar-circular-viewbox" viewBox="-19 -19 38 38">
+            <circle class="innovative-progressbar-circular-background" r="15.91549" fill="none" />
+            @if (Mode == ProgressBarMode.Determinate)
+            {
+                <circle class="innovative-progressbar-circular-value" r="15.91549" fill="none" stroke-dashoffset="@(((1 - NormalizedValue) * 100).ToInvariantString())" />
+            }
+            else
+            {
+                <circle class="innovative-progressbar-circular-value innovative-progressbar-circular-indeterminate" r="15.91549" fill="none" />
+            }
+        </svg>
+        @if (ShowValue && Mode == ProgressBarMode.Determinate)
+        {
+            <div class="innovative-progressbar-circular-label">
+                @if(Template != null)
+                {
+                    @Template
+                }
+                else
+                {
+                    @Value@Unit
+                }
+            </div>
+        }
+    </div>
+}

@@ -13,6 +13,48 @@ using Microsoft.Extensions.Primitives;
 
 namespace Innovative.Blazor.Components.Components.TrackInUrl;
 
+/// <summary>
+/// Provides functionality to automatically synchronize component state with URL parameters.
+/// 
+/// <para>
+/// This abstract class enables Blazor components to persist their state in the URL, allowing for:
+/// - Shareable URLs that restore component state
+/// - Browser history integration with back/forward navigation
+/// - Bookmarkable component states
+/// </para>
+/// 
+/// <para>
+/// Usage:
+/// 1. Create a component that inherits from UrlStateTracker
+/// 2. Mark properties to be tracked with the [TrackInUrl] attribute
+/// 3. Call OnPropertyPossiblyChanged() in property setters or after property values change
+/// </para>
+/// 
+/// <example>
+/// <code>
+/// public class MyFilterComponent : UrlStateTracker
+/// {
+///     private string _searchTerm;
+///     
+///     [TrackInUrl]
+///     public string SearchTerm 
+///     { 
+///         get => _searchTerm; 
+///         set 
+///         { 
+///             _searchTerm = value; 
+///             OnPropertyPossiblyChanged();
+///         }
+///     }
+///     
+///     public MyFilterComponent(NavigationManager navigationManager) 
+///         : base(navigationManager)
+///     {
+///     }
+/// }
+/// </code>
+/// </example>
+/// </summary>
 public abstract class UrlStateTracker(NavigationManager navigationManager) : ComponentBase, IDisposable
 {
     private readonly Dictionary<PropertyInfo, object?> _trackedProperties = new();
@@ -21,13 +63,27 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
     private bool _isInitialized;
     private bool _isUpdatingFromUrl;
 
+    /// <summary>
+    /// Disposes the component and unregisters the location changed event handler.
+    /// </summary>
     public void Dispose()
     {
         Dispose(true);
         GC.SuppressFinalize(this);
     }
 
-
+    /// <summary>
+    /// Initializes the component by discovering properties marked with [TrackInUrl],
+    /// sets up URL change tracking, and loads initial state from the URL.
+    /// 
+    /// <para>
+    /// This method automatically:
+    /// - Identifies all properties with the [TrackInUrl] attribute
+    /// - Stores their initial values for change tracking
+    /// - Subscribes to URL navigation events
+    /// - Synchronizes component state with the current URL parameters
+    /// </para>
+    /// </summary>
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -48,13 +104,30 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
         _isInitialized = true;
     }
 
+    /// <summary>
+    /// Event handler for NavigationManager's LocationChanged event.
+    /// Reads and updates tracked properties from the new URL.
+    /// </summary>
+    /// <param name="sender">The event sender</param>
+    /// <param name="e">The event arguments</param>
     private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
     {
         ReadFromUrl();
     }
 
     /// <summary>
-    ///     Called when a tracked property is changed.
+    /// Call this method whenever a tracked property value changes to update the URL.
+    /// 
+    /// <para>
+    /// This method should be called in property setters of properties marked with [TrackInUrl].
+    /// It will detect changes in tracked properties and update the URL accordingly.
+    /// </para>
+    /// 
+    /// <para>
+    /// This method will not trigger URL updates when:
+    /// - The component is still initializing
+    /// - The property change is being made as a result of reading from the URL
+    /// </para>
     /// </summary>
     protected void OnPropertyPossiblyChanged()
     {
@@ -65,7 +138,14 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
     }
 
     /// <summary>
-    ///     Checks if any tracked property changed.
+    /// Compares current property values with stored values and updates the URL if any tracked property has changed.
+    /// 
+    /// <para>
+    /// The method:
+    /// 1. Detects which properties have changed since last check
+    /// 2. Creates a serialized representation of all tracked properties
+    /// 3. Updates the URL with the serialized state as a Base64-encoded query parameter
+    /// </para>
     /// </summary>
     private void UpdateUrlIfNeeded()
     {
@@ -100,7 +180,20 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
     }
 
     /// <summary>
-    ///     Reads the state from the URL and updates the properties.
+    /// Reads the component state from the URL and updates tracked properties accordingly.
+    /// 
+    /// <para>
+    /// This method:
+    /// 1. Extracts the "dataset" query parameter from the URL
+    /// 2. Decodes the Base64-encoded JSON state
+    /// 3. Updates component properties with values from the URL
+    /// 4. Triggers a component re-render with StateHasChanged
+    /// </para>
+    /// 
+    /// <para>
+    /// Error handling is included to ensure the component doesn't break if the URL contains
+    /// invalid data or if deserialization fails.
+    /// </para>
     /// </summary>
     private void ReadFromUrl()
     {
@@ -146,8 +239,19 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
     }
 
     /// <summary>
-    ///     Helper to replace or key in a query string.
+    /// Updates a query string parameter in a URL, preserving other parameters.
+    /// 
+    /// <para>
+    /// This helper method will:
+    /// 1. Parse the existing URL and its query parameters
+    /// 2. Add or replace the specified parameter
+    /// 3. Rebuild the URL with the updated query string
+    /// </para>
     /// </summary>
+    /// <param name="url">The original URL</param>
+    /// <param name="key">The query parameter key to update</param>
+    /// <param name="value">The new value for the query parameter</param>
+    /// <returns>The updated URL</returns>
     private static string UpdateQueryStringParameter(string url, string key, string value)
     {
         if (!Uri.TryCreate(uriString: url, uriKind: UriKind.Absolute, result: out var uri))
@@ -172,6 +276,10 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
         return baseUri + newQuery;
     }
 
+    /// <summary>
+    /// Disposes managed and unmanaged resources.
+    /// </summary>
+    /// <param name="disposing">True if disposing managed resources, false if finalizing</param>
     protected virtual void Dispose(bool disposing)
     {
         if (!_disposed)

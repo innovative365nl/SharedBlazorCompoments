@@ -16,11 +16,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.3"/>
-        <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.3" />
-        <PackageReference Include="Radzen.Blazor" Version="6.4.0" />
-        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.3"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" />
+        <PackageReference Include="Microsoft.Extensions.Localization" />
+        <PackageReference Include="Radzen.Blazor" />
+        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" />
     </ItemGroup>
 
     <ItemGroup>
@@ -33,6 +33,12 @@
         </Reference>
         <Reference Include="Microsoft.AspNetCore.WebUtilities">
         </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Components\InnovativeProgressBarCircular.razor.css">
+        <DependentUpon>InnovativeProgressBarCircular.razor</DependentUpon>
+      </None>
     </ItemGroup>
 
 </Project>
