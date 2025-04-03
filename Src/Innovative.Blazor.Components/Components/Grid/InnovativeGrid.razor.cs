@@ -13,6 +13,11 @@ using Radzen.Blazor;
 
 namespace Innovative.Blazor.Components.Components.Grid;
 
+/// <summary>
+/// Flexible and customizable grid component for displaying and managing data.
+/// It supports sorting, filtering, formatting, auto translation, and custom components.
+/// </summary>
+/// <typeparam name="TItem"></typeparam>
 public partial class InnovativeGrid<TItem> : ComponentBase
 {
     private readonly bool _allowSorting;
@@ -37,19 +42,23 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     private IInnovativeStringLocalizerFactory LocalizerFactory { get; }
 
     /// <summary>
-    ///     Data to be displayed in the grid
+    ///     The data collection to be displayed in the grid. This serves as the source for all grid operations
+    ///     including filtering, sorting, and pagination. The data must be of type TItem.
     /// </summary>
     [Parameter]
     public IEnumerable<TItem>? Data { get; set; }
 
     /// <summary>
-    ///     Set selection mode for the grid
+    ///     Determines the selection behavior of the grid. This can be set to Single for allowing only one item
+    ///     to be selected at a time, Multiple for allowing multiple selections, or None to disable selection.
+    ///     This works in conjunction with EnableRowSelection to control the overall selection behavior.
     /// </summary>
     [Parameter]
     public DataGridSelectionMode? SelectionMode { get; init; }
 
     /// <summary>
-    ///     Parameter to enable row selection
+    ///     Enables or disables row selection in the grid. When set to true, users will be able to select rows
+    ///     according to the SelectionMode. When false, row selection is completely disabled regardless of SelectionMode.
     /// </summary>
     [Parameter]
     public bool EnableRowSelection { get; set; }
@@ -57,7 +66,9 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     [Parameter] public GridHeight? MinHeightOption { get; set; } = GridHeight.Minimal;
 
     /// <summary>
-    ///     Enable or disable the grid loading screen
+    ///     Controls the visibility of the loading indicator. When set to true, the grid displays a loading animation
+    ///     overlay, signaling to users that data is being loaded or processed. This is useful during asynchronous
+    ///     operations to provide visual feedback to users.
     /// </summary>
     [Parameter]
     public bool IsLoading { get; set; }
@@ -65,13 +76,17 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     [Parameter] public string? Title { get; set; }
 
     /// <summary>
-    ///     The event that is triggered when the row selection changes
+    ///     Event that fires when the selection in the grid changes. This provides a way for parent components
+    ///     to react to selection changes and retrieve the currently selected items. The event passes the complete
+    ///     collection of selected items as its parameter.
     /// </summary>
     [Parameter]
     public EventCallback<IEnumerable<TItem>> OnSelectionChanged { get; set; }
 
     /// <summary>
-    ///     Optional resource type to use for localization instead of TItem
+    ///     Optional resource type used for localization of grid elements. If specified, this type will be used
+    ///     instead of TItem for retrieving localized strings. This allows for separation of data models and 
+    ///     localization resources when needed.
     /// </summary>
     [Parameter]
     public Type? ResourceType { get; init; }
@@ -79,22 +94,39 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     private RadzenDataGrid<TItem>? DataGrid { get; set; }
 
     /// <summary>
-    ///     The items that are selected in the grid
+    ///     Gets the collection of items currently selected in the grid. This property provides access to the
+    ///     selected items without triggering selection events, making it useful for read-only operations.
     /// </summary>
-
     public IEnumerable<TItem> SelectedItems => _selectedItems;
 
+    /// <summary>
+    ///     Sets a single item as the selected item in the grid. This method clears any existing selections
+    ///     and selects only the specified item. It also triggers the OnSelectionChanged event.
+    /// </summary>
+    /// <param name="item">The item to be selected</param>
     public async Task SetSelectedItemsAsync(TItem item)
     {
-
-        await OnSelectAsync(new List<TItem>() {item} ).ConfigureAwait(false);
+        await OnSelectAsync(new List<TItem>() { item }).ConfigureAwait(false);
     }
+
+    /// <summary>
+    ///     Sets multiple items as the selected items in the grid. This method clears any existing selections
+    ///     and selects the specified collection of items. It also triggers the OnSelectionChanged event.
+    ///     This is useful for programmatically selecting items based on external logic.
+    /// </summary>
+    /// <param name="items">The collection of items to be selected</param>
     public async Task SetSelectedItemsAsync(IEnumerable<TItem> items)
     {
         Debug.Assert(items != null, nameof(items) + " != null");
         await OnSelectAsync(items: items).ConfigureAwait(false);
     }
 
+    /// <summary>
+    ///     Adds a single item to the current selection without clearing existing selections. This allows for
+    ///     incrementally building a selection set. The method triggers the OnSelectionChanged event after
+    ///     adding the item to inform subscribers of the change.
+    /// </summary>
+    /// <param name="item">The item to add to the current selection</param>
     public async Task AddSelectedItemAsync(TItem item)
     {
         _selectedItems.Add(item);
@@ -102,11 +134,14 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     }
 
     /// <summary>
-    ///     Applies a filter to the grid
+    ///     Applies a filter to the grid based on the specified column, value, and filter operator. This method
+    ///     programmatically sets filters without requiring user interaction. It finds the specified column and
+    ///     applies the filter condition, then reloads the grid to display the filtered results.
+    ///     If the column is not found, a warning is logged.
     /// </summary>
-    /// <param name="columnName"></param>
-    /// <param name="value"></param>
-    /// <param name="filterOperator"></param>
+    /// <param name="columnName">The name of the column to filter</param>
+    /// <param name="value">The value to filter by</param>
+    /// <param name="filterOperator">The operator to use for filtering (e.g., Equals, Contains)</param>
     public async Task ApplyFilter(string columnName, object value, FilterOperator filterOperator)
     {
         if (DataGrid is { ColumnsCollection: not null })
@@ -126,9 +161,11 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     }
 
     /// <summary>
-    ///     Clears the filter on the grid
+    ///     Clears all filters from the grid, showing the unfiltered dataset. This removes any filtering
+    ///     that has been applied either programmatically or through user interaction, returning the grid
+    ///     to its initial state in terms of data visibility.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>A task representing the asynchronous operation</returns>
     public Task ClearFilter()
     {
         DataGrid?.ColumnsCollection.Clear();
@@ -148,7 +185,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 
     /// <summary>
     ///     Gets the localized column title using the TranslationKey from the UiFieldGrid attribute
-    ///     or falls back to the property name if no key is specified
+    ///     or falls back to the property name if no key is specified.
     /// </summary>
     private bool IsSortableColumn(PropertyInfo property)
     {
@@ -182,14 +219,22 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     }
 
     /// <summary>
-    ///     Refreshes the grid
+    ///     Refreshes the grid by reloading its data. This is useful when the underlying data source has changed
+    ///     and the grid needs to be updated to reflect these changes. The method ensures that any sorting,
+    ///     filtering, or pagination settings are preserved while refreshing the data.
     /// </summary>
+    /// <returns>A task representing the asynchronous reload operation</returns>
     public async Task ReloadAsync()
     {
         if (DataGrid != null)
             await DataGrid.Reload().ConfigureAwait(false);
     }
 
+    /// <summary>
+    ///     Clears all current selections in the grid. This removes all items from the selected items collection
+    ///     without triggering the OnSelectionChanged event. Use this method when you need to reset the selection
+    ///     state without notifying subscribers.
+    /// </summary>
     public void ClearSelection()
     {
         _selectedItems.Clear();
