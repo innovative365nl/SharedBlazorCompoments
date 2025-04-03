@@ -35,4 +35,10 @@
         </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Components\InnovativeProgressBarCircular.razor.css">
+        <DependentUpon>InnovativeProgressBarCircular.razor</DependentUpon>
+      </None>
+    </ItemGroup>
+
 </Project>
