@@ -17,6 +17,11 @@
     height: clamp(var(--min-height), 100vh, var(--max-height));
 }
 
+::deep .rz-selectable tbody tr.rz-data-row td:first-child {
+    --_rz-grid-first-cell-padding: var(--rz-grid-first-cell-padding, 0.625rem 1rem 0.625rem 2rem);
+    padding: var(--_rz-grid-first-cell-padding);
+}
+
 /* Selectable grid row */
 ::deep .rz-selectable .rz-data-row {
     cursor: pointer
@@ -33,31 +38,14 @@
     visibility: visible;
 }
 
-::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight > td:first-child:before {
+::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight td:first-child:before {
     --_rz-grid-selected-icon: var(--rz-grid-selected-icon, "arrow_forward_ios");
     content: var(--_rz-grid-selected-icon);
-    left: 1rem;
-    position: absolute;
+    padding-left: .5rem;
     font-family: var(--rz-icon-font-family);
     color: var(--rz-grid-selected-color);
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-/* Frozen column */
-::deep .rz-grid-table thead th.rz-frozen-cell > div:not(.rz-cell-filter) {
-    --_rz-grid-frozen-cell-padding: var(--rz-grid-frozen-cell-padding, 0.75rem 1rem 0.75rem 2rem);
-    padding: var(--_rz-grid-frozen-cell-padding);
-}
-
-::deep .rz-grid-table thead th.rz-frozen-cell > div {
-    --_rz-grid-frozen-cell-padding: var(--rz-grid-frozen-cell-padding, 0.75rem 1rem 0.75rem 2rem);
-    padding: var(--_rz-grid-frozen-cell-padding);
-}
-
-::deep .rz-grid-table td.rz-frozen-cell {
-    --_rz-grid-frozen-cell-padding: var(--rz-grid-frozen-cell-padding, 0.75rem 1rem 0.75rem 3rem);
-    padding: var(--_rz-grid-frozen-cell-padding);
+    align-content: center;
+    position: absolute;
 }
 
 /* Table head */
@@ -67,6 +55,11 @@
 
 ::deep .rz-grid-table thead th {
     background: var(--rz-grid-header-stripe-background-color);
+}
+
+::deep .rz-grid-table thead tr th:first-child {
+    --_rz-grid-first-cell-padding: var(--rz-grid-first-cell-padding, 0.625rem 1rem 0.625rem 1rem);
+    padding: var(--_rz-grid-first-cell-padding);
 }
 
 ::deep .rz-grid-table thead tr:first-child th {
@@ -96,27 +89,34 @@
     padding: var(--rz-pager-padding);
 }
 
-::deep .rz-pager-page, .rz-pager-first, .rz-pager-prev, .rz-pager-next, .rz-pager-last {
+::deep .rz-pager-page, 
+::deep .rz-pager-first, 
+::deep .rz-pager-prev, 
+::deep .rz-pager-next, 
+::deep .rz-pager-last {
     --_rz-pager-page-buttons-border-radius: var(--rz-pager-page-buttons-border-radius, 4px);
-    --_rz-pager-page-buttons-width: var(--rz-pager-page-buttons-width, 38px);
-    --_rz-pager-page-buttons-height: var(--rz-pager-page-buttons-height, 38px);
+    --_rz-pager-page-buttons-width: var(--rz-pager-page-buttons-width, 48px);
+    --_rz-pager-page-buttons-height: var(--rz-pager-page-buttons-height, 48px);
     border-radius: var(--_rz-pager-page-buttons-border-radius);
     min-width: var(--_rz-pager-page-buttons-width);
     height: var(--_rz-pager-page-buttons-height);
 }
 
-::deep .rz-pager-element, .rz-button-lg {
+::deep .rz-pager-element, 
+::deep .rz-button-lg {
     min-width: var(--_rz-pager-page-buttons-width);
     min-height: var(--_rz-pager-page-buttons-height);
 }
 
-::deep .rz-pager-element, .rz-button-lg.rz-button-icon-only {
-    --_rz-pager-numeric-button-selected-padding: var(--rz-pager-numeric-button-selected-padding, .5rem);
+::deep .rz-pager-element, 
+::deep .rz-button-lg.rz-button-icon-only {
+    --_rz-pager-numeric-button-selected-padding: var(--rz-pager-numeric-button-selected-padding, .25rem);
     padding: var(--_rz-pager-numeric-button-selected-padding);
+    align-content: center;
 }
 
 ::deep .rz-pager-element, .rz-button-lg {
-    --_rz-pager-numeric-button-selected-padding: var(--rz-pager-numeric-button-selected-padding, .5rem);
+    --_rz-pager-numeric-button-selected-padding: var(--rz-pager-numeric-button-selected-padding, .25rem);
     padding: var(--_rz-pager-numeric-button-selected-padding);
     min-width: var(--_rz-pager-page-buttons-width);
     min-height: var(--_rz-pager-page-buttons-height);
