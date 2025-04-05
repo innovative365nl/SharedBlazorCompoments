@@ -141,14 +141,14 @@ public partial class DynamicDisplayView<TModel> : ComponentBase
                     return;
                 }
 
-                if (attribute.ViewComponent != null)
-                    builder.OpenComponent(sequence: 0, componentType: attribute.ViewComponent);
+                if (attribute.DisplayComponent != null)
+                    builder.OpenComponent(sequence: 0, componentType: attribute.DisplayComponent);
                 builder.AddAttribute(sequence: 1, name: "Value", value: value);
 
-                if (attribute.ViewParameters?.Length > 0)
+                if (attribute.DisplayParameters?.Length > 0)
                 {
                     var index = StartSequenceNumberLoop;
-                    foreach (var param in attribute.ViewParameters)
+                    foreach (var param in attribute.DisplayParameters)
                     {
                         var parts = param.Split(separator: '=', count: 2);
                         if (parts.Length == 2)

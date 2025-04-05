@@ -53,7 +53,7 @@
 
         <RadzenStack Orientation="Orientation.Vertical" Gap="0.25rem">
             <InnovativeText TextStyle="TextStyle.Subtitle2">@_localizer.GetString(fieldAttribute!.Name!)</InnovativeText>
-            @if (fieldAttribute?.ViewComponent != null)
+            @if (fieldAttribute?.DisplayComponent != null)
             {
                 @RenderViewComponent(value: value, attribute: fieldAttribute)
             }
