@@ -28,8 +28,8 @@ public class SimplePersonModel :DisplayFormModel
 {
     public SimplePersonModel()
     {
-        this.AddViewColumn("employeeInfo", 1,1,0);
-        this.AddViewColumn("description", 3, 1, 0);
+        this.AddViewColumn("EmployeeInfo", 2,2,0);
+        this.AddViewColumn("Description", 1, 1, 0);
     }
     [UIFormField(name: "First Name", ColumnGroup = "Name")]
     public string? FirstName { get; set; }

@@ -75,44 +75,63 @@ public partial class DynamicDisplayView<TModel> : ComponentBase
         return string.Empty;
     }
 
-    private void OrganizePropertiesByGroups()
+private void OrganizePropertiesByGroups()
+{
+    var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
+    
+    // Get column order from DisplayFormModel or attribute
+    var customColumnOrder = Model is DisplayFormModel displayModel
+        ? displayModel.ViewColumns.Select(c => c.Name).Where(n => n != null).ToArray()
+        : null;
+    
+    var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
+    var attributeColumnOrder = formClassAttribute?.ColumnOrder;
+    var columnOrder = customColumnOrder?.Any() == true ? customColumnOrder : attributeColumnOrder;
+
+    // Group properties by column group
+    var groupedProperties = propertiesWithAttributes
+        .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup != null)
+        .GroupBy(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup)
+        .ToDictionary(g => g.Key!, g => g.ToList());
+
+    UngroupedProperties = propertiesWithAttributes
+        .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup == null)
+        .ToList();
+
+    // Order the groups based on ColumnOrder if available
+    if (columnOrder != null && columnOrder.Any())
     {
-        var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
-        var customColumnOrder = Model is DisplayFormModel displayModel 
-            ? displayModel.ViewColumns.Select(c => c.Name).Where(n => n != null).ToArray() 
-            : null;
+        // Use an ordered dictionary to maintain the exact order specified
+        var orderedGroups = new List<KeyValuePair<string, List<PropertyInfo>>>();
         
-        var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
-        var attributeColumnOrder = formClassAttribute?.ColumnOrder;
-        var columnOrder = customColumnOrder?.Any() == true ? customColumnOrder : attributeColumnOrder;
-
-        var groupedProperties = propertiesWithAttributes
-            .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup != null)
-            .GroupBy(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup)
-            .ToDictionary(g => g.Key!, g => g.ToList());
-
-        UngroupedProperties = propertiesWithAttributes
-            .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup == null)
-            .ToList();
-
-        // Order the groups based on ColumnOrder if available
-        if (columnOrder != null && columnOrder.Any())
+        // First add groups that match the column order
+        foreach (var columnName in columnOrder)
         {
-            OrderedColumnGroups = columnOrder
-                .Where(columnGroup => groupedProperties.ContainsKey(columnGroup!))
-                .Select(columnGroup => new KeyValuePair<string, List<PropertyInfo>>(
-                    columnGroup!,
-                    groupedProperties[columnGroup!]))
-                .Concat(groupedProperties
-                    .Where(g => !columnOrder.Contains(g.Key))
-                    .Select(g => g)!)
-                .ToList();
+            if (columnName != null && groupedProperties.ContainsKey(columnName))
+            {
+                if (groupedProperties[columnName].Any())
+                {
+                    orderedGroups.Add(new KeyValuePair<string, List<PropertyInfo>>(
+                        columnName,
+                        groupedProperties[columnName]));
+
+                    // Remove the processed group to avoid duplication
+                    groupedProperties.Remove(columnName);
+                }
+            }
+                
         }
-        else
-        {
-            OrderedColumnGroups = groupedProperties.ToList()!;
-        }
+        
+        // Then add any remaining groups not in column order
+        orderedGroups.AddRange(groupedProperties.Select(g => g));
+        
+        OrderedColumnGroups = orderedGroups;
     }
+    else
+    {
+        OrderedColumnGroups = groupedProperties.ToList()!;
+    }
+}
 
     private static PropertyInfo[] GetPropertiesWithViewAction()
     {
