@@ -32,7 +32,7 @@ public partial class DynamicDisplayView<TModel> : ComponentBase
 
     private IReadOnlyCollection<PropertyInfo> UngroupedProperties { get; set; } = new List<PropertyInfo>();
 
-    protected IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; private set; } =
+    private IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; set; } =
         new List<KeyValuePair<string, List<PropertyInfo>>>();
 
     protected override void OnParametersSet()
@@ -45,13 +45,13 @@ public partial class DynamicDisplayView<TModel> : ComponentBase
         base.OnParametersSet();
     }
 
-    protected string GetColumnWidthClass(string columnGroup)
+    private string GetColumnWidthClass(string columnGroup)
     {
         // First check if Model is DisplayFormModel and get column info from there
         if (Model is DisplayFormModel displayModel)
         {
             var column = displayModel.ViewColumns.FirstOrDefault(c => c.Name == columnGroup);
-            if (column != null && column.Width > 0)
+            if (column is { Width: > 0 })
             {
                 return $"column-span-{column.Width}";
             }

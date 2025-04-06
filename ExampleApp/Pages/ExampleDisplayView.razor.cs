@@ -24,16 +24,12 @@ public partial class ExampleDisplayView : ComponentBase
     private readonly SimplePersonModel _person;
 }
 
-[UIFormClass(title: nameof(Example.DialogService_Person),
-    ResourceType = typeof(Example), ColumnOrder = new[] { "Name", "EmployeeInfo", "Description" },
-    ColumnWidthNames = new[] { "Name", "EmployeeInfo", "Description" },
-    ColumnWidthValues = new[] { 1, 1, 3 })]
 public class SimplePersonModel :DisplayFormModel
 {
     public SimplePersonModel()
     {
-        this.AddViewColumn("employeeInfo", 1,2,0);
-        this.AddViewColumn("description", 3, 0, 0);
+        this.AddViewColumn("employeeInfo", 1,5,0);
+        this.AddViewColumn("description", 3, 5, 0);
     }
     [UIFormField(name: "First Name", ColumnGroup = "Name")]
     public string? FirstName { get; set; }

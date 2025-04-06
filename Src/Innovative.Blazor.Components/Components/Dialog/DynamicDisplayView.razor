@@ -46,10 +46,10 @@
         }
     </RadzenStack>
 
-    <section class="rz-dialog-side-content-layout">
+    <section class="innovative-grid-layout">
         @foreach (var group in OrderedColumnGroups)
         {
-            <div class="form-column-group @GetColumnWidthClass(group.Key)">
+        <div class="form-column-group @GetColumnWidthClass(group.Key)">
                 @foreach (var property in group.Value)
                 {
                     var fieldAttribute = property.GetCustomAttribute<UIFormFieldAttribute>();
