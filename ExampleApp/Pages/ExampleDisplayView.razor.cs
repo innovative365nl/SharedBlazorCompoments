@@ -1,6 +1,7 @@
 using ExampleApp.Extensions;
 using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components.Dialog;
+using Innovative.Blazor.Components.Components.Form;
 using Microsoft.AspNetCore.Components;
 
 namespace ExampleApp.Pages;
@@ -27,8 +28,13 @@ public partial class ExampleDisplayView : ComponentBase
     ResourceType = typeof(Example), ColumnOrder = new[] { "Name", "EmployeeInfo", "Description" },
     ColumnWidthNames = new[] { "Name", "EmployeeInfo", "Description" },
     ColumnWidthValues = new[] { 1, 1, 3 })]
-public class SimplePersonModel
+public class SimplePersonModel :DisplayFormModel
 {
+    public SimplePersonModel()
+    {
+        this.AddViewColumn("employeeInfo", 1,2,0);
+        this.AddViewColumn("description", 3, 0, 0);
+    }
     [UIFormField(name: "First Name", ColumnGroup = "Name")]
     public string? FirstName { get; set; }
 

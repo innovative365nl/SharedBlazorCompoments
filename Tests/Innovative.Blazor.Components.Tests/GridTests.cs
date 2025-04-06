@@ -89,7 +89,7 @@ public class GridTests : LocalizedTestBase
         var cut = RenderGridComponent(testData, isLoading: true);
 
         // Assert
-        Contains("""<circle class="rz-progressbar-circular-background" r="15.91549" fill="none"></circle>""",
+        Contains("""<circle class="innovative-progressbar-circular-background" r="15.91549" fill="none""",
             cut.Markup, StringComparison.Ordinal);
     }
 

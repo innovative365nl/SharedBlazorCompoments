@@ -3,6 +3,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Components.Grid;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
@@ -28,6 +29,90 @@ public partial class DynamicDisplayView<TModel> : ComponentBase
     [Parameter] public TModel? Model { get; set; }
     [Parameter] public EventCallback<string> OnActionExecuted { get; set; }
     [CascadingParameter] private RightSideDialog<TModel>? ParentDialog { get; set; }
+
+    private IReadOnlyCollection<PropertyInfo> UngroupedProperties { get; set; } = new List<PropertyInfo>();
+
+    protected IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; private set; } =
+        new List<KeyValuePair<string, List<PropertyInfo>>>();
+
+    protected override void OnParametersSet()
+    {
+        if (Model != null)
+        {
+            OrganizePropertiesByGroups();
+        }
+
+        base.OnParametersSet();
+    }
+
+    protected string GetColumnWidthClass(string columnGroup)
+    {
+        // First check if Model is DisplayFormModel and get column info from there
+        if (Model is DisplayFormModel displayModel)
+        {
+            var column = displayModel.ViewColumns.FirstOrDefault(c => c.Name == columnGroup);
+            if (column != null && column.Width > 0)
+            {
+                return $"column-span-{column.Width}";
+            }
+        }
+        
+        // Fallback to class attribute
+        var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
+        if (formClassAttribute?.ColumnWidthNames != null &&
+            formClassAttribute.ColumnWidthValues != null)
+        {
+            for (int i = 0; i < formClassAttribute.ColumnWidthNames.Length; i++)
+            {
+                if (formClassAttribute.ColumnWidthNames[i] == columnGroup)
+                {
+                    int width = formClassAttribute.ColumnWidthValues[i];
+                    return width == 0 ? string.Empty : $"column-span-{width}";
+                }
+            }
+        }
+
+        return string.Empty;
+    }
+
+    private void OrganizePropertiesByGroups()
+    {
+        var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
+        var customColumnOrder = Model is DisplayFormModel displayModel 
+            ? displayModel.ViewColumns.Select(c => c.Name).Where(n => n != null).ToArray() 
+            : null;
+        
+        var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
+        var attributeColumnOrder = formClassAttribute?.ColumnOrder;
+        var columnOrder = customColumnOrder?.Any() == true ? customColumnOrder : attributeColumnOrder;
+
+        var groupedProperties = propertiesWithAttributes
+            .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup != null)
+            .GroupBy(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup)
+            .ToDictionary(g => g.Key!, g => g.ToList());
+
+        UngroupedProperties = propertiesWithAttributes
+            .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup == null)
+            .ToList();
+
+        // Order the groups based on ColumnOrder if available
+        if (columnOrder != null && columnOrder.Any())
+        {
+            OrderedColumnGroups = columnOrder
+                .Where(columnGroup => groupedProperties.ContainsKey(columnGroup!))
+                .Select(columnGroup => new KeyValuePair<string, List<PropertyInfo>>(
+                    columnGroup!,
+                    groupedProperties[columnGroup!]))
+                .Concat(groupedProperties
+                    .Where(g => !columnOrder.Contains(g.Key))
+                    .Select(g => g)!)
+                .ToList();
+        }
+        else
+        {
+            OrderedColumnGroups = groupedProperties.ToList()!;
+        }
+    }
 
     private static PropertyInfo[] GetPropertiesWithViewAction()
     {
@@ -121,12 +206,6 @@ public partial class DynamicDisplayView<TModel> : ComponentBase
             .Where(predicate: p => p.GetCustomAttribute<UIFormFieldAttribute>() != null)
             .ToArray();
     }
-
-    // private async Task InvokeAction(MethodInfo method)
-    // {
-    //     method.Invoke(obj: Model, parameters: null);
-    //     await OnActionExecuted.InvokeAsync(arg: method.Name).ConfigureAwait(false);
-    // }
 
     [ExcludeFromCodeCoverage]
     private static RenderFragment RenderViewComponent(object? value, UIFormFieldAttribute attribute)
