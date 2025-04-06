@@ -28,13 +28,13 @@ public class SimplePersonModel :DisplayFormModel
 {
     public SimplePersonModel()
     {
-        this.AddViewColumn("employeeInfo", 1,5,0);
-        this.AddViewColumn("description", 3, 5, 0);
+        this.AddViewColumn("employeeInfo", 1,1,0);
+        this.AddViewColumn("description", 3, 1, 0);
     }
     [UIFormField(name: "First Name", ColumnGroup = "Name")]
     public string? FirstName { get; set; }
 
-    [UIFormField(name: "Last Name", ColumnGroup = "Name")]
+    [UIFormField(name: "Last Name", ColumnGroup = "LastName")]
     public string? LastName { get; set; }
 
     // [UIFormField(name: "Age", ColumnGroup = "EmployeeInfo")]

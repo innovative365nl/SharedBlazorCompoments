@@ -45,11 +45,11 @@
 
 .innovative-grid-layout {
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1rem;
 }
 
-/* Column span classes */
+/* Column span classes remain necessary for explicit control */
 .column-span-1 { grid-column: span 1; }
 .column-span-2 { grid-column: span 2; }
 .column-span-3 { grid-column: span 3; }
@@ -63,26 +63,36 @@
 .column-span-11 { grid-column: span 11; }
 .column-span-12 { grid-column: span 12; }
 
-/* Responsive adjustments */
+/* Responsive adjustments for explicit column spans */
+@media (max-width: 1200px) {
+    .innovative-grid-layout {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
 @media (max-width: 768px) {
     .innovative-grid-layout {
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }
-
+    
     /* Adjust spans for medium screens */
     .column-span-7, .column-span-8, .column-span-9,
     .column-span-10, .column-span-11, .column-span-12 {
-        grid-column: span 6;
+        grid-column: 1 / -1; /* Full width */
+    }
+    
+    .column-span-5, .column-span-6 {
+        grid-column: span 3;
     }
 }
 
 @media (max-width: 480px) {
     .innovative-grid-layout {
-        grid-template-columns: repeat(1, 1fr);
+        grid-template-columns: 1fr;
     }
-
-    /* Make everything full width on small screens */
+    
+    /* Full width for everything on mobile */
     [class*="column-span-"] {
-        grid-column: span 1;
+        grid-column: 1 / -1;
     }
 }
