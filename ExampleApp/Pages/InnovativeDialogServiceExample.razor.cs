@@ -78,7 +78,7 @@ public class PersonModel
    // [UIFormField(name: "Age", ColumnGroup = "EmployeeInfo")]
     //public int? Age => DateTime.Now.Year - BirthDate!.Value.Year;
 
-    [UIFormField(name: "Is Active", ViewComponent = typeof(CustomBoolStyle), ColumnGroup = "EmployeeInfo")]
+    [UIFormField(name: "Is Active", DisplayComponent = typeof(CustomBoolStyle), ColumnGroup = "EmployeeInfo")]
     public bool IsActive { get; set; }
 
     [UIFormField(name: "Birth Date",  ColumnGroup = "EmployeeInfo")]

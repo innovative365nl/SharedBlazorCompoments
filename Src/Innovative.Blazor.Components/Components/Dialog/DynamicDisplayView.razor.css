@@ -1,0 +1,98 @@
+.rz-dialog-side-content-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(max(10px, 250px), 1fr));
+    gap: 1rem;
+}
+
+/* Column spanning classes */
+.column-span-2 {
+    grid-column: span 2;
+}
+
+.column-span-3 {
+    grid-column: span 3;
+}
+
+.column-span-4 {
+    grid-column: span 4;
+}
+
+/* Full width column */
+.column-span-full {
+    grid-column: 1 / -1;
+}
+
+.form-column-group {
+    margin-bottom: 1rem;
+}
+
+.form-ungrouped {
+    margin-top: 1rem;
+}
+
+.html-content {
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+@media (min-width: 768px) {
+    .rz-dialog-side-content-layout {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+    }
+}
+
+.innovative-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+/* Column span classes remain necessary for explicit control */
+.column-span-1 { grid-column: span 1; }
+.column-span-2 { grid-column: span 2; }
+.column-span-3 { grid-column: span 3; }
+.column-span-4 { grid-column: span 4; }
+.column-span-5 { grid-column: span 5; }
+.column-span-6 { grid-column: span 6; }
+.column-span-7 { grid-column: span 7; }
+.column-span-8 { grid-column: span 8; }
+.column-span-9 { grid-column: span 9; }
+.column-span-10 { grid-column: span 10; }
+.column-span-11 { grid-column: span 11; }
+.column-span-12 { grid-column: span 12; }
+
+/* Responsive adjustments for explicit column spans */
+@media (max-width: 1200px) {
+    .innovative-grid-layout {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .innovative-grid-layout {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+    
+    /* Adjust spans for medium screens */
+    .column-span-7, .column-span-8, .column-span-9,
+    .column-span-10, .column-span-11, .column-span-12 {
+        grid-column: 1 / -1; /* Full width */
+    }
+    
+    .column-span-5, .column-span-6 {
+        grid-column: span 3;
+    }
+}
+
+@media (max-width: 480px) {
+    .innovative-grid-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Full width for everything on mobile */
+    [class*="column-span-"] {
+        grid-column: 1 / -1;
+    }
+}

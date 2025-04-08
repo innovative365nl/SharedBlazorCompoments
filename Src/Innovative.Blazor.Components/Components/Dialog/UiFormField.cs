@@ -18,8 +18,8 @@ public sealed class UIFormFieldAttribute : UIField
     }
     public string? ColumnGroup { get; set; }
     public bool UseWysiwyg { get; set; }
-    public Type? ViewComponent { get; set; }
-    public string[]? ViewParameters { get; set; }
+    public Type? DisplayComponent { get; set; }
+    public string[]? DisplayParameters { get; set; }
     public Type? FormComponent { get; set; }
     public string[]? FormParameters { get; set; }
 }
