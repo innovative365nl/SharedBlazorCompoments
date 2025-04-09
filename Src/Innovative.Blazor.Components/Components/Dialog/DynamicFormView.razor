@@ -1,3 +1,4 @@
+@using System.Reflection
 @typeparam TModel
 
 <RadzenTemplateForm TItem="TModel" Data="@Model" Submit="@OnSubmitPressed">
@@ -7,7 +8,16 @@
             <div class="form-column-group @GetColumnWidthClass(group.Key)">
                 @foreach (var property in group.Value)
                 {
-                    @RenderPropertyField(property)
+                    var fieldAttribute = property.GetCustomAttribute<UIFormFieldAttribute>();
+
+                    if (fieldAttribute?.FormComponent != null)
+                    {
+                        @RenderFormComponent(value : property.GetValue(Model), attribute: fieldAttribute)
+                    }
+                    else
+                    {
+                        @RenderPropertyField(property)     
+                    }
                 }
             </div>
         }
