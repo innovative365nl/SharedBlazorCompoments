@@ -219,14 +219,15 @@ public partial class DynamicFormView<TModel> : ComponentBase, IDynamicBaseCompon
                 if (attribute.DisplayParameters?.Length > 0)
                 {
                     var index = StartSequenceNumberLoop;
-                    foreach (var param in attribute.DisplayParameters)
-                    {
-                        var parts = param.Split(separator: '=', count: 2);
-                        if (parts.Length == 2)
+                    if (attribute.FormParameters != null)
+                        foreach (var param in attribute.FormParameters)
                         {
-                            builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);
+                            var parts = param.Split(separator: '=', count: 2);
+                            if (parts.Length == 2)
+                            {
+                                builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);
+                            }
                         }
-                    }
                 }
 
                 builder.CloseComponent();
