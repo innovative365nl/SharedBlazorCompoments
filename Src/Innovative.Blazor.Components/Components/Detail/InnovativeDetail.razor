@@ -1,4 +1,5 @@
 @using System.Reflection
+@using Innovative.Blazor.Components.Components.Dialog
 @using Microsoft.Extensions.Localization
 @using Innovative.Blazor.Components.Components.Text
 @using TextStyle = Innovative.Blazor.Components.Components.Text.TextStyle
@@ -50,13 +51,16 @@
         @foreach (var group in OrderedColumnGroups)
         {
         <div class="form-column-group @GetColumnWidthClass(group.Key)">
-                @foreach (var property in group.Value)
-                {
-                    var fieldAttribute = property.GetCustomAttribute<UIFormFieldAttribute>();
-                    var value = property.GetValue(obj: Model);
+            @foreach (var property in group.Value)
+            {
+                var fieldAttribute = property.GetCustomAttribute<UIFormFieldAttribute>();
+                var value = property.GetValue(obj: Model);
 
-                    <RadzenStack Orientation="Orientation.Vertical" Gap="0.25rem">
-                        <InnovativeText TextStyle="TextStyle.Subtitle2">@_localizer.GetString(fieldAttribute!.Name!)</InnovativeText>
+                <div style="display: grid; grid-template-columns: minmax(100px, auto) 1fr; gap: 0.25rem; align-items: baseline; margin-bottom: 0.5rem;">
+                    <div>
+                        <RadzenLabel Style="font-weight: bold">@_localizer.GetString(fieldAttribute!.Name!):</RadzenLabel>
+                    </div>
+                    <div>
                         @if (fieldAttribute?.DisplayComponent != null)
                         {
                             @RenderViewComponent(value: value, attribute: fieldAttribute)
@@ -69,8 +73,9 @@
                         {
                             <InnovativeText TextStyle="TextStyle.Body1">@(value?.ToString() ?? "-")</InnovativeText>
                         }
-                    </RadzenStack>
-                }
+                    </div>
+                </div>
+            }
             </div>
         }
 
@@ -82,21 +87,25 @@
                     var fieldAttribute = property.GetCustomAttribute<UIFormFieldAttribute>();
                     var value = property.GetValue(obj: Model);
 
-                    <RadzenStack Orientation="Orientation.Vertical" Gap="0.25rem">
-                        <InnovativeText TextStyle="TextStyle.Subtitle2">@_localizer.GetString(fieldAttribute!.Name!)</InnovativeText>
-                        @if (fieldAttribute?.DisplayComponent != null)
-                        {
-                            @RenderViewComponent(value: value, attribute: fieldAttribute)
-                        }
-                        else if (fieldAttribute!.UseWysiwyg && property.PropertyType == typeof(string) && value != null)
-                        {
-                            <div class="html-content">@((MarkupString)(value.ToString() ?? string.Empty))</div>
-                        }
-                        else
-                        {
-                            <InnovativeText TextStyle="TextStyle.Body1">@(value?.ToString() ?? "-")</InnovativeText>
-                        }
-                    </RadzenStack>
+                    <div style="display: grid; grid-template-columns: minmax(100px, auto) 1fr; gap: 0.25rem; align-items: baseline; margin-bottom: 0.5rem;">
+                        <div>
+                            <RadzenLabel Style="font-weight: bold">@_localizer.GetString(fieldAttribute!.Name!):</RadzenLabel>
+                        </div>
+                        <div>
+                            @if (fieldAttribute?.DisplayComponent != null)
+                            {
+                                @RenderViewComponent(value: value, attribute: fieldAttribute)
+                            }
+                            else if (fieldAttribute!.UseWysiwyg && property.PropertyType == typeof(string) && value != null)
+                            {
+                                <div class="html-content">@((MarkupString)(value.ToString() ?? string.Empty))</div>
+                            }
+                            else
+                            {
+                                <InnovativeText TextStyle="TextStyle.Body1" class="truncated-text">@(value?.ToString() ?? "-")</InnovativeText>
+                            }
+                        </div>
+                    </div>
                 }
             </div>
         }

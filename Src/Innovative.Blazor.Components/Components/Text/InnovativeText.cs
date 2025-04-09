@@ -76,6 +76,12 @@ public sealed class InnovativeText : ComponentBase, IDisposable
     /// </summary>
     [Parameter]
     public string? Format { get; set; }
+    
+    /// <summary>
+    /// Show the property name as a bold printed abel.
+    /// </summary>
+    [Parameter]
+    public bool ShowPropertyName { get; set; }
 
     /// <summary>
     /// CSS class for the component.
@@ -88,6 +94,7 @@ public sealed class InnovativeText : ComponentBase, IDisposable
     /// </summary>
     [Parameter]
     public string? Style { get; set; }
+    
 
     protected override void OnParametersSet()
     {
@@ -135,66 +142,81 @@ public sealed class InnovativeText : ComponentBase, IDisposable
         }
     }
 
-    protected override void BuildRenderTree(RenderTreeBuilder builder)
+protected override void BuildRenderTree(RenderTreeBuilder builder)
+{
+    ArgumentNullException.ThrowIfNull(builder);
+
+    // Determine the tag name and CSS classes based on TextStyle and TagName
+    var tagName = DetermineTagName();
+    var classNames = DetermineClassNames();
+
+    // If we have a bound property, use its value
+    var displayText = Text;
+    var displayPropertyName = _propertyName;
+
+    if (_propertyValue != null)
     {
-        ArgumentNullException.ThrowIfNull(builder);
+        displayText = !string.IsNullOrEmpty(Format)
+            ? string.Format(CultureInfo.CurrentCulture, Format, _propertyValue)
+            : _propertyValue.ToString();
+    }
 
-        // Determine the tag name and CSS classes based on TextStyle and TagName
-        string tagName = DetermineTagName();
-        string classNames = DetermineClassNames();
+    // Open the element with the determined tag name
+    builder.OpenElement(0, tagName);
 
-        // If we have a bound property, use its value
-        string? displayText = Text;
+    // Add style attribute if provided
+    if (!string.IsNullOrEmpty(Style))
+    {
+        builder.AddAttribute(1, "style", Style);
+    }
 
-        if (_propertyValue != null)
-        {
-            displayText = !string.IsNullOrEmpty(Format)
-                ? string.Format(CultureInfo.CurrentCulture, Format, _propertyValue)
-                : _propertyValue.ToString();
-        }
+    // Add class attribute with all calculated classes
+    builder.AddAttribute(2, "class", classNames);
 
-        // Open the element with the determined tag name
-        builder.OpenElement(0, tagName);
+    // Add any additional attributes passed to the component
+    if (Attributes != null)
+    {
+        builder.AddMultipleAttributes(3, Attributes);
+    }
 
-        // Add style attribute if provided
-        if (!string.IsNullOrEmpty(Style))
-        {
-            builder.AddAttribute(1, "style", Style);
-        }
+    // Add the content - either formatted property+value, text, or child content
+    if (ShowPropertyName && !string.IsNullOrEmpty(displayPropertyName) && !string.IsNullOrEmpty(displayText))
+    {
+        // Create property name with bold formatting
+        builder.OpenElement(4, "span");
+        builder.AddAttribute(5, "class", "innovative-text-property-name");
+        builder.AddAttribute(6, "style", "font-weight: bold;");
+        builder.AddContent(7, displayPropertyName);
+        builder.CloseElement(); // Close property name span
 
-        // Add class attribute with all calculated classes
-        builder.AddAttribute(2, "class", classNames);
+        // Add separator
+        builder.AddContent(8, ": ");
 
-        // Add any additional attributes passed to the component
-        if (Attributes != null)
-        {
-            builder.AddMultipleAttributes(3, Attributes);
-        }
+        // Add value
+        builder.AddContent(9, displayText);
+    }
+    else if (!string.IsNullOrEmpty(displayText))
+    {
+        builder.AddContent(10, displayText);
+    }
+    else if (ChildContent != null)
+    {
+        builder.AddContent(11, ChildContent);
+    }
 
-        // Add the content - either text or child content
-        if (!string.IsNullOrEmpty(displayText))
-        {
-            builder.AddContent(4, displayText);
-        }
-        else if (ChildContent != null)
-        {
-            builder.AddContent(5, ChildContent);
-        }
-
-        // Add anchor if specified
-        if (!string.IsNullOrEmpty(Anchor))
-        {
-            builder.OpenElement(6, "a");
-            builder.AddAttribute(7, "id", Anchor);
-            builder.AddAttribute(8, "href", $"#{Anchor}");
-            builder.AddAttribute(9, "class", "innovative-link");
-            builder.CloseElement();
-        }
-
-        // Close the main element
+    // Add anchor if specified
+    if (!string.IsNullOrEmpty(Anchor))
+    {
+        builder.OpenElement(12, "a");
+        builder.AddAttribute(13, "id", Anchor);
+        builder.AddAttribute(14, "href", $"#{Anchor}");
+        builder.AddAttribute(15, "class", "innovative-link");
         builder.CloseElement();
     }
 
+    // Close the main element
+    builder.CloseElement();
+}
     private string DetermineTagName()
     {
         // First check if TagName is explicitly set (and not Auto)

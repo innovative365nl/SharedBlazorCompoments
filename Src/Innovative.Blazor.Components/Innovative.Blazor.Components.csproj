@@ -13,6 +13,9 @@
         <Content Update="Components\_Imports.razor">
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         </Content>
+        <Content Update="Components\Detail\InnovativeDetail.razor.css">
+          <DependentUpon>DetailView.razor</DependentUpon>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -40,5 +43,6 @@
         <DependentUpon>InnovativeProgressBarCircular.razor</DependentUpon>
       </None>
     </ItemGroup>
+    
 
 </Project>
