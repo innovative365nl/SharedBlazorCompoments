@@ -1,6 +1,6 @@
-using ExampleApp.Pages;
 using Innovative.Blazor.Components.Components.Dialog;
 using Microsoft.AspNetCore.Components;
+using ExampleApp.Pages;
 
 namespace ExampleApp.Extensions;
 

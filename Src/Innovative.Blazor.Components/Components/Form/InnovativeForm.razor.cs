@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
+using Innovative.Blazor.Components.Components.Dialog;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -11,15 +12,15 @@ using Radzen.Blazor;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Components.Dialog;
+namespace Innovative.Blazor.Components.Components.Form;
 
-public partial class DynamicFormView<TModel> : ComponentBase, IDynamicBaseComponent
+public partial class InnovativeForm<TModel> : ComponentBase, IDynamicBaseComponent
 {
     private readonly Dictionary<string, object?> _formValues = new Dictionary<string, object?>();
     private readonly IInnovativeStringLocalizer _localizer = null!;
     private const int StartSequenceNumberLoop = 4;
 
-    public DynamicFormView(IInnovativeStringLocalizerFactory localizerFactory)
+    public InnovativeForm(IInnovativeStringLocalizerFactory localizerFactory)
     {
         var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
         var resourceType = uiClassAttribute?.ResourceType ?? typeof(TModel);

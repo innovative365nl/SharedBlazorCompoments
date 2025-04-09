@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Innovative.Blazor.Components.Components.Detail;
 using Innovative.Blazor.Components.Components.Dialog;
+using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Enumerators;
 using Innovative.Blazor.Components.Localizer;
 using Innovative.Blazor.Components.Services;
@@ -196,13 +198,13 @@ public class DialogTests : LocalizedTestBase
             parameters.Add(p => p.Model, testModel);
             parameters.Add(p => p.ViewChildContent, builder =>
             {
-                builder.OpenComponent<DynamicDisplayView<TestDynamicFormModel>>(0);
+                builder.OpenComponent<InnovativeDetail<TestDynamicFormModel>>(0);
                 builder.AddAttribute(1, "Model", testModel);
                 builder.CloseComponent();
             });
             parameters.Add(p => p.EditChildContent, builder =>
             {
-                builder.OpenComponent<DynamicFormView<TestModel>>(0);
+                builder.OpenComponent<InnovativeForm<TestModel>>(0);
                 builder.AddAttribute(1, "Model", testModel);
                 builder.CloseComponent();
             });
@@ -257,7 +259,7 @@ public class DialogTests : LocalizedTestBase
             parameters.Add(p => p.Model, testModel);
             parameters.Add(p => p.ViewChildContent, builder =>
             {
-                builder.OpenComponent<DynamicDisplayView<TestDynamicFormModel>>(0);
+                builder.OpenComponent<InnovativeDetail<TestDynamicFormModel>>(0);
                 builder.AddAttribute(1, "Model", testModel);
                 builder.CloseComponent();
             });

@@ -1,7 +1,9 @@
 #region
 
 using System.Reflection;
+using Innovative.Blazor.Components.Components.Detail;
 using Innovative.Blazor.Components.Components.Dialog;
+using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Enumerators;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
@@ -46,14 +48,14 @@ internal sealed class InnovativeDialogService(
 
         var viewContent = new RenderFragment(builder =>
         {
-            builder.OpenComponent<DynamicDisplayView<T>>(sequence: 0);
+            builder.OpenComponent<InnovativeDetail<T>>(sequence: 0);
             builder.AddAttribute(sequence: 1, name: "Model", value: model);
             builder.CloseComponent();
         });
 
         var editContent = new RenderFragment(builder =>
         {
-            builder.OpenComponent<DynamicFormView<T>>(sequence: 0);
+            builder.OpenComponent<InnovativeForm<T>>(sequence: 0);
             builder.AddAttribute(sequence: 1, name: "Model", value: model);
             builder.CloseComponent();
         });

@@ -3,6 +3,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using Innovative.Blazor.Components.Components.Dialog;
 using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Components.Grid;
 using Innovative.Blazor.Components.Localizer;
@@ -10,15 +11,15 @@ using Microsoft.AspNetCore.Components;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Components.Dialog;
+namespace Innovative.Blazor.Components.Components.Detail;
 
-public partial class DynamicDisplayView<TModel> : ComponentBase
+public partial class InnovativeDetail<TModel> : ComponentBase
 {
     private readonly IInnovativeStringLocalizer _localizer;
     private const int StartSequenceNumberLoop = 4;
     private const int MaxNumberOfButtonsBesideEachOther = 2;
 
-    public DynamicDisplayView(IInnovativeStringLocalizerFactory localizerFactory)
+    public InnovativeDetail(IInnovativeStringLocalizerFactory localizerFactory)
     {
         var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIGridClass>();
         var resourceType = uiClassAttribute?.ResourceType ?? typeof(TModel);
@@ -28,6 +29,7 @@ public partial class DynamicDisplayView<TModel> : ComponentBase
 
     [Parameter] public TModel? Model { get; set; }
     [Parameter] public EventCallback<string> OnActionExecuted { get; set; }
+    
     [CascadingParameter] private RightSideDialog<TModel>? ParentDialog { get; set; }
 
     private IReadOnlyCollection<PropertyInfo> UngroupedProperties { get; set; } = new List<PropertyInfo>();

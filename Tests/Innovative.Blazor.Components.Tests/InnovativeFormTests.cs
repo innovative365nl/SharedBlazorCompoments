@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Innovative.Blazor.Components.Components.Dialog;
+using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Services;
 using Innovative.Blazor.Components.Tests.TestBase;
 using Microsoft.AspNetCore.Components;
@@ -15,12 +16,12 @@ using Moq;
 
 namespace Innovative.Blazor.Components.Tests;
 
-public class DynamicFormViewTests : LocalizedTestBase
+public class InnovativeFormTests : LocalizedTestBase
 {
     private readonly Mock<ICustomDialogService> _customDialogServiceMock;
     private readonly Mock<RightSideDialog<TestFormModel>> _dialogMock;
 
-    public DynamicFormViewTests()
+    public InnovativeFormTests()
     {
         _customDialogServiceMock = new Mock<ICustomDialogService>();
         _dialogMock = new Mock<RightSideDialog<TestFormModel>>(_customDialogServiceMock.Object);
@@ -39,7 +40,7 @@ public class DynamicFormViewTests : LocalizedTestBase
             DateProperty = new DateTime(2023, 1, 1)
         };
 
-        var component = new DynamicFormView<TestFormModel>(LocalizerFactoryMock.Object)
+        var component = new InnovativeForm<TestFormModel>(LocalizerFactoryMock.Object)
         {
             Model = model,
             ParentDialog = _dialogMock.Object
@@ -62,7 +63,7 @@ public class DynamicFormViewTests : LocalizedTestBase
         var model = new TestFormModel();
         bool saveCallbackInvoked = false;
 
-        var component = new DynamicFormView<TestFormModel>(LocalizerFactoryMock.Object)
+        var component = new InnovativeForm<TestFormModel>(LocalizerFactoryMock.Object)
         {
             Model = model,
             ParentDialog = _dialogMock.Object,
@@ -92,7 +93,7 @@ public class DynamicFormViewTests : LocalizedTestBase
     {
         // Arrange
         bool cancelCallbackInvoked = false;
-        var component = new DynamicFormView<TestFormModel>(LocalizerFactoryMock.Object)
+        var component = new InnovativeForm<TestFormModel>(LocalizerFactoryMock.Object)
         {
             Model = new TestFormModel(),
             ParentDialog = _dialogMock.Object,
@@ -110,7 +111,7 @@ public class DynamicFormViewTests : LocalizedTestBase
     public void OrganizePropertiesByGroupsGroupsPropertiesCorrectly()
     {
         // Arrange
-        var component = new DynamicFormView<TestFormGroupModel>(LocalizerFactoryMock.Object)
+        var component = new InnovativeForm<TestFormGroupModel>(LocalizerFactoryMock.Object)
         {
             Model = new TestFormGroupModel(),
             ParentDialog = new Mock<RightSideDialog<TestFormGroupModel>>(_customDialogServiceMock.Object).Object
@@ -139,7 +140,7 @@ public class DynamicFormViewTests : LocalizedTestBase
     public void GetColumnWidthClassReturnsCorrectClass()
     {
         // Arrange
-        var component = new DynamicFormView<TestFormColumnWidthModel>(LocalizerFactoryMock.Object)
+        var component = new InnovativeForm<TestFormColumnWidthModel>(LocalizerFactoryMock.Object)
         {
             Model = new TestFormColumnWidthModel(),
             ParentDialog = new Mock<RightSideDialog<TestFormColumnWidthModel>>(_customDialogServiceMock.Object).Object
@@ -192,53 +193,53 @@ public class TestFormModel
 // Extension methods to access private methods/properties for testing
 public static class DynamicFormViewTestExtensions
 {
-    public static void CallOnInitialized<T>(this DynamicFormView<T> component)
+    public static void CallOnInitialized<T>(this InnovativeForm<T> component)
     {
-        var method = typeof(DynamicFormView<T>).GetMethod("OnInitialized",
+        var method = typeof(InnovativeForm<T>).GetMethod("OnInitialized",
             BindingFlags.NonPublic | BindingFlags.Instance);
         method?.Invoke(component, null);
     }
 
-    public static void CallOnParametersSet<T>(this DynamicFormView<T> component)
+    public static void CallOnParametersSet<T>(this InnovativeForm<T> component)
     {
-        var method = typeof(DynamicFormView<T>).GetMethod("OnParametersSet",
+        var method = typeof(InnovativeForm<T>).GetMethod("OnParametersSet",
             BindingFlags.NonPublic | BindingFlags.Instance);
         method?.Invoke(component, null);
     }
 
-    public static object? GetFormValue<T>(this DynamicFormView<T> component, string propertyName)
+    public static object? GetFormValue<T>(this InnovativeForm<T> component, string propertyName)
     {
-        var formValuesField = typeof(DynamicFormView<T>).GetField("_formValues",
+        var formValuesField = typeof(InnovativeForm<T>).GetField("_formValues",
             BindingFlags.NonPublic | BindingFlags.Instance);
         var formValues = (Dictionary<string, object>)formValuesField?.GetValue(component)!;
         return formValues?.TryGetValue(propertyName, out var value) == true ? value : null;
     }
 
-    public static void SetFormValue<T>(this DynamicFormView<T> component, string propertyName, object value)
+    public static void SetFormValue<T>(this InnovativeForm<T> component, string propertyName, object value)
     {
-        var setValueMethod = typeof(DynamicFormView<T>).GetMethod("SetValue",
+        var setValueMethod = typeof(InnovativeForm<T>).GetMethod("SetValue",
             BindingFlags.NonPublic | BindingFlags.Instance);
         setValueMethod?.Invoke(component, new[] { propertyName, value });
     }
 
-    public static IReadOnlyCollection<PropertyInfo>? GetUngroupedProperties<T>(this DynamicFormView<T> component)
+    public static IReadOnlyCollection<PropertyInfo>? GetUngroupedProperties<T>(this InnovativeForm<T> component)
     {
-        var property = typeof(DynamicFormView<T>).GetProperty("UngroupedProperties",
+        var property = typeof(InnovativeForm<T>).GetProperty("UngroupedProperties",
             BindingFlags.NonPublic | BindingFlags.Instance);
         return (IReadOnlyCollection<PropertyInfo>)property?.GetValue(component)!;
     }
 
     public static IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>>? GetOrderedColumnGroups<T>(
-        this DynamicFormView<T> component)
+        this InnovativeForm<T> component)
     {
-        var property = typeof(DynamicFormView<T>).GetProperty("OrderedColumnGroups",
+        var property = typeof(InnovativeForm<T>).GetProperty("OrderedColumnGroups",
             BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         return (IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>>)property?.GetValue(component)!;
     }
 
-    public static string CallGetColumnWidthClass<T>(this DynamicFormView<T> component, string columnGroup)
+    public static string CallGetColumnWidthClass<T>(this InnovativeForm<T> component, string columnGroup)
     {
-        var method = typeof(DynamicFormView<T>).GetMethod("GetColumnWidthClass",
+        var method = typeof(InnovativeForm<T>).GetMethod("GetColumnWidthClass",
             BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
         return (string)method!.Invoke(component, new[] { columnGroup })! ?? string.Empty;
     }
