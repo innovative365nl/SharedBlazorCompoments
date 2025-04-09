@@ -17,6 +17,7 @@ public partial class DynamicFormView<TModel> : ComponentBase, IDynamicBaseCompon
 {
     private readonly Dictionary<string, object?> _formValues = new Dictionary<string, object?>();
     private readonly IInnovativeStringLocalizer _localizer = null!;
+    private const int StartSequenceNumberLoop = 4;
 
     public DynamicFormView(IInnovativeStringLocalizerFactory localizerFactory)
     {
@@ -197,6 +198,49 @@ public partial class DynamicFormView<TModel> : ComponentBase, IDynamicBaseCompon
 
         builder.CloseComponent();
     };
+    
+    [ExcludeFromCodeCoverage]
+    private static RenderFragment RenderFormComponent(object? value, UIFormFieldAttribute attribute)
+    {
+        return builder =>
+        {
+            try
+            {
+                if (value == null)
+                {
+                    builder.AddMarkupContent(sequence: 0, markupContent: "<span class=\"text-muted\">-</span>");
+                    return;
+                }
+
+                if (attribute.DisplayComponent != null)
+                    builder.OpenComponent(sequence: 0, componentType: attribute.DisplayComponent);
+                builder.AddAttribute(sequence: 1, name: "Value", value: value);
+
+                if (attribute.DisplayParameters?.Length > 0)
+                {
+                    var index = StartSequenceNumberLoop;
+                    foreach (var param in attribute.DisplayParameters)
+                    {
+                        var parts = param.Split(separator: '=', count: 2);
+                        if (parts.Length == 2)
+                        {
+                            builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);
+                        }
+                    }
+                }
+
+                builder.CloseComponent();
+            }
+#pragma warning disable CA1031
+            catch (Exception ex)
+#pragma warning restore CA1031
+            {
+                builder.AddMarkupContent(sequence: 0,
+                    markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
+            }
+        };
+    }
+
 
     private string GetStringValue(string propertyName)
     {
