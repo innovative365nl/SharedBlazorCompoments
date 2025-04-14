@@ -1,5 +1,6 @@
 #region
 
+using Innovative.Blazor.Components.Components.Common;
 using Innovative.Blazor.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Radzen;
@@ -8,10 +9,10 @@ using Radzen;
 
 namespace Innovative.Blazor.Components.Components.SidePanel;
 
-public partial class SidePanel<TModel>(ICustomDialogService sidePanelService) : ComponentBase
+public partial class SidePanelComponent<TModel>(ICustomDialogService sidePanelService) : ComponentBase
 {
-    private IDynamicBaseComponent? _formComponent;
-    private bool _isCustomDialog;
+    private IDynamicBaseComponent? formComponent;
+    private bool isCustomDialog;
 
     [Parameter] public bool IsEditing { get; set; } 
 
@@ -33,7 +34,7 @@ public partial class SidePanel<TModel>(ICustomDialogService sidePanelService) : 
 
     public void SetFormComponent(IDynamicBaseComponent formComponent)
     {
-        _formComponent = formComponent;
+        this.formComponent = formComponent;
         // Store the component instance
         if (formComponent is object instance)
         {
@@ -43,16 +44,15 @@ public partial class SidePanel<TModel>(ICustomDialogService sidePanelService) : 
 
     public void SetCustomDialog(bool isCustom)
     {
-        _isCustomDialog = isCustom;
+        isCustomDialog = isCustom;
         StateHasChanged();
     }
 
     private async Task HandleSaveClick()
     {
-        if (_formComponent != null) await _formComponent.OnSubmitPressed().ConfigureAwait(false);
-        _isCustomDialog = false;
+        if (formComponent != null) await formComponent.OnSubmitPressed().ConfigureAwait(false);
+        isCustomDialog = false;
         IsEditing = false;
-
 
         await SaveClicked.InvokeAsync().ConfigureAwait(false);
     }
@@ -60,7 +60,7 @@ public partial class SidePanel<TModel>(ICustomDialogService sidePanelService) : 
     private Task HandleCancelClick()
     {
         IsEditing = false;
-        _isCustomDialog = false;
+        isCustomDialog = false;
         ActionChildContent = null;
         return Task.CompletedTask;
     }

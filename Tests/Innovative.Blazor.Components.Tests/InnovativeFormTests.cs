@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Innovative.Blazor.Components.Components.Dialog;
+using Innovative.Blazor.Components.Components.Common;
 using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Services;
 using Innovative.Blazor.Components.Tests.TestBase;

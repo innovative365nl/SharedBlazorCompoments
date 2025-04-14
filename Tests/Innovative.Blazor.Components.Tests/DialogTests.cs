@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Innovative.Blazor.Components.Components.Common;
 using Innovative.Blazor.Components.Components.Detail;
 using Innovative.Blazor.Components.Components.SidePanel;
 using Innovative.Blazor.Components.Components.Form;
@@ -67,7 +68,7 @@ public class DialogTests : LocalizedTestBase
         var expectedTitle = "Test Form";
 
         _dialogServiceMock
-            .Setup(x => x.OpenSideAsync<SidePanel<TestDynamicFormModel>>(
+            .Setup(x => x.OpenSideAsync<SidePanelComponent<TestDynamicFormModel>>(
                 It.IsAny<string>(),
                 It.IsAny<Dictionary<string, object>>(),
                 It.IsAny<SideDialogOptions>()))
@@ -75,7 +76,7 @@ public class DialogTests : LocalizedTestBase
             {
                 capturedTitle = title;
                 capturedParameters = parameters;
-                return new SidePanel<TestDynamicFormModel>(_dialogServiceMock.Object);
+                return new SidePanelComponent<TestDynamicFormModel>(_dialogServiceMock.Object);
             });
 
         // Act
@@ -143,7 +144,7 @@ public class DialogTests : LocalizedTestBase
         ctx.Services.AddRadzenComponents();
 
         // Render the component
-        var cut = ctx.RenderComponent<SidePanel<TestDynamicFormModel>>(parameters =>
+        var cut = ctx.RenderComponent<SidePanelComponent<TestDynamicFormModel>>(parameters =>
         {
             parameters.Add(p => p.ShowEdit, true);
             parameters.Add(p => p.ViewChildContent, builder =>
@@ -193,7 +194,7 @@ public class DialogTests : LocalizedTestBase
             TestProperty = "TestProperty"
         };
 
-        var cut = ctx.RenderComponent<SidePanel<TestDynamicFormModel>>(parameters =>
+        var cut = ctx.RenderComponent<SidePanelComponent<TestDynamicFormModel>>(parameters =>
         {
             parameters.Add(p => p.Model, testModel);
             parameters.Add(p => p.ViewChildContent, builder =>
@@ -254,7 +255,7 @@ public class DialogTests : LocalizedTestBase
         };
 
         // Render the component
-        var cut = ctx.RenderComponent<SidePanel<TestDynamicFormModel>>(parameters =>
+        var cut = ctx.RenderComponent<SidePanelComponent<TestDynamicFormModel>>(parameters =>
         {
             parameters.Add(p => p.Model, testModel);
             parameters.Add(p => p.ViewChildContent, builder =>
@@ -273,10 +274,10 @@ public class DialogTests : LocalizedTestBase
 
 
     [Theory]
-    [InlineData(SidePanelWidth.Normal, "40vw;")]
-    [InlineData(SidePanelWidth.Large, "60vw;")]
-    [InlineData(SidePanelWidth.ExtraLarge, "80vw;")]
-    public void GetWidthReturnsCorrectWidthString(SidePanelWidth width, string expected)
+    [InlineData(SideDialogWidth.Normal, "40vw;")]
+    [InlineData(SideDialogWidth.Large, "60vw;")]
+    [InlineData(SideDialogWidth.ExtraLarge, "80vw;")]
+    public void GetWidthReturnsCorrectWidthString(SideDialogWidth width, string expected)
     {
         // Arrange
         var method = typeof(InnovativeDialogService).GetMethod("GetWidth",

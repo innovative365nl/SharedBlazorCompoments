@@ -57,11 +57,11 @@ namespace Innovative.Blazor.Components.Components.TrackInUrl;
 /// </summary>
 public abstract class UrlStateTracker(NavigationManager navigationManager) : ComponentBase, IDisposable
 {
-    private readonly Dictionary<PropertyInfo, object?> _trackedProperties = new();
-    private bool _disposed;
+    private readonly Dictionary<PropertyInfo, object?> trackedProperties = new();
+    private bool disposed;
 
-    private bool _isInitialized;
-    private bool _isUpdatingFromUrl;
+    private bool isInitialized;
+    private bool isUpdatingFromUrl;
 
     /// <summary>
     /// Disposes the component and unregisters the location changed event handler.
@@ -95,13 +95,13 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
 
         foreach (var prop in trackedProps)
         {
-            _trackedProperties[key: prop] = prop.GetValue(obj: this)!;
+            trackedProperties[key: prop] = prop.GetValue(obj: this)!;
         }
 
         navigationManager.LocationChanged += HandleLocationChanged!;
         ReadFromUrl();
 
-        _isInitialized = true;
+        isInitialized = true;
     }
 
     /// <summary>
@@ -131,7 +131,7 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
     /// </summary>
     protected void OnPropertyPossiblyChanged()
     {
-        if (!_isInitialized || _isUpdatingFromUrl)
+        if (!isInitialized || isUpdatingFromUrl)
             return;
 
         UpdateUrlIfNeeded();
@@ -152,7 +152,7 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
         var anyChange = false;
         var updatedState = new Dictionary<string, object?>();
 
-        foreach (var kvp in _trackedProperties)
+        foreach (var kvp in trackedProperties)
         {
             var prop = kvp.Key;
             var oldValue = kvp.Value;
@@ -163,7 +163,7 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
             if (!Equals(objA: oldValue, objB: newValue))
             {
                 anyChange = true;
-                _trackedProperties[key: prop] = newValue;
+                trackedProperties[key: prop] = newValue;
             }
         }
 
@@ -197,7 +197,7 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
     /// </summary>
     private void ReadFromUrl()
     {
-        _isUpdatingFromUrl = true;
+        isUpdatingFromUrl = true;
         try
         {
             var uri = navigationManager.ToAbsoluteUri(relativeUri: navigationManager.Uri);
@@ -211,14 +211,14 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
 
                 if (dict != null)
                 {
-                    foreach (var prop in _trackedProperties.Keys.ToList())
+                    foreach (var prop in trackedProperties.Keys.ToList())
                     {
                         if (dict.TryGetValue(key: prop.Name, value: out var jsonElement))
                         {
                             var typedValue = JsonSerializer.Deserialize(json: jsonElement.GetRawText(),
                                 returnType: prop.PropertyType);
                             prop.SetValue(obj: this, value: typedValue);
-                            _trackedProperties[key: prop] = typedValue;
+                            trackedProperties[key: prop] = typedValue;
                         }
                     }
 
@@ -234,7 +234,7 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
         }
         finally
         {
-            _isUpdatingFromUrl = false;
+            isUpdatingFromUrl = false;
         }
     }
 
@@ -282,7 +282,7 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
     /// <param name="disposing">True if disposing managed resources, false if finalizing</param>
     protected virtual void Dispose(bool disposing)
     {
-        if (!_disposed)
+        if (!disposed)
         {
             if (disposing)
             {
@@ -291,7 +291,7 @@ public abstract class UrlStateTracker(NavigationManager navigationManager) : Com
             }
 
             // Dispose unmanaged resources (none in this case)
-            _disposed = true;
+            disposed = true;
         }
     }
 }

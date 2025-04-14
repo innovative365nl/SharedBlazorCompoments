@@ -1,6 +1,7 @@
 using ExampleApp.Extensions;
 using ExampleApp.Translations;
-using Innovative.Blazor.Components.Components.Dialog;
+using Innovative.Blazor.Components.Components.Common;
+using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Services;
 using Microsoft.AspNetCore.Components;
 
@@ -11,7 +12,7 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
 {
 
 
-    private PersonModel _person = new()
+    private PersonModel person = new()
     {
         FirstName = "John",
         LastName = "Doe",
@@ -25,7 +26,7 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
 
     protected override void OnInitialized()
     {
-        _person.UpdatePasswordAction = id => 
+        person.UpdatePasswordAction = id => 
         {
             var logEntry = $"Password updated with ID: {id} at {DateTime.Now:HH:mm:ss}";
             actionLog.Add(logEntry);
@@ -33,7 +34,7 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
             StateHasChanged();
         };
         
-        _person.ControlePasswordAction = result => 
+        person.ControlePasswordAction = result => 
         {
             var logEntry = $"Password control result: {result} at {DateTime.Now:HH:mm:ss}";
             actionLog.Add(logEntry);
@@ -47,9 +48,9 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
     private async Task OpenPersonDialog()
     {
         var result = await dialogService.OpenDynamicFormDialog(
-            _person).ConfigureAwait(false);
+            person).ConfigureAwait(false);
 
-        _person = result;
+        person = result;
             
         StateHasChanged();
     }
@@ -57,7 +58,7 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
     {
         var result = await dialogService.OpenDynamicFormDialog<PersonModel>().ConfigureAwait(false);
 
-        _person = result;
+        person = result;
             
         StateHasChanged();
     }

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
-using Innovative.Blazor.Components.Components.Form;
+using Innovative.Blazor.Components.Components.Common;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
@@ -14,10 +14,10 @@ using Radzen.Blazor;
 
 namespace Innovative.Blazor.Components.Components.Form;
 
-public partial class InnovativeForm<TModel> : ComponentBase, IDynamicBaseComponent
+public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBaseComponent
 {
-    private readonly Dictionary<string, object?> _formValues = new Dictionary<string, object?>();
-    private readonly IInnovativeStringLocalizer _localizer = null!;
+    private readonly Dictionary<string, object?> formValues = new Dictionary<string, object?>();
+    private readonly IInnovativeStringLocalizer localizer = null!;
     private const int StartSequenceNumberLoop = 4;
 
     public InnovativeForm(IInnovativeStringLocalizerFactory localizerFactory)
@@ -25,7 +25,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IDynamicBaseCompone
         var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
         var resourceType = uiClassAttribute?.ResourceType ?? typeof(TModel);
         Debug.Assert(localizerFactory != null, nameof(localizerFactory) + " != null");
-        _localizer = localizerFactory.Create(resourceType);
+        localizer = localizerFactory.Create(resourceType);
     }
 
     [Parameter] public required TModel Model { get; set; }
@@ -33,20 +33,20 @@ public partial class InnovativeForm<TModel> : ComponentBase, IDynamicBaseCompone
     [Parameter] public EventCallback OnCancel { get; set; }
     [CascadingParameter] public required RightSideDialog<TModel> ParentDialog { get; set; }
 
-    private IReadOnlyCollection<PropertyInfo> UngroupedProperties { get; set; } = new List<PropertyInfo>();
+    private IReadOnlyCollection<PropertyInfo> ungroupedProperties { get; set; } = new List<PropertyInfo>();
 
     protected IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; private set; } =
         new List<KeyValuePair<string, List<PropertyInfo>>>();
 
     protected override void OnInitialized()
     {
-        ParentDialog.SetFormComponent(formComponent: this);
+        ParentDialog.SetFormComponent((IDynamicBaseComponent)this);
         base.OnInitialized();
     }
 
     public async Task OnSubmitPressed()
     {
-        foreach (var entry in _formValues)
+        foreach (var entry in formValues)
         {
             var prop = typeof(TModel).GetProperty(name: entry.Key);
             if (prop != null && prop.CanWrite)
@@ -88,7 +88,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IDynamicBaseCompone
         {
             foreach (var prop in GetPropertiesWithUiFormField())
             {
-                _formValues[key: prop.Name] = prop.GetValue(obj: Model);
+                formValues[key: prop.Name] = prop.GetValue(obj: Model);
             }
 
             OrganizePropertiesByGroups();
@@ -108,7 +108,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IDynamicBaseCompone
             .GroupBy(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup)
             .ToDictionary(g => g.Key!, g => g.ToList());
 
-        UngroupedProperties = propertiesWithAttributes
+        ungroupedProperties = propertiesWithAttributes
             .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup == null)
             .ToList();
 
@@ -139,7 +139,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IDynamicBaseCompone
 
         builder.OpenComponent<RadzenLabel>(0);
         builder.AddAttribute(1, "Component", propName);
-        if (fieldAttribute?.Name != null) builder.AddAttribute(2, "Text", _localizer.GetString(fieldAttribute.Name));
+        if (fieldAttribute?.Name != null) builder.AddAttribute(2, "Text", localizer.GetString(fieldAttribute.Name));
         builder.CloseComponent();
 
         if (property.PropertyType == typeof(string))
@@ -246,7 +246,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IDynamicBaseCompone
 
     private string GetStringValue(string propertyName)
     {
-        if (_formValues.TryGetValue(key: propertyName, value: out var value))
+        if (formValues.TryGetValue(key: propertyName, value: out var value))
         {
             return value?.ToString() ?? string.Empty;
         }
@@ -256,7 +256,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IDynamicBaseCompone
 
     private int? GetIntValue(string propertyName)
     {
-        if (_formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
+        if (formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
         {
             return Convert.ToInt32(value: value, CultureInfo.InvariantCulture);
         }
@@ -266,7 +266,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IDynamicBaseCompone
 
     private bool? GetBoolValue(string propertyName)
     {
-        if (_formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
+        if (formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
         {
             return Convert.ToBoolean(value: value, CultureInfo.InvariantCulture);
         }
@@ -276,7 +276,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IDynamicBaseCompone
 
     private DateTime? GetDateTimeValue(string propertyName)
     {
-        if (_formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
+        if (formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
         {
             return Convert.ToDateTime(value: value, CultureInfo.InvariantCulture);
         }
@@ -286,7 +286,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IDynamicBaseCompone
 
     private void SetValue(string propertyName, object? value)
     {
-        _formValues[key: propertyName] = value;
+        formValues[key: propertyName] = value;
     }
 
     private static PropertyInfo[] GetPropertiesWithUiFormField()

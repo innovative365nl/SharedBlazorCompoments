@@ -3,6 +3,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using Innovative.Blazor.Components.Components.Common;
 using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Components.Grid;
 using Innovative.Blazor.Components.Localizer;
@@ -14,7 +15,7 @@ namespace Innovative.Blazor.Components.Components.Detail;
 
 public partial class InnovativeDetail<TModel> : ComponentBase
 {
-    private readonly IInnovativeStringLocalizer _localizer;
+    private readonly IInnovativeStringLocalizer localizer;
     private const int StartSequenceNumberLoop = 4;
     private const int MaxNumberOfButtonsBesideEachOther = 2;
 
@@ -23,17 +24,17 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIGridClass>();
         var resourceType = uiClassAttribute?.ResourceType ?? typeof(TModel);
         Debug.Assert(localizerFactory != null, nameof(localizerFactory) + " != null");
-        _localizer = localizerFactory.Create(resourceType);
+        localizer = localizerFactory.Create(resourceType);
     }
 
     [Parameter] public TModel? Model { get; set; }
     [Parameter] public EventCallback<string> OnActionExecuted { get; set; }
     
-    [CascadingParameter] private RightSideDialog<TModel>? ParentDialog { get; set; }
+    [CascadingParameter] private RightSideDialog<TModel>? parentDialog { get; set; }
 
-    private IReadOnlyCollection<PropertyInfo> UngroupedProperties { get; set; } = new List<PropertyInfo>();
+    private IReadOnlyCollection<PropertyInfo> ungroupedProperties { get; set; } = new List<PropertyInfo>();
 
-    private IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; set; } =
+    private IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> orderedColumnGroups { get; set; } =
         new List<KeyValuePair<string, List<PropertyInfo>>>();
 
     protected override void OnParametersSet()
@@ -95,7 +96,7 @@ private void OrganizePropertiesByGroups()
         .GroupBy(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup)
         .ToDictionary(g => g.Key!, g => g.ToList());
 
-    UngroupedProperties = propertiesWithAttributes
+    ungroupedProperties = propertiesWithAttributes
         .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup == null)
         .ToList();
 
@@ -126,11 +127,11 @@ private void OrganizePropertiesByGroups()
         // Then add any remaining groups not in column order
         orderedGroups.AddRange(groupedProperties.Select(g => g));
         
-        OrderedColumnGroups = orderedGroups;
+        orderedColumnGroups = orderedGroups;
     }
     else
     {
-        OrderedColumnGroups = groupedProperties.ToList()!;
+        orderedColumnGroups = groupedProperties.ToList()!;
     }
 }
 
@@ -152,10 +153,10 @@ private void OrganizePropertiesByGroups()
             var (component, parameters, title) = GetActionDetails(propertyName: property.Name);
 
 
-            if (ParentDialog != null)
+            if (parentDialog != null)
             {
 #pragma warning disable BL0005
-                ParentDialog.ActionChildContent = builder =>
+                parentDialog.ActionChildContent = builder =>
 #pragma warning restore BL0005
                 {
                     builder.OpenComponent(sequence: 0, componentType: component);
@@ -166,14 +167,14 @@ private void OrganizePropertiesByGroups()
                             builder.AddAttribute(sequence: i++, name: param.Key, value: param.Value);
                         }
 
-                        builder.AddAttribute(sequence: i++, name: "ParentDialog", value: ParentDialog);
+                        builder.AddAttribute(sequence: i++, name: "ParentDialog", value: parentDialog);
                     }
 
                     builder.CloseComponent();
                 };
                 //todo: add title to dialog header with all links in document to return title. Or remove this. i think low business value
                 //  ParentDialog.ActionTitle = title;
-                ParentDialog.SetCustomDialog(isCustom: true);
+                parentDialog.SetCustomDialog(isCustom: true);
             }
         }
         else

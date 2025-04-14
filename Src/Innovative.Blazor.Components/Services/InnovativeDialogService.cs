@@ -3,6 +3,7 @@
 using System.Reflection;
 using Innovative.Blazor.Components.Components.Detail;
 using Innovative.Blazor.Components.Components.Form;
+using Innovative.Blazor.Components.Components.SidePanel;
 using Innovative.Blazor.Components.Enumerators;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
@@ -39,11 +40,9 @@ internal sealed class InnovativeDialogService(
         return await OpenDynamicFormDialogWithOptions(model: model,  isNewModel: false).ConfigureAwait(false);
     }
 
-
-
     private async Task<T> OpenDynamicFormDialogWithOptions<T>(T model,  bool isNewModel) where T : class
     {
-        SidePanel<T>? dialogRef = null;
+        SidePanelComponent<T>? dialogRef = null;
 
         var viewContent = new RenderFragment(builder =>
         {
@@ -81,12 +80,12 @@ internal sealed class InnovativeDialogService(
             ShowClose = true
         };
 
-        var result = await dialogService.OpenSideAsync<SidePanel<T>>(
+        var result = await dialogService.OpenSideAsync<SidePanelComponent<T>>(
             title: title,
             parameters: parameters,
             options: dialogOptions).ConfigureAwait(false);
 
-        dialogRef = result as SidePanel<T>;
+        dialogRef = result as SidePanelComponent<T>;
 
         return model;
     }
@@ -108,14 +107,13 @@ internal sealed class InnovativeDialogService(
         return type.Name;
     }
 
-
-    private static string GetWidth(SidePanelWidth width)
+    private static string GetWidth(SideDialogWidth width)
     {
         var size = width switch
         {
-            SidePanelWidth.Normal => "40vw",
-            SidePanelWidth.Large => "60vw",
-            SidePanelWidth.ExtraLarge => "80vw",
+            SideDialogWidth.Normal => "40vw",
+            SideDialogWidth.Large => "60vw",
+            SideDialogWidth.ExtraLarge => "80vw",
             _ => "30vw"
         };
         return $"{size};";

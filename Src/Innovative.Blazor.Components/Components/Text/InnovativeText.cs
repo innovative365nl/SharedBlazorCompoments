@@ -10,10 +10,10 @@ namespace Innovative.Blazor.Components.Components.Text;
 
 public sealed class InnovativeText : ComponentBase, IDisposable
 {
-    private INotifyPropertyChanged? _notifyObject;
-    private string? _propertyName;
-    private object? _propertyValue;
-    private bool _disposed;
+    private INotifyPropertyChanged? notifyObject;
+    private string? propertyName;
+    private object? propertyValue;
+    private bool disposed;
 
     [Inject] public required IInnovativeStringLocalizerFactory LocalizerFactory { get; set; }
 
@@ -99,23 +99,23 @@ public sealed class InnovativeText : ComponentBase, IDisposable
     protected override void OnParametersSet()
     {
         // Remove previous subscription if object changed
-        if (_notifyObject != For)
+        if (notifyObject != For)
         {
-            if (_notifyObject != null)
+            if (notifyObject != null)
             {
-                _notifyObject.PropertyChanged -= OnPropertyChanged;
+                notifyObject.PropertyChanged -= OnPropertyChanged;
             }
 
-            _notifyObject = For;
+            notifyObject = For;
 
-            if (_notifyObject != null)
+            if (notifyObject != null)
             {
-                _notifyObject.PropertyChanged += OnPropertyChanged;
+                notifyObject.PropertyChanged += OnPropertyChanged;
             }
         }
 
         // Save property name
-        _propertyName = Property;
+        propertyName = Property;
 
         // Update value from bound object
         UpdateValueFromObject();
@@ -123,19 +123,19 @@ public sealed class InnovativeText : ComponentBase, IDisposable
 
     private void UpdateValueFromObject()
     {
-        if (_notifyObject != null && !string.IsNullOrEmpty(_propertyName))
+        if (notifyObject != null && !string.IsNullOrEmpty(propertyName))
         {
-            var property = _notifyObject.GetType().GetProperty(_propertyName);
+            var property = notifyObject.GetType().GetProperty(propertyName);
             if (property != null)
             {
-                _propertyValue = property.GetValue(_notifyObject);
+                propertyValue = property.GetValue(notifyObject);
             }
         }
     }
 
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == _propertyName || string.IsNullOrEmpty(e.PropertyName))
+        if (e.PropertyName == propertyName || string.IsNullOrEmpty(e.PropertyName))
         {
             UpdateValueFromObject();
             StateHasChanged();
@@ -152,13 +152,13 @@ protected override void BuildRenderTree(RenderTreeBuilder builder)
 
     // If we have a bound property, use its value
     var displayText = Text;
-    var displayPropertyName = _propertyName;
+    var displayPropertyName = propertyName;
 
-    if (_propertyValue != null)
+    if (propertyValue != null)
     {
         displayText = !string.IsNullOrEmpty(Format)
-            ? string.Format(CultureInfo.CurrentCulture, Format, _propertyValue)
-            : _propertyValue.ToString();
+            ? string.Format(CultureInfo.CurrentCulture, Format, propertyValue)
+            : propertyValue.ToString();
     }
 
     // Open the element with the determined tag name
@@ -310,18 +310,18 @@ protected override void BuildRenderTree(RenderTreeBuilder builder)
 
     private void Dispose(bool disposing)
     {
-        if (!_disposed)
+        if (!disposed)
         {
             if (disposing)
             {
-                if (_notifyObject != null)
+                if (notifyObject != null)
                 {
-                    _notifyObject.PropertyChanged -= OnPropertyChanged;
-                    _notifyObject = null;
+                    notifyObject.PropertyChanged -= OnPropertyChanged;
+                    notifyObject = null;
                 }
             }
 
-            _disposed = true;
+            disposed = true;
         }
     }
 }
