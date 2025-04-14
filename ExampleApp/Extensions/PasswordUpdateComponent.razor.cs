@@ -1,4 +1,4 @@
-using Innovative.Blazor.Components.Components.Dialog;
+using Innovative.Blazor.Components.Components.Form;
 using Microsoft.AspNetCore.Components;
 using ExampleApp.Pages;
 

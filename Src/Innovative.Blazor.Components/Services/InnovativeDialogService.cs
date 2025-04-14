@@ -2,7 +2,6 @@
 
 using System.Reflection;
 using Innovative.Blazor.Components.Components.Detail;
-using Innovative.Blazor.Components.Components.Dialog;
 using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Enumerators;
 using Innovative.Blazor.Components.Localizer;

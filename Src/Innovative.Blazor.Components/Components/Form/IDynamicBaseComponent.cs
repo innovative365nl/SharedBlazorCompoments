@@ -1,4 +1,4 @@
-namespace Innovative.Blazor.Components.Components.Dialog;
+namespace Innovative.Blazor.Components.Components.Form;
 
 public interface IDynamicBaseComponent
 {

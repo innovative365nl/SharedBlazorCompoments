@@ -3,7 +3,6 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Innovative.Blazor.Components.Components.Dialog;
 using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Components.Grid;
 using Innovative.Blazor.Components.Localizer;

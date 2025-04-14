@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
-using Innovative.Blazor.Components.Components.Dialog;
+using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
