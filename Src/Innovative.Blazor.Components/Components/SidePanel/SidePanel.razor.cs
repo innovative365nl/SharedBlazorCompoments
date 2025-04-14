@@ -6,9 +6,9 @@ using Radzen;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Components.Dialog;
+namespace Innovative.Blazor.Components.Components.SidePanel;
 
-public partial class RightSideDialog<TModel>(ICustomDialogService dialogService) : ComponentBase
+public partial class SidePanel<TModel>(ICustomDialogService sidePanelService) : ComponentBase
 {
     private IDynamicBaseComponent? _formComponent;
     private bool _isCustomDialog;
