@@ -44,7 +44,7 @@ internal sealed class InnovativeDialogService(
 
     private async Task<T> OpenDynamicFormDialogWithOptions<T>(T model,  bool isNewModel) where T : class
     {
-        RightSideDialog<T>? dialogRef = null;
+        SidePanel<T>? dialogRef = null;
 
         var viewContent = new RenderFragment(builder =>
         {
@@ -82,12 +82,12 @@ internal sealed class InnovativeDialogService(
             ShowClose = true
         };
 
-        var result = await dialogService.OpenSideAsync<RightSideDialog<T>>(
+        var result = await dialogService.OpenSideAsync<SidePanel<T>>(
             title: title,
             parameters: parameters,
             options: dialogOptions).ConfigureAwait(false);
 
-        dialogRef = result as RightSideDialog<T>;
+        dialogRef = result as SidePanel<T>;
 
         return model;
     }
@@ -110,13 +110,13 @@ internal sealed class InnovativeDialogService(
     }
 
 
-    private static string GetWidth(SideDialogWidth width)
+    private static string GetWidth(SidePanelWidth width)
     {
         var size = width switch
         {
-            SideDialogWidth.Normal => "40vw",
-            SideDialogWidth.Large => "60vw",
-            SideDialogWidth.ExtraLarge => "80vw",
+            SidePanelWidth.Normal => "40vw",
+            SidePanelWidth.Large => "60vw",
+            SidePanelWidth.ExtraLarge => "80vw",
             _ => "30vw"
         };
         return $"{size};";

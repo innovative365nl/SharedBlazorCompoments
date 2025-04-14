@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Innovative.Blazor.Components.Components.Detail;
-using Innovative.Blazor.Components.Components.Dialog;
+using Innovative.Blazor.Components.Components.SidePanel;
 using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Enumerators;
 using Innovative.Blazor.Components.Localizer;
@@ -67,7 +67,7 @@ public class DialogTests : LocalizedTestBase
         var expectedTitle = "Test Form";
 
         _dialogServiceMock
-            .Setup(x => x.OpenSideAsync<RightSideDialog<TestDynamicFormModel>>(
+            .Setup(x => x.OpenSideAsync<SidePanel<TestDynamicFormModel>>(
                 It.IsAny<string>(),
                 It.IsAny<Dictionary<string, object>>(),
                 It.IsAny<SideDialogOptions>()))
@@ -75,7 +75,7 @@ public class DialogTests : LocalizedTestBase
             {
                 capturedTitle = title;
                 capturedParameters = parameters;
-                return new RightSideDialog<TestDynamicFormModel>(_dialogServiceMock.Object);
+                return new SidePanel<TestDynamicFormModel>(_dialogServiceMock.Object);
             });
 
         // Act
@@ -143,7 +143,7 @@ public class DialogTests : LocalizedTestBase
         ctx.Services.AddRadzenComponents();
 
         // Render the component
-        var cut = ctx.RenderComponent<RightSideDialog<TestDynamicFormModel>>(parameters =>
+        var cut = ctx.RenderComponent<SidePanel<TestDynamicFormModel>>(parameters =>
         {
             parameters.Add(p => p.ShowEdit, true);
             parameters.Add(p => p.ViewChildContent, builder =>
@@ -160,8 +160,8 @@ public class DialogTests : LocalizedTestBase
             });
         });
 
-        // Click the edit button with id rightSideDialogCloseButton
-        var editButton = cut.Find("#rightSideDialogEditButton");
+        // Click the edit button with id sidePanelCloseButton
+        var editButton = cut.Find("#sidePanelEditButton");
         //var editButton = cut.Find("button[title=\"edit\"]"); // Adjust selector to match your HTML
         editButton.Click();
 
@@ -171,7 +171,7 @@ public class DialogTests : LocalizedTestBase
     }
 
     [Fact]
-    public void RightSideDialogShouldRenderViewAndEditChildContent()
+    public void SidePanelShouldRenderViewAndEditChildContent()
     {
         using var ctx = new TestContext();
         ctx.JSInterop.Mode = JSRuntimeMode.Loose;
@@ -193,7 +193,7 @@ public class DialogTests : LocalizedTestBase
             TestProperty = "TestProperty"
         };
 
-        var cut = ctx.RenderComponent<RightSideDialog<TestDynamicFormModel>>(parameters =>
+        var cut = ctx.RenderComponent<SidePanel<TestDynamicFormModel>>(parameters =>
         {
             parameters.Add(p => p.Model, testModel);
             parameters.Add(p => p.ViewChildContent, builder =>
@@ -254,7 +254,7 @@ public class DialogTests : LocalizedTestBase
         };
 
         // Render the component
-        var cut = ctx.RenderComponent<RightSideDialog<TestDynamicFormModel>>(parameters =>
+        var cut = ctx.RenderComponent<SidePanel<TestDynamicFormModel>>(parameters =>
         {
             parameters.Add(p => p.Model, testModel);
             parameters.Add(p => p.ViewChildContent, builder =>
@@ -273,10 +273,10 @@ public class DialogTests : LocalizedTestBase
 
 
     [Theory]
-    [InlineData(SideDialogWidth.Normal, "40vw;")]
-    [InlineData(SideDialogWidth.Large, "60vw;")]
-    [InlineData(SideDialogWidth.ExtraLarge, "80vw;")]
-    public void GetWidthReturnsCorrectWidthString(SideDialogWidth width, string expected)
+    [InlineData(SidePanelWidth.Normal, "40vw;")]
+    [InlineData(SidePanelWidth.Large, "60vw;")]
+    [InlineData(SidePanelWidth.ExtraLarge, "80vw;")]
+    public void GetWidthReturnsCorrectWidthString(SidePanelWidth width, string expected)
     {
         // Arrange
         var method = typeof(InnovativeDialogService).GetMethod("GetWidth",

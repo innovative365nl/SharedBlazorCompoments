@@ -7,8 +7,8 @@
 
         @if (ShowClose)
         {
-            <button style="border: 0; cursor: pointer; background-color: transparent" id="rightSideDialogCloseButton"
-                    @onclick="@(args => dialogService.CloseSide())">
+            <button style="border: 0; cursor: pointer; background-color: transparent" id="sidePanelCloseButton"
+                    @onclick="@(args => sidePanelService.CloseSide())">
                 <RadzenIcon Icon="arrow_back" IconColor="black"/>
             </button>
         }
@@ -23,7 +23,7 @@
                 @if (ShowEdit && !IsEditing && !_isCustomDialog)
                 {
                     <button style="border: 0; cursor: pointer; background-color: transparent"
-                            id="rightSideDialogEditButton"
+                            id="sidePanelEditButton"
                             @onclick="@(args => IsEditing = !IsEditing)">
                         <RadzenIcon Icon="edit" IconColor="black"/>
                     </button>
