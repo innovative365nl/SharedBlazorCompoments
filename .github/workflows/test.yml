@@ -1,0 +1,44 @@
+name: Run Tests and Check Coverage
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '6.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build solution
+      run: dotnet build --no-restore
+
+    - name: Run tests
+      run: dotnet test --no-build --collect:"XPlat Code Coverage"
+
+    - name: Report code coverage
+      uses: codecov/codecov-action@v2
+      with:
+        files: ./TestResults/**/*.xml
+        fail_ci_if_error: true
+
+    - name: Check code coverage
+      run: |
+        COVERAGE=$(grep -oP 'line-rate="\K[0-9.]+' ./TestResults/**/*.xml | awk '{s+=$1} END {print s/NR}')
+        echo "Total code coverage: $COVERAGE"
+        if (( $(echo "$COVERAGE < 0.75" | bc -l) )); then
+          echo "Code coverage is below 75%"
+          exit 1
+        fi
