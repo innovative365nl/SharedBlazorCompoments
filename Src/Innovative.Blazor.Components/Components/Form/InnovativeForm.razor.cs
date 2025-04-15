@@ -287,10 +287,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
         return null;
     }
 
-    private void SetValue(string propertyName, object? value)
-    {
-        formValues[key: propertyName] = value;
-    }
+    private void SetValue(string propertyName, object? value) => formValues[key: propertyName] = value;
 
     private static PropertyInfo[] GetPropertiesWithUiFormField()
     {

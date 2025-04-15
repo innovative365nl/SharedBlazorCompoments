@@ -70,7 +70,24 @@
                         }
                         else
                         {
-                            <InnovativeText TextStyle="Components.TextStyle.Body1">@(value?.ToString() ?? "-")</InnovativeText>
+                             var displayValue = value;
+                            if (value != null && !string.IsNullOrEmpty(fieldAttribute?.TextProperty) && value.GetType().IsClass && value.GetType() != typeof(string))
+                            {
+                                try
+                                {
+                                    var textPropertyInfo = value.GetType().GetProperty(fieldAttribute.TextProperty);
+                                    if (textPropertyInfo != null)
+                                    {
+                                        displayValue = textPropertyInfo.GetValue(value);
+                                    }
+                                }
+                                catch (Exception ex) when (ex is AmbiguousMatchException or TargetException)
+                                {
+                                    // Fallback to ToString() if property access fails
+                                    System.Diagnostics.Debug.WriteLine($"Error accessing TextProperty '{fieldAttribute.TextProperty}' on type '{value.GetType().Name}': {ex.Message}");
+                                }
+                            }
+                            <InnovativeText TextStyle="Components.TextStyle.Body1">@(displayValue?.ToString() ?? "-")</InnovativeText>
                         }
                     </div>
                 </div>
@@ -101,7 +118,24 @@
                             }
                             else
                             {
-                                <InnovativeText TextStyle="Components.TextStyle.Body1" class="truncated-text">@(value?.ToString() ?? "-")</InnovativeText>
+                                 var displayValue = value;
+                            if (value != null && !string.IsNullOrEmpty(fieldAttribute?.TextProperty) && value.GetType().IsClass && value.GetType() != typeof(string))
+                            {
+                                try
+                                {
+                                    var textPropertyInfo = value.GetType().GetProperty(fieldAttribute.TextProperty);
+                                    if (textPropertyInfo != null)
+                                    {
+                                        displayValue = textPropertyInfo.GetValue(value);
+                                    }
+                                }
+                                catch (Exception ex) when (ex is AmbiguousMatchException or TargetException)
+                                {
+                                    // Fallback to ToString() if property access fails
+                                    System.Diagnostics.Debug.WriteLine($"Error accessing TextProperty '{fieldAttribute.TextProperty}' on type '{value.GetType().Name}': {ex.Message}");
+                                }
+                            }
+                                <InnovativeText TextStyle="Components.TextStyle.Body1" class="truncated-text">@(displayValue?.ToString() ?? "-")</InnovativeText>
                             }
                         </div>
                     </div>

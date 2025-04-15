@@ -30,6 +30,8 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 
     [CascadingParameter] private SidePanelComponent<TModel>? parentDialog { get; set; }
 
+
+
     private IReadOnlyCollection<PropertyInfo> ungroupedProperties { get; set; } = new List<PropertyInfo>();
 
     private IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> orderedColumnGroups { get; set; } =

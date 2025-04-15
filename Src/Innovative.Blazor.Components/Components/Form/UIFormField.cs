@@ -22,4 +22,6 @@ public sealed class UIFormFieldAttribute : UIField
     public string[]? DisplayParameters { get; set; }
     public Type? FormComponent { get; set; }
     public string[]? FormParameters { get; set; }
+    public string? TextProperty { get; set; }
+
 }
