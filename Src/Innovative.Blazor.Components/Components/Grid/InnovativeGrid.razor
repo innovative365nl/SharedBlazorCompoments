@@ -5,16 +5,16 @@
 
             @if (Data != null)
             {
-                <RadzenDataGrid @ref="DataGrid"
+                <RadzenDataGrid @ref="dataGrid"
                                 TItem="TItem"
                                 Data="@Data"
-                                @bind-Value="@_selectedItems"
+                                @bind-Value="@selectedItems"
                                 AllowRowSelectOnRowClick="EnableRowSelection"
                                 AllowPaging="@(Data.Count() > 20)"
                                 RowSelect="SetSelectedItemsAsync"
                                 ShowPagingSummary="true" PagingSummaryFormat="{2} items"
                                 PagerHorizontalAlign="HorizontalAlign.Right"
-                                AllowSorting="@_allowSorting"
+                                AllowSorting="@allowSorting"
                                 AllowFiltering="true"
                                 FilterMode="FilterMode.Simple"
                                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
@@ -31,7 +31,7 @@
                                                   Title="@GetColumnTitle(property: property.PropertyInfo, attribute: property.GridField)"
                                                   Frozen="IsFrozenColumn(property: property.PropertyInfo)"
                                                   Sortable="@IsSortableColumn(property: property.PropertyInfo)"
-                                                  SortOrder="@(property.Name == _defaultSortField ? SortOrder.Ascending : null)"
+                                                  SortOrder="@(property.Name == defaultSortField ? SortOrder.Ascending : null)"
                                                   Visible="@IsVisibleColumn(property: property.PropertyInfo)"
                                                   Filterable="true">
                                 <Template>

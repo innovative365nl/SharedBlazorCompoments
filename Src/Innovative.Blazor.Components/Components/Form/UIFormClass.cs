@@ -4,7 +4,7 @@ using Innovative.Blazor.Components.Attributes;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Components.Dialog;
+namespace Innovative.Blazor.Components.Components.Form;
 
 [AttributeUsage(validOn: AttributeTargets.Class, Inherited = false)]
 public sealed class UIFormClass(string title) : UIClass

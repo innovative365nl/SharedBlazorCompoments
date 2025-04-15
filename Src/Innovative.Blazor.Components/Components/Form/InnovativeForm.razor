@@ -1,5 +1,5 @@
 @using System.Reflection
-@using Innovative.Blazor.Components.Components.Dialog
+@using Innovative.Blazor.Components.Components.Form
 @typeparam TModel
 
 <RadzenTemplateForm TItem="TModel" Data="@Model" Submit="@OnSubmitPressed">
@@ -23,10 +23,10 @@
             </div>
         }
 
-        @if (UngroupedProperties.Any())
+        @if (ungroupedProperties.Any())
         {
             <div class="form-ungrouped">
-                @foreach (var property in UngroupedProperties)
+                @foreach (var property in ungroupedProperties)
                 {
                     @RenderPropertyField(property)
                 }

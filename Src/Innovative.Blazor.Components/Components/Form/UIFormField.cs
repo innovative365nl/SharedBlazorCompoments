@@ -5,7 +5,7 @@ using Innovative.Blazor.Components.Attributes;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Components.Dialog;
+namespace Innovative.Blazor.Components.Components.Form;
 
 [ExcludeFromCodeCoverage]
 [AttributeUsage(validOn: AttributeTargets.Property)]

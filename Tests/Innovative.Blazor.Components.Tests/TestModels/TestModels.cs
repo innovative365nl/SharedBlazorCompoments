@@ -1,7 +1,8 @@
 #region
 
 using System;
-using Innovative.Blazor.Components.Components.Dialog;
+using Innovative.Blazor.Components.Components.Common;
+using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Components.Grid;
 
 #endregion

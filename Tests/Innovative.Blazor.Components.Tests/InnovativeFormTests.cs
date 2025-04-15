@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Innovative.Blazor.Components.Components.Dialog;
+using Innovative.Blazor.Components.Components.Common;
 using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Services;
 using Innovative.Blazor.Components.Tests.TestBase;
@@ -18,13 +18,13 @@ namespace Innovative.Blazor.Components.Tests;
 
 public class InnovativeFormTests : LocalizedTestBase
 {
-    private readonly Mock<ICustomDialogService> _customDialogServiceMock;
-    private readonly Mock<RightSideDialog<TestFormModel>> _dialogMock;
+    private readonly Mock<ICustomDialogService> customDialogServiceMock;
+    private readonly Mock<RightSideDialog<TestFormModel>> dialogMock;
 
     public InnovativeFormTests()
     {
-        _customDialogServiceMock = new Mock<ICustomDialogService>();
-        _dialogMock = new Mock<RightSideDialog<TestFormModel>>(_customDialogServiceMock.Object);
+        customDialogServiceMock = new Mock<ICustomDialogService>();
+        dialogMock = new Mock<RightSideDialog<TestFormModel>>(customDialogServiceMock.Object);
     }
 
 
@@ -43,7 +43,7 @@ public class InnovativeFormTests : LocalizedTestBase
         var component = new InnovativeForm<TestFormModel>(LocalizerFactoryMock.Object)
         {
             Model = model,
-            ParentDialog = _dialogMock.Object
+            ParentDialog = dialogMock.Object
         };
 
         // Act
@@ -66,7 +66,7 @@ public class InnovativeFormTests : LocalizedTestBase
         var component = new InnovativeForm<TestFormModel>(LocalizerFactoryMock.Object)
         {
             Model = model,
-            ParentDialog = _dialogMock.Object,
+            ParentDialog = dialogMock.Object,
             OnSave = EventCallback.Factory.Create<TestFormModel>(this, _ => saveCallbackInvoked = true)
         };
 
@@ -96,7 +96,7 @@ public class InnovativeFormTests : LocalizedTestBase
         var component = new InnovativeForm<TestFormModel>(LocalizerFactoryMock.Object)
         {
             Model = new TestFormModel(),
-            ParentDialog = _dialogMock.Object,
+            ParentDialog = dialogMock.Object,
             OnCancel = EventCallback.Factory.Create(this, () => cancelCallbackInvoked = true)
         };
 
@@ -114,7 +114,7 @@ public class InnovativeFormTests : LocalizedTestBase
         var component = new InnovativeForm<TestFormGroupModel>(LocalizerFactoryMock.Object)
         {
             Model = new TestFormGroupModel(),
-            ParentDialog = new Mock<RightSideDialog<TestFormGroupModel>>(_customDialogServiceMock.Object).Object
+            ParentDialog = new Mock<RightSideDialog<TestFormGroupModel>>(customDialogServiceMock.Object).Object
         };
 
         // Act
@@ -143,7 +143,7 @@ public class InnovativeFormTests : LocalizedTestBase
         var component = new InnovativeForm<TestFormColumnWidthModel>(LocalizerFactoryMock.Object)
         {
             Model = new TestFormColumnWidthModel(),
-            ParentDialog = new Mock<RightSideDialog<TestFormColumnWidthModel>>(_customDialogServiceMock.Object).Object
+            ParentDialog = new Mock<RightSideDialog<TestFormColumnWidthModel>>(customDialogServiceMock.Object).Object
         };
 
         // Act
