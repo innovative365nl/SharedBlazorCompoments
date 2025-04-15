@@ -130,7 +130,6 @@ public class InnovativeFormTests : LocalizedTestBase
         var group2 = orderedGroups.FirstOrDefault(g => g.Key == "Group2");
         Assert.Single(group2.Value);
         Assert.Equal("GroupedProperty2", group2.Value[0].Name);
-
         Assert.Single(component.GetUngroupedProperties()!);
         Assert.Equal("UngroupedProperty", component.GetUngroupedProperties()!.First().Name);
     }
@@ -208,7 +207,7 @@ public static class DynamicFormViewTestExtensions
 
     public static object? GetFormValue<T>(this Components.InnovativeForm<T> component, string propertyName)
     {
-        var formValuesField = typeof(Components.InnovativeForm<T>).GetField("_formValues",
+        var formValuesField = typeof(Components.InnovativeForm<T>).GetField("formValues",
                                                                             BindingFlags.NonPublic | BindingFlags.Instance);
         var formValues = (Dictionary<string, object>)formValuesField?.GetValue(component)!;
         return formValues?.TryGetValue(propertyName, out var value) == true ? value : null;
@@ -223,7 +222,7 @@ public static class DynamicFormViewTestExtensions
 
     public static IReadOnlyCollection<PropertyInfo>? GetUngroupedProperties<T>(this Components.InnovativeForm<T> component)
     {
-        var property = typeof(Components.InnovativeForm<T>).GetProperty("UngroupedProperties",
+        var property = typeof(Components.InnovativeForm<T>).GetProperty("ungroupedProperties",
                                                                         BindingFlags.NonPublic | BindingFlags.Instance);
         return (IReadOnlyCollection<PropertyInfo>)property?.GetValue(component)!;
     }
