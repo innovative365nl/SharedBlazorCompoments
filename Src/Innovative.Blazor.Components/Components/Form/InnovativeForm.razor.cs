@@ -213,25 +213,28 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
                     return;
                 }
 
-                if (attribute.DisplayComponent != null)
-                    builder.OpenComponent(sequence: 0, componentType: attribute.DisplayComponent);
-                builder.AddAttribute(sequence: 1, name: "Value", value: value);
-
-                if (attribute.DisplayParameters?.Length > 0)
+                if (attribute.FormComponent != null)
                 {
-                    var index = StartSequenceNumberLoop;
-                    if (attribute.FormParameters != null)
-                        foreach (var param in attribute.FormParameters)
-                        {
-                            var parts = param.Split(separator: '=', count: 2);
-                            if (parts.Length == 2)
-                            {
-                                builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);
-                            }
-                        }
-                }
+                    builder.OpenComponent(sequence: 0, componentType: attribute.FormComponent);
+                    builder.AddAttribute(sequence: 1, name: "Value", value: value);
 
-                builder.CloseComponent();
+                    if (attribute.DisplayParameters?.Length > 0)
+                    {
+                        var index = StartSequenceNumberLoop;
+                        if (attribute.FormParameters != null)
+                            foreach (var param in attribute.FormParameters)
+                            {
+                                var parts = param.Split(separator: '=', count: 2);
+                                if (parts.Length == 2)
+                                {
+                                    builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);
+                                }
+                            }
+                    }
+
+
+                    builder.CloseComponent();
+                }
             }
 #pragma warning disable CA1031
             catch (Exception ex)

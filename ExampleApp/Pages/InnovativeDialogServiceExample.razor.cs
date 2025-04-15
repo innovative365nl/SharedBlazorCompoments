@@ -1,3 +1,4 @@
+using ExampleApp.Components;
 using ExampleApp.Extensions;
 using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components;
@@ -19,6 +20,11 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
         BirthDate = new DateTime(1993,
             5,
             12),
+        ComplexComponent =  new()
+        {
+            Name = "Complex Component",
+            Description = "This is a complex component"
+        }
     };
 
     private List<string> actionLog = new();
@@ -92,4 +98,18 @@ public class PersonModel
 
     [UIFormViewAction(Name = "Control Password", Order = 1, CustomComponent = typeof(PasswordUpdateComponent))]
     public   Action<int>? ControlePasswordAction { get; set; }
+
+    [UIFormField(name: "Complex Component", ColumnGroup = "Description", FormComponent = typeof(ComplexComponent))]
+    public ComplexModel? ComplexComponent { get; set; } = new()
+    {
+        Name = "Complex Component",
+        Description = "This is a complex component"
+    };
+}
+
+
+public class ComplexModel
+{
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
 }
