@@ -99,7 +99,7 @@ public class PersonModel
     [UIFormViewAction(Name = "Control Password", Order = 1, CustomComponent = typeof(PasswordUpdateComponent))]
     public   Action<int>? ControlePasswordAction { get; set; }
 
-    [UIFormField(name: "Complex Component", ColumnGroup = "Description", FormComponent = typeof(ComplexComponent))]
+    [UIFormField(name: "Complex Component", ColumnGroup = "Description", FormComponent = typeof(ComplexComponent), TextProperty = "Description")]
     public ComplexModel? ComplexComponent { get; set; } = new()
     {
         Name = "Complex Component",
