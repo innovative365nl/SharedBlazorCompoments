@@ -7,14 +7,14 @@ using Radzen;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Components.SidePanel;
+namespace Innovative.Blazor.Components.Components;
 
 public partial class SidePanelComponent<TModel>(ICustomDialogService sidePanelService) : ComponentBase
 {
     private IDynamicBaseComponent? formComponent;
     private bool isCustomDialog;
 
-    [Parameter] public bool IsEditing { get; set; } 
+    [Parameter] public bool IsEditing { get; set; }
 
     [Parameter] public bool ShowClose { get; set; } = true;
     [Parameter] public bool ShowEdit { get; set; } = true;

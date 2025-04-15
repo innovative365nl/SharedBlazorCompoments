@@ -31,7 +31,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
     [Parameter] public required TModel Model { get; set; }
     [Parameter] public EventCallback<TModel> OnSave { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
-    [CascadingParameter] public required RightSideDialog<TModel> ParentDialog { get; set; }
+    [CascadingParameter] public required SidePanelComponent<TModel>? ParentDialog { get; set; }
 
     private IReadOnlyCollection<PropertyInfo> ungroupedProperties { get; set; } = new List<PropertyInfo>();
 
@@ -40,7 +40,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
 
     protected override void OnInitialized()
     {
-        ParentDialog.SetFormComponent((IDynamicBaseComponent)this);
+        ParentDialog?.SetFormComponent((IDynamicBaseComponent)this);
         base.OnInitialized();
     }
 
@@ -199,7 +199,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
 
         builder.CloseComponent();
     };
-    
+
     [ExcludeFromCodeCoverage]
     private static RenderFragment RenderFormComponent(object? value, UIFormFieldAttribute attribute)
     {

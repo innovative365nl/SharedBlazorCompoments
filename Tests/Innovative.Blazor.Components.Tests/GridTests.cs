@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Innovative.Blazor.Components.Components;
-using Innovative.Blazor.Components.Components.Grid;
 using Innovative.Blazor.Components.Tests.TestBase;
 using Innovative.Blazor.Components.Tests.TestModels;
 using Microsoft.AspNetCore.Components;

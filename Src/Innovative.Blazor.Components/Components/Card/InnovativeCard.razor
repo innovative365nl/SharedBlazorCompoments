@@ -1,7 +1,8 @@
+@namespace Innovative.Blazor.Components.Components
 @using TextStyle = Innovative.Blazor.Components.Components.TextStyle
 <div class="margin">
     <RadzenCard class="card-container">
-        <InnovativeText TextStyle="TextStyle.H3" Text="@Title"/>
+        <InnovativeText TextStyle="Components.TextStyle.H3" Text="@Title"/>
         @if (IsLoading)
         {
             <RadzenStack AlignItems="AlignItems.Center">

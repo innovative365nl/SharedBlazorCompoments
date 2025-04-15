@@ -1,5 +1,5 @@
 using Innovative.Blazor.Components.Components.Common;
-using Innovative.Blazor.Components.Components.Form;
+using Innovative.Blazor.Components.Components;
 using Microsoft.AspNetCore.Components;
 using ExampleApp.Pages;
 
@@ -12,7 +12,7 @@ public partial class PasswordUpdateComponent : ComponentBase, IDynamicBaseCompon
     [Parameter] public string? ActionProperty { get; set; }
     [Parameter]public EventCallback<int> OnSave { get; set; }
     [Parameter] public EventCallback OnCancel { get; set; }
-    [Parameter] public RightSideDialog<PersonModel>? ParentDialog { get; set; }
+    [Parameter] public SidePanelComponent<PersonModel>? ParentDialog { get; set; }
 
     public async Task OnSubmitPressed()
     {
@@ -34,7 +34,7 @@ public partial class PasswordUpdateComponent : ComponentBase, IDynamicBaseCompon
         {
             ParentDialog.SetFormComponent(this);
         }
-        
+
         base.OnInitialized();
     }
 }

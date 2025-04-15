@@ -27,8 +27,8 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 
     [Parameter] public TModel? Model { get; set; }
     [Parameter] public EventCallback<string> OnActionExecuted { get; set; }
-    
-    [CascadingParameter] private RightSideDialog<TModel>? parentDialog { get; set; }
+
+    [CascadingParameter] private SidePanelComponent<TModel>? parentDialog { get; set; }
 
     private IReadOnlyCollection<PropertyInfo> ungroupedProperties { get; set; } = new List<PropertyInfo>();
 
@@ -56,7 +56,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                 return $"column-span-{column.Width}";
             }
         }
-        
+
         // Fallback to class attribute
         var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
         if (formClassAttribute?.ColumnWidthNames != null &&
@@ -78,12 +78,12 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 private void OrganizePropertiesByGroups()
 {
     var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
-    
+
     // Get column order from DisplayFormModel or attribute
     var customColumnOrder = Model is DisplayFormModel displayModel
         ? displayModel.ViewColumns.Select(c => c.Name).Where(n => n != null).ToArray()
         : null;
-    
+
     var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
     var attributeColumnOrder = formClassAttribute?.ColumnOrder;
     var columnOrder = customColumnOrder?.Any() == true ? customColumnOrder : attributeColumnOrder;
@@ -103,7 +103,7 @@ private void OrganizePropertiesByGroups()
     {
         // Use an ordered dictionary to maintain the exact order specified
         var orderedGroups = new List<KeyValuePair<string, List<PropertyInfo>>>();
-        
+
         // First add groups that match the column order
         foreach (var columnName in columnOrder)
         {
@@ -119,12 +119,12 @@ private void OrganizePropertiesByGroups()
                     groupedProperties.Remove(columnName);
                 }
             }
-                
+
         }
-        
+
         // Then add any remaining groups not in column order
         orderedGroups.AddRange(groupedProperties.Select(g => g));
-        
+
         orderedColumnGroups = orderedGroups;
     }
     else

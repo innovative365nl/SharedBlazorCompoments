@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using Innovative.Blazor.Components.Components;
-using Innovative.Blazor.Components.Components.Grid;
 using Radzen;
 
 #endregion

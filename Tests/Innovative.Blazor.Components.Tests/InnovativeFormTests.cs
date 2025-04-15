@@ -6,8 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Innovative.Blazor.Components.Components;
-using Innovative.Blazor.Components.Components.Common;
-using Innovative.Blazor.Components.Components.Form;
 using Innovative.Blazor.Components.Services;
 using Innovative.Blazor.Components.Tests.TestBase;
 using Microsoft.AspNetCore.Components;
@@ -20,12 +18,12 @@ namespace Innovative.Blazor.Components.Tests;
 public class InnovativeFormTests : LocalizedTestBase
 {
     private readonly Mock<ICustomDialogService> customDialogServiceMock;
-    private readonly Mock<RightSideDialog<TestFormModel>> dialogMock;
+    private readonly Mock<SidePanelComponent<TestFormModel>> dialogMock;
 
     public InnovativeFormTests()
     {
         customDialogServiceMock = new Mock<ICustomDialogService>();
-        dialogMock = new Mock<RightSideDialog<TestFormModel>>(customDialogServiceMock.Object);
+        dialogMock = new Mock<SidePanelComponent<TestFormModel>>(customDialogServiceMock.Object);
     }
 
 
@@ -115,7 +113,7 @@ public class InnovativeFormTests : LocalizedTestBase
         var component = new Components.InnovativeForm<TestFormGroupModel>(LocalizerFactoryMock.Object)
         {
             Model = new TestFormGroupModel(),
-            ParentDialog = new Mock<RightSideDialog<TestFormGroupModel>>(customDialogServiceMock.Object).Object
+            ParentDialog = new Mock<SidePanelComponent<TestFormGroupModel>>(customDialogServiceMock.Object).Object
         };
 
         // Act
@@ -144,7 +142,7 @@ public class InnovativeFormTests : LocalizedTestBase
         var component = new Components.InnovativeForm<TestFormColumnWidthModel>(LocalizerFactoryMock.Object)
         {
             Model = new TestFormColumnWidthModel(),
-            ParentDialog = new Mock<RightSideDialog<TestFormColumnWidthModel>>(customDialogServiceMock.Object).Object
+            ParentDialog = new Mock<SidePanelComponent<TestFormColumnWidthModel>>(customDialogServiceMock.Object).Object
         };
 
         // Act

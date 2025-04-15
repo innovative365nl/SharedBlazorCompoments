@@ -1,5 +1,5 @@
+@namespace Innovative.Blazor.Components.Components
 @using System.Reflection
-@using Innovative.Blazor.Components.Components.Form
 @typeparam TModel
 
 <RadzenTemplateForm TItem="TModel" Data="@Model" Submit="@OnSubmitPressed">
@@ -17,7 +17,7 @@
                     }
                     else
                     {
-                        @RenderPropertyField(property)     
+                        @RenderPropertyField(property)
                     }
                 }
             </div>
