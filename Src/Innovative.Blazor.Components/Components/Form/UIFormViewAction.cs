@@ -5,7 +5,7 @@ using Innovative.Blazor.Components.Attributes;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Components.Form;
+namespace Innovative.Blazor.Components.Components;
 
 [ExcludeFromCodeCoverage]
 //specify attribute to only allow on BaseAction class

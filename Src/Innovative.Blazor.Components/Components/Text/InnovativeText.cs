@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace Innovative.Blazor.Components.Components.Text;
+namespace Innovative.Blazor.Components.Components;
 
 public sealed class InnovativeText : ComponentBase, IDisposable
 {
@@ -76,7 +74,7 @@ public sealed class InnovativeText : ComponentBase, IDisposable
     /// </summary>
     [Parameter]
     public string? Format { get; set; }
-    
+
     /// <summary>
     /// Show the property name as a bold printed abel.
     /// </summary>
@@ -94,7 +92,7 @@ public sealed class InnovativeText : ComponentBase, IDisposable
     /// </summary>
     [Parameter]
     public string? Style { get; set; }
-    
+
 
     protected override void OnParametersSet()
     {

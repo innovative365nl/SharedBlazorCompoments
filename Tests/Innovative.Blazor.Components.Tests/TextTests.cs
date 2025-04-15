@@ -1,8 +1,8 @@
 using System;
-using Innovative.Blazor.Components.Components.Text;
 using Moq;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Localizer;
 
 namespace Innovative.Blazor.Components.Tests;

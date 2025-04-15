@@ -1,10 +1,11 @@
 @page "/grid"
+@using Innovative.Blazor.Components.Components
 @using Innovative.Blazor.Components.Components.Grid
 
 <h3> Grid Example</h3>
 
 <RadzenNotification></RadzenNotification>
-<InnovativeGrid @ref="grid" 
+<InnovativeGrid @ref="grid"
                 TItem="InnovativeTestClass"  MinHeightOption="GridHeight.Max"
                 Data="items" EnableRowSelection="true" OnSelectionChanged="OnRowSelected"></InnovativeGrid>
 

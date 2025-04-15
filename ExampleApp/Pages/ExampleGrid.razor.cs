@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Components;
 using Radzen;
 
 namespace ExampleApp.Pages;
- 
+
 public partial class ExampleGrid(NotificationService notificationService)
 {
     private readonly string[] cities = ["New York", "London", "Paris", "Tokyo", "Berlin"];
     private readonly string[] statuses = ["Active", "Pending", "Complete", "Rejected"];
     private readonly string[] streets = ["Main St", "Oak Ave", "Park Rd", "Cedar Ln", "Maple Dr"];
 
-    private InnovativeGrid<InnovativeTestClass>? grid;
+    private Innovative.Blazor.Components.Components.InnovativeGrid<InnovativeTestClass>? grid;
     List<InnovativeTestClass>? items;
     protected override async Task OnInitializedAsync()
     {

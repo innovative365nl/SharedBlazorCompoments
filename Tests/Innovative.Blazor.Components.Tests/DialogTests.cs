@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Components.Common;
 using Innovative.Blazor.Components.Components.Detail;
 using Innovative.Blazor.Components.Components.SidePanel;
@@ -199,13 +200,13 @@ public class DialogTests : LocalizedTestBase
             parameters.Add(p => p.Model, testModel);
             parameters.Add(p => p.ViewChildContent, builder =>
             {
-                builder.OpenComponent<InnovativeDetail<TestDynamicFormModel>>(0);
+                builder.OpenComponent<Components.InnovativeDetail<TestDynamicFormModel>>(0);
                 builder.AddAttribute(1, "Model", testModel);
                 builder.CloseComponent();
             });
             parameters.Add(p => p.EditChildContent, builder =>
             {
-                builder.OpenComponent<InnovativeForm<TestModel>>(0);
+                builder.OpenComponent<Components.InnovativeForm<TestModel>>(0);
                 builder.AddAttribute(1, "Model", testModel);
                 builder.CloseComponent();
             });
@@ -260,7 +261,7 @@ public class DialogTests : LocalizedTestBase
             parameters.Add(p => p.Model, testModel);
             parameters.Add(p => p.ViewChildContent, builder =>
             {
-                builder.OpenComponent<InnovativeDetail<TestDynamicFormModel>>(0);
+                builder.OpenComponent<Components.InnovativeDetail<TestDynamicFormModel>>(0);
                 builder.AddAttribute(1, "Model", testModel);
                 builder.CloseComponent();
             });

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Components.Grid;
 using Innovative.Blazor.Components.Tests.TestBase;
 using Innovative.Blazor.Components.Tests.TestModels;
@@ -25,7 +26,7 @@ namespace Innovative.Blazor.Components.Tests;
 /// </summary>
 public class GridTests : LocalizedTestBase
 {
-    private readonly Mock<ILogger<InnovativeGrid<TestModel>>> _loggerMock;
+    private readonly Mock<ILogger<Components.InnovativeGrid<TestModel>>> _loggerMock;
 
     /// <summary>
     ///     Setup common testing infrastructure for all grid tests.
@@ -33,7 +34,7 @@ public class GridTests : LocalizedTestBase
     public GridTests()
     {
         // Setup mocks for logging
-        _loggerMock = new Mock<ILogger<InnovativeGrid<TestModel>>>();
+        _loggerMock = new Mock<ILogger<Components.InnovativeGrid<TestModel>>>();
 
         // Register services
         Services.AddSingleton(_loggerMock.Object);
@@ -358,9 +359,9 @@ public class GridTests : LocalizedTestBase
         };
 
         // Act
-        var cut = RenderComponent<InnovativeGrid<TestModelWithMixedAttributes>>(parameters => parameters
-            .Add(p => p.Data, testData)
-        );
+        var cut = RenderComponent<Components.InnovativeGrid<TestModelWithMixedAttributes>>(parameters => parameters
+                                                                                               .Add(p => p.Data, testData)
+                                                                                          );
 
         // Assert
         var markup = cut.Markup;
@@ -382,9 +383,9 @@ public class GridTests : LocalizedTestBase
         };
 
         // Act
-        var cut = RenderComponent<InnovativeGrid<TestModelWithGridClass>>(parameters => parameters
-            .Add(p => p.Data, testData)
-        );
+        var cut = RenderComponent<Components.InnovativeGrid<TestModelWithGridClass>>(parameters => parameters
+                                                                                         .Add(p => p.Data, testData)
+                                                                                    );
 
         // Assert - Ensure no sortable columns when AllowSorting is false
         var markup = cut.Markup;
@@ -404,9 +405,9 @@ public class GridTests : LocalizedTestBase
         };
 
         // Act
-        var cut = RenderComponent<InnovativeGrid<TestModelWithGridClass>>(parameters => parameters
-            .Add(p => p.Data, testData)
-        );
+        var cut = RenderComponent<Components.InnovativeGrid<TestModelWithGridClass>>(parameters => parameters
+                                                                                         .Add(p => p.Data, testData)
+                                                                                    );
 
         // Assert - Verify that localizer factory used the correct resource type
         LocalizerFactoryMock.Verify(f => f.Create(typeof(TestResources)), Times.Once);
@@ -451,7 +452,7 @@ public class GridTests : LocalizedTestBase
     /// <summary>
     ///     Helper method to render a grid component with common parameters to reduce code duplication.
     /// </summary>
-    private IRenderedComponent<InnovativeGrid<TestModel>> RenderGridComponent(
+    private IRenderedComponent<Components.InnovativeGrid<TestModel>> RenderGridComponent(
         IEnumerable<TestModel> data,
         string? title = null,
         bool isLoading = false,
@@ -460,26 +461,26 @@ public class GridTests : LocalizedTestBase
         Action<IEnumerable<TestModel>>? onSelectionChanged = null,
         GridHeight minHeightOption = GridHeight.Minimal)
     {
-        return RenderComponent<InnovativeGrid<TestModel>>(parameters =>
-        {
-            parameters.Add(p => p.Data, data);
+        return RenderComponent<Components.InnovativeGrid<TestModel>>(parameters =>
+                                                                     {
+                                                                         parameters.Add(p => p.Data, data);
 
-            if (title != null)
-                parameters.Add(p => p.Title, title);
+                                                                         if (title != null)
+                                                                             parameters.Add(p => p.Title, title);
 
-            if (isLoading)
-                parameters.Add(p => p.IsLoading, true);
+                                                                         if (isLoading)
+                                                                             parameters.Add(p => p.IsLoading, true);
 
-            if (enableRowSelection)
-                parameters.Add(p => p.EnableRowSelection, true);
+                                                                         if (enableRowSelection)
+                                                                             parameters.Add(p => p.EnableRowSelection, true);
 
-            parameters.Add(p => p.SelectionMode, selectionMode);
+                                                                         parameters.Add(p => p.SelectionMode, selectionMode);
 
-            if (onSelectionChanged != null)
-                parameters.Add<IEnumerable<TestModel>>(p => p.OnSelectionChanged, onSelectionChanged);
+                                                                         if (onSelectionChanged != null)
+                                                                             parameters.Add<IEnumerable<TestModel>>(p => p.OnSelectionChanged, onSelectionChanged);
 
-            parameters.Add(p => p.MinHeightOption, minHeightOption);
-        });
+                                                                         parameters.Add(p => p.MinHeightOption, minHeightOption);
+                                                                     });
     }
 
     #endregion

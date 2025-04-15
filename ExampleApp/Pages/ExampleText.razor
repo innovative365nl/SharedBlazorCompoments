@@ -1,11 +1,11 @@
 @page "/text"
-@using Innovative.Blazor.Components.Components.Text
-@using TagName = Innovative.Blazor.Components.Components.Text.TagName
-@using TextAlign = Innovative.Blazor.Components.Components.Text.TextAlign
-@using TextStyle = Innovative.Blazor.Components.Components.Text.TextStyle
+@using Innovative.Blazor.Components.Components
+@using TagName = Innovative.Blazor.Components.Components.TagName
+@using TextAlign = Innovative.Blazor.Components.Components.TextAlign
+@using TextStyle = Innovative.Blazor.Components.Components.TextStyle
 
 <InnovativeText For="@_person" Property="Name" TextStyle="TextStyle.H2" />
-<RadzenButton Click="(() => ChangeName())">Change Name</RadzenButton> 
+<RadzenButton Click="(() => ChangeName())">Change Name</RadzenButton>
 
 <InnovativeText For="@_person" Property="Age" Format="Age: {0} years" TextStyle="TextStyle.Body2" />
 <InnovativeText Text="Centered Heading" TextStyle="TextStyle.DisplayH1" TextAlign="TextAlign.Center" />

@@ -1,4 +1,5 @@
 using ExampleApp.Extensions;
+using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Components.Grid;
 
 namespace ExampleApp.Pages;

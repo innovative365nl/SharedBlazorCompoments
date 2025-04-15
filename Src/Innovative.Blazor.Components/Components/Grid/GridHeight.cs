@@ -1,4 +1,4 @@
-namespace Innovative.Blazor.Components.Components.Grid;
+namespace Innovative.Blazor.Components.Components;
 
 public enum GridHeight
 {

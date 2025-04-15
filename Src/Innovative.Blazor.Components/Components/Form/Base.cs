@@ -1,4 +1,4 @@
-namespace Innovative.Blazor.Components.Components.Form;
+namespace Innovative.Blazor.Components.Components;
 
 public interface IBaseFormModel
 {

@@ -32,11 +32,11 @@ public partial class SidePanelComponent<TModel>(ICustomDialogService sidePanelSe
     [Parameter] public string? Title { get; set; }
     public object? ComponentInstance { get; private set; }
 
-    public void SetFormComponent(IDynamicBaseComponent formComponent)
+    public void SetFormComponent(IDynamicBaseComponent component)
     {
-        this.formComponent = formComponent;
+        formComponent = component;
         // Store the component instance
-        if (formComponent is object instance)
+        if (component is object instance)
         {
             ComponentInstance = instance;
         }

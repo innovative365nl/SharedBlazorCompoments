@@ -5,7 +5,7 @@ using Innovative.Blazor.Components.Attributes;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Components.Grid;
+namespace Innovative.Blazor.Components.Components;
 
 [AttributeUsage(validOn: AttributeTargets.Property)]
 public sealed class UIGridField : UIField

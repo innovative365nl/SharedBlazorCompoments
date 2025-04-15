@@ -1,4 +1,4 @@
-using Innovative.Blazor.Components.Components.TrackInUrl;
+using Innovative.Blazor.Components.Components;
 
 namespace ExampleApp.Pages;
 

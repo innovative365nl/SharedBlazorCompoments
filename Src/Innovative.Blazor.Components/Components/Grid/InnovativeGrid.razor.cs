@@ -11,7 +11,7 @@ using Radzen.Blazor;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Components.Grid;
+namespace Innovative.Blazor.Components.Components;
 
 /// <summary>
 /// Flexible and customizable grid component for displaying and managing data.
@@ -85,7 +85,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 
     /// <summary>
     ///     Optional resource type used for localization of grid elements. If specified, this type will be used
-    ///     instead of TItem for retrieving localized strings. This allows for separation of data models and 
+    ///     instead of TItem for retrieving localized strings. This allows for separation of data models and
     ///     localization resources when needed.
     /// </summary>
     [Parameter]

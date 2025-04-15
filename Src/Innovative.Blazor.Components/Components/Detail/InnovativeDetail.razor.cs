@@ -4,14 +4,12 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Innovative.Blazor.Components.Components.Common;
-using Innovative.Blazor.Components.Components.Form;
-using Innovative.Blazor.Components.Components.Grid;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Components.Detail;
+namespace Innovative.Blazor.Components.Components;
 
 public partial class InnovativeDetail<TModel> : ComponentBase
 {

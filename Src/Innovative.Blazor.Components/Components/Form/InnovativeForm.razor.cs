@@ -12,7 +12,7 @@ using Radzen.Blazor;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Components.Form;
+namespace Innovative.Blazor.Components.Components;
 
 public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBaseComponent
 {

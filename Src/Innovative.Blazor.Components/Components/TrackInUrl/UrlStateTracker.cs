@@ -11,7 +11,7 @@ using Microsoft.Extensions.Primitives;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Components.TrackInUrl;
+namespace Innovative.Blazor.Components.Components;
 
 /// <summary>
 /// Provides functionality to automatically synchronize component state with URL parameters.
