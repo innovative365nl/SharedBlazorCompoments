@@ -2,52 +2,42 @@
 
 @typeparam TModel
 
-<RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Start" Gap="0">
-    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween"
-                 AlignItems="AlignItems.Center"
-                 Style="width: 100%; padding: 1rem 1rem .5rem 1rem; border-bottom: #a0a0a0 solid .5px">
-
+<div class="sidepanel-content-wrapper" @onclick:stopPropagation>
+    <div class="sidepanel-header">
         @if (ShowClose)
         {
-            <button style="border: 0; cursor: pointer; background-color: transparent" id="sidePanelCloseButton"
-                    @onclick="@(args => sidePanelService.CloseSide())">
-                <RadzenIcon Icon="arrow_back" IconColor="black"/>
+            <button class="sidepanel-back-button" id="sidePanelCloseButton"
+                    @onclick="@(args => sidePanelService.CloseSidepanel())">
+                <i class="icon-arrow-back">←</i>
             </button>
         }
-        <div>
-            <RadzenText TextStyle="(Radzen.Blazor.TextStyle)TextStyle.DisplayH6" Style="margin: 0">
-                @Title
-            </RadzenText>
+        <div class="sidepanel-title">
+            <h3>@Title</h3>
         </div>
-        <div>
-            <RadzenRow>
-                @TitleBarContent
-                @if (ShowEdit && !IsEditing && !isCustomDialog)
-                {
-                    <button style="border: 0; cursor: pointer; background-color: transparent"
-                            id="sidePanelEditButton"
-                            @onclick="@(args => IsEditing = !IsEditing)">
-                        <RadzenIcon Icon="edit" IconColor="black"/>
-                    </button>
-                }
-                else if (ShowEdit && (IsEditing || isCustomDialog))
-                {
-                    <button style="border: 0; cursor: pointer; background-color: transparent"
-                            @onclick="@HandleCancelClick">
-                        <RadzenIcon Icon="close" IconColor="black"/>
-                    </button>
-                    <button style="border: 0; cursor: pointer; background-color: transparent"
-                            @onclick="@HandleSaveClick">
-                        <RadzenIcon Icon="save" IconColor="black"/>
-                    </button>
-                }
-
-            </RadzenRow>
+        <div class="sidepanel-actions">
+            @TitleBarContent
+            @if (ShowEdit && !IsEditing && !isCustomDialog)
+            {
+                <button class="sidepanel-icon-button" id="sidePanelEditButton"
+                        @onclick="@(args => IsEditing = !IsEditing)">
+                    <i class="icon-edit">✏️</i>
+                </button>
+            }
+            else if (ShowEdit && (IsEditing || isCustomDialog))
+            {
+                <button class="sidepanel-icon-button"
+                        @onclick="@HandleCancelClick">
+                    <i class="icon-close">✕</i>
+                </button>
+                <button class="sidepanel-icon-button"
+                        @onclick="@HandleSaveClick">
+                    <i class="icon-save">💾</i>
+                </button>
+            }
         </div>
-    </RadzenStack>
-    <RadzenStack Orientation="Orientation.Vertical" Style="padding: 1rem; width: 100%; min-height: 500px;">
+    </div>
+    <div class="sidepanel-content">
         <CascadingValue Value="this">
-
             @if (!IsEditing && !isCustomDialog)
             {
                 @ViewChildContent
@@ -60,10 +50,62 @@
             {
                 @ActionChildContent
             }
-
         </CascadingValue>
-    </RadzenStack>
-    <RadzenRow Style="padding: 1rem; width: 100%;" Gap="10">
+    </div>
+    <div class="sidepanel-footer">
         @BottomBarContent
-    </RadzenRow>
-</RadzenStack>
+    </div>
+</div>
+
+<style>
+    .sidepanel-content-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .sidepanel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 1rem 1rem .5rem 1rem;
+        border-bottom: #a0a0a0 solid .5px;
+    }
+    
+    .sidepanel-title h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+    
+    .sidepanel-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .sidepanel-back-button, .sidepanel-icon-button {
+        border: 0;
+        cursor: pointer;
+        background-color: transparent;
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .sidepanel-content {
+        padding: 1rem;
+        flex: 1;
+        overflow-y: auto;
+        min-height: 500px;
+    }
+    
+    .sidepanel-footer {
+        padding: 1rem;
+        display: flex;
+        gap: 10px;
+    }
+</style>

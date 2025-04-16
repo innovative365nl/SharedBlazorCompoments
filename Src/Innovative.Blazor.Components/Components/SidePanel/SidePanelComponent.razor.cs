@@ -9,7 +9,7 @@ using Radzen;
 
 namespace Innovative.Blazor.Components.Components;
 
-public partial class SidePanelComponent<TModel>(ICustomDialogService sidePanelService) : ComponentBase
+public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelService) : ComponentBase
 {
     private IDynamicBaseComponent? formComponent;
     private bool isCustomDialog;

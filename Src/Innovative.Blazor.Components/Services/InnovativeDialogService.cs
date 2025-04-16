@@ -5,7 +5,6 @@ using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Enumerators;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
-using Radzen;
 
 #endregion
 
@@ -19,12 +18,12 @@ public interface IInnovativeDialogService
 }
 
 internal sealed class InnovativeDialogService(
-    ICustomDialogService dialogService,
+    ISidepanelService sidepanelService,
     IInnovativeStringLocalizerFactory localizerFactory) : IDisposable, IInnovativeDialogService
 {
     public void Dispose()
     {
-        dialogService.Dispose();
+        // No unmanaged resources to dispose in SidepanelService
     }
 
     public async Task<T> OpenDynamicFormDialog<T>() where T : class
@@ -40,8 +39,6 @@ internal sealed class InnovativeDialogService(
 
     private async Task<T> OpenDynamicFormDialogWithOptions<T>(T model,  bool isNewModel) where T : class
     {
-        SidePanelComponent<T>? dialogRef = null;
-
         var viewContent = new RenderFragment(builder =>
         {
             builder.OpenComponent<Components.InnovativeDetail<T>>(sequence: 0);
@@ -69,22 +66,13 @@ internal sealed class InnovativeDialogService(
             { "IsEditing", isNewModel}
         };
 
-        var dialogOptions = new SideDialogOptions
+        var options = new SidepanelOptions
         {
-            Width = GetWidth(width: SideDialogWidth.Normal),
-            ShowTitle = false,
-            ShowMask = false,
-            CloseDialogOnOverlayClick = false,
-            ShowClose = true
+            Title = title,
+            Width = GetWidth(width: SideDialogWidth.Normal)
         };
 
-        var result = await dialogService.OpenSideAsync<SidePanelComponent<T>>(
-            title: title,
-            parameters: parameters,
-            options: dialogOptions).ConfigureAwait(false);
-
-        dialogRef = result as SidePanelComponent<T>;
-
+        await sidepanelService.OpenSidepanelAsync<SidePanelComponent<T>>(parameters, options).ConfigureAwait(false);
         return model;
     }
 
@@ -114,6 +102,6 @@ internal sealed class InnovativeDialogService(
             SideDialogWidth.ExtraLarge => "80vw",
             _ => "30vw"
         };
-        return $"{size};";
+        return size;
     }
 }
