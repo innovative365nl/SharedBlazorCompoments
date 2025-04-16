@@ -73,8 +73,11 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
     ResourceType = typeof(Example), ColumnOrder = new[] {   "Name","EmployeeInfo","Description" },
     ColumnWidthNames = new[] {"Name", "EmployeeInfo", "Description"},
     ColumnWidthValues = new[] {1, 1, 3})]
-public class PersonModel
+public class PersonModel : DisplayFormModel
 {
+    public PersonModel()
+    {
+    }
     [UIFormField(name: "First Name", ColumnGroup = "Name")]
     public string? FirstName { get; set; }
 
@@ -99,7 +102,7 @@ public class PersonModel
     [UIFormViewAction(Name = "Control Password", Order = 1, CustomComponent = typeof(PasswordUpdateComponent))]
     public   Action<int>? ControlePasswordAction { get; set; }
 
-    [UIFormField(name: "Complex Component", ColumnGroup = "Description", FormComponent = typeof(ComplexComponent), TextProperty = "Description")]
+    [UIFormField(name: "Complex Component", ColumnGroup = "Description", FormComponent = typeof(ComplexComponent), TextProperty = nameof(ComplexComponent.Description))]
     public ComplexModel? ComplexComponent { get; set; } = new()
     {
         Name = "Complex Component",
