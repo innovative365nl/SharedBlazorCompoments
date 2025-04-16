@@ -46,6 +46,7 @@
 
     <ItemGroup>
       <Compile Remove="Components\SidePanel\SidepanelHost.razor.cs" />
+      <Compile Include="Components\SidePanel\SidePanelHost.razor.cs" />
     </ItemGroup>
     
 

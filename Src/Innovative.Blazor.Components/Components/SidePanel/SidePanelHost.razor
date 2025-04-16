@@ -1,13 +1,13 @@
 @namespace Innovative.Blazor.Components.Components
 
-@if (sidepanelService.IsVisible)
+@if (sidePanelService.IsVisible)
 {
-    <div class="sidepanel-overlay rz-dialog-mask" @onclick="OnOverlayClick">
-        <div class="sidepanel-container rz-dialog rz-dialog-side rz-dialog-side-content"
-             style="width:@(sidepanelService.CurrentOptions?.Width ?? "400px");">
-            @if (sidepanelService.CurrentComponentType != null)
+    <div class="sidepanel-overlay" @onclick="OnOverlayClick">
+        <div class="sidepanel-container"
+             style="width:@(sidePanelService.CurrentOptions?.Width ?? "400px");">
+            @if (sidePanelService.CurrentComponentType != null)
             {
-                <DynamicComponent Type="@sidepanelService.CurrentComponentType" Parameters="@sidepanelService.CurrentParameters" />
+                <DynamicComponent Type="@sidePanelService.CurrentComponentType" Parameters="@sidePanelService.CurrentParameters" />
             }
         </div>
     </div>
@@ -16,64 +16,3 @@
 @code {
 
 }
-
-<style>
-    /* These classes replace the Radzen styling */
-    .sidepanel-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0,0,0,0.3);
-        z-index: 1000;
-        display: flex;
-        align-items: stretch;
-        justify-content: flex-end;
-        transition: background 0.3s;
-    }
-
-    .sidepanel-container {
-        background: #fff;
-        height: 100vh;
-        box-shadow: -2px 0 8px rgba(0,0,0,0.1);
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        min-width: 300px;
-        max-width: 90vw;
-        overflow-y: auto;
-        transition: transform 0.3s ease-out;
-        animation: slide-in 0.3s forwards;
-    }
-
-    @keyframes slide-in {
-        from { transform: translateX(100%); }
-        to { transform: translateX(0); }
-    }
-
-    /* Keep existing Radzen classes for backward compatibility */
-    .rz-dialog-side-content-layout {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        width: 100%;
-        position: relative;
-        padding: 1rem;
-    }
-
-    .rz-dialog-side-content {
-        margin-right: 0;
-        margin-left: auto;
-    }
-
-    .rz-dialog-side {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        pointer-events: auto;
-        background-color: #fff;
-        background-clip: padding-box;
-        outline: 0;
-    }
-</style>

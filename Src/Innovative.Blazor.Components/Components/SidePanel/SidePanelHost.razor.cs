@@ -1,28 +1,27 @@
 using Innovative.Blazor.Components.Services;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Innovative.Blazor.Components.Components;
 
-public sealed partial class SidepanelHost(ISidepanelService sidepanelService) : ComponentBase, IDisposable
+public sealed partial class SidePanelHost(ISidepanelService sidePanelService)
 {
     protected override void OnInitialized()
     {
-        sidepanelService.OnStateChanged += StateHasChanged;
+        sidePanelService.OnStateChanged += StateHasChanged;
     }
 
     public void Dispose()
     {
-        sidepanelService.OnStateChanged -= StateHasChanged;
+        sidePanelService.OnStateChanged -= StateHasChanged;
     }
 
     private void Close()
     {
-        sidepanelService.CloseSidepanel();
+        sidePanelService.CloseSidepanel();
     }
 
     private void OnOverlayClick(MouseEventArgs e)
     {
-        sidepanelService.CloseSidepanel();
+        sidePanelService.CloseSidepanel();
     }
 }
