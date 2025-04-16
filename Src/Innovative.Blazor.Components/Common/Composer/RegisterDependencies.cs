@@ -14,9 +14,10 @@ public static class RegisterDependencies
     public static IServiceCollection RegisterInnovativeComponents(this IServiceCollection services)
     {
         services.AddLocalization();
-        services.AddRadzenComponents();
+    services.AddRadzenComponents();
+
         services.AddScoped<IInnovativeDialogService, InnovativeDialogService>();
-        services.AddScoped<ICustomDialogService, RadzenDialogServiceAdapter>();
+        services.AddScoped<ISidepanelService, SidepanelService>();
         return services;
     }
 
