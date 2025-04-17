@@ -17,12 +17,12 @@ namespace Innovative.Blazor.Components.Tests;
 
 public class InnovativeFormTests : LocalizedTestBase
 {
-    private readonly Mock<ICustomDialogService> customDialogServiceMock;
+    private readonly Mock<ISidepanelService> customDialogServiceMock;
     private readonly Mock<SidePanelComponent<TestFormModel>> dialogMock;
 
     public InnovativeFormTests()
     {
-        customDialogServiceMock = new Mock<ICustomDialogService>();
+        customDialogServiceMock = new Mock<ISidepanelService>();
         dialogMock = new Mock<SidePanelComponent<TestFormModel>>(customDialogServiceMock.Object);
     }
 

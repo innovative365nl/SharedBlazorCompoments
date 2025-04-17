@@ -35,12 +35,9 @@ public class RegisterDependenciesTests : TestContext
 
         // Assert
         var dialogService = provider.GetService<IInnovativeDialogService>();
-        var customDialogService = provider.GetService<ICustomDialogService>();
 
         Assert.NotNull(dialogService);
-        Assert.NotNull(customDialogService);
         Assert.IsType<InnovativeDialogService>(dialogService);
-        Assert.IsType<RadzenDialogServiceAdapter>(customDialogService);
     }
 
     [Fact]

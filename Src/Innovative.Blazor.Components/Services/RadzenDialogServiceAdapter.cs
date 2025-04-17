@@ -16,23 +16,3 @@ public interface ICustomDialogService
     void CloseSide();
     void Dispose();
 }
-
-[ExcludeFromCodeCoverage]
-internal class RadzenDialogServiceAdapter(DialogService dialogService) : ICustomDialogService
-{
-    public Task<dynamic> OpenSideAsync<T>(string title, Dictionary<string, object> parameters,
-        SideDialogOptions options) where T : ComponentBase
-    {
-        return dialogService.OpenSideAsync<T>(title, parameters, options);
-    }
-
-    public void CloseSide()
-    {
-        dialogService.CloseSide();
-    }
-
-    public void Dispose()
-    {
-        dialogService.Dispose();
-    }
-}
