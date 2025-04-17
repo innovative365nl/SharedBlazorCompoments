@@ -16,7 +16,7 @@ public static class RegisterDependencies
         services.AddLocalization();
     services.AddRadzenComponents();
 
-        services.AddScoped<IInnovativeDialogService, InnovativeDialogService>();
+        services.AddScoped<IInnovativeSidePanelService, InnovativeSidePanelService>();
         services.AddScoped<ISidepanelService, SidepanelService>();
         return services;
     }

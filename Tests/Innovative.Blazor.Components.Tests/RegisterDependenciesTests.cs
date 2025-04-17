@@ -34,10 +34,10 @@ public class RegisterDependenciesTests : TestContext
         var provider = services.BuildServiceProvider();
 
         // Assert
-        var dialogService = provider.GetService<IInnovativeDialogService>();
+        var dialogService = provider.GetService<IInnovativeSidePanelService>();
 
         Assert.NotNull(dialogService);
-        Assert.IsType<InnovativeDialogService>(dialogService);
+        Assert.IsType<InnovativeSidePanelService>(dialogService);
     }
 
     [Fact]

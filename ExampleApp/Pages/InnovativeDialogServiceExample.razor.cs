@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Components;
 namespace ExampleApp.Pages;
 
 
-public partial class InnovativeDialogServiceExample(IInnovativeDialogService dialogService)
+public partial class InnovativeDialogServiceExample(IInnovativeSidePanelService sidePanelService)
 {
 
 
@@ -52,7 +52,7 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
 
     private async Task OpenPersonDialog()
     {
-        var result = await dialogService.OpenDynamicFormDialog(
+        var result = await sidePanelService.OpenDynamicFormDialog(
             person).ConfigureAwait(false);
 
         person = result;
@@ -61,7 +61,7 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
     }
     private async Task OpenNewPersonDialog()
     {
-        var result = await dialogService.OpenDynamicFormDialog<PersonModel>().ConfigureAwait(false);
+        var result = await sidePanelService.OpenDynamicFormDialog<PersonModel>().ConfigureAwait(false);
 
         person = result;
 

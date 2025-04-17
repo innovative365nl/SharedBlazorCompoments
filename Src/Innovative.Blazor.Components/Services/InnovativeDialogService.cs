@@ -10,16 +10,16 @@ using Microsoft.AspNetCore.Components;
 
 namespace Innovative.Blazor.Components.Services;
 
-public interface IInnovativeDialogService
+public interface IInnovativeSidePanelService
 {
     Task<T> OpenDynamicFormDialog<T>(T model) where T : class;
     void Dispose();
     Task<T> OpenDynamicFormDialog<T>() where T : class;
 }
 
-internal sealed class InnovativeDialogService(
+internal sealed class InnovativeSidePanelService(
     ISidepanelService sidepanelService,
-    IInnovativeStringLocalizerFactory localizerFactory) : IDisposable, IInnovativeDialogService
+    IInnovativeStringLocalizerFactory localizerFactory) : IDisposable, IInnovativeSidePanelService
 {
     public void Dispose()
     {
