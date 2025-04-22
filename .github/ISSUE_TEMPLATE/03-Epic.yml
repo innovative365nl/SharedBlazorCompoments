@@ -1,0 +1,97 @@
+name: Epic
+description: Een grote, overkoepelende doelstelling of thema
+title: "[EPIC] "
+labels: ["epic"]
+type: 'Epic'
+assignees: ['vdboots']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Epic
+        Gebruik dit formulier om een nieuwe Epic aan te maken - een grote, overkoepelende doelstelling.
+  
+  - type: textarea
+    id: samenvatting
+    attributes:
+      label: Samenvatting
+      description: Een beknopte samenvatting die de essentie van deze Epic beschrijft.
+      placeholder: Beschrijf kort waar deze Epic over gaat...
+    validations:
+      required: true
+  
+  - type: textarea
+    id: doel
+    attributes:
+      label: Doel
+      description: Beschrijf het hoofddoel van deze Epic.
+      placeholder: Het doel van deze Epic is...
+    validations:
+      required: true
+  
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Wat valt binnen en buiten de scope van deze Epic?
+      placeholder: Deze Epic omvat... maar sluit uit...
+    validations:
+      required: true
+  
+  - type: textarea
+    id: zakelijke-waarde
+    attributes:
+      label: Zakelijke waarde
+      description: Welke waarde levert deze Epic op voor gebruikers/stakeholders?
+      placeholder: Deze Epic levert waarde door...
+    validations:
+      required: true
+  
+  - type: textarea
+    id: verwachte-features
+    attributes:
+      label: Verwachte Features
+      description: Lijst van Features die waarschijnlijk onder deze Epic vallen
+      placeholder: "- Feature 1\n- Feature 2\n- Feature 3"
+  
+  - type: textarea
+    id: afhankelijkheden
+    attributes:
+      label: Afhankelijkheden
+      description: Zijn er andere Epics, systemen of teams waarvan deze Epic afhankelijk is?
+      placeholder: Deze Epic is afhankelijk van...
+  
+  - type: input
+    id: start-datum
+    attributes:
+      label: Verwachte startdatum
+      placeholder: bijv. 2025-04-01
+  
+  - type: input
+    id: eind-datum
+    attributes:
+      label: Verwachte einddatum
+      placeholder: bijv. 2025-06-30
+  
+  - type: textarea
+    id: stakeholders
+    attributes:
+      label: Stakeholders
+      description: Wie zijn de belangrijkste stakeholders voor deze Epic?
+      placeholder: De belangrijkste stakeholders zijn...
+  
+  - type: textarea
+    id: acceptatiecriteria
+    attributes:
+      label: Acceptatiecriteria op Epic niveau
+      description: Wanneer is deze Epic succesvol afgerond?
+      placeholder: "- [ ] Criterium 1\n- [ ] Criterium 2\n- [ ] Criterium 3"
+    validations:
+      required: true
+  
+  - type: textarea
+    id: notities
+    attributes:
+      label: Notities
+      description: Aanvullende informatie, context of documentatie
+      placeholder: Verdere details...
