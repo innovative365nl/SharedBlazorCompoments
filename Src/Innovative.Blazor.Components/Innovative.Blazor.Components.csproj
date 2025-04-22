@@ -13,41 +13,14 @@
         <Content Update="Components\_Imports.razor">
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         </Content>
-        <Content Update="Components\Detail\InnovativeDetail.razor.css">
-          <DependentUpon>DetailView.razor</DependentUpon>
-        </Content>
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" />
         <PackageReference Include="Microsoft.Extensions.Localization" />
-<PackageReference Include="Radzen.Blazor" />
+        <PackageReference Include="Radzen.Blazor" />
         <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" />
     </ItemGroup>
-
-    <ItemGroup>
-        <UpToDateCheckInput Remove="Components\Spinner\Spinner.razor"/>
-        <UpToDateCheckInput Remove="Components\UrlTracking\UrlTrackingComponent.razor"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
-        </Reference>
-        <Reference Include="Microsoft.AspNetCore.WebUtilities">
-        </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="Components\InnovativeProgressBarCircular.razor.css">
-        <DependentUpon>InnovativeProgressBarCircular.razor</DependentUpon>
-      </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="Components\SidePanel\SidepanelHost.razor.cs" />
-      <Compile Include="Components\SidePanel\SidePanelHost.razor.cs" />
-    </ItemGroup>
-    
 
 </Project>
