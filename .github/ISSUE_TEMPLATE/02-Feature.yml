@@ -1,0 +1,84 @@
+name: Feature
+description: Feature uitgewerkt als hulpmiddel
+title: "[FEAT] "
+labels: []
+assignees: ['vdboots']
+type: 'Feature'
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Feature
+        Gebruik dit formulier om een nieuwe Feature aan te maken.
+  
+  - type: textarea
+    id: samenvatting
+    attributes:
+      label: Samenvatting
+      description: Een beknopte samenvatting die de essentie van de feature request beschrijft.
+      placeholder: Beschrijf kort waar deze feature over gaat...
+    validations:
+      required: true
+  
+  - type: textarea
+    id: beschrijving-wat
+    attributes:
+      label: Wat
+      description: Beschrijf wat de feature is en wat het doet.
+      placeholder: Deze feature biedt functionaliteit om...
+    validations:
+      required: true
+  
+  - type: textarea
+    id: beschrijving-waarom
+    attributes:
+      label: Waarom
+      description: Leg uit welke zakelijke waarde of welk probleem hiermee wordt opgelost.
+      placeholder: Deze feature lost het volgende probleem op...
+    validations:
+      required: true
+  
+  - type: textarea
+    id: beschrijving-hoe
+    attributes:
+      label: Hoe
+      description: Schets mogelijke implementatie- of ontwerpideeën.
+      placeholder: Een mogelijke implementatieaanpak zou zijn...
+    validations:
+      required: false
+  
+  - type: textarea
+    id: acceptatiecriteria
+    attributes:
+      label: Acceptatiecriteria
+      description: Specifieke criteria waaraan moet worden voldaan
+      placeholder: "- [ ] Criterium 1\n- [ ] Criterium 2\n- [ ] Criterium 3"
+    validations:
+      required: true
+  
+  - type: textarea
+    id: technische-details
+    attributes:
+      label: Technische details
+      description: Optioneel - voeg technische details of implementatie-instructies toe
+      placeholder: Vul hier eventuele technische details in
+    validations:
+      required: false
+  
+  - type: textarea
+    id: afhankelijkheden
+    attributes:
+      label: Afhankelijkheden
+      description: Zijn er andere features of componenten waarvan deze feature afhankelijk is?
+      placeholder: Deze feature is afhankelijk van...
+    validations:
+      required: false
+  
+  - type: textarea
+    id: notities
+    attributes:
+      label: Aanvullende notities
+      description: Eventuele aanvullende informatie of context
+      placeholder: Verdere details...
+    validations:
+      required: false

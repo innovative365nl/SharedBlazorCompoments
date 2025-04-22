@@ -1,0 +1,47 @@
+name: Task
+description: Een specifieke taak die moet worden uitgevoerd gerelateerd aan een feature
+title: "[TASK] "
+type: 'Task'
+labels: []
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Omschrijving
+        Beschrijf duidelijk wat er gedaan moet worden
+  
+  - type: markdown
+    attributes:
+      value: "---"
+      
+  - type: markdown
+    attributes:
+      value: |
+        ## Acceptatiecriteria
+  
+  - type: checkboxes
+    id: acceptatiecriteria
+    attributes:
+      label: Criteria
+      description: Alle criteria waaraan moet worden voldaan
+      options:
+        - label: Criterium 1
+          required: false
+        - label: Criterium 2
+          required: false
+        - label: Criterium 3
+          required: false
+  
+  - type: markdown
+    attributes:
+      value: "---"
+      
+  - type: textarea
+    id: technische-details
+    attributes:
+      label: Technische details
+      description: Optioneel - voeg technische details of implementatie-instructies toe
+      placeholder: Vul hier eventuele technische details in
+    validations:
+      required: false
