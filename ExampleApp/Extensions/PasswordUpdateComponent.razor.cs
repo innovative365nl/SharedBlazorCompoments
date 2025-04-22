@@ -18,7 +18,7 @@ public partial class PasswordUpdateComponent : ComponentBase, IDynamicBaseCompon
     {
         var personModel = (PersonModel)Model!;
     //    personModel.ControlePasswordAction.Invoke();
-    personModel.ControlePasswordAction!.Invoke(1);
+    personModel.PasswordCheckAction!.Invoke(1);
         await OnSave.InvokeAsync().ConfigureAwait(false);
     }
     public  Task OnCancelPressed()

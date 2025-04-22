@@ -1,9 +1,12 @@
 namespace Innovative.Blazor.Components.Attributes;
 
-public abstract class UIField : Attribute
+public abstract class UIField(string name) : Attribute
 {
     /// <summary>
-    ///     Key that is used to get the resource string if not found it will use the value
+    ///     Returns the name of the field.
     /// </summary>
-    public string? Name { get; set; }
+    /// <remarks>
+    ///     The name is used as a key to get the resource string. If the resource is not found it uses the name as a caption.
+    /// </remarks>
+    public string Name { get; } = name;
 }

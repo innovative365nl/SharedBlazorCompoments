@@ -6,11 +6,11 @@ namespace ExampleApp.Pages;
 [UIGridClass(AllowSorting = true , DefaultSortField = nameof(Age))]
 public class InnovativeTestClass
 {
-    [UIGridField(IsSticky = true, Sortable = true)]
+    [UIGridField(IsSticky = true, IsSortable = true)]
 
     public string? Name { get; set; }
 
-    [UIGridField(showByDefault: true, Sortable = true)]
+    [UIGridField(IsSortable = true)]
 
     public int Age { get; set; }
 
@@ -23,6 +23,6 @@ public class InnovativeTestClass
     // [UIGridField(typeof(CustomColorStyle), Parameters =  ["Color1:orange", "Color2:gray", "Color3:lightgreen"])]
     public string? Status2 { get; set; }
 
-     [UIGridField(typeof(CustomBoolStyle))]
+     [UIGridField(CustomComponentType = typeof(CustomBoolStyle))]
     public bool IsActive { get; set; } = true;
 }

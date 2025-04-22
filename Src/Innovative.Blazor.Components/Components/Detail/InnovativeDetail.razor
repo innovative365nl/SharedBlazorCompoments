@@ -19,7 +19,7 @@
 
                     <RadzenButton Text="@translatedActionName"
                                   Click="@(() => HandleActionProperty(property: property, actionAttribute: actionAttribute!))"
-                                  ButtonStyle="ButtonStyle.Primary"/>
+                                  ButtonStyle="ButtonStyle.Primary"/>    
                 }
             }
             else if (actionProperties.Any())
@@ -52,7 +52,7 @@
         <div class="form-column-group @GetColumnWidthClass(group.Key)">
             @foreach (var property in group.Value)
             {
-                var fieldAttribute = property.GetCustomAttribute<UIFormFieldAttribute>();
+                var fieldAttribute = property.GetCustomAttribute<UIFormField>();
                 var value = property.GetValue(obj: Model);
 
                 <div style="display: grid; grid-template-columns: minmax(100px, auto) 1fr; gap: 0.25rem; align-items: baseline; margin-bottom: 0.5rem;">
@@ -100,7 +100,7 @@
             <div class="form-ungrouped">
                 @foreach (var property in ungroupedProperties)
                 {
-                    var fieldAttribute = property.GetCustomAttribute<UIFormFieldAttribute>();
+                    var fieldAttribute = property.GetCustomAttribute<UIFormField>();
                     var value = property.GetValue(obj: Model);
 
                     <div style="display: grid; grid-template-columns: minmax(100px, auto) 1fr; gap: 0.25rem; align-items: baseline; margin-bottom: 0.5rem;">

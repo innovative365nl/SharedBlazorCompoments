@@ -1,21 +1,12 @@
-#region
-
 using System.Diagnostics.CodeAnalysis;
 using Innovative.Blazor.Components.Attributes;
-
-#endregion
 
 namespace Innovative.Blazor.Components.Components;
 
 [ExcludeFromCodeCoverage]
 [AttributeUsage(validOn: AttributeTargets.Property)]
-[SuppressMessage("Design", "CA1019:Define accessors for attribute arguments")]
-public sealed class UIFormFieldAttribute : UIField
+public sealed class UIFormField(string name) : UIField(name)
 {
-    public UIFormFieldAttribute(string name)
-    {
-        Name = name ?? throw new ArgumentNullException(nameof(name));
-    }
     public string? ColumnGroup { get; set; }
     public bool UseWysiwyg { get; set; }
     public Type? DisplayComponent { get; set; }
@@ -23,5 +14,4 @@ public sealed class UIFormFieldAttribute : UIField
     public Type? FormComponent { get; set; }
     public string[]? FormParameters { get; set; }
     public string? TextProperty { get; set; }
-
 }

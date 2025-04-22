@@ -52,7 +52,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         // First check if Model is DisplayFormModel and get column info from there
         if (Model is DisplayFormModel displayModel)
         {
-            var column = displayModel.ViewColumns.FirstOrDefault(c => c.Name == columnGroup);
+            var column = displayModel.Columns.FirstOrDefault(c => c.Name == columnGroup);
             if (column is { Width: > 0 })
             {
                 return $"column-span-{column.Width}";
@@ -83,7 +83,7 @@ private void OrganizePropertiesByGroups()
 
     // Get column order from DisplayFormModel or attribute
     var customColumnOrder = Model is DisplayFormModel displayModel
-        ? displayModel.ViewColumns.Select(c => c.Name).Where(n => n != null).ToArray()
+        ? displayModel.Columns.Select(c => c.Name).Where(n => n != null).ToArray()
         : null;
 
     var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
@@ -92,12 +92,12 @@ private void OrganizePropertiesByGroups()
 
     // Group properties by column group
     var groupedProperties = propertiesWithAttributes
-        .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup != null)
-        .GroupBy(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup)
+        .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup != null)
+        .GroupBy(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup)
         .ToDictionary(g => g.Key!, g => g.ToList());
 
     ungroupedProperties = propertiesWithAttributes
-        .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup == null)
+        .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup == null)
         .ToList();
 
     // Order the groups based on ColumnOrder if available
@@ -224,12 +224,12 @@ private void OrganizePropertiesByGroups()
     private static PropertyInfo[] GetPropertiesWithUiFormField()
     {
         return typeof(TModel).GetProperties()
-            .Where(predicate: p => p.GetCustomAttribute<UIFormFieldAttribute>() != null)
+            .Where(predicate: p => p.GetCustomAttribute<UIFormField>() != null)
             .ToArray();
     }
 
     [ExcludeFromCodeCoverage]
-    private static RenderFragment RenderViewComponent(object? value, UIFormFieldAttribute attribute)
+    private static RenderFragment RenderViewComponent(object? value, UIFormField attribute)
     {
         return builder =>
         {

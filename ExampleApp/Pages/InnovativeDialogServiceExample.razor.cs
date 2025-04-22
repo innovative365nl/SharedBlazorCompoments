@@ -7,19 +7,14 @@ using Microsoft.AspNetCore.Components;
 
 namespace ExampleApp.Pages;
 
-
 public partial class InnovativeDialogServiceExample(IInnovativeSidePanelService sidePanelService)
 {
-
-
     private PersonModel person = new()
     {
         FirstName = "John",
         LastName = "Doe",
         IsActive = true,
-        BirthDate = new DateTime(1993,
-            5,
-            12),
+        BirthDate = new DateTime(1993, 5, 12),
         ComplexComponent =  new()
         {
             Name = "Complex Component",
@@ -39,7 +34,7 @@ public partial class InnovativeDialogServiceExample(IInnovativeSidePanelService 
             StateHasChanged();
         };
 
-        person.ControlePasswordAction = result =>
+        person.PasswordCheckAction = result =>
         {
             var logEntry = $"Password control result: {result} at {DateTime.Now:HH:mm:ss}";
             actionLog.Add(logEntry);
@@ -52,8 +47,9 @@ public partial class InnovativeDialogServiceExample(IInnovativeSidePanelService 
 
     private async Task OpenPersonDialog()
     {
-        var result = await sidePanelService.OpenDynamicFormDialog(
-            person).ConfigureAwait(false);
+        var result = await sidePanelService
+                                       .OpenDynamicFormDialog(person)
+                                       .ConfigureAwait(false);
 
         person = result;
 
@@ -69,10 +65,13 @@ public partial class InnovativeDialogServiceExample(IInnovativeSidePanelService 
     }
 }
 
-[UIFormClass( title: nameof(Example.DialogService_Person),
-    ResourceType = typeof(Example), ColumnOrder = new[] {   "Name","EmployeeInfo","Description" },
-    ColumnWidthNames = new[] {"Name", "EmployeeInfo", "Description"},
-    ColumnWidthValues = new[] {1, 1, 3})]
+[UIFormClass(
+    title: nameof(Example.DialogService_Person),
+    ResourceType = typeof(Example),
+    ColumnOrder = ["Name", "EmployeeInfo", "Description"],
+    ColumnWidthNames = ["Name", "EmployeeInfo", "Description"],
+    ColumnWidthValues = [1, 1, 3]
+)]
 public class PersonModel : DisplayFormModel
 {
     public PersonModel()
@@ -84,9 +83,6 @@ public class PersonModel : DisplayFormModel
     [UIFormField(name: "Last Name", ColumnGroup = "Name")]
     public string? LastName { get; set; }
 
-   // [UIFormField(name: "Age", ColumnGroup = "EmployeeInfo")]
-    //public int? Age => DateTime.Now.Year - BirthDate!.Value.Year;
-
     [UIFormField(name: "Is Active", DisplayComponent = typeof(CustomBoolStyle), FormComponent = typeof(CustomBoolStyle), ColumnGroup = "EmployeeInfo")]
     public bool IsActive { get; set; }
 
@@ -96,11 +92,11 @@ public class PersonModel : DisplayFormModel
     [UIFormField(name : "Description", UseWysiwyg = true, ColumnGroup = "Description")]
     public string? Description { get; set; }
 
-    [UIFormViewAction(Name = "Update Password", Order = 1)]
+    [UIFormViewAction(name: "Update Password", Order = 1)]
     public  Action<int>? UpdatePasswordAction { get; set; }
 
-    [UIFormViewAction(Name = "Control Password", Order = 1, CustomComponent = typeof(PasswordUpdateComponent))]
-    public   Action<int>? ControlePasswordAction { get; set; }
+    [UIFormViewAction(name: "Control Password", Order = 1, CustomComponent = typeof(PasswordUpdateComponent))]
+    public   Action<int>? PasswordCheckAction { get; set; }
 
     [UIFormField(name: "Complex Component", ColumnGroup = "Description", FormComponent = typeof(ComplexComponent), TextProperty = nameof(ComplexComponent.Description))]
     public ComplexModel? ComplexComponent { get; set; } = new()
@@ -109,7 +105,6 @@ public class PersonModel : DisplayFormModel
         Description = "This is a complex component"
     };
 }
-
 
 public class ComplexModel
 {

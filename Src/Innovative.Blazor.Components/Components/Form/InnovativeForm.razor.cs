@@ -17,7 +17,7 @@ namespace Innovative.Blazor.Components.Components;
 public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBaseComponent
 {
     private readonly Dictionary<string, object?> formValues = new Dictionary<string, object?>();
-    private readonly IInnovativeStringLocalizer localizer = null!;
+    private readonly IInnovativeStringLocalizer localizer;
     private const int StartSequenceNumberLoop = 4;
 
     public InnovativeForm(IInnovativeStringLocalizerFactory localizerFactory)
@@ -104,12 +104,12 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
         var columnOrder = formClassAttribute?.ColumnOrder;
 
         var groupedProperties = propertiesWithAttributes
-            .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup != null)
-            .GroupBy(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup)
+            .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup != null)
+            .GroupBy(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup)
             .ToDictionary(g => g.Key!, g => g.ToList());
 
         ungroupedProperties = propertiesWithAttributes
-            .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup == null)
+            .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup == null)
             .ToList();
 
         // Order the groups based on ColumnOrder if available
@@ -134,7 +134,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
     [ExcludeFromCodeCoverage]
     protected RenderFragment RenderPropertyField(PropertyInfo property) => builder =>
     {
-        var fieldAttribute = property.GetCustomAttribute<UIFormFieldAttribute>();
+        var fieldAttribute = property.GetCustomAttribute<UIFormField>();
         var propName = property.Name;
 
         builder.OpenComponent<RadzenLabel>(0);
@@ -201,7 +201,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
     };
 
     [ExcludeFromCodeCoverage]
-    private static RenderFragment RenderFormComponent(object? value, UIFormFieldAttribute attribute)
+    private static RenderFragment RenderFormComponent(object? value, UIFormField attribute)
     {
         return builder =>
         {
@@ -292,7 +292,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
     private static PropertyInfo[] GetPropertiesWithUiFormField()
     {
         return typeof(TModel).GetProperties()
-            .Where(predicate: p => p.GetCustomAttribute<UIFormFieldAttribute>() != null)
+            .Where(predicate: p => p.GetCustomAttribute<UIFormField>() != null)
             .ToArray();
     }
 }
