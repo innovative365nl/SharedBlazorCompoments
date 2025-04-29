@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+
 namespace Innovative.Blazor.Components.Components;
 
 public interface IFormModel
@@ -22,22 +24,18 @@ public interface IFormModel
 
 public abstract class FormModelBase : IFormModel
 {
-    protected readonly List<Column> columns = [];
-
     public string? Name { get; set; }
     public object? Value { get; set; }
     public string? CssClass { get; set; }
-
-    public IEnumerable<Column> Columns => columns.OrderBy(c => c.Order);
-
-
+    protected Collection<Column> ViewColumns { get; } = [];
+    public IEnumerable<Column> Columns => ViewColumns.OrderBy(c => c.Order);
 }
 
 public abstract class DisplayFormModel : FormModelBase
 {
     public void AddViewColumn(string name, int order, int width, int offset)
     {
-        columns.Add(new Column
+        ViewColumns.Add(new Column
         {
             Name = name,
             Order = order,
@@ -45,21 +43,4 @@ public abstract class DisplayFormModel : FormModelBase
             Offset = offset
         });
     }
-}
-
-public abstract class EditFormModel : FormModelBase
-{
-    public void AddEditColumn(string name, int order, int width, int offset)
-    {
-        columns.Add(new Column
-                    {
-                        Name = name,
-                        Order = order,
-                        Width = width,
-                        Offset = offset
-                    });
-    }
-
-    public Action? SaveAction;
-    public Action? DeleteAction;
 }
