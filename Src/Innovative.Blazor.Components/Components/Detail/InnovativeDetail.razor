@@ -1,54 +1,32 @@
 @namespace Innovative.Blazor.Components.Components
 @using System.Reflection
 @using Microsoft.Extensions.Localization
-@using TextStyle = Innovative.Blazor.Components.Components.TextStyle
+
 @typeparam TModel
 
 <RadzenStack Orientation="Orientation.Vertical" Gap="1rem">
     <RadzenStack Orientation="Orientation.Horizontal" Gap="1rem" JustifyContent="JustifyContent.Start" Class="mb-2">
         @{
-            var actionProperties = GetPropertiesWithViewAction()
-                    .OrderBy(keySelector: p => p.GetCustomAttribute<UIFormViewAction>()!.Order)
-                    .ToList();
+            var splitButton = GetSplitButtonDefinition();
 
-            if (actionProperties.Count <= MaxNumberOfButtonsBesideEachOther)
+            if (splitButton == null)
             {
-                foreach (var property in actionProperties)
+                foreach (var button in GetButtonDefinitions())
                 {
-                    var actionAttribute = property.GetCustomAttribute<UIFormViewAction>();
-                    var actionName = actionAttribute?.Name ?? property.Name;
-                    var translatedActionName = localizer.GetString(actionName);
-
-                    if (property.GetType() == typeof(Action) && property.GetValue(null) != null)
-                    {
-                        <RadzenButton Text="@translatedActionName"
-                                      Click="@(() => HandleActionProperty(property: property, actionAttribute: actionAttribute!))"
+                        <RadzenButton Text="@button.ActionName"
+                                      Click="@(() => HandleActionProperty(property: button.Property, actionAttribute: button.ActionAttribute))"
                                       ButtonStyle="ButtonStyle.Primary"/>
-                    }
                 }
             }
-            else if (actionProperties.Any())
+            else 
             {
-                var primaryProperty = actionProperties.First();
-                var primaryAttribute = primaryProperty.GetCustomAttribute<UIFormViewAction>();
-                var primaryName = primaryAttribute?.Name ?? primaryProperty.Name;
-                var translatedPrimaryName = localizer.GetString(primaryName);
-                if (primaryProperty.GetType() == typeof(Action) && primaryProperty.GetValue(null) != null)
-                {
-                    <RadzenSplitButton Text="@translatedPrimaryName"
-                                       Click="@(() => HandleActionProperty(property: primaryProperty, actionAttribute: primaryAttribute!))"
-                                       ButtonStyle="ButtonStyle.Primary">
-                        @foreach (var property in actionProperties.Skip(count: 1))
+                <RadzenSplitButton Text="@splitButton.ActionName"
+                                   Click="@(() => HandleActionProperty(property: splitButton.Property, actionAttribute: splitButton.ActionAttribute))"
+                                   ButtonStyle="ButtonStyle.Primary">
+                        @foreach (var item in GetSplitButtonDefinitionItems())
                         {
-                            var actionAttribute = property.GetCustomAttribute<UIFormViewAction>();
-                            var actionName = actionAttribute?.Name ?? property.Name;
-                            var translatedActionName = localizer.GetString(actionName);
-
-                            if (property.GetType() == typeof(Action) && property.GetValue(null) != null)
-                            {
-                                <RadzenSplitButtonItem Text="@translatedActionName"
-                                                       Click="@(() => HandleActionProperty(property: property, actionAttribute: actionAttribute!))"/>
-                            }
+                        <RadzenSplitButtonItem Text="@item.ActionName"
+                                               Click="@(() => HandleActionProperty(property: item.Property, actionAttribute: item.ActionAttribute))" />
                         }
                     </RadzenSplitButton>
                 }

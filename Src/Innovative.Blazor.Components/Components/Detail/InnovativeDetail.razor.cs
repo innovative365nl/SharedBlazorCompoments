@@ -1,13 +1,9 @@
-#region
-
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Innovative.Blazor.Components.Components.Common;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
-
-#endregion
+using Microsoft.Extensions.Localization;
 
 namespace Innovative.Blazor.Components.Components;
 
@@ -29,8 +25,6 @@ public partial class InnovativeDetail<TModel> : ComponentBase
     [Parameter] public EventCallback<string> OnActionExecuted { get; set; }
 
     [CascadingParameter] private SidePanelComponent<TModel>? parentDialog { get; set; }
-
-
 
     private IReadOnlyCollection<PropertyInfo> ungroupedProperties { get; set; } = new List<PropertyInfo>();
 
@@ -64,7 +58,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         if (formClassAttribute?.ColumnWidthNames != null &&
             formClassAttribute.ColumnWidthValues != null)
         {
-            for (int i = 0; i < formClassAttribute.ColumnWidthNames.Length; i++)
+            for (var i = 0; i < formClassAttribute.ColumnWidthNames.Length; i++)
             {
                 if (formClassAttribute.ColumnWidthNames[i] == columnGroup)
                 {
@@ -77,103 +71,93 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         return string.Empty;
     }
 
-private void OrganizePropertiesByGroups()
-{
-    var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
-
-    // Get column order from DisplayFormModel or attribute
-    var customColumnOrder = Model is DisplayFormModel displayModel
-        ? displayModel.Columns.Select(c => c.Name).Where(n => n != null).ToArray()
-        : null;
-
-    var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
-    var attributeColumnOrder = formClassAttribute?.ColumnOrder;
-    var columnOrder = customColumnOrder?.Any() == true ? customColumnOrder : attributeColumnOrder;
-
-    // Group properties by column group
-    var groupedProperties = propertiesWithAttributes
-        .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup != null)
-        .GroupBy(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup)
-        .ToDictionary(g => g.Key!, g => g.ToList());
-
-    ungroupedProperties = propertiesWithAttributes
-        .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup == null)
-        .ToList();
-
-    // Order the groups based on ColumnOrder if available
-    if (columnOrder != null && columnOrder.Any())
+    private void OrganizePropertiesByGroups()
     {
-        // Use an ordered dictionary to maintain the exact order specified
-        var orderedGroups = new List<KeyValuePair<string, List<PropertyInfo>>>();
+        var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
 
-        // First add groups that match the column order
-        foreach (var columnName in columnOrder)
+        // Get column order from DisplayFormModel or attribute
+        var customColumnOrder = Model is DisplayFormModel displayModel
+            ? displayModel.Columns.Select(c => c.Name).Where(n => n != null).ToArray()
+            : null;
+
+        var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
+        var attributeColumnOrder = formClassAttribute?.ColumnOrder;
+        var columnOrder = customColumnOrder?.Any() == true ? customColumnOrder : attributeColumnOrder;
+
+        // Group properties by column group
+        var groupedProperties = propertiesWithAttributes
+            .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup != null)
+            .GroupBy(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup)
+            .ToDictionary(g => g.Key!, g => g.ToList());
+
+        ungroupedProperties = propertiesWithAttributes
+                                .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup == null)
+                                .ToList();
+
+        // Order the groups based on ColumnOrder if available
+        if (columnOrder != null && columnOrder.Any())
         {
-            if (columnName != null && groupedProperties.ContainsKey(columnName))
-            {
-                if (groupedProperties[columnName].Any())
-                {
-                    orderedGroups.Add(new KeyValuePair<string, List<PropertyInfo>>(
-                        columnName,
-                        groupedProperties[columnName]));
+            // Use an ordered dictionary to maintain the exact order specified
+            var orderedGroups = new List<KeyValuePair<string, List<PropertyInfo>>>();
 
-                    // Remove the processed group to avoid duplication
-                    groupedProperties.Remove(columnName);
+            // First add groups that match the column order
+            foreach (var columnName in columnOrder)
+            {
+                if (columnName != null && groupedProperties.ContainsKey(columnName))
+                {
+                    if (groupedProperties[columnName].Any())
+                    {
+                        orderedGroups.Add(new KeyValuePair<string, List<PropertyInfo>>(columnName, groupedProperties[columnName]));
+
+                        // Remove the processed group to avoid duplication
+                        groupedProperties.Remove(columnName);
+                    }
                 }
             }
 
+            // Then add any remaining groups not in column order
+            orderedGroups.AddRange(groupedProperties.Select(g => g));
+
+            orderedColumnGroups = orderedGroups;
         }
-
-        // Then add any remaining groups not in column order
-        orderedGroups.AddRange(groupedProperties.Select(g => g));
-
-        orderedColumnGroups = orderedGroups;
-    }
-    else
-    {
-        orderedColumnGroups = groupedProperties.ToList()!;
-    }
-}
-
-    private static PropertyInfo[] GetPropertiesWithViewAction()
-    {
-        return typeof(TModel).GetProperties()
-            .Where(predicate: p => p.GetCustomAttribute<UIFormViewAction>() != null)
-            .ToArray();
+        else
+        {
+            orderedColumnGroups = groupedProperties.ToList()!;
+        }
     }
 
     private void HandleActionProperty(PropertyInfo property, UIFormViewAction actionAttribute)
     {
         var action = property.GetValue(obj: Model) as Delegate;
         if (action == null)
+        {
             return;
+        }
 
         if (actionAttribute.CustomComponent != null)
         {
             var (component, parameters, title) = GetActionDetails(propertyName: property.Name);
-
 
             if (parentDialog != null)
             {
 #pragma warning disable BL0005
                 parentDialog.ActionChildContent = builder =>
 #pragma warning restore BL0005
-                {
-                    builder.OpenComponent(sequence: 0, componentType: component);
-                    {
-                        var i = 1;
+                                                  {
+                                                      builder.OpenComponent(sequence: 0, componentType: component);
+                                                      {
+                                                          var i = 1;
                         foreach (var param in parameters)
-                        {
-                            builder.AddAttribute(sequence: i++, name: param.Key, value: param.Value);
-                        }
+                                                          {
+                                                              builder.AddAttribute(sequence: i++, name: param.Key, value: param.Value);
+                                                          }
 
-                        builder.AddAttribute(sequence: i++, name: "ParentDialog", value: parentDialog);
-                    }
+                                                          builder.AddAttribute(sequence: i++, name: "ParentDialog", value: parentDialog);
+                                                      }
 
-                    builder.CloseComponent();
-                };
-                //todo: add title to dialog header with all links in document to return title. Or remove this. i think low business value
-                //  ParentDialog.ActionTitle = title;
+                                                      builder.CloseComponent();
+                                                  };
+
                 parentDialog.SetCustomDialog(isCustom: true);
             }
         }
@@ -205,68 +189,152 @@ private void OrganizePropertiesByGroups()
     {
         var property = typeof(TModel).GetProperty(name: propertyName);
         if (property == null)
+        {
             return (null, null, null)!;
+        }
 
         var actionAttribute = property.GetCustomAttribute<UIFormViewAction>();
         if (actionAttribute == null)
+        {
             return (null, null, null)!;
+        }
 
         var parameters = new Dictionary<string, object?>
-        {
+                         {
             { "Model", Model },
             { "ActionProperty", property.Name }
-        };
+                         };
 
         return (actionAttribute.CustomComponent, parameters, actionAttribute.Name ?? property.Name)!;
     }
 
-
     private static PropertyInfo[] GetPropertiesWithUiFormField()
     {
         return typeof(TModel).GetProperties()
-            .Where(predicate: p => p.GetCustomAttribute<UIFormField>() != null)
-            .ToArray();
+                             .Where(predicate: p => p.GetCustomAttribute<UIFormField>() != null)
+                             .ToArray();
     }
 
     [ExcludeFromCodeCoverage]
     private static RenderFragment RenderViewComponent(object? value, UIFormField attribute)
     {
         return builder =>
-        {
-            try
-            {
-                if (value == null)
-                {
-                    builder.AddMarkupContent(sequence: 0, markupContent: "<span class=\"text-muted\">-</span>");
-                    return;
-                }
+               {
+                   try
+                   {
+                       if (value == null)
+                       {
+                           builder.AddMarkupContent(sequence: 0, markupContent: "<span class=\"text-muted\">-</span>");
+                           return;
+                       }
 
-                if (attribute.DisplayComponent != null)
-                    builder.OpenComponent(sequence: 0, componentType: attribute.DisplayComponent);
-                builder.AddAttribute(sequence: 1, name: "Value", value: value);
+                       if (attribute.DisplayComponent != null)
+                       {
+                           builder.OpenComponent(sequence: 0, componentType: attribute.DisplayComponent);
+                       }
+                       builder.AddAttribute(sequence: 1, name: "Value", value: value);
 
-                if (attribute.DisplayParameters?.Length > 0)
-                {
-                    var index = StartSequenceNumberLoop;
-                    foreach (var param in attribute.DisplayParameters)
-                    {
-                        var parts = param.Split(separator: '=', count: 2);
-                        if (parts.Length == 2)
-                        {
-                            builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);
-                        }
-                    }
-                }
+                       if (attribute.DisplayParameters?.Length > 0)
+                       {
+                            var index = StartSequenceNumberLoop;
+                            foreach (var param in attribute.DisplayParameters)
+                            {
+                                var parts = param.Split(separator: '=', count: 2);
+                                if (parts.Length == 2)
+                                {
+                                    builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);
+                                }
+                            }
+                       }
 
-                builder.CloseComponent();
-            }
+                       builder.CloseComponent();
+                   }
 #pragma warning disable CA1031
-            catch (Exception ex)
+                   catch (Exception ex)
 #pragma warning restore CA1031
-            {
-                builder.AddMarkupContent(sequence: 0,
-                    markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
-            }
-        };
+                   {
+                       builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
+                   }
+               };
     }
+
+    internal ButtonDefinition? GetSplitButtonDefinition()
+    {
+        List<PropertyInfo> actionProperties = GetActionProperties();
+
+        if (actionProperties.Count <= MaxNumberOfButtonsBesideEachOther)
+        {
+            return null;
+        }
+
+        var property = actionProperties.First();
+        var attribute = property.GetCustomAttribute<UIFormViewAction>()!;
+        var name = attribute?.Name ?? property.Name;
+        var actionName = localizer.GetString(name);
+
+        return new ButtonDefinition { ActionName = actionName, Property = property, ActionAttribute = attribute! };
+    }
+
+    internal ButtonDefinition[] GetSplitButtonDefinitionItems()
+    {
+        var result = new List<ButtonDefinition>();
+
+        List<PropertyInfo> actionProperties = GetActionProperties();
+
+        if (actionProperties.Count <= MaxNumberOfButtonsBesideEachOther)
+        {
+            return result.ToArray();
+        }
+
+        foreach (var property in actionProperties.Skip(1))
+        {
+            var actionAttribute = property.GetCustomAttribute<UIFormViewAction>()!;
+            var actionName = actionAttribute?.Name ?? property.Name;
+            var translatedActionName = localizer.GetString(actionName);
+
+            result.Add(new ButtonDefinition { ActionName = translatedActionName, Property = property, ActionAttribute = actionAttribute! });
+        }
+
+        return result.ToArray();
+    }
+
+    internal ButtonDefinition[] GetButtonDefinitions()
+    {
+        var result = new List<ButtonDefinition>();
+
+        List<PropertyInfo> actionProperties = GetActionProperties();
+
+        if (actionProperties.Count <= MaxNumberOfButtonsBesideEachOther)
+        {
+            foreach (var property in actionProperties)
+            {
+                var actionAttribute = property.GetCustomAttribute<UIFormViewAction>()!;
+                var actionName = actionAttribute?.Name ?? property.Name;
+                var translatedActionName = localizer.GetString(actionName);
+
+                result.Add(new ButtonDefinition{ActionName = translatedActionName, Property = property, ActionAttribute = actionAttribute! });
+            }
+        }
+        return result.ToArray();
+    }
+
+    private static List<PropertyInfo> GetActionProperties()
+    {
+        List<PropertyInfo> actionProperties = typeof(TModel).GetProperties()
+                                                            .Where(x =>
+                                                                       x.GetCustomAttribute<UIFormViewAction>() != null           &&
+                                                                       x.GetType()                              == typeof(Action) &&
+                                                                       x.GetValue(null)                         != null
+                                                                  )
+                                                            .OrderBy(keySelector: p => p.GetCustomAttribute<UIFormViewAction>()!.Order)
+                                                            .ToList();
+        return actionProperties;
+    }
+}
+
+internal record ButtonDefinition
+{
+    public required string ActionName { get; init; }
+    public required PropertyInfo Property { get; init; }
+    public required UIFormViewAction ActionAttribute { get; init; }
 }
