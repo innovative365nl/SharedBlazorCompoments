@@ -1,4 +1,3 @@
-using Innovative.Blazor.Components.Components.Common;
 using Innovative.Blazor.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Radzen;
@@ -48,13 +47,7 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
     private async Task HandleSaveClick()
     {
-        if (formComponent != null)
-        {
-            formComponent.SaveFormAction?.Invoke();
-            //await formComponent
-            //      .OnSubmitPressed()
-            //      .ConfigureAwait(false);
-        }
+        formComponent?.SaveFormAction?.Invoke();
 
         isCustomDialog = false;
         IsEditing = false;
@@ -66,13 +59,7 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
     private async Task HandleDeleteClick()
     {
-        if (formComponent != null)
-        {
-            formComponent.DeleteFormAction?.Invoke();
-            //await formComponent
-            //      .OnDeletePressed()
-            //      .ConfigureAwait(false);
-        }
+        formComponent?.DeleteFormAction?.Invoke();
 
         isCustomDialog = false;
         IsEditing = false;
@@ -84,10 +71,7 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
     private Task HandleCancelClick()
     {
-        if (formComponent != null)
-        {
-            formComponent.CancelFormAction?.Invoke();
-        }
+        formComponent?.CancelFormAction?.Invoke();
 
         IsEditing = false;
         isCustomDialog = false;

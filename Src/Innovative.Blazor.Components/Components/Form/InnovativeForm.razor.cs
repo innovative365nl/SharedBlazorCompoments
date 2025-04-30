@@ -15,18 +15,7 @@ public partial class InnovativeForm<TModel> : ComponentBase
     private readonly IInnovativeStringLocalizer localizer;
     private const int StartSequenceNumberLoop = 4;
 
-    public InnovativeForm(IInnovativeStringLocalizerFactory localizerFactory)
-    {
-        var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
-        var resourceType = uiClassAttribute?.ResourceType ?? typeof(TModel);
-        Debug.Assert(localizerFactory != null, nameof(localizerFactory) + " != null");
-        localizer = localizerFactory.Create(resourceType);
-    }
-
     [Parameter] public required TModel Model { get; set; }
-    //[Parameter] public EventCallback<TModel> OnSave { get; set; }
-    //[Parameter] public EventCallback OnCancel { get; set; }
-    //[Parameter] public EventCallback OnDelete { get; set; }
 
     [CascadingParameter] public required SidePanelComponent<TModel>? ParentDialog { get; set; }
 
@@ -35,6 +24,63 @@ public partial class InnovativeForm<TModel> : ComponentBase
     protected IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; private set; } =
         new List<KeyValuePair<string, List<PropertyInfo>>>();
 
+    public InnovativeForm(IInnovativeStringLocalizerFactory localizerFactory)
+    {
+        var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
+        var resourceType = uiClassAttribute?.ResourceType ?? typeof(TModel);
+        Debug.Assert(localizerFactory != null, nameof(localizerFactory) + " != null");
+        localizer = localizerFactory.Create(resourceType);
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (ParentDialog != null && Model != null && Model.GetType().BaseType == typeof(DisplayFormModel))
+        {
+            var form = (Model as DisplayFormModel)!;
+            ParentDialog.SetFormComponent(form);
+        }
+
+        foreach (var prop in GetPropertiesWithUiFormField())
+        {
+            formValues[key: prop.Name] = prop.GetValue(obj: Model);
+        }
+
+        OrganizePropertiesByGroups();
+    }
+
+    private void OrganizePropertiesByGroups()
+    {
+        var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
+        var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
+        var columnOrder = formClassAttribute?.ColumnOrder;
+
+        var groupedProperties = propertiesWithAttributes
+                                .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup != null)
+                                .GroupBy(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup)
+                                .ToDictionary(g => g.Key!, g => g.ToList());
+
+        ungroupedProperties = propertiesWithAttributes
+                              .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup == null)
+                              .ToList();
+
+        // Order the groups based on ColumnOrder if available
+        if (columnOrder != null && columnOrder.Any())
+        {
+            OrderedColumnGroups = columnOrder
+                                  .Where(columnGroup => groupedProperties.ContainsKey(columnGroup))
+                                  .Select(columnGroup => new KeyValuePair<string, List<PropertyInfo>>(
+                                                                                                      columnGroup,
+                                                                                                      groupedProperties[columnGroup]))
+                                  .Concat(groupedProperties
+                                          .Where(g => !columnOrder.Contains(g.Key))
+                                          .Select(g => g)!)
+                                  .ToList();
+        }
+        else
+        {
+            OrderedColumnGroups = groupedProperties.ToList()!;
+        }
+    }
 
     public void OnSave()
     {
@@ -74,56 +120,6 @@ public partial class InnovativeForm<TModel> : ComponentBase
         }
 
         return string.Empty;
-    }
-
-    protected override void OnParametersSet()
-    {
-        if (ParentDialog != null && Model != null && Model.GetType().BaseType == typeof(DisplayFormModel))
-        {
-            var form = (Model as DisplayFormModel)!;
-            ParentDialog.SetFormComponent(form);
-        }
-
-        foreach (var prop in GetPropertiesWithUiFormField())
-        {
-            formValues[key: prop.Name] = prop.GetValue(obj: Model);
-        }
-
-        OrganizePropertiesByGroups();
-    }
-
-    private void OrganizePropertiesByGroups()
-    {
-        var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
-        var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
-        var columnOrder = formClassAttribute?.ColumnOrder;
-
-        var groupedProperties = propertiesWithAttributes
-            .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup != null)
-            .GroupBy(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup)
-            .ToDictionary(g => g.Key!, g => g.ToList());
-
-        ungroupedProperties = propertiesWithAttributes
-            .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup == null)
-            .ToList();
-
-        // Order the groups based on ColumnOrder if available
-        if (columnOrder != null && columnOrder.Any())
-        {
-            OrderedColumnGroups = columnOrder
-                .Where(columnGroup => groupedProperties.ContainsKey(columnGroup))
-                .Select(columnGroup => new KeyValuePair<string, List<PropertyInfo>>(
-                    columnGroup,
-                    groupedProperties[columnGroup]))
-                .Concat(groupedProperties
-                    .Where(g => !columnOrder.Contains(g.Key))
-                    .Select(g => g)!)
-                .ToList();
-        }
-        else
-        {
-            OrderedColumnGroups = groupedProperties.ToList()!;
-        }
     }
 
     [ExcludeFromCodeCoverage]
@@ -240,8 +236,7 @@ public partial class InnovativeForm<TModel> : ComponentBase
             }
         };
     }
-
-
+    
     private string GetStringValue(string propertyName)
     {
         if (formValues.TryGetValue(key: propertyName, value: out var value))

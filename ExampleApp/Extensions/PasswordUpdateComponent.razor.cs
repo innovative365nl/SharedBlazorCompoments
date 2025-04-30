@@ -12,10 +12,6 @@ public partial class PasswordUpdateComponent : ComponentBase
 
     [Parameter] public object? Model { get; set; }
 
-    //[Parameter] public string? ActionProperty { get; set; }
-    //[Parameter] public EventCallback<int> OnSave { get; set; }
-    //[Parameter] public EventCallback OnCancel { get; set; }
-
     [Parameter] public SidePanelComponent<PersonDisplayModel>? ParentDialog { get; set; }
 
     protected override void OnParametersSet()
