@@ -1,54 +1,53 @@
-#region
-
 using System.Reflection;
 using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Enumerators;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
 
-#endregion
-
 namespace Innovative.Blazor.Components.Services;
 
-public interface IInnovativeSidePanelService
+public interface IInnovativeSidePanelService: IDisposable
 {
     Task<T> OpenDynamicFormDialog<T>(T model) where T : class;
-    void Dispose();
     Task<T> OpenDynamicFormDialog<T>() where T : class;
 }
 
-internal sealed class InnovativeSidePanelService(
-    ISidepanelService sidepanelService,
-    IInnovativeStringLocalizerFactory localizerFactory) : IDisposable, IInnovativeSidePanelService
+internal sealed class InnovativeSidePanelService
+(
+    ISidepanelService sidePanelService,
+    IInnovativeStringLocalizerFactory localizerFactory
+) : IInnovativeSidePanelService
 {
     public void Dispose()
     {
-        // No unmanaged resources to dispose in SidepanelService
+        // No unmanaged resources to dispose in SidePanelService
     }
 
     public async Task<T> OpenDynamicFormDialog<T>() where T : class
     {
         var model = Activator.CreateInstance<T>();
-        return await OpenDynamicFormDialogWithOptions(model: model,  isNewModel: true).ConfigureAwait(false);
+        return await OpenDynamicFormDialogWithOptions(model: model,  isNewModel: true)
+                   .ConfigureAwait(false);
     }
 
     public async Task<T> OpenDynamicFormDialog<T>(T model) where T : class
     {
-        return await OpenDynamicFormDialogWithOptions(model: model,  isNewModel: false).ConfigureAwait(false);
+        return await OpenDynamicFormDialogWithOptions(model: model,  isNewModel: false)
+                   .ConfigureAwait(false);
     }
 
     private async Task<T> OpenDynamicFormDialogWithOptions<T>(T model,  bool isNewModel) where T : class
     {
         var viewContent = new RenderFragment(builder =>
         {
-            builder.OpenComponent<Components.InnovativeDetail<T>>(sequence: 0);
+            builder.OpenComponent<InnovativeDetail<T>>(sequence: 0);
             builder.AddAttribute(sequence: 1, name: "Model", value: model);
             builder.CloseComponent();
         });
 
         var editContent = new RenderFragment(builder =>
         {
-            builder.OpenComponent<Components.InnovativeForm<T>>(sequence: 0);
+            builder.OpenComponent<InnovativeForm<T>>(sequence: 0);
             builder.AddAttribute(sequence: 1, name: "Model", value: model);
             builder.CloseComponent();
         });
@@ -61,6 +60,7 @@ internal sealed class InnovativeSidePanelService(
             { "Model", model },
             { "ShowEdit", true },
             { "ShowClose", true },
+            { "ShowDelete", false },
             { "ViewChildContent", viewContent },
             { "EditChildContent", editContent },
             { "IsEditing", isNewModel}
@@ -72,7 +72,10 @@ internal sealed class InnovativeSidePanelService(
             Width = GetWidth(width: SideDialogWidth.Normal)
         };
 
-        await sidepanelService.OpenSidepanelAsync<SidePanelComponent<T>>(parameters, options).ConfigureAwait(false);
+        await sidePanelService
+              .OpenSidepanelAsync<SidePanelComponent<T>>(parameters, options)
+              .ConfigureAwait(false);
+
         return model;
     }
 

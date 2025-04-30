@@ -7,7 +7,9 @@
 <RadzenStack Orientation="Orientation.Vertical" Gap="1rem">
     <RadzenStack Orientation="Orientation.Horizontal" Gap="1rem" JustifyContent="JustifyContent.Start" Class="mb-2">
         @{
-            var actionProperties = GetPropertiesWithViewAction().OrderBy(keySelector: p => p.GetCustomAttribute<UIFormViewAction>()!.Order).ToList();
+            var actionProperties = GetPropertiesWithViewAction()
+                    .OrderBy(keySelector: p => p.GetCustomAttribute<UIFormViewAction>()!.Order)
+                    .ToList();
 
             if (actionProperties.Count <= MaxNumberOfButtonsBesideEachOther)
             {
@@ -17,9 +19,12 @@
                     var actionName = actionAttribute?.Name ?? property.Name;
                     var translatedActionName = localizer.GetString(actionName);
 
-                    <RadzenButton Text="@translatedActionName"
-                                  Click="@(() => HandleActionProperty(property: property, actionAttribute: actionAttribute!))"
-                                  ButtonStyle="ButtonStyle.Primary"/>    
+                    if (property.GetType() == typeof(Action) && property.GetValue(null) != null)
+                    {
+                        <RadzenButton Text="@translatedActionName"
+                                      Click="@(() => HandleActionProperty(property: property, actionAttribute: actionAttribute!))"
+                                      ButtonStyle="ButtonStyle.Primary"/>
+                    }
                 }
             }
             else if (actionProperties.Any())
@@ -28,20 +33,25 @@
                 var primaryAttribute = primaryProperty.GetCustomAttribute<UIFormViewAction>();
                 var primaryName = primaryAttribute?.Name ?? primaryProperty.Name;
                 var translatedPrimaryName = localizer.GetString(primaryName);
+                if (primaryProperty.GetType() == typeof(Action) && primaryProperty.GetValue(null) != null)
+                {
+                    <RadzenSplitButton Text="@translatedPrimaryName"
+                                       Click="@(() => HandleActionProperty(property: primaryProperty, actionAttribute: primaryAttribute!))"
+                                       ButtonStyle="ButtonStyle.Primary">
+                        @foreach (var property in actionProperties.Skip(count: 1))
+                        {
+                            var actionAttribute = property.GetCustomAttribute<UIFormViewAction>();
+                            var actionName = actionAttribute?.Name ?? property.Name;
+                            var translatedActionName = localizer.GetString(actionName);
 
-                <RadzenSplitButton Text="@translatedPrimaryName"
-                                   Click="@(() => HandleActionProperty(property: primaryProperty, actionAttribute: primaryAttribute!))"
-                                   ButtonStyle="ButtonStyle.Primary">
-                    @foreach (var property in actionProperties.Skip(count: 1))
-                    {
-                        var actionAttribute = property.GetCustomAttribute<UIFormViewAction>();
-                        var actionName = actionAttribute?.Name ?? property.Name;
-                        var translatedActionName = localizer.GetString(actionName);
-
-                        <RadzenSplitButtonItem Text="@translatedActionName"
-                                               Click="@(() => HandleActionProperty(property: property, actionAttribute: actionAttribute!))"/>
-                    }
-                </RadzenSplitButton>
+                            if (property.GetType() == typeof(Action) && property.GetValue(null) != null)
+                            {
+                                <RadzenSplitButtonItem Text="@translatedActionName"
+                                                       Click="@(() => HandleActionProperty(property: property, actionAttribute: actionAttribute!))"/>
+                            }
+                        }
+                    </RadzenSplitButton>
+                }
             }
         }
     </RadzenStack>

@@ -33,7 +33,16 @@ public abstract class FormModelBase : IFormModel
 
 public abstract class DisplayFormModel : FormModelBase
 {
-    public void AddViewColumn(string name, int order, int width, int offset)
+    [UIFormViewAction(name: "Save", Order = 1)]
+    public Action? SaveFormAction { get; set; }
+
+    [UIFormViewAction(name: "Cancel", Order = 1)]
+    public Action? CancelFormAction { get; set; }
+
+    [UIFormViewAction(name: "Delete", Order = 1)]
+    public Action? DeleteFormAction { get; set; }
+
+    public void AddViewColumn(string? name, int order, int width, int offset)
     {
         ViewColumns.Add(new Column
         {

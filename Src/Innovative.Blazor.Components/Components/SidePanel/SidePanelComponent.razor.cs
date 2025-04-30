@@ -1,38 +1,36 @@
-#region
-
 using Innovative.Blazor.Components.Components.Common;
 using Innovative.Blazor.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 
-#endregion
-
 namespace Innovative.Blazor.Components.Components;
 
 public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelService) : ComponentBase
 {
-    private IDynamicBaseComponent? formComponent;
+    private DisplayFormModel? formComponent;
     private bool isCustomDialog;
 
     [Parameter] public bool IsEditing { get; set; }
 
     [Parameter] public bool ShowClose { get; set; } = true;
     [Parameter] public bool ShowEdit { get; set; } = true;
+    [Parameter] public bool ShowDelete { get; set; } = false;
 
     [Parameter] public EventCallback SaveClicked { get; set; }
+    [Parameter] public EventCallback DeleteClicked { get; set; }
+
     [Parameter] public SideDialogOptions? Options { get; set; }
     [Parameter] public RenderFragment? TitleBarContent { get; set; }
     [Parameter] public RenderFragment? BottomBarContent { get; set; }
     [Parameter] public RenderFragment? ViewChildContent { get; set; }
-
     [Parameter] public RenderFragment? ActionChildContent { get; set; }
     [Parameter] public RenderFragment? EditChildContent { get; set; }
     [Parameter] public TModel? Model { get; set; }
-
     [Parameter] public string? Title { get; set; }
+
     public object? ComponentInstance { get; private set; }
 
-    public void SetFormComponent(IDynamicBaseComponent component)
+    public void SetFormComponent(DisplayFormModel component)
     {
         formComponent = component;
         // Store the component instance
@@ -50,18 +48,51 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
     private async Task HandleSaveClick()
     {
-        if (formComponent != null) await formComponent.OnSubmitPressed().ConfigureAwait(false);
+        if (formComponent != null)
+        {
+            formComponent.SaveFormAction?.Invoke();
+            //await formComponent
+            //      .OnSubmitPressed()
+            //      .ConfigureAwait(false);
+        }
+
         isCustomDialog = false;
         IsEditing = false;
 
-        await SaveClicked.InvokeAsync().ConfigureAwait(false);
+        await SaveClicked
+              .InvokeAsync()
+              .ConfigureAwait(false);
+    }
+
+    private async Task HandleDeleteClick()
+    {
+        if (formComponent != null)
+        {
+            formComponent.DeleteFormAction?.Invoke();
+            //await formComponent
+            //      .OnDeletePressed()
+            //      .ConfigureAwait(false);
+        }
+
+        isCustomDialog = false;
+        IsEditing = false;
+
+        await DeleteClicked
+              .InvokeAsync()
+              .ConfigureAwait(false);
     }
 
     private Task HandleCancelClick()
     {
+        if (formComponent != null)
+        {
+            formComponent.CancelFormAction?.Invoke();
+        }
+
         IsEditing = false;
         isCustomDialog = false;
         ActionChildContent = null;
+
         return Task.CompletedTask;
     }
 }

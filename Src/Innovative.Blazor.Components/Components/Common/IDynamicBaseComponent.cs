@@ -4,4 +4,5 @@ public interface IDynamicBaseComponent
 {
     Task OnSubmitPressed();
     Task OnCancelPressed();
+    Task OnDeletePressed();
 }

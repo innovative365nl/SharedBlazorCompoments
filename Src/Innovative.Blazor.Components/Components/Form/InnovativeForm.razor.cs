@@ -1,20 +1,15 @@
-#region
-
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
-using Innovative.Blazor.Components.Components.Common;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using Radzen.Blazor;
 
-#endregion
-
 namespace Innovative.Blazor.Components.Components;
 
-public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBaseComponent
+public partial class InnovativeForm<TModel> : ComponentBase
 {
     private readonly Dictionary<string, object?> formValues = new Dictionary<string, object?>();
     private readonly IInnovativeStringLocalizer localizer;
@@ -29,8 +24,10 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
     }
 
     [Parameter] public required TModel Model { get; set; }
-    [Parameter] public EventCallback<TModel> OnSave { get; set; }
-    [Parameter] public EventCallback OnCancel { get; set; }
+    //[Parameter] public EventCallback<TModel> OnSave { get; set; }
+    //[Parameter] public EventCallback OnCancel { get; set; }
+    //[Parameter] public EventCallback OnDelete { get; set; }
+
     [CascadingParameter] public required SidePanelComponent<TModel>? ParentDialog { get; set; }
 
     private IReadOnlyCollection<PropertyInfo> ungroupedProperties { get; set; } = new List<PropertyInfo>();
@@ -38,13 +35,8 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
     protected IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; private set; } =
         new List<KeyValuePair<string, List<PropertyInfo>>>();
 
-    protected override void OnInitialized()
-    {
-        ParentDialog?.SetFormComponent((IDynamicBaseComponent)this);
-        base.OnInitialized();
-    }
 
-    public async Task OnSubmitPressed()
+    public void OnSave()
     {
         foreach (var entry in formValues)
         {
@@ -55,19 +47,21 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
             }
         }
 
-        await OnSave.InvokeAsync().ConfigureAwait(false);
-    }
+        if (ParentDialog             == null
+         || Model                    == null
+         || Model.GetType().BaseType != typeof(DisplayFormModel))
+        {
+            return;
+        }
 
-    public async Task OnCancelPressed()
-    {
-        await OnCancel.InvokeAsync().ConfigureAwait(false);
+        var form = (Model as DisplayFormModel)!;
+        form.SaveFormAction?.Invoke();
     }
 
     protected string GetColumnWidthClass(string columnGroup)
     {
         var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
-        if (formClassAttribute?.ColumnWidthNames != null &&
-            formClassAttribute.ColumnWidthValues != null)
+        if (formClassAttribute is { ColumnWidthNames: not null, ColumnWidthValues: not null})
         {
             for (int i = 0; i < formClassAttribute.ColumnWidthNames.Length; i++)
             {
@@ -84,17 +78,18 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
 
     protected override void OnParametersSet()
     {
-        if (Model != null)
+        if (ParentDialog != null && Model != null && Model.GetType().BaseType == typeof(DisplayFormModel))
         {
-            foreach (var prop in GetPropertiesWithUiFormField())
-            {
-                formValues[key: prop.Name] = prop.GetValue(obj: Model);
-            }
-
-            OrganizePropertiesByGroups();
+            var form = (Model as DisplayFormModel)!;
+            ParentDialog.SetFormComponent(form);
         }
 
-        base.OnParametersSet();
+        foreach (var prop in GetPropertiesWithUiFormField())
+        {
+            formValues[key: prop.Name] = prop.GetValue(obj: Model);
+        }
+
+        OrganizePropertiesByGroups();
     }
 
     private void OrganizePropertiesByGroups()
