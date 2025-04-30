@@ -37,8 +37,6 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         {
             OrganizePropertiesByGroups();
         }
-
-        base.OnParametersSet();
     }
 
     private string GetColumnWidthClass(string columnGroup)
@@ -55,8 +53,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 
         // Fallback to class attribute
         var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
-        if (formClassAttribute?.ColumnWidthNames != null &&
-            formClassAttribute.ColumnWidthValues != null)
+        if (formClassAttribute is { ColumnWidthNames: not null, ColumnWidthValues: not null})
         {
             for (var i = 0; i < formClassAttribute.ColumnWidthNames.Length; i++)
             {
@@ -201,8 +198,8 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 
         var parameters = new Dictionary<string, object?>
                          {
-            { "Model", Model },
-            { "ActionProperty", property.Name }
+                            { "Model", Model },
+                            { "ActionProperty", property.Name }
                          };
 
         return (actionAttribute.CustomComponent, parameters, actionAttribute.Name ?? property.Name)!;
@@ -318,17 +315,21 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         return result.ToArray();
     }
 
-    private static List<PropertyInfo> GetActionProperties()
+    private List<PropertyInfo> GetActionProperties()
     {
-        List<PropertyInfo> actionProperties = typeof(TModel).GetProperties()
-                                                            .Where(x =>
-                                                                       x.GetCustomAttribute<UIFormViewAction>() != null           &&
-                                                                       x.GetType()                              == typeof(Action) &&
-                                                                       x.GetValue(null)                         != null
-                                                                  )
-                                                            .OrderBy(keySelector: p => p.GetCustomAttribute<UIFormViewAction>()!.Order)
-                                                            .ToList();
-        return actionProperties;
+        List<PropertyInfo> result = typeof(TModel).GetProperties()
+                                                  .Where(predicate: x =>
+                                                                        x.GetCustomAttribute<UIFormViewAction>() != null
+                                                                     && (x.PropertyType == typeof(Action) ||
+                                                                         x.PropertyType.IsGenericType && x.PropertyType.GetGenericTypeDefinition() == typeof(Action<>))
+                                                                     && x.Name                              != nameof(DisplayFormModel.SaveFormAction)
+                                                                     && x.Name                              != nameof(DisplayFormModel.CancelFormAction)
+                                                                     && x.Name                              != nameof(DisplayFormModel.DeleteFormAction)
+                                                                     && x.GetValue(obj: Model, index: null) != null)
+                                                  .OrderBy(keySelector: p => p.GetCustomAttribute<UIFormViewAction>()!.Order)
+                                                  .ToList();
+
+        return result;
     }
 }
 
