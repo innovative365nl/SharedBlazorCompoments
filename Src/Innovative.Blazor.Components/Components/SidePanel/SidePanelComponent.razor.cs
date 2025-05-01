@@ -6,7 +6,8 @@ namespace Innovative.Blazor.Components.Components;
 
 public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelService) : ComponentBase
 {
-    private DisplayFormModel? formComponent;
+    private IFormComponent? formComponent;
+
     private bool isCustomDialog;
 
     [Parameter] public bool IsEditing { get; set; }
@@ -14,9 +15,6 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
     [Parameter] public bool ShowClose { get; set; } = true;
     [Parameter] public bool ShowEdit { get; set; } = true;
     [Parameter] public bool ShowDelete { get; set; } = false;
-
-    [Parameter] public EventCallback SaveClicked { get; set; }
-    [Parameter] public EventCallback DeleteClicked { get; set; }
 
     [Parameter] public SideDialogOptions? Options { get; set; }
     [Parameter] public RenderFragment? TitleBarContent { get; set; }
@@ -29,49 +27,66 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
     public object? ComponentInstance { get; private set; }
 
-    public void SetFormComponent(DisplayFormModel component)
+    public void SetFormComponent(IFormComponent? component)
     {
         formComponent = component;
-        // Store the component instance
+
         if (component is object instance)
         {
             ComponentInstance = instance;
         }
     }
 
-    public void SetCustomDialog(bool isCustom)
+    public void OpenCustomDialog()
     {
-        isCustomDialog = isCustom;
+        isCustomDialog = true;
+        StateHasChanged();
+    }
+    public void CloseCustomDialog()
+    {
+        isCustomDialog = false;
         StateHasChanged();
     }
 
     private async Task HandleSaveClick()
     {
-        formComponent?.SaveFormAction?.Invoke();
+        if (formComponent is not null)
+        {
+            await formComponent
+                  .OnFormSubmit()
+                  .ConfigureAwait(false);
+        }
 
+        if (Model is not null
+         && Model.GetType().BaseType == typeof(DisplayFormModel))
+        {
+            (Model as DisplayFormModel)?.SaveFormAction?.Invoke();
+        }
+        
         isCustomDialog = false;
         IsEditing = false;
-
-        await SaveClicked
-              .InvokeAsync()
-              .ConfigureAwait(false);
     }
 
-    private async Task HandleDeleteClick()
+    private Task HandleDeleteClick()
     {
-        formComponent?.DeleteFormAction?.Invoke();
+        if (Model is not null
+         && Model.GetType().BaseType == typeof(DisplayFormModel))
+        {
+            (Model as DisplayFormModel)?.DeleteFormAction?.Invoke();
+        }
 
         isCustomDialog = false;
         IsEditing = false;
-
-        await DeleteClicked
-              .InvokeAsync()
-              .ConfigureAwait(false);
+        return Task.CompletedTask;
     }
 
     private Task HandleCancelClick()
     {
-        formComponent?.CancelFormAction?.Invoke();
+        if (Model is not null
+         && Model.GetType().BaseType == typeof(DisplayFormModel))
+        {
+            (Model as DisplayFormModel)?.CancelFormAction?.Invoke();
+        }
 
         IsEditing = false;
         isCustomDialog = false;

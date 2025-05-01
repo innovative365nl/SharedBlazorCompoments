@@ -155,7 +155,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                                                       builder.CloseComponent();
                                                   };
 
-                parentDialog.SetCustomDialog(isCustom: true);
+                parentDialog.OpenCustomDialog();
             }
         }
         else
@@ -202,7 +202,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                             { "ActionProperty", property.Name }
                          };
 
-        return (actionAttribute.CustomComponent, parameters, actionAttribute.Name ?? property.Name)!;
+        return (actionAttribute.CustomComponent, parameters, actionAttribute.Name)!;
     }
 
     private static PropertyInfo[] GetPropertiesWithUiFormField()

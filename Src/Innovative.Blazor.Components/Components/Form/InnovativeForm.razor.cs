@@ -9,7 +9,7 @@ using Radzen.Blazor;
 
 namespace Innovative.Blazor.Components.Components;
 
-public partial class InnovativeForm<TModel> : ComponentBase
+public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 {
     private readonly Dictionary<string, object?> formValues = new Dictionary<string, object?>();
     private readonly IInnovativeStringLocalizer localizer;
@@ -36,8 +36,7 @@ public partial class InnovativeForm<TModel> : ComponentBase
     {
         if (ParentDialog != null && Model != null && Model.GetType().BaseType == typeof(DisplayFormModel))
         {
-            var form = (Model as DisplayFormModel)!;
-            ParentDialog.SetFormComponent(form);
+            ParentDialog.SetFormComponent(this);
         }
 
         foreach (var prop in GetPropertiesWithUiFormField())
@@ -82,26 +81,24 @@ public partial class InnovativeForm<TModel> : ComponentBase
         }
     }
 
-    public void OnSave()
+    public Task OnFormSubmit()
     {
         foreach (var entry in formValues)
         {
             var prop = typeof(TModel).GetProperty(name: entry.Key);
-            if (prop != null && prop.CanWrite)
+            if (prop?.CanWrite ?? false)
             {
                 prop.SetValue(obj: Model, value: entry.Value);
             }
         }
 
-        if (ParentDialog             == null
-         || Model                    == null
-         || Model.GetType().BaseType != typeof(DisplayFormModel))
-        {
-            return;
-        }
+        return Task.CompletedTask;
+    }
 
-        var form = (Model as DisplayFormModel)!;
-        form.SaveFormAction?.Invoke();
+    public Task OnFormReset()
+    {
+        ParentDialog?.CloseCustomDialog();
+        return Task.CompletedTask;
     }
 
     protected string GetColumnWidthClass(string columnGroup)

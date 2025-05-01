@@ -2,7 +2,7 @@
 @using System.Reflection
 @typeparam TModel
 
-<RadzenTemplateForm TItem="TModel" Data="@Model" Submit="@OnSave">
+<RadzenTemplateForm TItem="TModel" Data="@Model" Submit="@OnFormSubmit">
     <section class="rz-dialog-side-content-layout">
         @foreach (var group in OrderedColumnGroups)
         {

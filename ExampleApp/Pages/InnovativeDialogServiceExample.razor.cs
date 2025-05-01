@@ -3,6 +3,7 @@ using ExampleApp.Extensions;
 using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Services;
+using PasswordUpdateComponent = ExampleApp.Components.PasswordUpdateComponent;
 
 namespace ExampleApp.Pages;
 
@@ -25,15 +26,15 @@ public partial class InnovativeDialogServiceExample(IInnovativeSidePanelService 
 
     protected override void OnInitialized()
     {
-        personModel.UpdatePasswordAction = id =>
+        personModel.UpdatePasswordAction = count =>
         {
-            var logEntry = $"Password updated with ID: {id}";
+            var logEntry = $"Password updated:{count} times";
             LogAction(logEntry);
         };
 
-        personModel.PasswordCheckAction = result =>
+        personModel.PasswordCheckAction = isValid =>
         {
-            var logEntry = $"Password checked result: {result}";
+            var logEntry = $"Password checked. Is valid: {isValid}";
             LogAction(logEntry);
         };
 
@@ -108,11 +109,11 @@ public class PersonDisplayModel : DisplayFormModel
     [UIFormField(name : "Description", UseWysiwyg = true, ColumnGroup = "Description")]
     public string? Description { get; set; }
 
-    [UIFormViewAction(name: "Update Password", Order = 1)]
+    [UIFormViewAction(name: "Update Password", Order = 1, CustomComponent = typeof(PasswordUpdateComponent))]
     public Action<int>? UpdatePasswordAction { get; set; }
 
-    [UIFormViewAction(name: "Control Password", Order = 1, CustomComponent = typeof(PasswordUpdateComponent))]
-    public Action<int>? PasswordCheckAction { get; set; }
+    [UIFormViewAction(name: "Check Password", Order = 1, CustomComponent = typeof(PasswordCheckComponent))]
+    public Action<bool>? PasswordCheckAction { get; set; }
 
     [UIFormField(name: "Complex Component", ColumnGroup = "Description", FormComponent = typeof(ComplexComponent), TextProperty = nameof(ComplexComponent.Description))]
     public ComplexModel? ComplexComponent { get; set; } = new()
