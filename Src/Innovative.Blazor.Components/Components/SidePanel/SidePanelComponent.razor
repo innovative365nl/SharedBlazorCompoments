@@ -7,7 +7,7 @@
         @if (ShowClose)
         {
             <button class="sidepanel-back-button" id="sidePanelCloseButton"
-                    @onclick="@(args => sidePanelService.CloseSidepanel())">
+                    @onclick="@sidePanelService.CloseSidepanel">
                 <i class="icon-arrow-back">←</i>
             </button>
         }
@@ -34,7 +34,7 @@
                     <i class="icon-save">💾</i>
                 </button>
             }
-            @if (ShowDelete)
+            @if (ShowDelete && !IsEditing && !isCustomDialog)
             {
                 <button class="sidepanel-icon-button"
                         @onclick="@HandleDeleteClick">

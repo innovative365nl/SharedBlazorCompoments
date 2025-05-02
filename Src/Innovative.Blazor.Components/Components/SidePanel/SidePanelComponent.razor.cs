@@ -77,6 +77,7 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
         isCustomDialog = false;
         IsEditing = false;
+        sidePanelService.CloseSidepanel();
         return Task.CompletedTask;
     }
 
