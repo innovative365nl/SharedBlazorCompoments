@@ -34,7 +34,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     protected override void OnParametersSet()
     {
-        if (ParentDialog != null && Model != null && Model.GetType().BaseType == typeof(DisplayFormModel))
+        if (ParentDialog != null && Model != null && Model.GetType().BaseType == typeof(FormModel))
         {
             ParentDialog.SetFormComponent(this);
         }

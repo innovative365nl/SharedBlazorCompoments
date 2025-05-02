@@ -2,37 +2,25 @@ using System.Collections.ObjectModel;
 
 namespace Innovative.Blazor.Components.Components;
 
-public interface IFormModel
+public abstract class FormModel
 {
+    protected Collection<Column> ViewColumns { get; } = [];
+
     /// <summary>
     /// The name (used as caption or label) of the form component.
     /// </summary>
-    string? Name { get; set; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// The value of the form component.
     /// </summary>
-    object? Value { get; set; }
+    public object? Value { get; set; }
 
     /// <summary>
     /// The CSS class of the form component.
     /// </summary>
-    string? CssClass { get; set; }
-
-    IEnumerable<Column> Columns { get; }
-}
-
-public abstract class FormModelBase : IFormModel
-{
-    public string? Name { get; set; }
-    public object? Value { get; set; }
     public string? CssClass { get; set; }
-    protected Collection<Column> ViewColumns { get; } = [];
-    public IEnumerable<Column> Columns => ViewColumns.OrderBy(c => c.Order);
-}
 
-public abstract class DisplayFormModel : FormModelBase
-{
     [UIFormViewAction(name: "Save", Order = 1)]
     public Action? SaveFormAction { get; set; }
 
@@ -41,6 +29,8 @@ public abstract class DisplayFormModel : FormModelBase
 
     [UIFormViewAction(name: "Delete", Order = 1)]
     public Action? DeleteFormAction { get; set; }
+
+    public IEnumerable<Column> Columns => ViewColumns.OrderBy(c => c.Order);
 
     public void AddViewColumn(string? name, int order, int width, int offset)
     {

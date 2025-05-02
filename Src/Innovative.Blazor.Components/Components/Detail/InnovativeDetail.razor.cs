@@ -42,7 +42,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
     private string GetColumnWidthClass(string columnGroup)
     {
         // First check if Model is DisplayFormModel and get column info from there
-        if (Model is DisplayFormModel displayModel)
+        if (Model is FormModel displayModel)
         {
             var column = displayModel.Columns.FirstOrDefault(c => c.Name == columnGroup);
             if (column is { Width: > 0 })
@@ -73,7 +73,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
 
         // Get column order from DisplayFormModel or attribute
-        var customColumnOrder = Model is DisplayFormModel displayModel
+        var customColumnOrder = Model is FormModel displayModel
             ? displayModel.Columns.Select(c => c.Name).Where(n => n != null).ToArray()
             : null;
 
@@ -322,9 +322,9 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                                                                         x.GetCustomAttribute<UIFormViewAction>() != null
                                                                      && (x.PropertyType == typeof(Action) ||
                                                                          x.PropertyType.IsGenericType && x.PropertyType.GetGenericTypeDefinition() == typeof(Action<>))
-                                                                     && x.Name                              != nameof(DisplayFormModel.SaveFormAction)
-                                                                     && x.Name                              != nameof(DisplayFormModel.CancelFormAction)
-                                                                     && x.Name                              != nameof(DisplayFormModel.DeleteFormAction)
+                                                                     && x.Name                              != nameof(FormModel.SaveFormAction)
+                                                                     && x.Name                              != nameof(FormModel.CancelFormAction)
+                                                                     && x.Name                              != nameof(FormModel.DeleteFormAction)
                                                                      && x.GetValue(obj: Model, index: null) != null)
                                                   .OrderBy(keySelector: p => p.GetCustomAttribute<UIFormViewAction>()!.Order)
                                                   .ToList();

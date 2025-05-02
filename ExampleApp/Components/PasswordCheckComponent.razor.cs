@@ -1,5 +1,4 @@
 using ExampleApp.Pages;
-using System.Diagnostics.Metrics;
 using Innovative.Blazor.Components.Components;
 using Microsoft.AspNetCore.Components;
 
@@ -9,7 +8,7 @@ public partial class PasswordCheckComponent : ComponentBase, IFormComponent
 {
     [Parameter] public object? Model { get; set; }
 
-    [Parameter] public SidePanelComponent<PersonDisplayModel>? ParentDialog { get; set; }
+    [Parameter] public SidePanelComponent<PersonModel>? ParentDialog { get; set; }
 
     // if a parameter with name "ActionProperty" does not exist
     // the component crashes on render
@@ -27,7 +26,7 @@ public partial class PasswordCheckComponent : ComponentBase, IFormComponent
 
     public Task OnFormSubmit()
     {
-        if (ParentDialog is not null && Model is PersonDisplayModel person)
+        if (ParentDialog is not null && Model is PersonModel person)
         {
             var result = !string.IsNullOrEmpty(password) &&
                             password.Any(x=> char.IsDigit(x)) &&

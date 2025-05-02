@@ -9,46 +9,46 @@ namespace ExampleApp.Pages;
 
 public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanelService)
 {
-    private PersonDisplayModel personModel = new()
-    {
-        FirstName = "John",
-        LastName = "Doe",
-        IsActive = true,
-        BirthDate = new DateTime(1993, 5, 12),
-        ComplexComponent =  new()
-        {
-            Name = "Complex Component",
-            Description = "This is a complex component"
-        }
-    };
+    private PersonModel person = new PersonModel
+                                 {
+                                     FirstName = "John",
+                                     LastName = "Doe",
+                                     IsActive = true,
+                                     BirthDate = new DateTime(1993, 5, 12),
+                                     ComplexComponent =  new()
+                                                         {
+                                                             Name = "Complex Component",
+                                                             Description = "This is a complex component"
+                                                         }
+                                 };
 
     private readonly List<string> actionLog = [];
 
     protected override void OnInitialized()
     {
-        personModel.UpdatePasswordAction = count =>
+        person.UpdatePasswordAction = count =>
         {
             var logEntry = $"Password updated:{count} times";
             LogAction(logEntry);
         };
 
-        personModel.PasswordCheckAction = isValid =>
+        person.PasswordCheckAction = isValid =>
         {
             var logEntry = $"Password checked. Is valid: {isValid}";
             LogAction(logEntry);
         };
 
-        personModel.SaveFormAction = () =>
+        person.SaveFormAction = () =>
         {
             var logEntry = "Model saved";
             LogAction(logEntry);
         };
-        personModel.DeleteFormAction = () =>
+        person.DeleteFormAction = () =>
         {
            var logEntry = "Model deleted";
            LogAction(logEntry);
         };
-        personModel.CancelFormAction = () =>
+        person.CancelFormAction = () =>
         {
             var logEntry = "Model canceled";
             LogAction(logEntry);
@@ -68,19 +68,19 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
     private async Task OpenPersonDialog()
     {
         var result = await sidePanelService
-                                       .OpenDynamicFormDialog(personModel)
+                                       .OpenDynamicFormDialog(person)
                                        .ConfigureAwait(false);
-        personModel = result;
+        person = result;
         StateHasChanged();
     }
 
     private async Task OpenNewPersonDialog()
     {
         var result = await sidePanelService
-                           .OpenDynamicFormDialog<PersonDisplayModel>()
+                           .OpenDynamicFormDialog<PersonModel>()
                            .ConfigureAwait(false);
 
-        personModel = result;
+        person = result;
         StateHasChanged();
     }
 }
@@ -92,7 +92,7 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
     ColumnWidthNames = ["Name", "EmployeeInfo", "Description"],
     ColumnWidthValues = [1, 1, 3]
 )]
-public class PersonDisplayModel : DisplayFormModel
+public class PersonModel : FormModel
 {
     [UIFormField(name: "First Name", ColumnGroup = "Name")]
     public string? FirstName { get; set; }
@@ -109,16 +109,17 @@ public class PersonDisplayModel : DisplayFormModel
     [UIFormField(name : "Description", UseWysiwyg = true, ColumnGroup = "Description")]
     public string? Description { get; set; }
 
-    [UIFormViewAction(name: "Update Password", Order = 1, CustomComponent = typeof(PasswordUpdateComponent))]
-    public Action<int>? UpdatePasswordAction { get; set; }
-
-    [UIFormViewAction(name: "Check Password", Order = 1, CustomComponent = typeof(PasswordCheckComponent))]
-    public Action<bool>? PasswordCheckAction { get; set; }
-
-    [UIFormField(name: "Complex Component", ColumnGroup = "Description", FormComponent = typeof(ComplexComponent), TextProperty = nameof(ComplexComponent.Description))]
+    [UIFormField(name: "Complex Component", ColumnGroup = "Description", FormComponent = typeof(ComplexComponent),
+                 TextProperty = nameof(ComplexComponent.Description))]
     public ComplexModel? ComplexComponent { get; set; } = new()
     {
         Name = "Complex Component",
         Description = "This is a complex component"
     };
+
+    [UIFormViewAction(name: "Update Password", Order = 1, CustomComponent = typeof(PasswordUpdateComponent))]
+    public Action<int>? UpdatePasswordAction { get; set; }
+
+    [UIFormViewAction(name: "Check Password", Order = 1, CustomComponent = typeof(PasswordCheckComponent))]
+    public Action<bool>? PasswordCheckAction { get; set; }
 }

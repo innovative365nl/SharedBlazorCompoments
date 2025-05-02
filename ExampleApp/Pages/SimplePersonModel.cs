@@ -3,7 +3,7 @@ using Innovative.Blazor.Components.Components;
 namespace ExampleApp.Pages;
 
 [UIFormClass(title: "Simple person example")]
-public class SimplePersonModel : DisplayFormModel
+public class SimplePersonModel : FormModel
 {
     private const string NameColumn = "Name";
     private const string DataColumn = "Data";
@@ -13,7 +13,7 @@ public class SimplePersonModel : DisplayFormModel
     {
         AddViewColumn(name: NameColumn, order: 1, width: 2, offset: 0);
         AddViewColumn(name: DataColumn, order: 2, width: 2, offset: 0);
-        AddViewColumn(name: InfoColumn, order: 3, width: 2, offset: 0);
+        AddViewColumn(name: InfoColumn, order: 3, width: 4, offset: 0);
     }
 
     [UIFormField(name: "First name", ColumnGroup = NameColumn)]

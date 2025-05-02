@@ -58,9 +58,9 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
         }
 
         if (Model is not null
-         && Model.GetType().BaseType == typeof(DisplayFormModel))
+         && Model.GetType().BaseType == typeof(FormModel))
         {
-            (Model as DisplayFormModel)?.SaveFormAction?.Invoke();
+            (Model as FormModel)?.SaveFormAction?.Invoke();
         }
         
         isCustomDialog = false;
@@ -70,9 +70,9 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
     private Task HandleDeleteClick()
     {
         if (Model is not null
-         && Model.GetType().BaseType == typeof(DisplayFormModel))
+         && Model.GetType().BaseType == typeof(FormModel))
         {
-            (Model as DisplayFormModel)?.DeleteFormAction?.Invoke();
+            (Model as FormModel)?.DeleteFormAction?.Invoke();
         }
 
         isCustomDialog = false;
@@ -84,9 +84,9 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
     private Task HandleCancelClick()
     {
         if (Model is not null
-         && Model.GetType().BaseType == typeof(DisplayFormModel))
+         && Model.GetType().BaseType == typeof(FormModel))
         {
-            (Model as DisplayFormModel)?.CancelFormAction?.Invoke();
+            (Model as FormModel)?.CancelFormAction?.Invoke();
         }
 
         IsEditing = false;
