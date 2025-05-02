@@ -7,7 +7,7 @@ using PasswordUpdateComponent = ExampleApp.Components.PasswordUpdateComponent;
 
 namespace ExampleApp.Pages;
 
-public partial class InnovativeDialogServiceExample(IInnovativeSidePanelService sidePanelService)
+public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanelService)
 {
     private PersonDisplayModel personModel = new()
     {

@@ -6,10 +6,17 @@ using Microsoft.AspNetCore.Components;
 
 namespace Innovative.Blazor.Components.Services;
 
-public interface IInnovativeSidePanelService: IDisposable
+public interface IInnovativeSidePanelService
 {
-    Task<T> OpenDynamicFormDialog<T>(T model) where T : class;
-    Task<T> OpenDynamicFormDialog<T>() where T : class;
+    /// <summary>
+    /// Opens a side panel dialog with the specified model in display mode.
+    /// </summary>
+    Task<T> OpenDynamicFormDialog<T>(T model, bool showEdit = true, bool showClose = true, bool showDelete = false) where T : class;
+
+    /// <summary>
+    /// Opens a side panel dialog with the specified model is edit mode as a new instance of <code>T</code> is created.
+    /// </summary>
+    Task<T> OpenDynamicFormDialog<T>(bool showEdit = true, bool showClose = true, bool showDelete = false) where T : class;
 }
 
 internal sealed class InnovativeSidePanelService
@@ -18,25 +25,29 @@ internal sealed class InnovativeSidePanelService
     IInnovativeStringLocalizerFactory localizerFactory
 ) : IInnovativeSidePanelService
 {
-    public void Dispose()
-    {
-        // No unmanaged resources to dispose in SidePanelService
-    }
 
-    public async Task<T> OpenDynamicFormDialog<T>() where T : class
+    public async Task<T> OpenDynamicFormDialog<T>(bool showEdit = true, bool showClose = true, bool showDelete = false) where T : class
     {
         var model = Activator.CreateInstance<T>();
-        return await OpenDynamicFormDialogWithOptions(model: model,  isNewModel: true)
+        return await OpenDynamicFormDialogWithOptions(model: model,  isEditing: true, showEdit, showClose, showDelete)
                    .ConfigureAwait(false);
     }
 
-    public async Task<T> OpenDynamicFormDialog<T>(T model) where T : class
+    public async Task<T> OpenDynamicFormDialog<T>(T model, bool showEdit = true, bool showClose = true, bool showDelete = false) where T : class
     {
-        return await OpenDynamicFormDialogWithOptions(model: model,  isNewModel: false)
+        return await OpenDynamicFormDialogWithOptions(model: model,  isEditing: false, showEdit, showClose, showDelete)
                    .ConfigureAwait(false);
     }
 
-    private async Task<T> OpenDynamicFormDialogWithOptions<T>(T model,  bool isNewModel) where T : class
+    private async Task<T> OpenDynamicFormDialogWithOptions<T>
+    (
+        T model,
+        bool isEditing = false,
+        bool showEdit = true,
+        bool showClose = true,
+        bool showDelete = false 
+
+    ) where T : class
     {
         var viewContent = new RenderFragment(builder =>
         {
@@ -58,12 +69,12 @@ internal sealed class InnovativeSidePanelService
         {
             { "Title", title },
             { "Model", model },
-            { "ShowEdit", true },
-            { "ShowClose", true },
-            { "ShowDelete", false },
+            { "ShowEdit", showEdit },
+            { "ShowClose", showClose },
+            { "ShowDelete", showDelete },
             { "ViewChildContent", viewContent },
             { "EditChildContent", editContent },
-            { "IsEditing", isNewModel}
+            { "IsEditing", isEditing}
         };
 
         var options = new SidepanelOptions
