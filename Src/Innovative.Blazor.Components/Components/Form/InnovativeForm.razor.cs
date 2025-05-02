@@ -127,7 +127,12 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
         builder.OpenComponent<RadzenLabel>(0);
         builder.AddAttribute(1, "Component", propName);
-        if (fieldAttribute?.Name != null) builder.AddAttribute(2, "Text", localizer.GetString(fieldAttribute.Name));
+
+        if (fieldAttribute?.Name != null)
+        {
+            builder.AddAttribute(2, "Text", localizer.GetString(fieldAttribute.Name));
+        }
+
         builder.CloseComponent();
 
         if (property.PropertyType == typeof(string))
@@ -203,6 +208,13 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
                 if (attribute.FormComponent != null)
                 {
+                    // Add label for component
+                    builder.OpenComponent<RadzenLabel>(0);
+                    builder.AddAttribute(1, "Component", attribute.Name);
+                    builder.AddAttribute(2, "Text", attribute.Name); // localizer.GetString(attribute.Name)
+                    builder.CloseComponent();
+
+                    // Add custom component
                     builder.OpenComponent(sequence: 0, componentType: attribute.FormComponent);
                     builder.AddAttribute(sequence: 1, name: "Value", value: value);
 
