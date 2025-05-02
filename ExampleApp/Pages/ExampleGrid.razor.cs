@@ -1,6 +1,4 @@
 using System.Security.Cryptography;
-using Innovative.Blazor.Components.Components;
-using Microsoft.AspNetCore.Components;
 using Radzen;
 
 namespace ExampleApp.Pages;
@@ -31,7 +29,5 @@ public partial class ExampleGrid(NotificationService notificationService)
 
 
     private void OnRowSelected(IEnumerable<InnovativeTestClass> obj)
-    {
-        notificationService.Notify(NotificationSeverity.Success, $"Selected {obj.First().Name}");
-    }
+        => notificationService.Notify(NotificationSeverity.Success, $"Selected {obj.First().Name}");
 }

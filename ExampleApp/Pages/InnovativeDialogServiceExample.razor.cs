@@ -100,7 +100,7 @@ public class PersonDisplayModel : DisplayFormModel
     [UIFormField(name: "Last Name", ColumnGroup = "Name")]
     public string? LastName { get; set; }
 
-    [UIFormField(name: "Is Active", DisplayComponent = typeof(CustomBoolStyle), FormComponent = typeof(CustomBoolStyle), ColumnGroup = "EmployeeInfo")]
+    [UIFormField(name: "Is Active", DisplayComponent = typeof(CustomBooleanStyle), FormComponent = typeof(CustomBooleanStyle), ColumnGroup = "EmployeeInfo")]
     public bool IsActive { get; set; }
 
     [UIFormField(name: "Birth Date",  ColumnGroup = "EmployeeInfo")]
@@ -121,10 +121,4 @@ public class PersonDisplayModel : DisplayFormModel
         Name = "Complex Component",
         Description = "This is a complex component"
     };
-}
-
-public class ComplexModel
-{
-    public string Name { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
 }
