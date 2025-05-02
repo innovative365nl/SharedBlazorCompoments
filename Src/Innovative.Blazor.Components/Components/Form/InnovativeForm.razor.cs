@@ -1,24 +1,28 @@
-#region
-
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
-using Innovative.Blazor.Components.Components.Common;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using Radzen.Blazor;
 
-#endregion
-
 namespace Innovative.Blazor.Components.Components;
 
-public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBaseComponent
+public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 {
     private readonly Dictionary<string, object?> formValues = new Dictionary<string, object?>();
-    private readonly IInnovativeStringLocalizer localizer = null!;
+    private readonly IInnovativeStringLocalizer localizer;
     private const int StartSequenceNumberLoop = 4;
+
+    [Parameter] public required TModel Model { get; set; }
+
+    [CascadingParameter] public required SidePanelComponent<TModel>? ParentDialog { get; set; }
+
+    private IReadOnlyCollection<PropertyInfo> ungroupedProperties { get; set; } = new List<PropertyInfo>();
+
+    protected IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; private set; } =
+        new List<KeyValuePair<string, List<PropertyInfo>>>();
 
     public InnovativeForm(IInnovativeStringLocalizerFactory localizerFactory)
     {
@@ -28,46 +32,79 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
         localizer = localizerFactory.Create(resourceType);
     }
 
-    [Parameter] public required TModel Model { get; set; }
-    [Parameter] public EventCallback<TModel> OnSave { get; set; }
-    [Parameter] public EventCallback OnCancel { get; set; }
-    [CascadingParameter] public required SidePanelComponent<TModel>? ParentDialog { get; set; }
-
-    private IReadOnlyCollection<PropertyInfo> ungroupedProperties { get; set; } = new List<PropertyInfo>();
-
-    protected IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; private set; } =
-        new List<KeyValuePair<string, List<PropertyInfo>>>();
-
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
-        ParentDialog?.SetFormComponent((IDynamicBaseComponent)this);
-        base.OnInitialized();
+        if (ParentDialog != null && Model != null && Model.GetType().BaseType == typeof(FormModel))
+        {
+            ParentDialog.SetFormComponent(this);
+        }
+
+        foreach (var prop in GetPropertiesWithUiFormField())
+        {
+            formValues[key: prop.Name] = prop.GetValue(obj: Model);
+        }
+
+        OrganizePropertiesByGroups();
     }
 
-    public async Task OnSubmitPressed()
+    private void OrganizePropertiesByGroups()
+    {
+        var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
+        var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
+        var columnOrder = formClassAttribute?.ColumnOrder;
+
+        var groupedProperties = propertiesWithAttributes
+                                .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup != null)
+                                .GroupBy(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup)
+                                .ToDictionary(g => g.Key!, g => g.ToList());
+
+        ungroupedProperties = propertiesWithAttributes
+                              .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup == null)
+                              .ToList();
+
+        // Order the groups based on ColumnOrder if available
+        if (columnOrder != null && columnOrder.Any())
+        {
+            OrderedColumnGroups = columnOrder
+                                  .Where(columnGroup => groupedProperties.ContainsKey(columnGroup))
+                                  .Select(columnGroup => new KeyValuePair<string, List<PropertyInfo>>(
+                                                                                                      columnGroup,
+                                                                                                      groupedProperties[columnGroup]))
+                                  .Concat(groupedProperties
+                                          .Where(g => !columnOrder.Contains(g.Key))
+                                          .Select(g => g)!)
+                                  .ToList();
+        }
+        else
+        {
+            OrderedColumnGroups = groupedProperties.ToList()!;
+        }
+    }
+
+    public Task OnFormSubmit()
     {
         foreach (var entry in formValues)
         {
             var prop = typeof(TModel).GetProperty(name: entry.Key);
-            if (prop != null && prop.CanWrite)
+            if (prop?.CanWrite ?? false)
             {
                 prop.SetValue(obj: Model, value: entry.Value);
             }
         }
 
-        await OnSave.InvokeAsync().ConfigureAwait(false);
+        return Task.CompletedTask;
     }
 
-    public async Task OnCancelPressed()
+    public Task OnFormReset()
     {
-        await OnCancel.InvokeAsync().ConfigureAwait(false);
+        ParentDialog?.CloseCustomDialog();
+        return Task.CompletedTask;
     }
 
     protected string GetColumnWidthClass(string columnGroup)
     {
         var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
-        if (formClassAttribute?.ColumnWidthNames != null &&
-            formClassAttribute.ColumnWidthValues != null)
+        if (formClassAttribute is { ColumnWidthNames: not null, ColumnWidthValues: not null})
         {
             for (int i = 0; i < formClassAttribute.ColumnWidthNames.Length; i++)
             {
@@ -82,64 +119,20 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
         return string.Empty;
     }
 
-    protected override void OnParametersSet()
-    {
-        if (Model != null)
-        {
-            foreach (var prop in GetPropertiesWithUiFormField())
-            {
-                formValues[key: prop.Name] = prop.GetValue(obj: Model);
-            }
-
-            OrganizePropertiesByGroups();
-        }
-
-        base.OnParametersSet();
-    }
-
-    private void OrganizePropertiesByGroups()
-    {
-        var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
-        var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
-        var columnOrder = formClassAttribute?.ColumnOrder;
-
-        var groupedProperties = propertiesWithAttributes
-            .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup != null)
-            .GroupBy(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup)
-            .ToDictionary(g => g.Key!, g => g.ToList());
-
-        ungroupedProperties = propertiesWithAttributes
-            .Where(p => p.GetCustomAttribute<UIFormFieldAttribute>()?.ColumnGroup == null)
-            .ToList();
-
-        // Order the groups based on ColumnOrder if available
-        if (columnOrder != null && columnOrder.Any())
-        {
-            OrderedColumnGroups = columnOrder
-                .Where(columnGroup => groupedProperties.ContainsKey(columnGroup))
-                .Select(columnGroup => new KeyValuePair<string, List<PropertyInfo>>(
-                    columnGroup,
-                    groupedProperties[columnGroup]))
-                .Concat(groupedProperties
-                    .Where(g => !columnOrder.Contains(g.Key))
-                    .Select(g => g)!)
-                .ToList();
-        }
-        else
-        {
-            OrderedColumnGroups = groupedProperties.ToList()!;
-        }
-    }
-
     [ExcludeFromCodeCoverage]
     protected RenderFragment RenderPropertyField(PropertyInfo property) => builder =>
     {
-        var fieldAttribute = property.GetCustomAttribute<UIFormFieldAttribute>();
+        var fieldAttribute = property.GetCustomAttribute<UIFormField>();
         var propName = property.Name;
 
         builder.OpenComponent<RadzenLabel>(0);
         builder.AddAttribute(1, "Component", propName);
-        if (fieldAttribute?.Name != null) builder.AddAttribute(2, "Text", localizer.GetString(fieldAttribute.Name));
+
+        if (fieldAttribute?.Name != null)
+        {
+            builder.AddAttribute(2, "Text", localizer.GetString(fieldAttribute.Name));
+        }
+
         builder.CloseComponent();
 
         if (property.PropertyType == typeof(string))
@@ -201,7 +194,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
     };
 
     [ExcludeFromCodeCoverage]
-    private static RenderFragment RenderFormComponent(object? value, UIFormFieldAttribute attribute)
+    private static RenderFragment RenderFormComponent(object? value, UIFormField attribute)
     {
         return builder =>
         {
@@ -215,6 +208,13 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
 
                 if (attribute.FormComponent != null)
                 {
+                    // Add label for component
+                    builder.OpenComponent<RadzenLabel>(0);
+                    builder.AddAttribute(1, "Component", attribute.Name);
+                    builder.AddAttribute(2, "Text", attribute.Name); // localizer.GetString(attribute.Name)
+                    builder.CloseComponent();
+
+                    // Add custom component
                     builder.OpenComponent(sequence: 0, componentType: attribute.FormComponent);
                     builder.AddAttribute(sequence: 1, name: "Value", value: value);
 
@@ -245,8 +245,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
             }
         };
     }
-
-
+    
     private string GetStringValue(string propertyName)
     {
         if (formValues.TryGetValue(key: propertyName, value: out var value))
@@ -292,7 +291,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, Common.IDynamicBase
     private static PropertyInfo[] GetPropertiesWithUiFormField()
     {
         return typeof(TModel).GetProperties()
-            .Where(predicate: p => p.GetCustomAttribute<UIFormFieldAttribute>() != null)
+            .Where(predicate: p => p.GetCustomAttribute<UIFormField>() != null)
             .ToArray();
     }
 }

@@ -174,7 +174,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 
     private string GetColumnTitle(PropertyInfo property, UIGridField attribute)
     {
-        if (string.IsNullOrEmpty(value: attribute?.Name))
+        if (string.IsNullOrEmpty(value: attribute.Name))
         {
             return property.Name;
         }
@@ -191,19 +191,19 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     {
         if (allowSorting) return false;
         var attribute = property.GetCustomAttribute<UIGridField>();
-        return attribute?.Sortable ?? true;
+        return attribute?.IsSortable ?? true;
     }
 
     private static bool IsFilterableColumn(PropertyInfo property)
     {
         var attribute = property.GetCustomAttribute<UIGridField>();
-        return attribute?.Filterable ?? false;
+        return attribute?.IsFilterable ?? false;
     }
 
     private static bool IsVisibleColumn(PropertyInfo property)
     {
         var attribute = property.GetCustomAttribute<UIGridField>();
-        return attribute?.ShowByDefault ?? false;
+        return attribute?.IsVisible ?? false;
     }
 
     private static bool IsFrozenColumn(PropertyInfo property)
@@ -311,7 +311,9 @@ public partial class InnovativeGrid<TItem> : ComponentBase
                 else
                 {
                     if (gridField.CustomComponentType != null)
+                    {
                         builder.OpenComponent(sequence: 0, componentType: gridField.CustomComponentType);
+                    }
                     builder.AddAttribute(sequence: 1, name: "Value", value: value);
 
                     if (gridField.Parameters?.Length > 0)

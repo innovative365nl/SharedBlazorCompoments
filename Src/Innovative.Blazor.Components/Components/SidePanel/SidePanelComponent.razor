@@ -7,7 +7,7 @@
         @if (ShowClose)
         {
             <button class="sidepanel-back-button" id="sidePanelCloseButton"
-                    @onclick="@(args => sidePanelService.CloseSidepanel())">
+                    @onclick="@sidePanelService.CloseSidepanel">
                 <i class="icon-arrow-back">←</i>
             </button>
         }
@@ -34,6 +34,13 @@
                     <i class="icon-save">💾</i>
                 </button>
             }
+            @if (ShowDelete && !IsEditing && !isCustomDialog)
+            {
+                <button class="sidepanel-icon-button"
+                        @onclick="@HandleDeleteClick">
+                    <i class="icon-delete">🗑</i>
+                </button>
+            }
         </div>
     </div>
     <div class="sidepanel-content">
@@ -56,56 +63,3 @@
         @BottomBarContent
     </div>
 </div>
-
-<style>
-    .sidepanel-content-wrapper {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        height: 100%;
-    }
-    
-    .sidepanel-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        padding: 1rem 1rem .5rem 1rem;
-        border-bottom: #a0a0a0 solid .5px;
-    }
-    
-    .sidepanel-title h3 {
-        margin: 0;
-        font-size: 1.5rem;
-        font-weight: 500;
-    }
-    
-    .sidepanel-actions {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .sidepanel-back-button, .sidepanel-icon-button {
-        border: 0;
-        cursor: pointer;
-        background-color: transparent;
-        padding: 0.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .sidepanel-content {
-        padding: 1rem;
-        flex: 1;
-        overflow-y: auto;
-        min-height: 500px;
-    }
-    
-    .sidepanel-footer {
-        padding: 1rem;
-        display: flex;
-        gap: 10px;
-    }
-</style>

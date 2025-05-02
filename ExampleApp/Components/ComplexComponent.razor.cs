@@ -1,4 +1,3 @@
-using ExampleApp.Pages;
 using Microsoft.AspNetCore.Components;
 
 namespace ExampleApp.Components;
