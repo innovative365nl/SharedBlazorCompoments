@@ -9,18 +9,7 @@ namespace ExampleApp.Pages;
 
 public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanelService)
 {
-    private PersonModel person = new PersonModel
-                                 {
-                                     FirstName = "John",
-                                     LastName = "Doe",
-                                     IsActive = true,
-                                     BirthDate = new DateTime(1993, 5, 12),
-                                     ComplexComponent =  new()
-                                                         {
-                                                             Name = "Complex Component",
-                                                             Description = "This is a complex component"
-                                                         }
-                                 };
+    private PersonModel person = CreatePerson();
 
     private readonly List<string> actionLog = [];
 
@@ -45,16 +34,34 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
         };
         person.DeleteFormAction = () =>
         {
+           person = new PersonModel { IsActive = true };
            var logEntry = "Model deleted";
            LogAction(logEntry);
         };
         person.CancelFormAction = () =>
         {
+            person = CreatePerson();
             var logEntry = "Model canceled";
             LogAction(logEntry);
         };
 
         base.OnInitialized();
+    }
+
+    private static PersonModel CreatePerson()
+    {
+        return new PersonModel
+               {
+                   FirstName = "John",
+                   LastName = "Doe",
+                   IsActive = true,
+                   BirthDate = new DateTime(1993, 5, 12),
+                   ComplexComponent = new()
+                                      {
+                                          Name = "Complex Component",
+                                          Description = "This is a complex component"
+                                      }
+               };
     }
 
     private void LogAction(string message)
@@ -67,31 +74,22 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
 
     private async Task OpenPersonDialog()
     {
-        var result = await sidePanelService
-                                       .OpenDynamicFormDialog(person)
-                                       .ConfigureAwait(false);
-        person = result;
-        StateHasChanged();
+        await sidePanelService
+               .OpenInDisplayMode(person)
+               .ConfigureAwait(false);
     }
 
     private async Task OpenNewPersonDialog()
     {
-        var result = await sidePanelService
-                           .OpenDynamicFormDialog<PersonModel>()
-                           .ConfigureAwait(false);
+        person = new PersonModel { IsActive = true };
 
-        person = result;
-        StateHasChanged();
+        await sidePanelService
+                           .OpenInEditMode<PersonModel>(person)
+                           .ConfigureAwait(true);
     }
 }
 
-[UIFormClass(
-    title: nameof(Example.DialogService_Person),
-    ResourceType = typeof(Example),
-    ColumnOrder = ["Name", "EmployeeInfo", "Description"],
-    ColumnWidthNames = ["Name", "EmployeeInfo", "Description"],
-    ColumnWidthValues = [1, 1, 3]
-)]
+[UIFormClass(title: nameof(Example.DialogService_Person), ResourceType = typeof(Example))]
 public class PersonModel : FormModel
 {
     [UIFormField(name: "First Name", ColumnGroup = "Name")]

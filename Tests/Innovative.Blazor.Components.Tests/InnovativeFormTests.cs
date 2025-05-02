@@ -159,7 +159,7 @@ public class InnovativeFormTests : LocalizedTestBase
 }
 
 // Test classes
-[UIFormClass("testFormGroupModel", ColumnOrder = new[] { "Group1", "Group2" })]
+[UIFormClass("testFormGroupModel"/*, ColumnOrder = new[] { "Group1", "Group2" }*/)]
 public class TestFormGroupModel
 {
     [UIFormField(name:nameof(GroupedProperty1), ColumnGroup = "Group1")] public string GroupedProperty1 { get; set; } = string.Empty;
@@ -169,9 +169,7 @@ public class TestFormGroupModel
     [UIFormField(name: nameof(UngroupedProperty))] public string UngroupedProperty { get; set; } = string.Empty;
 }
 
-[UIFormClass("TestFormColumnWidthModel",
-    ColumnWidthNames = new[] { "Col1", "Col2" },
-    ColumnWidthValues = new[] { 3, 0 })]
+[UIFormClass("TestFormColumnWidthModel"/* , ColumnWidthNames = new[] { "Col1", "Col2" }, ColumnWidthValues = new[] { 3, 0 }*/)]
 public class TestFormColumnWidthModel
 {
     [UIFormField(name:nameof(Property1), ColumnGroup = "Col1")] public string Property1 { get; set; } = string.Empty;

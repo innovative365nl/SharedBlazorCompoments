@@ -8,27 +8,22 @@ public partial class ExampleDialogService1(IInnovativeSidePanelService sidePanel
 
     private SimplePersonModel person = CreatePerson();
 
-    private bool isSaved;
-    private bool isDeleted;
-    private bool isCanceled;
-
     protected override void OnInitialized()
     {
         person.SaveFormAction = () =>
                                 {
-                                    isSaved = true;
                                     var logEntry = "Model saved";
                                     LogAction(message: logEntry);
                                 };
         person.DeleteFormAction = () =>
                                   {
-                                      isDeleted = true;
+                                      person = new SimplePersonModel();
                                       var logEntry = "Model deleted";
                                       LogAction(message: logEntry);
                                   };
         person.CancelFormAction = () =>
                                   {
-                                      isCanceled = true;
+                                      person = CreatePerson();
                                       var logEntry = "Model canceled";
                                       LogAction(message: logEntry);
                                   };
@@ -58,27 +53,10 @@ public partial class ExampleDialogService1(IInnovativeSidePanelService sidePanel
 
     private async Task OpenPersonDialog()
     {
-        SimplePersonModel result = await sidePanelService
-                                         .OpenDynamicFormDialog(model: person, showDelete:true)
-                                         .ConfigureAwait(continueOnCapturedContext: false);
-
-        if (isSaved)
-        {
-            person = result;
-        }
-        if (isCanceled)
-        {
-            person = CreatePerson();
-        }
-        if (isDeleted)
-        {
-            person = new SimplePersonModel();
-        }
+        await sidePanelService
+                 .OpenInDisplayMode(model: person, showDelete:true) // person is passed by reference so after save
+                 .ConfigureAwait(continueOnCapturedContext: false);     // you'll have the updated model
 
         StateHasChanged();
-
-        isSaved = false;
-        isCanceled = false;
-        isDeleted = false;
     }
 }
