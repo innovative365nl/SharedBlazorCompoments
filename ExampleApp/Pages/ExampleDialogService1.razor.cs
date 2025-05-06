@@ -51,14 +51,13 @@ public partial class ExampleDialogService1(IInnovativeSidePanelService sidePanel
         var logEntry = $"{DateTime.Now:HH:mm:ss.fff}: {message}";
         actionLog.Add(item: logEntry);
         Console.WriteLine(value: logEntry);
-        StateHasChanged();
     }
 
     private async Task OpenPersonDialog()
     {
         await sidePanelService
-                 .OpenInDisplayMode(model: person, showDelete:true) // person is passed by reference so after save
-                 .ConfigureAwait(continueOnCapturedContext: false);     // you'll have the updated model
+                 .OpenInDisplayMode(model: person, showDelete:true)    // person is passed by reference so after save
+                 .ConfigureAwait(continueOnCapturedContext: true);     // you'll have the updated model
 
         StateHasChanged();
     }
