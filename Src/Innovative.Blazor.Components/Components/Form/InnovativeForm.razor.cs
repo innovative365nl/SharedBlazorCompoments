@@ -109,7 +109,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     protected string GetColumnWidthClass(string columnGroup)
     {
-        const int none = -1;
+        const int none = 0; // 0 width should return empty string
         int width = Model is FormModel model
                         ? model.Columns.SingleOrDefault(predicate: col => col.Name == columnGroup)?.Width ?? none
                         : none;

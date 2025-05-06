@@ -1,65 +1,60 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <OutputType>Exe</OutputType>
-        <Nullable>enable</Nullable>
-        <IsPackable>false</IsPackable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <Using Include="Bunit"/>
-        <Using Include="Bunit.TestDoubles"/>
-        <Using Include="Microsoft.Extensions.DependencyInjection"/>
-        <Using Include="Xunit"/>
-    </ItemGroup>
+  <ItemGroup>
+    <Using Include="Bunit" />
+    <Using Include="Bunit.TestDoubles" />
+    <Using Include="Microsoft.Extensions.DependencyInjection" />
+    <Using Include="Xunit" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="bunit" />
-        <PackageReference Include="FluentAssertions" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" />
-        <PackageReference Include="coverlet.collector">
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="bunit" />
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Moq" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Moq" />
-        <PackageReference Include="xunit" />
-        <PackageReference Include="xunit.runner.visualstudio">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Src\Innovative.Blazor.Components\Innovative.Blazor.Components.csproj" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\..\Src\Innovative.Blazor.Components\Innovative.Blazor.Components.csproj"/>
-    </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.WebUtilities" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <Reference Include="Microsoft.AspNetCore.WebUtilities">
-            <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\9.0.1\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
-        </Reference>
-    </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Dialog\Examples.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Examples.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
 
-    <ItemGroup>
-        <EmbeddedResource Update="Dialog\Examples.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Examples.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Dialog\Examples.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Examples.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
 
-    <ItemGroup>
-        <Compile Update="Dialog\Examples.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Examples.resx</DependentUpon>
-        </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Localizer\"/>
-    </ItemGroup>
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);CA1707;</NoWarn>
+  </PropertyGroup>
 
 </Project>
