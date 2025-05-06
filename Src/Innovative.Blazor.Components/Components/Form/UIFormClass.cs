@@ -1,8 +1,4 @@
-#region
-
 using Innovative.Blazor.Components.Attributes;
-
-#endregion
 
 namespace Innovative.Blazor.Components.Components;
 
@@ -16,8 +12,4 @@ public sealed class UIFormClass(string title) : UIClass
     ///     The title is used as a key to get the resource string. If the resource is not found it will be used as a caption.
     /// </remarks>
     public string Title { get; } = title;
-
-    public string[]? ColumnOrder { get; set; }
-    public string[]? ColumnWidthNames { get; set; }
-    public int[]? ColumnWidthValues { get; set; }
 }

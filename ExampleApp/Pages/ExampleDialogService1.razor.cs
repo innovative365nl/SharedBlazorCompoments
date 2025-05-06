@@ -8,29 +8,27 @@ public partial class ExampleDialogService1(IInnovativeSidePanelService sidePanel
 
     private SimplePersonModel person = CreatePerson();
 
-    private bool isSaved;
-    private bool isDeleted;
-    private bool isCanceled;
-
     protected override void OnInitialized()
     {
         person.SaveFormAction = () =>
                                 {
-                                    isSaved = true;
                                     var logEntry = "Model saved";
                                     LogAction(message: logEntry);
+                                    return Task.CompletedTask;
                                 };
         person.DeleteFormAction = () =>
                                   {
-                                      isDeleted = true;
+                                      person = new SimplePersonModel();
                                       var logEntry = "Model deleted";
                                       LogAction(message: logEntry);
+                                      return Task.CompletedTask;
                                   };
         person.CancelFormAction = () =>
                                   {
-                                      isCanceled = true;
+                                      person = CreatePerson();
                                       var logEntry = "Model canceled";
                                       LogAction(message: logEntry);
+                                      return Task.CompletedTask;
                                   };
 
         base.OnInitialized();
@@ -53,32 +51,14 @@ public partial class ExampleDialogService1(IInnovativeSidePanelService sidePanel
         var logEntry = $"{DateTime.Now:HH:mm:ss.fff}: {message}";
         actionLog.Add(item: logEntry);
         Console.WriteLine(value: logEntry);
-        StateHasChanged();
     }
 
     private async Task OpenPersonDialog()
     {
-        SimplePersonModel result = await sidePanelService
-                                         .OpenDynamicFormDialog(model: person, showDelete:true)
-                                         .ConfigureAwait(continueOnCapturedContext: false);
-
-        if (isSaved)
-        {
-            person = result;
-        }
-        if (isCanceled)
-        {
-            person = CreatePerson();
-        }
-        if (isDeleted)
-        {
-            person = new SimplePersonModel();
-        }
+        await sidePanelService
+                 .OpenInDisplayMode(model: person, showDelete:true)    // person is passed by reference so after save
+                 .ConfigureAwait(continueOnCapturedContext: true);     // you'll have the updated model
 
         StateHasChanged();
-
-        isSaved = false;
-        isCanceled = false;
-        isDeleted = false;
     }
 }

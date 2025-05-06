@@ -15,13 +15,15 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 
     public InnovativeDetail(IInnovativeStringLocalizerFactory localizerFactory)
     {
+        Debug.Assert(localizerFactory != null, $"{nameof(localizerFactory)} is null");
+
         var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIGridClass>();
         var resourceType = uiClassAttribute?.ResourceType ?? typeof(TModel);
-        Debug.Assert(localizerFactory != null, nameof(localizerFactory) + " != null");
         localizer = localizerFactory.Create(resourceType);
     }
 
     [Parameter] public TModel? Model { get; set; }
+
     [Parameter] public EventCallback<string> OnActionExecuted { get; set; }
 
     [CascadingParameter] private SidePanelComponent<TModel>? parentDialog { get; set; }
@@ -42,26 +44,12 @@ public partial class InnovativeDetail<TModel> : ComponentBase
     private string GetColumnWidthClass(string columnGroup)
     {
         // First check if Model is DisplayFormModel and get column info from there
-        if (Model is FormModel displayModel)
+        if (Model is FormModel formModel)
         {
-            var column = displayModel.Columns.FirstOrDefault(c => c.Name == columnGroup);
+            var column = formModel.Columns.FirstOrDefault(c => c.Name == columnGroup);
             if (column is { Width: > 0 })
             {
                 return $"column-span-{column.Width}";
-            }
-        }
-
-        // Fallback to class attribute
-        var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
-        if (formClassAttribute is { ColumnWidthNames: not null, ColumnWidthValues: not null})
-        {
-            for (var i = 0; i < formClassAttribute.ColumnWidthNames.Length; i++)
-            {
-                if (formClassAttribute.ColumnWidthNames[i] == columnGroup)
-                {
-                    int width = formClassAttribute.ColumnWidthValues[i];
-                    return width == 0 ? string.Empty : $"column-span-{width}";
-                }
             }
         }
 
@@ -73,26 +61,26 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
 
         // Get column order from DisplayFormModel or attribute
-        var customColumnOrder = Model is FormModel displayModel
-            ? displayModel.Columns.Select(c => c.Name).Where(n => n != null).ToArray()
-            : null;
-
-        var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
-        var attributeColumnOrder = formClassAttribute?.ColumnOrder;
-        var columnOrder = customColumnOrder?.Any() == true ? customColumnOrder : attributeColumnOrder;
+        string[] columnOrder = Model is FormModel formModel
+                                    ? formModel.Columns
+                                               .Where(col=> !string.IsNullOrEmpty(col.Name))
+                                               .OrderBy(col => col.Order)
+                                               .Select(col => col.Name!)
+                                               .ToArray()
+                                    : [];
 
         // Group properties by column group
         var groupedProperties = propertiesWithAttributes
-            .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup != null)
-            .GroupBy(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup)
+            .Where(p => !string.IsNullOrEmpty(p.GetCustomAttribute<UIFormField>()?.ColumnGroup))
+            .GroupBy(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup!)
             .ToDictionary(g => g.Key!, g => g.ToList());
 
         ungroupedProperties = propertiesWithAttributes
-                                .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup == null)
+                                .Where(p => string.IsNullOrEmpty(p.GetCustomAttribute<UIFormField>()?.ColumnGroup))
                                 .ToList();
 
         // Order the groups based on ColumnOrder if available
-        if (columnOrder != null && columnOrder.Any())
+        if (columnOrder.Any())
         {
             // Use an ordered dictionary to maintain the exact order specified
             var orderedGroups = new List<KeyValuePair<string, List<PropertyInfo>>>();
@@ -100,7 +88,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
             // First add groups that match the column order
             foreach (var columnName in columnOrder)
             {
-                if (columnName != null && groupedProperties.ContainsKey(columnName))
+                if (groupedProperties.ContainsKey(columnName))
                 {
                     if (groupedProperties[columnName].Any())
                     {

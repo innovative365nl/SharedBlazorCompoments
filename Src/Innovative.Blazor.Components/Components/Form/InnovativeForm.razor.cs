@@ -21,20 +21,21 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     private IReadOnlyCollection<PropertyInfo> ungroupedProperties { get; set; } = new List<PropertyInfo>();
 
-    protected IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; private set; } =
+    private IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; set; } =
         new List<KeyValuePair<string, List<PropertyInfo>>>();
 
     public InnovativeForm(IInnovativeStringLocalizerFactory localizerFactory)
     {
+        Debug.Assert(localizerFactory != null, $"{nameof(localizerFactory)} is null!");
+
         var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
         var resourceType = uiClassAttribute?.ResourceType ?? typeof(TModel);
-        Debug.Assert(localizerFactory != null, nameof(localizerFactory) + " != null");
         localizer = localizerFactory.Create(resourceType);
     }
 
     protected override void OnParametersSet()
     {
-        if (ParentDialog != null && Model != null && Model.GetType().BaseType == typeof(FormModel))
+        if (ParentDialog != null && Model is FormModel)
         {
             ParentDialog.SetFormComponent(this);
         }
@@ -49,10 +50,15 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     private void OrganizePropertiesByGroups()
     {
-        var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
-        var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
-        var columnOrder = formClassAttribute?.ColumnOrder;
+        string[] columnOrder = Model is FormModel model
+                                   ? model.Columns
+                                          .Where(predicate: col => !string.IsNullOrEmpty(value: col.Name))
+                                          .OrderBy(keySelector: col => col.Order)
+                                          .Select(selector: col => col.Name!)
+                                          .ToArray()
+                                   : [];
 
+        var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
         var groupedProperties = propertiesWithAttributes
                                 .Where(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup != null)
                                 .GroupBy(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup)
@@ -63,7 +69,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                               .ToList();
 
         // Order the groups based on ColumnOrder if available
-        if (columnOrder != null && columnOrder.Any())
+        if (columnOrder.Any())
         {
             OrderedColumnGroups = columnOrder
                                   .Where(columnGroup => groupedProperties.ContainsKey(columnGroup))
@@ -103,20 +109,12 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     protected string GetColumnWidthClass(string columnGroup)
     {
-        var formClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
-        if (formClassAttribute is { ColumnWidthNames: not null, ColumnWidthValues: not null})
-        {
-            for (int i = 0; i < formClassAttribute.ColumnWidthNames.Length; i++)
-            {
-                if (formClassAttribute.ColumnWidthNames[i] == columnGroup)
-                {
-                    int width = formClassAttribute.ColumnWidthValues[i];
-                    return width == 0 ? string.Empty : $"column-span-{width}";
-                }
-            }
-        }
+        const int none = 0; // 0 width should return empty string
+        int width = Model is FormModel model
+                        ? model.Columns.SingleOrDefault(predicate: col => col.Name == columnGroup)?.Width ?? none
+                        : none;
 
-        return string.Empty;
+        return width == none ? string.Empty : $"column-span-{width}";
     }
 
     [ExcludeFromCodeCoverage]
