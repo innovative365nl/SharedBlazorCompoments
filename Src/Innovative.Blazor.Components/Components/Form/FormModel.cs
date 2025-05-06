@@ -22,13 +22,13 @@ public abstract class FormModel
     public string? CssClass { get; set; }
 
     [UIFormViewAction(name: "Save", Order = 1)]
-    public Action? SaveFormAction { get; set; }
+    public Func<Task>? SaveFormAction { get; set; }
 
     [UIFormViewAction(name: "Cancel", Order = 1)]
-    public Action? CancelFormAction { get; set; }
+    public Func<Task>? CancelFormAction { get; set; }
 
     [UIFormViewAction(name: "Delete", Order = 1)]
-    public Action? DeleteFormAction { get; set; }
+    public Func<Task>? DeleteFormAction { get; set; }
 
     public IEnumerable<Column> Columns => ViewColumns.OrderBy(c => c.Order);
 

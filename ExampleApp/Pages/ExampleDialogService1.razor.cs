@@ -14,18 +14,21 @@ public partial class ExampleDialogService1(IInnovativeSidePanelService sidePanel
                                 {
                                     var logEntry = "Model saved";
                                     LogAction(message: logEntry);
+                                    return Task.CompletedTask;
                                 };
         person.DeleteFormAction = () =>
                                   {
                                       person = new SimplePersonModel();
                                       var logEntry = "Model deleted";
                                       LogAction(message: logEntry);
+                                      return Task.CompletedTask;
                                   };
         person.CancelFormAction = () =>
                                   {
                                       person = CreatePerson();
                                       var logEntry = "Model canceled";
                                       LogAction(message: logEntry);
+                                      return Task.CompletedTask;
                                   };
 
         base.OnInitialized();
