@@ -9,6 +9,11 @@ namespace Innovative.Blazor.Components.Services;
 public interface IInnovativeSidePanelService
 {
     /// <summary>
+    /// Returns true if the side panel is visible, otherwise false.
+    /// </summary>
+    bool IsVisible { get; }
+
+    /// <summary>
     /// Opens a side panel dialog with the specified model in display mode.
     /// </summary>
     Task OpenInDisplayMode<T>(T model, bool showEdit = true, bool showClose = true, bool showDelete = false) where T : class;
@@ -17,6 +22,11 @@ public interface IInnovativeSidePanelService
     /// Opens a side panel dialog with the specified model in edit mode as a new instance of <code>T</code> is created.
     /// </summary>
     Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false) where T : class;
+
+    /// <summary>
+    /// Closes the side panel dialog if it is open.
+    /// </summary>
+    void ClosePanel<T>(T model) where T : class;
 }
 
 internal sealed class InnovativeSidePanelService
@@ -25,6 +35,7 @@ internal sealed class InnovativeSidePanelService
     IInnovativeStringLocalizerFactory localizerFactory
 ) : IInnovativeSidePanelService
 {
+    public bool IsVisible => sidePanelService.IsVisible;
 
     public async Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false) where T : class
     {
@@ -83,7 +94,6 @@ internal sealed class InnovativeSidePanelService
         await sidePanelService
               .OpenSidepanelAsync<SidePanelComponent<T>>(parameters, options)
               .ConfigureAwait(false);
-
     }
 
     private string GetFormTitle<T>() where T : class
@@ -113,5 +123,13 @@ internal sealed class InnovativeSidePanelService
             _ => "30vw"
         };
         return size;
+    }
+
+    public void ClosePanel<T>(T model) where T : class
+    {
+        if (IsVisible)
+        {
+            sidePanelService.CloseSidepanel(model);
+        }
     }
 }
