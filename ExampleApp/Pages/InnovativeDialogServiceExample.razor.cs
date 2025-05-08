@@ -25,15 +25,15 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
 
     protected override void OnInitialized()
     {
-        _person.UpdatePasswordAction = id => 
+        _person.UpdatePasswordAction = id =>
         {
             var logEntry = $"Password updated with ID: {id} at {DateTime.Now:HH:mm:ss}";
             actionLog.Add(logEntry);
             Console.WriteLine(logEntry);
             StateHasChanged();
         };
-        
-        _person.ControlePasswordAction = result => 
+
+        _person.ControlePasswordAction = result =>
         {
             var logEntry = $"Password control result: {result} at {DateTime.Now:HH:mm:ss}";
             actionLog.Add(logEntry);
@@ -50,7 +50,7 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
             _person).ConfigureAwait(false);
 
         _person = result;
-            
+
         StateHasChanged();
     }
     private async Task OpenNewPersonDialog()
@@ -58,13 +58,13 @@ public partial class InnovativeDialogServiceExample(IInnovativeDialogService dia
         var result = await dialogService.OpenDynamicFormDialog<PersonModel>().ConfigureAwait(false);
 
         _person = result;
-            
+
         StateHasChanged();
     }
 }
 
-[UIFormClass( title: nameof(Example.DialogService_Person), 
-    ResourceType = typeof(Example), ColumnOrder = new[] {   "Name","EmployeeInfo","Description" }, 
+[UIFormClass( title: nameof(Example.DialogService_Person),
+    ResourceType = typeof(Example), ColumnOrder = new[] {   "Name","EmployeeInfo","Description" },
     ColumnWidthNames = new[] {"Name", "EmployeeInfo", "Description"},
     ColumnWidthValues = new[] {1, 1, 3})]
 public class PersonModel
@@ -78,7 +78,7 @@ public class PersonModel
    // [UIFormField(name: "Age", ColumnGroup = "EmployeeInfo")]
     //public int? Age => DateTime.Now.Year - BirthDate!.Value.Year;
 
-    [UIFormField(name: "Is Active", DisplayComponent = typeof(CustomBoolStyle), FormComponent = typeof(CustomBoolStyle), ColumnGroup = "EmployeeInfo")]
+    [UIFormField(name: "Is Active", DisplayComponent = typeof(CustomBoolStyle), ColumnGroup = "EmployeeInfo")]
     public bool IsActive { get; set; }
 
     [UIFormField(name: "Birth Date",  ColumnGroup = "EmployeeInfo")]
