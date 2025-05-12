@@ -26,6 +26,7 @@ public partial class ExampleComplexGrid
                 .ConfigureAwait(true);
 
             _attributesView = state.Attributes.Select(selector: AttributesGridModel.ToGridModel).ToArray();
+            StateHasChanged();
     }
 
     // RadzenButton ➕ Click
@@ -40,6 +41,8 @@ public partial class ExampleComplexGrid
                                        var model = AttributeFormModel.ToDomainModel(formModel);
                                        await state
                                              .CreateAttributeAsync(model)
+                                             .ConfigureAwait(true);
+                                       await OnRefreshData()
                                              .ConfigureAwait(true);
                                    };
         // And then open de side panel.
@@ -73,7 +76,7 @@ public partial class ExampleComplexGrid
         // or the delete button is clicked on the form.
         formModel.DeleteFormAction = async () =>
                                      {
-                                         var message = $"Do you want to remove property {formModel.AttributeType} {formModel.AttributeValue}?";
+                                         var message = $"Do you want to remove property {formModel.AttributeType.Value} {formModel.AttributeValue}?";
                                          var options = new ConfirmOptions {OkButtonText = "Yes", CancelButtonText = "No"};
 
                                          var isOk = await dialogService
@@ -87,15 +90,14 @@ public partial class ExampleComplexGrid
                                              await state
                                                    .DeleteAttributeAsync(model.Id)
                                                    .ConfigureAwait(true);
-                                             await OnRefreshData().ConfigureAwait(true);
+                                             await OnRefreshData()
+                                                  .ConfigureAwait(true);
                                          }
                                      };
         // And then open de side panel.
         await sidePanelService
               .OpenInDisplayMode(formModel, showDelete: true)
               .ConfigureAwait(true);
-        // Invoke StateHasChanged as we're running the method async.
-        StateHasChanged();
     }
 }
 

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ExampleApp;
 using Innovative.Blazor.Components.Common.Composer;
 using ExampleApp.Pages;
-
+using Radzen;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -14,6 +14,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.RegisterInnovativeComponents()
        .AddCustomLocalizer<AppDomain>()
        .AddScoped<IAttributeState, AttributeState>()
+       .AddScoped<DialogService>()
        ;
 
 await builder.Build()
