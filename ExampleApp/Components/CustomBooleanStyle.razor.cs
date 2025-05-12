@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace ExampleApp.Extensions;
+namespace ExampleApp.Components;
 
 public partial class CustomBooleanStyle : ComponentBase
 {
