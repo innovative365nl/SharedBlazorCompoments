@@ -13,7 +13,7 @@
 
                     if (fieldAttribute?.FormComponent != null)
                     {
-                        @RenderFormComponent(value : property.GetValue(Model), attribute: fieldAttribute)
+                        @RenderFormComponent(value : property.GetValue(Model), attribute: fieldAttribute, property)
                     }
                     else
                     {
