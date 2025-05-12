@@ -13,7 +13,6 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 {
     private readonly Dictionary<string, object?> formValues = new Dictionary<string, object?>();
     private readonly IInnovativeStringLocalizer localizer;
-    private const int StartSequenceNumberLoop = 4;
 
     [Parameter] public required TModel Model { get; set; }
 
@@ -122,13 +121,14 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     {
         var fieldAttribute = property.GetCustomAttribute<UIFormField>();
         var propName = property.Name;
-
-        builder.OpenComponent<RadzenLabel>(0);
-        builder.AddAttribute(1, "Component", propName);
+        int sequence = 0;
+        
+        builder.OpenComponent<RadzenLabel>(sequence++);
+        builder.AddAttribute(sequence++, "Component", propName);
 
         if (fieldAttribute?.Name != null)
         {
-            builder.AddAttribute(2, "Text", localizer.GetString(fieldAttribute.Name));
+            builder.AddAttribute(sequence++, "Text", localizer.GetString(fieldAttribute.Name));
         }
 
         builder.CloseComponent();
@@ -139,61 +139,65 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
             if (fieldAttribute is { UseWysiwyg: true })
             {
-                builder.OpenComponent<RadzenHtmlEditor>(3);
-                builder.AddAttribute(4, "Value", value);
-                builder.AddAttribute(5, "ValueChanged", EventCallback.Factory.Create<string>(this,
-                    val => SetValue(propertyName: propName, value: val)));
-                builder.AddAttribute(6, "Style", "height: 250px;");
-                builder.AddAttribute(7, "Name", propName);
+                builder.OpenComponent<RadzenHtmlEditor>(sequence++);
+                builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.Value), value);
+                builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.ValueChanged),
+                                     EventCallback.Factory.Create<string>(this, val => SetValue(propertyName: propName, value: val)));
+                builder.AddAttribute(sequence++, "Style", "height: 250px;");
+                builder.AddAttribute(sequence, "Name", propName);
+                builder.CloseComponent();
             }
             else
             {
                 builder.OpenComponent<RadzenTextBox>(8);
-                builder.AddAttribute(9, "Value", value);
-                builder.AddAttribute(10, "ValueChanged", EventCallback.Factory.Create<string>(this,
-                    val => SetValue(propertyName: propName, value: val)));
-                builder.AddAttribute(11, "Name", propName);
+                builder.AddAttribute(sequence++, nameof(RadzenTextBox.Value), value);
+                builder.AddAttribute(sequence++, nameof(RadzenTextBox.ValueChanged),
+                                     EventCallback.Factory.Create<string>(this, val => SetValue(propertyName: propName, value: val)));
+                builder.AddAttribute(sequence, "Name", propName);
+                builder.CloseComponent();
             }
         }
         else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(int?))
         {
-            var readOnly = !property.CanWrite;
+            var isReadOnly = !property.CanWrite;
             var value = GetIntValue(propertyName: propName);
 
-            builder.OpenComponent(12, typeof(RadzenNumeric<int?>));
-            builder.AddAttribute(13, "Value", value);
-            builder.AddAttribute(14, "ValueChanged", EventCallback.Factory.Create<int?>(this,
-                val => SetValue(propertyName: propName, value: val)));
-            builder.AddAttribute(15, "Name", propName);
-            builder.AddAttribute(16, "ReadOnly", readOnly);
+            builder.OpenComponent(sequence++, typeof(RadzenNumeric<int?>));
+            builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Value), value);
+            builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.ValueChanged),
+                                 EventCallback.Factory.Create<int?>(this, val => SetValue(propertyName: propName, value: val)));
+            builder.AddAttribute(sequence++, "Name", propName);
+            builder.AddAttribute(sequence, "ReadOnly", isReadOnly);
+            builder.CloseComponent();
         }
         else if (property.PropertyType == typeof(bool) || property.PropertyType == typeof(bool?))
         {
             var value = GetBoolValue(propertyName: propName);
 
-            builder.OpenComponent(17, typeof(RadzenCheckBox<bool?>));
-            builder.AddAttribute(18, "Value", value);
-            builder.AddAttribute(19, "ValueChanged", EventCallback.Factory.Create<bool?>(this,
-                val => SetValue(propertyName: propName, value: val)));
-            builder.AddAttribute(20, "Name", propName);
+            builder.OpenComponent(sequence++, typeof(RadzenCheckBox<bool?>));
+            builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.Value), value);
+            builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.ValueChanged),
+                                 EventCallback.Factory.Create<bool?>(this, val => SetValue(propertyName: propName, value: val)));
+            builder.AddAttribute(sequence, "Name", propName);
+            builder.CloseComponent();
         }
         else if (property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?))
         {
             var value = GetDateTimeValue(propertyName: propName);
 
-            builder.OpenComponent(21, typeof(RadzenDatePicker<DateTime?>));
-            builder.AddAttribute(22, "Value", value);
-            builder.AddAttribute(23, "ValueChanged", EventCallback.Factory.Create<DateTime?>(this,
-                val => SetValue(propertyName: propName, value: val)));
-            builder.AddAttribute(24, "Name", propName);
+            builder.OpenComponent(sequence++, typeof(RadzenDatePicker<DateTime?>));
+            builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Value), value);
+            builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.ValueChanged),
+                                 EventCallback.Factory.Create<DateTime?>(this, val => SetValue(propertyName: propName, value: val)));
+            builder.AddAttribute(sequence, "Name", propName);
+            builder.CloseComponent();
         }
-
-        builder.CloseComponent();
     };
 
     [ExcludeFromCodeCoverage]
-    private static RenderFragment RenderFormComponent(object? value, UIFormField attribute)
+    private RenderFragment RenderFormComponent(object? value, UIFormField attribute, PropertyInfo property)
     {
+        var propName = property.Name;
         return builder =>
         {
             try
@@ -207,29 +211,33 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                 if (attribute.FormComponent != null)
                 {
                     // Add label for component
-                    builder.OpenComponent<RadzenLabel>(0);
-                    builder.AddAttribute(1, "Component", attribute.Name);
-                    builder.AddAttribute(2, "Text", attribute.Name); // localizer.GetString(attribute.Name)
+                    int sequence = 0;
+                    builder.OpenComponent<RadzenLabel>(sequence++);
+                    builder.AddAttribute(sequence++, "Component", attribute.Name);
+                    builder.AddAttribute(sequence, "Text", localizer.GetString(attribute.Name));
                     builder.CloseComponent();
 
                     // Add custom component
-                    builder.OpenComponent(sequence: 0, componentType: attribute.FormComponent);
-                    builder.AddAttribute(sequence: 1, name: "Value", value: value);
+                    sequence = 0;
+                    builder.OpenComponent(sequence: sequence++, componentType: attribute.FormComponent);
+                    builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
+                    builder.AddAttribute(sequence++, "ValueChanged",
+                                         EventCallback.Factory.Create(this, val => SetValue(propertyName: propName, value: val)));
 
                     if (attribute.DisplayParameters?.Length > 0)
                     {
-                        var index = StartSequenceNumberLoop;
                         if (attribute.FormParameters != null)
+                        {
                             foreach (var param in attribute.FormParameters)
                             {
                                 var parts = param.Split(separator: '=', count: 2);
                                 if (parts.Length == 2)
                                 {
-                                    builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);
+                                    builder.AddAttribute(sequence: sequence++, name: parts[0], value: parts[1]);
                                 }
                             }
+                        }
                     }
-
 
                     builder.CloseComponent();
                 }

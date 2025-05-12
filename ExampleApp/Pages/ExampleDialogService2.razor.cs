@@ -1,5 +1,4 @@
 using ExampleApp.Components;
-using ExampleApp.Extensions;
 using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Services;

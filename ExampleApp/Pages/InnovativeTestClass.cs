@@ -1,4 +1,4 @@
-using ExampleApp.Extensions;
+using ExampleApp.Components;
 using Innovative.Blazor.Components.Components;
 
 namespace ExampleApp.Pages;
