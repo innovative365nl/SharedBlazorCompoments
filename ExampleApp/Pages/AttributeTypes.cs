@@ -122,7 +122,6 @@ internal sealed class AttributeState : IAttributeState
             return;
         }
 
-        _attributes.Clear();
         _attributes.AddRange(collection:
                              [ new AttributeModel(Id: Guid.Parse(input: "32DCF3DB-F1B2-4A93-9AEA-08DC4BF24B47"), Name: "Innovative", Type: _attributeTypes.Single(predicate: x => x.Id          == 10))
                              , new AttributeModel(Id: Guid.Parse(input: "F1D07FEC-7B7E-425B-9AEB-08DC4BF24B47"), Name: "ODNHN", Type: _attributeTypes.Single(predicate: x => x.Id               == 10))
@@ -139,6 +138,7 @@ internal sealed class AttributeState : IAttributeState
                              , new AttributeModel(Id: Guid.Parse(input: "DC3E143F-BF40-42E3-9FB0-08DD6C72B6CC"), Name: "Belgie", Type: _attributeTypes.Single(predicate: x => x.Id              == 50))
                              , new AttributeModel(Id: Guid.Parse(input: "D047AFF8-C291-4776-9FB1-08DD6C72B6CC"), Name: "Sales", Type: _attributeTypes.Single(predicate: x => x.Id               == 30))
                              ]);
+
         await Task.Delay(millisecondsDelay: 500).ConfigureAwait(continueOnCapturedContext: false);
     }
 }
