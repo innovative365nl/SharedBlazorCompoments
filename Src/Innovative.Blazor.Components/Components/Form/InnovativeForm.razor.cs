@@ -213,8 +213,11 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                     builder.CloseComponent();
 
                     // Add custom component
-                    builder.OpenComponent(sequence: 0, componentType: attribute.FormComponent);
-                    builder.AddAttribute(sequence: 1, name: "Value", value: value);
+                    sequence = 0;
+                    builder.OpenComponent(sequence: sequence++, componentType: attribute.FormComponent);
+                    builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
+                    builder.AddAttribute(sequence++, "ValueChanged",
+                                         EventCallback.Factory.Create(this, val => SetValue(propertyName: propName, value: val)));
 
                     if (attribute.DisplayParameters?.Length > 0)
                     {
