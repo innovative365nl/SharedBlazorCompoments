@@ -28,12 +28,12 @@ public interface IInnovativeStringLocalizer<T> : IInnovativeStringLocalizer
 
 internal class InnovativeStringLocalizer<T> : IInnovativeStringLocalizer<T>
 {
-    private readonly IStringLocalizerFactory _factory;
+    private readonly IStringLocalizerFactory factory;
 
     public InnovativeStringLocalizer(IStringLocalizerFactory factory, Type? fallbackResourceType)
     {
         ArgumentNullException.ThrowIfNull(argument: factory);
-        _factory = factory;
+        this.factory = factory;
 
         PrimaryLocalizer = factory.Create(resourceSource: typeof(T));
         FallbackLocalizer = fallbackResourceType != null ? factory.Create(resourceSource: fallbackResourceType) : null;
@@ -52,7 +52,7 @@ internal class InnovativeStringLocalizer<T> : IInnovativeStringLocalizer<T>
     {
         ArgumentNullException.ThrowIfNull(resourceType);
 
-        PrimaryLocalizer = _factory.Create(resourceSource: resourceType);
+        PrimaryLocalizer = factory.Create(resourceSource: resourceType);
     }
 
     public LocalizedString this[string name]

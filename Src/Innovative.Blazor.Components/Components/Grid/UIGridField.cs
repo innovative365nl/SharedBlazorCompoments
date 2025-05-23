@@ -1,32 +1,22 @@
-#region
-
 using System.Diagnostics.CodeAnalysis;
-using Innovative.Blazor.Components.Attributes;
 
-#endregion
-
-namespace Innovative.Blazor.Components.Components.Grid;
+namespace Innovative.Blazor.Components.Components;
 
 [AttributeUsage(validOn: AttributeTargets.Property)]
-public sealed class UIGridField : UIField
+public sealed class UIGridField : Attribute
 {
-    public UIGridField(bool showByDefault = true)
-    {
-        ShowByDefault = showByDefault;
-    }
+    /// <summary>
+    ///     Returns the name of the field, if any.
+    /// </summary>
+    /// <remarks>
+    ///     The name is used as a key to get the resource string. If the resource is not found it uses the name as a caption.
+    /// </remarks>
+    public string? Name { get; set; }
 
-    [ExcludeFromCodeCoverage]
-    public UIGridField(Type componentType, bool showByDefault = true)
-    {
-        CustomComponentType = componentType;
-        ShowByDefault = true;
-    }
-
-    public bool ShowByDefault { get; }
+    public bool IsVisible { get; set; } = true;
     public bool IsSticky { get; set; }
     public Type? CustomComponentType { get; set; }
-    public bool Sortable { get; set; }
-    public bool? Filterable { get; set; }
+    public bool IsSortable { get; set; }
+    public bool? IsFilterable { get; set; }
     public string[]? Parameters { get; set; }
-    public Type? ComponentType { get; internal set; }
 }

@@ -26,14 +26,14 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <NoWarn>$(NoWarn);NETSDK1206;CA1848;CA1860;CA1710;CA1515;CA1812;BL0005;</NoWarn>
+        <NoWarn>$(NoWarn);NETSDK1206;CA1848;CA1860;CA1710;CA1515;CA1812;BL0005;IDE1006;</NoWarn>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors/>
         <WarningLevel>5</WarningLevel>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <DebugType>full</DebugType>
+        <DebugType>portable</DebugType>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
         <DebugType>pdbonly</DebugType>

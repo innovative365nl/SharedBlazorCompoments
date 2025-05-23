@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using Innovative.Blazor.Components.Components.Grid;
+using Innovative.Blazor.Components.Components;
 using Radzen;
 
 #endregion
@@ -18,7 +18,7 @@ namespace Innovative.Blazor.Components.Tests.TestHelpers
         /// <summary>
         ///     Helper method to render a grid component with common parameters to reduce code duplication.
         /// </summary>
-        public static IRenderedComponent<InnovativeGrid<T>> RenderGridComponent<T>(
+        public static IRenderedComponent<Components.InnovativeGrid<T>> RenderGridComponent<T>(
             this TestContext? testContext,
             IEnumerable<T> data,
             string? title = null,
@@ -29,26 +29,26 @@ namespace Innovative.Blazor.Components.Tests.TestHelpers
             GridHeight minHeightOption = GridHeight.Minimal) where T : class
         {
             if (testContext != null)
-                return testContext.RenderComponent<InnovativeGrid<T>>(parameters =>
-                {
-                    parameters.Add(p => p.Data, data);
+                return testContext.RenderComponent<Components.InnovativeGrid<T>>(parameters =>
+                                                                                 {
+                                                                                     parameters.Add(p => p.Data, data);
 
-                    if (title != null)
-                        parameters.Add(p => p.Title, title);
+                                                                                     if (title != null)
+                                                                                         parameters.Add(p => p.Title, title);
 
-                    if (isLoading)
-                        parameters.Add(p => p.IsLoading, true);
+                                                                                     if (isLoading)
+                                                                                         parameters.Add(p => p.IsLoading, true);
 
-                    if (enableRowSelection)
-                        parameters.Add(p => p.EnableRowSelection, true);
+                                                                                     if (enableRowSelection)
+                                                                                         parameters.Add(p => p.EnableRowSelection, true);
 
-                    parameters.Add(p => p.SelectionMode, selectionMode);
+                                                                                     parameters.Add(p => p.SelectionMode, selectionMode);
 
-                    if (onSelectionChanged != null)
-                        parameters.Add<IEnumerable<T>>(p => p.OnSelectionChanged, onSelectionChanged);
+                                                                                     if (onSelectionChanged != null)
+                                                                                         parameters.Add<IEnumerable<T>>(p => p.OnSelectionChanged, onSelectionChanged);
 
-                    parameters.Add(p => p.MinHeightOption, minHeightOption);
-                });
+                                                                                     parameters.Add(p => p.MinHeightOption, minHeightOption);
+                                                                                 });
             return null!;
         }
     }

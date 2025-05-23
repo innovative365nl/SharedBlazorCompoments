@@ -1,10 +1,5 @@
-#region
-
 using System;
-using Innovative.Blazor.Components.Components.Dialog;
-using Innovative.Blazor.Components.Components.Grid;
-
-#endregion
+using Innovative.Blazor.Components.Components;
 
 namespace Innovative.Blazor.Components.Tests.TestModels
 {
@@ -20,13 +15,10 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     /// </summary>
     public class TestModel
     {
-        [UIGridField(showByDefault: true, Sortable = true)]
+        [UIGridField(IsSortable = true)]
         public string? TestProperty { get; set; }
 
-        [UIGridField(
-            showByDefault: true,
-            CustomComponentType = typeof(TestCustomComponent),
-            Parameters = new[] { "CustomParam:test" })]
+        [UIGridField(CustomComponentType= typeof(TestCustomComponent), Parameters = ["CustomParam:test"])]
         public string? CustomProperty { get; set; }
     }
 
@@ -35,7 +27,7 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     /// </summary>
     public class TestModelWithMixedAttributes
     {
-        [UIGridField(showByDefault: true)] public string? PropertyWithAttribute { get; set; }
+        [UIGridField] public string? PropertyWithAttribute { get; set; }
 
         public string? PropertyWithoutAttribute { get; set; }
     }
@@ -46,10 +38,10 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     [UIGridClass(AllowSorting = false, DefaultSortField = "TestProperty", ResourceType = typeof(TestResources))]
     public class TestModelWithGridClass
     {
-        [UIGridField(showByDefault: true, Sortable = true)]
+        [UIGridField(IsSortable = true)]
         public string? TestProperty { get; set; }
 
-        [UIGridField(showByDefault: true)] public string? AnotherProperty { get; set; }
+        [UIGridField] public string? AnotherProperty { get; set; }
     }
 
     /// <summary>
@@ -62,7 +54,7 @@ namespace Innovative.Blazor.Components.Tests.TestModels
 
         public string? CustomProperty { get; set; }
 
-        [UIFormViewAction(Name = "Test Action")]
+        [UIFormViewAction(name: "Test Action")]
         public Action? TestAction { get; set; }
     }
 

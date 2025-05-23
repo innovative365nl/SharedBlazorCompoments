@@ -8,7 +8,7 @@ using Microsoft.Extensions.Localization;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Tests.Localizer;
+namespace Innovative.Blazor.Components.Tests;
 
 public class InnovativeStringLocalizerFactoryTests
 {

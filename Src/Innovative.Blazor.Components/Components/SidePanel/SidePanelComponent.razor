@@ -1,0 +1,65 @@
+@namespace Innovative.Blazor.Components.Components
+
+@typeparam TModel
+
+<div class="sidepanel-content-wrapper" @onclick:stopPropagation>
+    <div class="sidepanel-header">
+        @if (ShowClose)
+        {
+            <button class="sidepanel-back-button" id="sidePanelCloseButton"
+                    @onclick="@sidePanelService.CloseSidepanel">
+                <i class="icon-arrow-back">←</i>
+            </button>
+        }
+        <div class="sidepanel-title">
+            <h3>@Title</h3>
+        </div>
+        <div class="sidepanel-actions">
+            @TitleBarContent
+            @if (ShowEdit && !IsEditing && !isCustomDialog)
+            {
+                <button class="sidepanel-icon-button" id="sidePanelEditButton"
+                        @onclick="@(args => IsEditing = !IsEditing)">
+                    <i class="icon-edit">✏️</i>
+                </button>
+            }
+            else if (ShowEdit && (IsEditing || isCustomDialog))
+            {
+                <button class="sidepanel-icon-button"
+                        @onclick="@HandleCancelClick">
+                    <i class="icon-close">✕</i>
+                </button>
+                <button class="sidepanel-icon-button"
+                        @onclick="@HandleSaveClick">
+                    <i class="icon-save">💾</i>
+                </button>
+            }
+            @if (ShowDelete && !IsEditing && !isCustomDialog)
+            {
+                <button class="sidepanel-icon-button"
+                        @onclick="@HandleDeleteClick">
+                    <i class="icon-delete">🗑</i>
+                </button>
+            }
+        </div>
+    </div>
+    <div class="sidepanel-content">
+        <CascadingValue Value="this">
+            @if (!IsEditing && !isCustomDialog)
+            {
+                @ViewChildContent
+            }
+            else if (!isCustomDialog)
+            {
+                @EditChildContent
+            }
+            else
+            {
+                @ActionChildContent
+            }
+        </CascadingValue>
+    </div>
+    <div class="sidepanel-footer">
+        @BottomBarContent
+    </div>
+</div>

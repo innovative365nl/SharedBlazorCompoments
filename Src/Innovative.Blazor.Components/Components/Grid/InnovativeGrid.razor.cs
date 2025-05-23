@@ -11,7 +11,7 @@ using Radzen.Blazor;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Components.Grid;
+namespace Innovative.Blazor.Components.Components;
 
 /// <summary>
 /// Flexible and customizable grid component for displaying and managing data.
@@ -20,26 +20,26 @@ namespace Innovative.Blazor.Components.Components.Grid;
 /// <typeparam name="TItem"></typeparam>
 public partial class InnovativeGrid<TItem> : ComponentBase
 {
-    private readonly bool _allowSorting;
-    private readonly string? _defaultSortField;
-    private readonly IInnovativeStringLocalizer _localizer;
-    private readonly ILogger<InnovativeGrid<TItem>> _logger;
+    private readonly bool allowSorting;
+    private readonly string? defaultSortField;
+    private readonly IInnovativeStringLocalizer localizer;
+    private readonly ILogger<InnovativeGrid<TItem>> logger;
 
 #pragma warning disable CA1859
-    private IList<TItem> _selectedItems = new List<TItem>();
+    private IList<TItem> selectedItems = new List<TItem>();
 #pragma warning restore CA1859
     public InnovativeGrid(ILogger<InnovativeGrid<TItem>> logger, IInnovativeStringLocalizerFactory localizerFactory)
     {
-        LocalizerFactory = localizerFactory;
-        _logger = logger;
+        this.localizerFactory = localizerFactory;
+        this.logger = logger;
         var uiClassAttribute = typeof(TItem).GetCustomAttribute<UIGridClass>();
-        _allowSorting = uiClassAttribute?.AllowSorting ?? true;
-        _defaultSortField = uiClassAttribute?.DefaultSortField;
+        allowSorting = uiClassAttribute?.AllowSorting ?? true;
+        defaultSortField = uiClassAttribute?.DefaultSortField;
         var resourceType = ResourceType ?? uiClassAttribute?.ResourceType ?? typeof(TItem);
-        _localizer = LocalizerFactory.Create(resourceType);
+        localizer = this.localizerFactory.Create(resourceType);
     }
 
-    private IInnovativeStringLocalizerFactory LocalizerFactory { get; }
+    private IInnovativeStringLocalizerFactory localizerFactory { get; }
 
     /// <summary>
     ///     The data collection to be displayed in the grid. This serves as the source for all grid operations
@@ -85,19 +85,19 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 
     /// <summary>
     ///     Optional resource type used for localization of grid elements. If specified, this type will be used
-    ///     instead of TItem for retrieving localized strings. This allows for separation of data models and 
+    ///     instead of TItem for retrieving localized strings. This allows for separation of data models and
     ///     localization resources when needed.
     /// </summary>
     [Parameter]
     public Type? ResourceType { get; init; }
 
-    private RadzenDataGrid<TItem>? DataGrid { get; set; }
+    private RadzenDataGrid<TItem>? dataGrid { get; set; }
 
     /// <summary>
     ///     Gets the collection of items currently selected in the grid. This property provides access to the
     ///     selected items without triggering selection events, making it useful for read-only operations.
     /// </summary>
-    public IEnumerable<TItem> SelectedItems => _selectedItems;
+    public IEnumerable<TItem> SelectedItems => selectedItems;
 
     /// <summary>
     ///     Sets a single item as the selected item in the grid. This method clears any existing selections
@@ -129,8 +129,8 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     /// <param name="item">The item to add to the current selection</param>
     public async Task AddSelectedItemAsync(TItem item)
     {
-        _selectedItems.Add(item);
-        await OnSelectAsync(items: _selectedItems).ConfigureAwait(false);
+        selectedItems.Add(item);
+        await OnSelectAsync(items: selectedItems).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -144,18 +144,18 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     /// <param name="filterOperator">The operator to use for filtering (e.g., Equals, Contains)</param>
     public async Task ApplyFilter(string columnName, object value, FilterOperator filterOperator)
     {
-        if (DataGrid is { ColumnsCollection: not null })
+        if (dataGrid is { ColumnsCollection: not null })
         {
-            var column = (DataGrid.ColumnsCollection).FirstOrDefault(c => c.Property == columnName);
+            var column = (dataGrid.ColumnsCollection).FirstOrDefault(c => c.Property == columnName);
             if (column != null)
             {
                 await column.SetFilterValueAsync(value: value).ConfigureAwait(false);
                 column.SetFilterOperator(value: FilterOperator.Equals);
-                await DataGrid.Reload().ConfigureAwait(false);
+                await dataGrid.Reload().ConfigureAwait(false);
             }
             else
             {
-                _logger.LogWarning(message: "Column {ColumnName} not found", columnName);
+                logger.LogWarning(message: "Column {ColumnName} not found", columnName);
             }
         }
     }
@@ -168,18 +168,18 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     /// <returns>A task representing the asynchronous operation</returns>
     public Task ClearFilter()
     {
-        DataGrid?.ColumnsCollection.Clear();
+        dataGrid?.ColumnsCollection.Clear();
         return Task.CompletedTask;
     }
 
     private string GetColumnTitle(PropertyInfo property, UIGridField attribute)
     {
-        if (string.IsNullOrEmpty(value: attribute?.Name))
+        if (string.IsNullOrEmpty(value: attribute.Name))
         {
             return property.Name;
         }
 
-        var localizedString = _localizer[name: attribute.Name];
+        var localizedString = localizer[name: attribute.Name];
         return localizedString.ResourceNotFound ? property.Name : localizedString.Value;
     }
 
@@ -189,21 +189,21 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     /// </summary>
     private bool IsSortableColumn(PropertyInfo property)
     {
-        if (_allowSorting) return false;
+        if (allowSorting) return false;
         var attribute = property.GetCustomAttribute<UIGridField>();
-        return attribute?.Sortable ?? true;
+        return attribute?.IsSortable ?? true;
     }
 
     private static bool IsFilterableColumn(PropertyInfo property)
     {
         var attribute = property.GetCustomAttribute<UIGridField>();
-        return attribute?.Filterable ?? false;
+        return attribute?.IsFilterable ?? false;
     }
 
     private static bool IsVisibleColumn(PropertyInfo property)
     {
         var attribute = property.GetCustomAttribute<UIGridField>();
-        return attribute?.ShowByDefault ?? false;
+        return attribute?.IsVisible ?? false;
     }
 
     private static bool IsFrozenColumn(PropertyInfo property)
@@ -226,8 +226,8 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     /// <returns>A task representing the asynchronous reload operation</returns>
     public async Task ReloadAsync()
     {
-        if (DataGrid != null)
-            await DataGrid.Reload().ConfigureAwait(false);
+        if (dataGrid != null)
+            await dataGrid.Reload().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -237,18 +237,18 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     /// </summary>
     public void ClearSelection()
     {
-        _selectedItems.Clear();
+        selectedItems.Clear();
     }
 
     private async Task OnSelectAsync(IEnumerable<TItem> items)
     {
-        _selectedItems.Clear();
+        selectedItems.Clear();
         foreach (var item in items)
         {
-            _selectedItems.Add(item);
+            selectedItems.Add(item);
         }
 
-        await OnSelectionChanged.InvokeAsync(arg: _selectedItems).ConfigureAwait(false);
+        await OnSelectionChanged.InvokeAsync(arg: selectedItems).ConfigureAwait(false);
     }
 
     private static IEnumerable<PropertyWithAttribute> GetPropertiesWithAttributes()
@@ -311,7 +311,9 @@ public partial class InnovativeGrid<TItem> : ComponentBase
                 else
                 {
                     if (gridField.CustomComponentType != null)
+                    {
                         builder.OpenComponent(sequence: 0, componentType: gridField.CustomComponentType);
+                    }
                     builder.AddAttribute(sequence: 1, name: "Value", value: value);
 
                     if (gridField.Parameters?.Length > 0)

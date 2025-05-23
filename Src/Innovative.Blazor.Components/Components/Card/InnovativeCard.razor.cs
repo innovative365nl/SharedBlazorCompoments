@@ -1,10 +1,10 @@
 #region
-    
+
 using Microsoft.AspNetCore.Components;
 
 #endregion
 
-namespace Innovative.Blazor.Components.Components.Card;
+namespace Innovative.Blazor.Components.Components;
 /// <summary>
 /// Indicates whether the card is in a loading state. When true, displays a loading indicator
 /// to inform users that content is being processed or fetched.

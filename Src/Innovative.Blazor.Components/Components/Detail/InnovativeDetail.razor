@@ -1,0 +1,133 @@
+@namespace Innovative.Blazor.Components.Components
+@using System.Reflection
+@using Microsoft.Extensions.Localization
+
+@typeparam TModel
+
+<RadzenStack Orientation="Orientation.Vertical" Gap="1rem">
+    <RadzenStack Orientation="Orientation.Horizontal" Gap="1rem" JustifyContent="JustifyContent.Start" Class="mb-2">
+        @{
+            var splitButton = GetSplitButtonDefinition();
+
+            if (splitButton == null)
+            {
+                foreach (var button in GetButtonDefinitions())
+                {
+                        <RadzenButton Text="@button.ActionName"
+                                      Click="@(() => HandleActionProperty(property: button.Property, actionAttribute: button.ActionAttribute))"
+                                      ButtonStyle="ButtonStyle.Primary"/>
+                }
+            }
+            else 
+            {
+                <RadzenSplitButton Text="@splitButton.ActionName"
+                                   Click="@(() => HandleActionProperty(property: splitButton.Property, actionAttribute: splitButton.ActionAttribute))"
+                                   ButtonStyle="ButtonStyle.Primary">
+                        @foreach (var item in GetSplitButtonDefinitionItems())
+                        {
+                        <RadzenSplitButtonItem Text="@item.ActionName"
+                                               Click="@(() => HandleActionProperty(property: item.Property, actionAttribute: item.ActionAttribute))" />
+                        }
+                </RadzenSplitButton>
+            }
+        }
+    </RadzenStack>
+
+    <section class="innovative-grid-layout">
+        @foreach (var group in orderedColumnGroups)
+        {
+        <div class="form-column-group @GetColumnWidthClass(group.Key)">
+            @foreach (var property in group.Value)
+            {
+                var fieldAttribute = property.GetCustomAttribute<UIFormField>();
+                var value = property.GetValue(obj: Model);
+
+                <div style="display: grid; grid-template-columns: minmax(100px, auto) 1fr; gap: 0.25rem; align-items: baseline; margin-bottom: 0.5rem;">
+                    <div>
+                        <RadzenLabel Style="font-weight: bold">@localizer.GetString(fieldAttribute!.Name!):</RadzenLabel>
+                    </div>
+                    <div>
+                        @if (fieldAttribute?.DisplayComponent != null)
+                        {
+                            @RenderViewComponent(value: value, attribute: fieldAttribute)
+                        }
+                        else if (fieldAttribute!.UseWysiwyg && property.PropertyType == typeof(string) && value != null)
+                        {
+                            <div class="html-content">@((MarkupString)(value.ToString() ?? string.Empty))</div>
+                        }
+                        else
+                        {
+                             var displayValue = value;
+                            if (value != null && !string.IsNullOrEmpty(fieldAttribute?.TextProperty) && value.GetType().IsClass && value.GetType() != typeof(string))
+                            {
+                                try
+                                {
+                                    var textPropertyInfo = value.GetType().GetProperty(fieldAttribute.TextProperty);
+                                    if (textPropertyInfo != null)
+                                    {
+                                        displayValue = textPropertyInfo.GetValue(value);
+                                    }
+                                }
+                                catch (Exception ex) when (ex is AmbiguousMatchException or TargetException)
+                                {
+                                    // Fallback to ToString() if property access fails
+                                    System.Diagnostics.Debug.WriteLine($"Error accessing TextProperty '{fieldAttribute.TextProperty}' on type '{value.GetType().Name}': {ex.Message}");
+                                }
+                            }
+                            <InnovativeText TextStyle="Components.TextStyle.Body1">@(displayValue?.ToString() ?? "-")</InnovativeText>
+                        }
+                    </div>
+                </div>
+            }
+            </div>
+        }
+
+        @if (ungroupedProperties.Any())
+        {
+            <div class="form-ungrouped">
+                @foreach (var property in ungroupedProperties)
+                {
+                    var fieldAttribute = property.GetCustomAttribute<UIFormField>();
+                    var value = property.GetValue(obj: Model);
+
+                    <div style="display: grid; grid-template-columns: minmax(100px, auto) 1fr; gap: 0.25rem; align-items: baseline; margin-bottom: 0.5rem;">
+                        <div>
+                            <RadzenLabel Style="font-weight: bold">@localizer.GetString(fieldAttribute!.Name!):</RadzenLabel>
+                        </div>
+                        <div>
+                            @if (fieldAttribute?.DisplayComponent != null)
+                            {
+                                @RenderViewComponent(value: value, attribute: fieldAttribute)
+                            }
+                            else if (fieldAttribute!.UseWysiwyg && property.PropertyType == typeof(string) && value != null)
+                            {
+                                <div class="html-content">@((MarkupString)(value.ToString() ?? string.Empty))</div>
+                            }
+                            else
+                            {
+                                 var displayValue = value;
+                            if (value != null && !string.IsNullOrEmpty(fieldAttribute?.TextProperty) && value.GetType().IsClass && value.GetType() != typeof(string))
+                            {
+                                try
+                                {
+                                    var textPropertyInfo = value.GetType().GetProperty(fieldAttribute.TextProperty);
+                                    if (textPropertyInfo != null)
+                                    {
+                                        displayValue = textPropertyInfo.GetValue(value);
+                                    }
+                                }
+                                catch (Exception ex) when (ex is AmbiguousMatchException or TargetException)
+                                {
+                                    // Fallback to ToString() if property access fails
+                                    System.Diagnostics.Debug.WriteLine($"Error accessing TextProperty '{fieldAttribute.TextProperty}' on type '{value.GetType().Name}': {ex.Message}");
+                                }
+                            }
+                                <InnovativeText TextStyle="Components.TextStyle.Body1" class="truncated-text">@(displayValue?.ToString() ?? "-")</InnovativeText>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>
+</RadzenStack>
