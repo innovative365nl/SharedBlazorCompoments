@@ -23,35 +23,31 @@
     min-width: 300px;
     max-width: 90vw;
     overflow-y: auto;
-    /*transition: transform 0.3s ease-out;*/
-    /*animation: slide-in 0.3s forwards;*/
+    animation: slide-in 0.4s forwards;
+}
+
+.sidepanel-closing {
+    animation: slide-out 0.4s forwards;
 }
 
 @keyframes slide-in {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
-/*.rz-dialog-side-content-layout {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    flex: 1;*/
-/*    width: 100%;*/
-/*    position: relative;*/
-/*    padding: 1rem;*/
-/*}*/
-
-/*.rz-dialog-side-content {*/
-/*    margin-right: 0;*/
-/*    margin-left: auto;*/
-/*}*/
-
-/*.rz-dialog-side {*/
-/*    position: relative;*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    pointer-events: auto;*/
-/*    background-color: #fff;*/
-/*    background-clip: padding-box;*/
-/*    outline: 0;*/
-/*}*/
+@keyframes slide-out {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
