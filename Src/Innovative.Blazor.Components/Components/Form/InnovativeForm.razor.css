@@ -1,15 +1,76 @@
 ﻿.rz-dialog-side-content-layout {
+    --grid-max-col-count: 3;
+    --grid-min-col-size: max(10px, 250px);
+    --grid-gap: 1rem;
+
+    /* Calculations do not change */
+    --grid-col-size-calc: calc(
+            (100% - var(--grid-gap) * (var(--grid-max-col-count) - 1)) /
+            var(--grid-max-col-count)
+    );
+    --grid-col-min-size-calc: min(
+        100%,
+        max(var(--grid-min-col-size), var(--grid-col-size-calc))
+    );
+
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(max(10px, 250px), 1fr));
+    gap: var(--grid-gap);
+    grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(--grid-col-min-size-calc), 1fr)
+  );
+    container-type: inline-size;
+}
+
+.rz-dialog-side-content-layout ::deep .rz-label {
+    width: max-content;
+}
+
+.rz-dialog-side-content-layout ::deep .rz-text-box {
+    display: block;
+    width: 100%;
+}
+
+/* Second grid for labels and inputs */
+.form-column-group {
+    margin-bottom: 1rem;
+    display: grid;
     gap: 1rem;
 }
 
+.form-ungrouped {
+    margin-top: 1rem;
+}
+
 /* Column spanning classes */
+.column-span-1 {
+    /* Two column rows for all labels & inputs */
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+    /* One column row */
+    /*grid-template-columns: 1fr;*/
+    /*align-items: start;*/
+}
+
 .column-span-2 {
+    /* Two column rows for all labels & inputs */
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+    /* One column row */
+    /*grid-template-columns: 1fr;*/
+    /*align-items: start;*/
+
     grid-column: span 2;
 }
 
 .column-span-3 {
+    /* Two column rows for all labels & inputs */
+    /*grid-template-columns: repeat(2, 1fr);*/
+    /*align-items: center;*/
+    /* One column row for all labels & inputs */
+    grid-template-columns: 1fr;
+    align-items: start;
+
     grid-column: span 3;
 }
 
@@ -22,24 +83,16 @@
     grid-column: 1 / -1;
 }
 
-.rz-dialog-side-content-layout > .rz-text-box {
-    display: block;
-    min-width: auto;
-    width: 100%;
-}
-
-.form-column-group {
-    margin-bottom: 1rem;
-}
-
-.form-ungrouped {
-    margin-top: 1rem;
-}
-
-@media (min-width: 768px) {
+/* Small width of container on mobile */
+@container (width < 480px) {
     .rz-dialog-side-content-layout {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1rem;
+        grid-template-columns: 1fr;
+    }
+
+    /* Full width for everything on mobile */
+    [class*="column-span-"] {
+        grid-template-columns: 1fr;
+        align-items: start;
+        grid-column: 1 / -1;
     }
 }
