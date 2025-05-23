@@ -7,15 +7,11 @@ namespace Innovative.Blazor.Components.Components;
 public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelService) : ComponentBase
 {
     private IFormComponent? formComponent;
-
     private bool isCustomDialog;
-
     [Parameter] public bool IsEditing { get; set; }
-
     [Parameter] public bool ShowClose { get; set; } = true;
     [Parameter] public bool ShowEdit { get; set; } = true;
     [Parameter] public bool ShowDelete { get; set; } = false;
-
     [Parameter] public SideDialogOptions? Options { get; set; }
     [Parameter] public RenderFragment? TitleBarContent { get; set; }
     [Parameter] public RenderFragment? BottomBarContent { get; set; }
@@ -53,7 +49,7 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
         {
             model.SaveFormAction?.Invoke();
         }
-        
+
         isCustomDialog = false;
         IsEditing = false;
     }

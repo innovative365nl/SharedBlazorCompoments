@@ -113,6 +113,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 
     private void HandleActionProperty(PropertyInfo property, UIFormViewAction actionAttribute)
     {
+
         var action = property.GetValue(obj: Model) as Delegate;
         if (action == null)
         {

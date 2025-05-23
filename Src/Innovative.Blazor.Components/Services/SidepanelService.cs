@@ -30,6 +30,7 @@ public class SidepanelService : ISidepanelService
 
     public void CloseSidepanel(object? result = null)
     {
+
         if (!IsVisible)
             return;
         IsVisible = false;
