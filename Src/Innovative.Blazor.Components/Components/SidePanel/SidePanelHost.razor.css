@@ -1,0 +1,80 @@
+.sidepanel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.3);
+    z-index: 1000;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-end;
+    transition: background 0.3s;
+}
+
+.sidepanel-container {
+    z-index: 1001;
+    background: var(--innovative-sidepanel-background-color);
+    height: 100vh;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+    max-width: 90vw;
+    overflow-y: auto;
+    animation: slide-in 0.4s forwards;
+    /*transition: transform 0.3s ease-out;*/
+    /*animation: slide-in 0.3s forwards;*/
+}
+
+@keyframes slide-in {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-out {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/*.rz-dialog-side-content-layout {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    flex: 1;*/
+/*    width: 100%;*/
+/*    position: relative;*/
+/*    padding: 1rem;*/
+/*}*/
+
+/*.rz-dialog-side-content {*/
+/*    margin-right: 0;*/
+/*    margin-left: auto;*/
+/*}*/
+
+/*.rz-dialog-side {*/
+/*    position: relative;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    pointer-events: auto;*/
+/*    background-color: #fff;*/
+/*    background-clip: padding-box;*/
+/*    outline: 0;*/
+/*}*/

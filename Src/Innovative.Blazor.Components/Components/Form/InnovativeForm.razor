@@ -1,0 +1,36 @@
+@namespace Innovative.Blazor.Components.Components
+@using System.Reflection
+@typeparam TModel
+
+<RadzenTemplateForm TItem="TModel" Data="@Model" Submit="@OnFormSubmit">
+    <section class="rz-dialog-side-content-layout">
+        @foreach (var group in OrderedColumnGroups)
+        {
+            <div class="form-column-group @GetColumnWidthClass(group.Key)">
+                @foreach (var property in group.Value)
+                {
+                    var fieldAttribute = property.GetCustomAttribute<UIFormField>();
+
+                    if (fieldAttribute?.FormComponent != null)
+                    {
+                        @RenderFormComponent(value : property.GetValue(Model), attribute: fieldAttribute, property)
+                    }
+                    else
+                    {
+                        @RenderPropertyField(property)
+                    }
+                }
+            </div>
+        }
+        @if (ungroupedProperties.Any())
+        {
+            <div class="form-ungrouped">
+                @foreach (var property in ungroupedProperties)
+                {
+                    @RenderPropertyField(property)
+                }
+            </div>
+        }
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" />
+    </section>
+</RadzenTemplateForm>

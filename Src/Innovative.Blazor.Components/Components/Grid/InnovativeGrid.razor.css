@@ -1,0 +1,123 @@
+::deep .rz-data-grid {
+    --_rz-data-grid-border: var(--rz-data-grid-border, none);
+    --_rz-data-grid-border-radius: var(--rz-data-grid-border-radius, 4px);
+    border: var(--_rz-data-grid-border);
+    border-radius: var(--_rz-data-grid-border-radius);
+}
+
+::deep .margin {
+    margin: 0;
+}
+
+::deep .rz-grid-table {
+    table-layout: auto;
+}
+
+::deep .rz-stack {
+    height: clamp(var(--min-height), 100vh, var(--max-height));
+}
+
+::deep .rz-selectable tbody tr.rz-data-row td:first-child {
+    --_rz-grid-first-cell-padding: var(--rz-grid-first-cell-padding, 0.625rem 1rem 0.625rem 2rem);
+    padding: var(--_rz-grid-first-cell-padding);
+}
+
+/* Selectable grid row */
+::deep .rz-selectable .rz-data-row {
+    cursor: pointer
+}
+
+::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight div {
+    visibility: hidden;
+}
+
+::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight div::before {
+    content: attr(data-text);
+    font-weight: 600;
+    position: absolute;
+    visibility: visible;
+}
+
+::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight td:first-child:before {
+    --_rz-grid-selected-icon: var(--rz-grid-selected-icon, "arrow_forward_ios");
+    content: var(--_rz-grid-selected-icon);
+    padding-left: .5rem;
+    font-family: var(--rz-icon-font-family);
+    color: var(--rz-grid-selected-color);
+    align-content: center;
+    position: absolute;
+}
+
+/* Table head */
+::deep .rz-grid-table thead th div {
+    background: var(--rz-grid-header-stripe-background-color);
+}
+
+::deep .rz-grid-table thead th {
+    background: var(--rz-grid-header-stripe-background-color);
+}
+
+::deep .rz-grid-table thead tr th:first-child {
+    --_rz-grid-first-cell-padding: var(--rz-grid-first-cell-padding, 0.625rem 1rem 0.625rem 1rem);
+    padding: var(--_rz-grid-first-cell-padding);
+}
+
+::deep .rz-grid-table thead tr:first-child th {
+    --_rz-grid-header-border-bottom: var(--rz-grid-header-border-bottom, 2px solid #D0CECF);
+    border-bottom: var(--_rz-grid-header-border-bottom);
+}
+
+::deep .rz-grid-table thead tr th {
+    border-bottom: var(--rz-grid-header-cell-border-bottom);
+}
+
+::deep .rz-grid-table thead th {
+    border-bottom: unset;
+}
+
+::deep .rz-grid-table-fixed .rz-frozen-cell-left.rz-frozen-cell-left-end {
+    --_rz-grid-table-fixed-shadow: var(--rz-grid-table-fixed-shadow,
+    6px 0 10px -2px rgba(64, 63, 63, 0.1));
+    --_rz-grid-table-fixed-border: var(--rz-grid-table-fixed-border, unset);
+    box-shadow: var(--_rz-grid-table-fixed-shadow);
+    border-inline-end: var(--_rz-grid-table-fixed-border) !important;
+}
+
+/* Pager */
+::deep .rz-pager {
+    --rz-pager-padding: var(--rz-pager-padding, 1rem);
+    padding: var(--rz-pager-padding);
+}
+
+::deep .rz-pager-page, 
+::deep .rz-pager-first, 
+::deep .rz-pager-prev, 
+::deep .rz-pager-next, 
+::deep .rz-pager-last {
+    --_rz-pager-page-buttons-border-radius: var(--rz-pager-page-buttons-border-radius, 4px);
+    --_rz-pager-page-buttons-width: var(--rz-pager-page-buttons-width, 48px);
+    --_rz-pager-page-buttons-height: var(--rz-pager-page-buttons-height, 48px);
+    border-radius: var(--_rz-pager-page-buttons-border-radius);
+    min-width: var(--_rz-pager-page-buttons-width);
+    height: var(--_rz-pager-page-buttons-height);
+}
+
+::deep .rz-pager-element, 
+::deep .rz-button-lg {
+    min-width: var(--_rz-pager-page-buttons-width);
+    min-height: var(--_rz-pager-page-buttons-height);
+}
+
+::deep .rz-pager-element, 
+::deep .rz-button-lg.rz-button-icon-only {
+    --_rz-pager-numeric-button-selected-padding: var(--rz-pager-numeric-button-selected-padding, .25rem);
+    padding: var(--_rz-pager-numeric-button-selected-padding);
+    align-content: center;
+}
+
+::deep .rz-pager-element, .rz-button-lg {
+    --_rz-pager-numeric-button-selected-padding: var(--rz-pager-numeric-button-selected-padding, .25rem);
+    padding: var(--_rz-pager-numeric-button-selected-padding);
+    min-width: var(--_rz-pager-page-buttons-width);
+    min-height: var(--_rz-pager-page-buttons-height);
+}

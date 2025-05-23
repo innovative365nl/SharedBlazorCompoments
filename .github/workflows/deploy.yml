@@ -1,0 +1,223 @@
+######################################################################
+#         This workflow will build the InnovativeBlazor.Components   #
+#                        of Innovative365                            #
+######################################################################
+
+name: Build and push Innovative.Blazor.Components
+run-name: Deploy package by @${{ github.actor }}
+
+# Trigger conditions
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'release*'
+    paths:
+      - 'Src/Innovative.Blazor.Components/**'
+  workflow_dispatch:  # Allow manual triggering
+
+# Permissions
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+  checks: write
+
+# Environment variables
+env:
+  PACKAGE_PATH: './Src/Innovative.Blazor.Components'
+  TESTS_PATH: './Tests/Innovative.Blazor.Components.Tests/Innovative.Blazor.Components.Tests.csproj'
+  PROJECT_PAH: './Src/Innovative.Blazor.Components/Innovative.Blazor.Components.csproj'
+  SOLUTION_PATH: './Innovative.Blazor.Components.sln'
+  PACKAGE_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
+
+jobs:
+  # ============================================================
+  # Job 1: Extract version information from project files
+  # ============================================================
+  GetVersions:
+    runs-on: ubuntu-latest
+    outputs:
+      dotnetversion: ${{ steps.get_netversion.outputs.NETVERSION }}
+      versionsuffix: ${{ steps.get_netversion.outputs.VERSIONSUFFIX }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get .NET version and calculate version suffix
+        id: get_netversion
+        shell: pwsh
+        run: |
+          # Verify Directory.Build.props exists
+          $PropsFilePath = "Directory.Build.props"
+          If (-not(Test-Path -path $PropsFilePath)){
+             echo "::error Directory.Build.props file not found"
+             exit 1
+          }
+          echo "Directory.Build.props file found"
+          
+          # Extract target framework version
+          $propsText = Get-Content -Path $PropsFilePath -raw
+          $startPosition = $propsText.IndexOf("TargetFramework>net")
+          if ($startPosition -eq -1){
+              echo "::error TargetFramework not found"
+              exit 1
+          }
+          $netversiondotnet = $propsText.Substring($startPosition + 19,3)
+          echo "TargetFramework exists >> $netversiondotnet.x"
+          echo "NETVERSION=$netversiondotnet.x" >> $env:GITHUB_OUTPUT
+          
+          # Set version suffix based on branch
+          echo "Determining version suffix for: ${{ github.ref }}"
+          if ("${{ github.ref }}" -eq "refs/heads/main") {
+              echo "VERSIONSUFFIX=" >> $env:GITHUB_OUTPUT
+          }
+          elseif ("${{ github.ref }}" -eq "refs/heads/develop") {
+              $dateStamp = Get-Date -Format "yyyyMMddHHmm"
+              echo "VERSIONSUFFIX=preview-$dateStamp" >> $env:GITHUB_OUTPUT
+          }
+          elseif ("${{ github.ref }}" -like "refs/heads/release*") {
+              $dateStamp = Get-Date -Format "yyyyMMddHHmm"
+              echo "VERSIONSUFFIX=prerelease-$dateStamp" >> $env:GITHUB_OUTPUT
+          }
+          else {
+              $dateStamp = Get-Date -Format "yyyyMMddHHmm"
+              echo "VERSIONSUFFIX=alpha-$dateStamp" >> $env:GITHUB_OUTPUT
+          }
+
+      - name: Display version information
+        shell: pwsh
+        run: |
+          echo "NETVERSION = ${{ steps.get_netversion.outputs.NETVERSION }}"
+          echo "VERSIONSUFFIX = ${{ steps.get_netversion.outputs.VERSIONSUFFIX }}"
+
+  # ============================================================
+  # Job 2: Build the solution and create NuGet packages
+  # ============================================================
+  Build:
+    needs: GetVersions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ needs.GetVersions.outputs.dotnetversion }}
+
+      - name: Display version information
+        shell: pwsh
+        run: |
+          echo "NETVERSION = ${{ needs.GetVersions.outputs.dotnetversion }}"
+          echo "VERSIONSUFFIX = ${{ needs.GetVersions.outputs.versionsuffix }}"
+
+      - name: Restore NuGet dependencies
+        run: dotnet restore ${{ env.PROJECT_PAH }}
+
+      - name: Build solution
+        run: dotnet build ${{ env.PROJECT_PAH }} --configuration Release --no-restore
+
+      - name: Create NuGet packages
+        shell: pwsh
+        run: |
+          if ([String]::IsNullOrEmpty("${{ needs.GetVersions.outputs.versionsuffix }}")) {
+            echo "Creating package without version suffix"
+            dotnet pack ${{ env.PROJECT_PAH }} --configuration Release --no-build
+          } else {
+            echo "Creating package with version suffix: ${{ needs.GetVersions.outputs.versionsuffix }}"
+            dotnet pack ${{ env.PROJECT_PAH }} --configuration Release --no-build -p:VersionSuffix="${{ needs.GetVersions.outputs.versionsuffix }}"
+          }
+
+      - name: Upload NuGet packages as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: ${{ env.PACKAGE_PATH }}/**/*.nupkg
+          retention-days: 7
+  
+  # ============================================================
+  # Job 3: Run unit and integration tests
+  # ============================================================
+  Test:
+    needs: [ GetVersions, Build ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ needs.GetVersions.outputs.dotnetversion }}
+
+      - name: Restore NuGet dependencies
+        run: dotnet restore ${{ env.TESTS_PATH }}
+
+      - name: Build for testing
+        run: dotnet build ${{ env.TESTS_PATH }} --configuration Release --no-restore
+
+      - name: Run unit tests
+        run: >
+          dotnet test Tests/Innovative.Blazor.Components.Tests
+          --configuration Release
+          --no-build
+          --verbosity normal
+          --logger trx
+          --collect:"XPlat Code Coverage"
+
+
+      - name: Generate test report
+        uses: dorny/test-reporter@v2
+        if: always()
+        with:
+          name: 'Test Results'
+          path: '${{ github.workspace }}/**/TestResults/**/*.trx'
+          reporter: 'dotnet-trx'
+          fail-on-error: true
+
+      - name: Generate code coverage report
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: '**/coverage.cobertura.xml'
+          badge: true
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: true
+          thresholds: '80 90'
+          format: 'markdown'
+          output: 'both'
+
+      - name: Add coverage comment to PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: github.event_name == 'pull_request'
+        with:
+          recreate: true
+          path: code-coverage-results.md
+  
+  # ============================================================
+  # Job 4: Publish NuGet packages to NuGet.org
+  # ============================================================
+  Publish:
+    needs: [ GetVersions, Build, Test ]
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Download NuGet packages
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages
+          path: nuget-packages
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ needs.GetVersions.outputs.dotnetversion }}
+
+      - name: Publish NuGet packages
+        run: >
+          dotnet nuget push "nuget-packages/**/*.nupkg"
+          --api-key ${{ secrets.NUGET_API_KEY }}
+          --source ${{ env.PACKAGE_SOURCE_URL }}
+          --skip-duplicate

@@ -1,0 +1,42 @@
+<Project>
+
+    <PropertyGroup>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <AnalysisMode>All</AnalysisMode>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <Features>strict</Features>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+        <Nullable>enable</Nullable>
+        <OutputPath>bin\$(Configuration)\</OutputPath>
+        <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+        <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
+        <ReportAnalyzer>true</ReportAnalyzer>
+        <TargetFramework>net9.0</TargetFramework>
+        <VersionPrefix>0.8.0</VersionPrefix>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Company>Innovative365</Company>
+        <Copyright>Copyright © 2025, The Netherlands</Copyright>
+        <Authors>Innovative 365</Authors>
+        <Description>The Blazor componenents of Innovative 365.</Description>
+        <Product>Innovative.Blazor.Compoments</Product>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <NoWarn>$(NoWarn);NETSDK1206;CA1848;CA1860;CA1710;CA1515;CA1812;BL0005;IDE1006;</NoWarn>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors/>
+        <WarningLevel>5</WarningLevel>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugType>portable</DebugType>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>pdbonly</DebugType>
+    </PropertyGroup>
+
+</Project>

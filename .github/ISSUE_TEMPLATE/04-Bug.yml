@@ -1,0 +1,96 @@
+name: Bug
+description: Bug in project
+title: "[BUG] "
+labels: ["bug"]
+type: 'Task'
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Bug Report
+        Gebruik dit formulier om een bug te melden.
+  
+  - type: textarea
+    id: samenvatting
+    attributes:
+      label: Samenvatting
+      description: Een beknopte samenvatting die de essentie van de bug beschrijft.
+      placeholder: Korte beschrijving van het probleem...
+    validations:
+      required: true
+  
+  - type: textarea
+    id: wat
+    attributes:
+      label: Wat
+      description: Beschrijf wat er misgaat.
+      placeholder: Het probleem is dat...
+    validations:
+      required: true
+  
+  - type: textarea
+    id: waar
+    attributes:
+      label: Waar
+      description: Geef aan in welk onderdeel van de applicatie de bug optreedt.
+      placeholder: De bug treedt op in...
+    validations:
+      required: true
+  
+  - type: textarea
+    id: wanneer
+    attributes:
+      label: Wanneer
+      description: Omschrijf wanneer de bug optreedt (specifieke acties of omstandigheden).
+      placeholder: De bug treedt op wanneer...
+    validations:
+      required: true
+  
+  - type: textarea
+    id: stappen
+    attributes:
+      label: Stappen om te reproduceren
+      description: Geef een duidelijke stap-voor-stap beschrijving
+      placeholder: "1. Ga naar...\n2. Klik op...\n3. Scroll naar...\n4. Zie de fout..."
+    validations:
+      required: true
+  
+  - type: textarea
+    id: verwacht-gedrag
+    attributes:
+      label: Verwacht gedrag
+      description: Beschrijf wat er volgens verwachting zou moeten gebeuren.
+      placeholder: Verwacht wordt dat...
+    validations:
+      required: true
+  
+  - type: textarea
+    id: actueel-gedrag
+    attributes:
+      label: Actueel gedrag
+      description: Beschrijf wat er werkelijk gebeurt.
+      placeholder: In plaats daarvan gebeurt...
+    validations:
+      required: true
+  
+  - type: input
+    id: gerelateerd-aan
+    attributes:
+      label: Gerelateerd aan
+      description: Link naar gerelateerde Feature of Task indien van toepassing (bijvoorbeeld #123)
+      placeholder: "#123"
+  
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots / Logbestanden
+      description: Voeg indien beschikbaar relevante screenshots of logbestanden toe.
+      placeholder: Sleep screenshots of logbestanden hierheen...
+  
+  - type: textarea
+    id: aanvullende-info
+    attributes:
+      label: Aanvullende informatie
+      description: Eventuele extra informatie die nuttig kan zijn voor het oplossen van de bug.
+      placeholder: Extra context of informatie...

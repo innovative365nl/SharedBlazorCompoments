@@ -1,0 +1,131 @@
+@page "/loading-circular"
+@using Innovative.Blazor.Components.Components
+@using ProgressBarCircularSize = Innovative.Blazor.Components.Components.ProgressBarCircularSize
+@using ProgressBarMode = Innovative.Blazor.Components.Components.ProgressBarMode
+@using ProgressBarStyle = Innovative.Blazor.Components.Components.ProgressBarStyle
+
+<h1>Loading ProgressBarCircularSize Component Examples</h1>
+
+<div class="demo-section">
+    <h2>Basic Usage</h2>
+    <div class="demo-row">
+        <InnovativeProgressBarCircular Value="65" />
+    </div>
+</div>
+
+<div class="demo-section">
+    <h2>Size Variations</h2>
+    <div class="demo-row">
+        <InnovativeProgressBarCircular Value="25" Size="ProgressBarCircularSize.ExtraSmall" />
+        <InnovativeProgressBarCircular Value="45" Size="ProgressBarCircularSize.Small" />
+        <InnovativeProgressBarCircular Value="65" Size="ProgressBarCircularSize.Medium" />
+        <InnovativeProgressBarCircular Value="85" Size="ProgressBarCircularSize.Large" />
+    </div>
+</div>
+
+<div class="demo-section">
+    <h2>Style Variations</h2>
+    <div class="demo-row">
+        <InnovativeProgressBarCircular Value="75" ProgressBarStyle="ProgressBarStyle.Primary" />
+        <InnovativeProgressBarCircular Value="75" ProgressBarStyle="ProgressBarStyle.Secondary" />
+        <InnovativeProgressBarCircular Value="75" ProgressBarStyle="ProgressBarStyle.Success" />
+        <InnovativeProgressBarCircular Value="75" ProgressBarStyle="ProgressBarStyle.Danger" />
+        <InnovativeProgressBarCircular Value="75" ProgressBarStyle="ProgressBarStyle.Warning" />
+        <InnovativeProgressBarCircular Value="75" ProgressBarStyle="ProgressBarStyle.Info" />
+    </div>
+</div>
+
+<div class="demo-section">
+    <h2>Modes</h2>
+    <div class="demo-row">
+        <InnovativeProgressBarCircular Value="80" Mode="ProgressBarMode.Determinate" />
+        <InnovativeProgressBarCircular Mode="ProgressBarMode.Indeterminate" />
+    </div>
+</div>
+
+<div class="demo-section">
+    <h2>Custom Units</h2>
+    <div class="demo-row">
+        <InnovativeProgressBarCircular Value="4.2" Max="5" Unit=" stars" />
+        <InnovativeProgressBarCircular Value="750" Max="1000" Unit="MB" />
+    </div>
+</div>
+
+<div class="demo-section">
+    <h2>Interactive Demo</h2>
+    <div class="demo-row">
+        <div class="controls">
+            <label>
+                Value:
+                <input type="range" min="0" max="100" @bind="@_interactiveValue" />
+            </label>
+            <label>
+                Mode:
+                <select @bind="@_interactiveMode">
+                    <option value="@ProgressBarMode.Determinate">Determinate</option>
+                    <option value="@ProgressBarMode.Indeterminate">Indeterminate</option>
+                </select>
+            </label>
+            <label>
+                Style:
+                <select @bind="@_interactiveStyle">
+                    <option value="@ProgressBarStyle.Primary">Primary</option>
+                    <option value="@ProgressBarStyle.Secondary">Secondary</option>
+                    <option value="@ProgressBarStyle.Success">Success</option>
+                    <option value="@ProgressBarStyle.Danger">Danger</option>
+                    <option value="@ProgressBarStyle.Warning">Warning</option>
+                    <option value="@ProgressBarStyle.Info">Info</option>
+                </select>
+            </label>
+            <label>
+                Size:
+                <select @bind="@_interactiveSize">
+                    <option value="@ProgressBarCircularSize.ExtraSmall">Extra Small</option>
+                    <option value="@ProgressBarCircularSize.Small">Small</option>
+                    <option value="@ProgressBarCircularSize.Medium">Medium</option>
+                    <option value="@ProgressBarCircularSize.Large">Large</option>
+                </select>
+            </label>
+            <label>
+                <input type="checkbox" @bind="@_showValue" />
+                Show Value
+            </label>
+        </div>
+        
+        <InnovativeProgressBarCircular 
+            Value="@_interactiveValue"
+            Mode="@_interactiveMode"
+            ProgressBarStyle="@_interactiveStyle"
+            Size="@_interactiveSize"
+            ShowValue="@_showValue" />
+    </div>
+</div>
+
+<style>
+    .demo-section {
+        margin-bottom: 2rem;
+    }
+    
+    .demo-row {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+    
+    .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-right: 2rem;
+    }
+</style>
+
+@code {
+    private double _interactiveValue = 75;
+    private ProgressBarMode _interactiveMode = ProgressBarMode.Determinate;
+    private ProgressBarStyle _interactiveStyle = ProgressBarStyle.Primary;
+    private ProgressBarCircularSize _interactiveSize = ProgressBarCircularSize.Medium;
+    private bool _showValue = true;
+}

@@ -1,0 +1,12 @@
+@page "/grid/complex"
+@using Innovative.Blazor.Components.Components
+
+<h3>Complex Grid Example</h3>
+@* This grid is an example with a custom component (dropdown) that is displayed in a form inside the side panel *@
+<RadzenNotification />
+<div style="float: right;">
+    <RadzenButton Click="@(() => OnCreateAttribute())">➕</RadzenButton>
+    <RadzenButton Click="@(() => OnRefreshData())">🔄</RadzenButton>
+</div>
+<InnovativeGrid TItem="AttributesGridModel" MinHeightOption="GridHeight.Max"
+                Data="_attributesView" EnableRowSelection="true" OnSelectionChanged="OnRowSelected"></InnovativeGrid>

@@ -1,0 +1,17 @@
+@page "/dialog/2"
+
+<h3>Dialog Example 2</h3>
+
+<RadzenButton Text="Open Person Dialog" Click="@OpenPersonDialog" ButtonStyle="ButtonStyle.Primary" />
+
+<RadzenButton Text="Open new Person Dialog" Click="@OpenNewPersonDialog" ButtonStyle="ButtonStyle.Primary" />
+
+<div class="mt-4">
+    <h4>Action Log:</h4>
+    <ul class="list-group">
+        @foreach (var logEntry in actionLog)
+        {
+            <li class="list-group-item">@logEntry</li>
+        }
+    </ul>
+</div>

@@ -1,0 +1,12 @@
+/* set the main background for the light theme to pink */
+:root {
+}
+
+/* make the border for images transparent with a 30px radius */
+.article__img {
+    border-radius: 30px !important;
+    border: none;
+}
+.footer__powered {
+    display: none;
+}

@@ -1,0 +1,17 @@
+@namespace Innovative.Blazor.Components.Components
+@using TextStyle = Innovative.Blazor.Components.Components.TextStyle
+<div class="margin">
+    <RadzenCard class="card-container">
+        <InnovativeText TextStyle="Components.TextStyle.H3" Text="@Title"/>
+        @if (IsLoading)
+        {
+            <RadzenStack AlignItems="AlignItems.Center">
+                <InnovativeProgressBarCircular Value="100" ShowValue="false" Mode="Innovative.Blazor.Components.Components.ProgressBarMode.Indeterminate"/>
+            </RadzenStack>
+        }
+        else
+        {
+            @ChildContent
+        }
+    </RadzenCard>
+</div>
