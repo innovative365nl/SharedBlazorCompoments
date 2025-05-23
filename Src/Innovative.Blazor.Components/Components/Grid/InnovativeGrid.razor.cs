@@ -41,6 +41,8 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 
     private IInnovativeStringLocalizerFactory localizerFactory { get; }
 
+    private FilterMode filterMode => FilterStyle == FilterStyle.Advanced ? FilterMode.Advanced : FilterMode.Simple;
+
     /// <summary>
     ///     The data collection to be displayed in the grid. This serves as the source for all grid operations
     ///     including filtering, sorting, and pagination. The data must be of type TItem.
@@ -91,6 +93,9 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     [Parameter]
     public Type? ResourceType { get; init; }
 
+    [Parameter]
+    public required FilterStyle FilterStyle { get; init; } = FilterStyle.Advanced;
+
     private RadzenDataGrid<TItem>? dataGrid { get; set; }
 
     /// <summary>
@@ -132,6 +137,8 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         selectedItems.Add(item);
         await OnSelectAsync(items: selectedItems).ConfigureAwait(false);
     }
+
+
 
     /// <summary>
     ///     Applies a filter to the grid based on the specified column, value, and filter operator. This method
