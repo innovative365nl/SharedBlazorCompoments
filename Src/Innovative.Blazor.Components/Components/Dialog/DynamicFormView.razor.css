@@ -5,8 +5,8 @@
 
     /* Calculations do not change */
     --grid-col-size-calc: calc(
-        (100% - var(--grid-gap) * var(--grid-max-col-count)) /
-        var(--grid-max-col-count)
+            (100% - var(--grid-gap) * (var(--grid-max-col-count) - 1)) /
+            var(--grid-max-col-count)
     );
     --grid-col-min-size-calc: min(
         100%,
