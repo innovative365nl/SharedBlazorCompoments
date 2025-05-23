@@ -14,7 +14,7 @@
 
 .sidepanel-container {
     z-index: 1001;
-    background: var(--nnovative-sidepanel-background-color);
+    background: var(--innovative-sidepanel-background-color);
     height: 100vh;
     box-shadow: -2px 0 8px rgba(0,0,0,0.1);
     position: relative;
