@@ -10,6 +10,7 @@
 using System.Resources;
 
 [assembly: NeutralResourcesLanguage("en")]
+
 namespace Innovative.Blazor.Components.Localizations {
     using System;
 
@@ -117,6 +118,18 @@ namespace Innovative.Blazor.Components.Localizations {
         internal static string filter {
             get {
                 return ResourceManager.GetString("filter", resourceCulture);
+            }
+        }
+
+        internal static string clearFilter {
+            get {
+                return ResourceManager.GetString("clearFilter", resourceCulture);
+            }
+        }
+
+        internal static string applyFilter {
+            get {
+                return ResourceManager.GetString("applyFilter", resourceCulture);
             }
         }
     }

@@ -47,4 +47,10 @@
   <data name="filter" xml:space="preserve">
     <value>Filter</value>
   </data>
+  <data name="clearFilter" xml:space="preserve">
+    <value>Wis filter</value>
+  </data>
+  <data name="applyFilter" xml:space="preserve">
+    <value>Filter toepassen</value>
+  </data>
 </root>
