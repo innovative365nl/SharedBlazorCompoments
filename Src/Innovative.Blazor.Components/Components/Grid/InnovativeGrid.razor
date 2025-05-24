@@ -1,4 +1,5 @@
 @namespace Innovative.Blazor.Components.Components
+@using Innovative.Blazor.Components.Localizations
 @using InnovativeCard = Innovative.Blazor.Components.Components.InnovativeCard
 @typeparam TItem
 <div>
@@ -20,6 +21,19 @@
                                 AllowFiltering="true"
                                 FilterMode="filterMode"
                                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                AndOperatorText="@Translations.and"
+                                OrOperatorText="@Translations.or"
+                                EqualOperatorText="@Translations.equal"
+                                NotEqualOperatorText="@Translations.notEqual"
+                                ContainsOperatorText="@Translations.contains"
+                                StartsWithOperatorText="@Translations.startsWith"
+                                EndsWithOperatorText="@Translations.endsWith"
+                                GreaterThanOperatorText="@Translations.greaterThan"
+                                GreaterThanOrEqualOperatorText="@Translations.greaterThanOrEqual"
+                                LessThanOperatorText="@Translations.lessThan"
+                                LessThanOrEqualOperatorText="@Translations.lessThanOrEqual"
+                                FilterText="@Translations.filter"
+
                                 PageSize="20">
                     <EmptyTemplate>
                         <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to
