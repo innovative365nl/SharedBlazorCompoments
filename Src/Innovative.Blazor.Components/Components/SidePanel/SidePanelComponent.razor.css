@@ -14,6 +14,12 @@
     border-bottom: #a0a0a0 solid .5px;
 }
 
+.sidepanel-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .sidepanel-title h3 {
     margin: 0;
     font-size: 1.5rem;
@@ -23,7 +29,7 @@
 .sidepanel-actions {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 .sidepanel-back-button, .sidepanel-icon-button {
