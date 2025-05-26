@@ -125,7 +125,7 @@ code {
     text-align: start;
 }
 :root {
-    --innovative-sidepanel-background-color: lightgray;
+    --innovative-sidepanel-background-color: var(--rz-base-100);
 }
 
 .material-symbols-outlined {

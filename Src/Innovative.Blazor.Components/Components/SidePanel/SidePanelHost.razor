@@ -1,14 +1,11 @@
 @namespace Innovative.Blazor.Components.Components
 
-@if (sidePanelService.IsVisible)
-{
-    <div class="sidepanel-overlay" @onclick="OnOverlayClick">
-        <div class="sidepanel-container"
-             style="width:@(sidePanelService.CurrentOptions?.Width ?? "400px");">
-            @if (sidePanelService.CurrentComponentType != null)
-            {
-                <DynamicComponent Type="@sidePanelService.CurrentComponentType" Parameters="@sidePanelService.CurrentParameters" />
-            }
-        </div>
+<div class="sidepanel-overlay @(sidePanelService.IsVisible ? "open" : "close")" @onclick="OnOverlayClick">
+    <div class="sidepanel-container"
+         style="width:@(sidePanelService.CurrentOptions?.Width ?? "400px");">
+        @if (sidePanelService.CurrentComponentType != null)
+        {
+            <DynamicComponent Type="@sidePanelService.CurrentComponentType" Parameters="@sidePanelService.CurrentParameters" />
+        }
     </div>
-}
+</div>

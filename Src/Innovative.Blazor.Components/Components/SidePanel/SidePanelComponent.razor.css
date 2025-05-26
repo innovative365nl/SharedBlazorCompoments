@@ -32,7 +32,7 @@
     gap: 1rem;
 }
 
-.sidepanel-back-button, .sidepanel-icon-button {
+.sidepanel-icon-button {
     border: 0;
     cursor: pointer;
     background-color: transparent;
@@ -40,6 +40,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.sidepanel-icon-button .material-symbols-outlined {
+    color: var(--rz-text-tertiary-color);
+}
+
+.sidepanel-icon-button:hover  .material-symbols-outlined {
+    color: var(--rz-text-title-color);
 }
 
 .sidepanel-content {
