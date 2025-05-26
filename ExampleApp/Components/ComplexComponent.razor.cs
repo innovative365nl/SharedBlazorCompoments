@@ -6,5 +6,8 @@ public partial class ComplexComponent : ComponentBase
 {
     [Parameter]
     public ComplexModel? Value { get; set; }
+
+    [Parameter]
+    public EventCallback ValueChanged { get; set; }
 }
 
