@@ -33,8 +33,16 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
         }
     }
 
-    public void OpenCustomDialog() => isCustomDialog = true;
-    public void CloseCustomDialog() => isCustomDialog = false;
+    public void OpenCustomDialog()
+    {
+        isCustomDialog = true;
+        StateHasChanged();
+    }
+    public void CloseCustomDialog()
+    {
+        isCustomDialog = false;
+        StateHasChanged();
+    }
 
     private async Task HandleSaveClick()
     {

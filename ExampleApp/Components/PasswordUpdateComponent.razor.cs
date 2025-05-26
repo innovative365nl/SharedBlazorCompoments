@@ -30,8 +30,7 @@ public partial class PasswordUpdateComponent : ComponentBase, IFormComponent
         {
             person.UpdatePasswordAction!.Invoke(obj: ++counter);
         }
-        // After click, close the form.
-        return OnFormReset(); 
+        return Task.CompletedTask; 
     }
 
     public Task OnFormReset()

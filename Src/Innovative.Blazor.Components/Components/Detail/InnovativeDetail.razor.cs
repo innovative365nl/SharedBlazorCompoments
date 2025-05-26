@@ -122,27 +122,22 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 
         if (actionAttribute.CustomComponent != null)
         {
-            var (component, parameters, title) = GetActionDetails(propertyName: property.Name);
-
             if (parentDialog != null)
             {
 #pragma warning disable BL0005
                 parentDialog.ActionChildContent = builder =>
 #pragma warning restore BL0005
-                                                  {
-                                                      builder.OpenComponent(sequence: 0, componentType: component);
-                                                      {
-                                                          var i = 1;
-                        foreach (var param in parameters)
-                                                          {
-                                                              builder.AddAttribute(sequence: i++, name: param.Key, value: param.Value);
-                                                          }
-
-                                                          builder.AddAttribute(sequence: i++, name: "ParentDialog", value: parentDialog);
-                                                      }
-
-                                                      builder.CloseComponent();
-                                                  };
+                {
+                    var (component, parameters, title) = GetActionDetails(propertyName: property.Name);
+                    var i = 0;
+                    builder.OpenComponent(sequence: i++, componentType: component);
+                    foreach (var param in parameters)
+                    {
+                        builder.AddAttribute(sequence: i++, name: param.Key, value: param.Value);
+                    }
+                    builder.AddAttribute(sequence: i, name: "ParentDialog", value: parentDialog);
+                    builder.CloseComponent();
+                };
 
                 parentDialog.OpenCustomDialog();
             }
@@ -294,11 +289,13 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         {
             foreach (var property in actionProperties)
             {
-                var actionAttribute = property.GetCustomAttribute<UIFormViewAction>()!;
-                var actionName = actionAttribute?.Name ?? property.Name;
-                var translatedActionName = localizer.GetString(actionName);
-
-                result.Add(new ButtonDefinition{ActionName = translatedActionName, Property = property, ActionAttribute = actionAttribute! });
+                var prop = property;
+                var actionAttribute = prop.GetCustomAttribute<UIFormViewAction>();
+                if(actionAttribute != null)
+                {
+                    var actionName = localizer.GetString(actionAttribute.Name);
+                    result.Add(new ButtonDefinition { ActionName = actionName, Property = prop, ActionAttribute = actionAttribute });
+                }
             }
         }
         return result.ToArray();

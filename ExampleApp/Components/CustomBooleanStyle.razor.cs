@@ -12,4 +12,7 @@ public partial class CustomBooleanStyle : ComponentBase
 
     [Parameter]
     public string YesColor { get; set; } = "green";
+
+    [Parameter]
+    public EventCallback ValueChanged { get; set; }
 }
