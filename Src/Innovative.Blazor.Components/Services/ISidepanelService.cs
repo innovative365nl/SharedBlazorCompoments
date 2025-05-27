@@ -15,6 +15,7 @@ public class SidepanelOptions
 public interface ISidepanelService
 {
     bool IsVisible { get; }
+    Action<bool>? VisibleChanged { get; set; }
     Type? CurrentComponentType { get; }
     Dictionary<string, object>? CurrentParameters { get; }
     SidepanelOptions? CurrentOptions { get; }

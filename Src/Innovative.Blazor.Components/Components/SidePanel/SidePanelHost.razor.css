@@ -9,9 +9,18 @@
     display: flex;
     align-items: stretch;
     justify-content: flex-end;
-    transition-property: display;
+    transition-property: opacity, display;
     transition-duration: 0.4s;
     transition-behavior: allow-discrete;
+}
+
+.sidepanel-overlay.open {
+    opacity: 1;
+}
+
+.sidepanel-overlay.close {
+    opacity: 0;
+    display: none;
 }
 
 .sidepanel-container {
@@ -33,18 +42,14 @@
     transform: translateX(0);
 }
 
-.sidepanel-overlay.close .sidepanel-container{
-    transform: translateX(100%);
-}
-
 @starting-style {
     .sidepanel-overlay.open .sidepanel-container {
         transform: translateX(100%);
     }
 }
 
-.sidepanel-overlay.close {
-    display: none;
+.sidepanel-overlay.close .sidepanel-container{
+    transform: translateX(100%);
 }
 
 /*@keyframes slide-in {*/
