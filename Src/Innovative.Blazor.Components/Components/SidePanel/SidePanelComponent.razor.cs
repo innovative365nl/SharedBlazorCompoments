@@ -36,11 +36,19 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
     public void OpenCustomDialog()
     {
         isCustomDialog = true;
+        if (ViewChildContent == null && EditChildContent == null)
+        {
+            return;
+        }
         StateHasChanged();
     }
     public void CloseCustomDialog()
     {
         isCustomDialog = false;
+        if (ViewChildContent == null && EditChildContent == null)
+        {
+            return;
+        }
         StateHasChanged();
     }
 
