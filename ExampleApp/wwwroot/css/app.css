@@ -1,5 +1,17 @@
+@font-face {
+    font-family: 'Aptos';
+    font-style: normal;
+    src: url("../../fonts/Aptos.ttf") format('ttf');
+}
+
+@font-face {
+    font-family: 'Material Symbols Outlined';
+    font-style: normal;
+    src: url("../../fonts/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].woff2") format('woff2');
+}
+
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Aptos', sans-serif;
 }
 
 h1:focus {
@@ -113,5 +125,23 @@ code {
     text-align: start;
 }
 :root {
-    --innovative-sidepanel-background-color: lightgray;
+    --innovative-sidepanel-background-color: var(--rz-base-100);
+}
+
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined', sans-serif;
+}
+
+.rz-timespanpicker > .rz-inputtext:not(.invalid),
+.rz-colorpicker:not(.invalid),
+.rz-lookup-search input:not(.invalid),
+.rz-numeric:not(.invalid),
+.rz-datepicker > .rz-inputtext:not(.invalid),
+.rz-multiselect:not(.invalid),
+.rz-dropdown:not(.invalid),
+.mask:not(.invalid),
+.rz-textarea:not(.invalid),
+.rz-textbox:not(.invalid)
+{
+    width: 100%;
 }

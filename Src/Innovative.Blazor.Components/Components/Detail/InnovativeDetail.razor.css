@@ -3,7 +3,7 @@
     --grid-min-col-size: max(10px, 250px);
     --grid-gap: 1rem;
 
-    /* calculations */
+    /* Calculations */
     --grid-col-size-calc: calc(
         (100% - var(--grid-gap) * var(--grid-max-col-count)) /
         var(--grid-max-col-count)
