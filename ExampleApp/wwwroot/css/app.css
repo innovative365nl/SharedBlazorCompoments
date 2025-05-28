@@ -132,16 +132,16 @@ code {
     font-family: 'Material Symbols', sans-serif;
 }
 
-.rz-timespanpicker > .rz-inputtext:not(.invalid),
-.rz-colorpicker:not(.invalid),
-.rz-lookup-search input:not(.invalid),
-.rz-numeric:not(.invalid),
-.rz-datepicker > .rz-inputtext:not(.invalid),
-.rz-multiselect:not(.invalid),
-.rz-dropdown:not(.invalid),
-.mask:not(.invalid),
-.rz-textarea:not(.invalid),
-.rz-textbox:not(.invalid)
-{
-    width: 100%;
-}
+/*.rz-timespanpicker > .rz-inputtext:not(.invalid),*/
+/*.rz-colorpicker:not(.invalid),*/
+/*.rz-lookup-search input:not(.invalid),*/
+/*.rz-numeric:not(.invalid),*/
+/*.rz-datepicker > .rz-inputtext:not(.invalid),*/
+/*.rz-multiselect:not(.invalid),*/
+/*.rz-dropdown:not(.invalid),*/
+/*.mask:not(.invalid),*/
+/*.rz-textarea:not(.invalid),*/
+/*.rz-textbox:not(.invalid)*/
+/*{*/
+/*    width: 100%;*/
+/*}*/

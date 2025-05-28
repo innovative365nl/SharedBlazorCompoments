@@ -122,7 +122,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         var fieldAttribute = property.GetCustomAttribute<UIFormField>();
         var propName = property.Name;
         int sequence = 0;
-        
+
         builder.OpenComponent<RadzenLabel>(sequence++);
         builder.AddAttribute(sequence++, "Component", propName);
 
@@ -143,7 +143,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                 builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.Value), value);
                 builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.ValueChanged),
                                      EventCallback.Factory.Create<string>(this, val => SetValue(propertyName: propName, value: val)));
-                builder.AddAttribute(sequence++, "Style", "height: 250px;");
+                builder.AddAttribute(sequence++, "Style", "height: max-content; min-height: 250px; max-height: 400px;");
                 builder.AddAttribute(sequence, "Name", propName);
                 builder.CloseComponent();
             }
@@ -251,7 +251,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             }
         };
     }
-    
+
     private string GetStringValue(string propertyName)
     {
         if (formValues.TryGetValue(key: propertyName, value: out var value))
