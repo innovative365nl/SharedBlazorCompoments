@@ -5,7 +5,7 @@
 }
 
 @font-face {
-    font-family: 'Material Symbols Outlined';
+    font-family: 'Material Symbols';
     font-style: normal;
     src: url("../../fonts/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].woff2") format('woff2');
 }
@@ -129,7 +129,7 @@ code {
 }
 
 .material-symbols-outlined {
-    font-family: 'Material Symbols Outlined', sans-serif;
+    font-family: 'Material Symbols', sans-serif;
 }
 
 .rz-timespanpicker > .rz-inputtext:not(.invalid),
