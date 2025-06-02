@@ -127,7 +127,3 @@ code {
 :root {
     --innovative-sidepanel-background-color: var(--rz-base-100);
 }
-
-.material-symbols-outlined {
-    font-family: 'Material Symbols', sans-serif;
-}
