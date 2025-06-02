@@ -220,7 +220,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                             var index = StartSequenceNumberLoop;
                             foreach (var param in attribute.DisplayParameters)
                             {
-                                var parts = param.Split(separator: '=', count: 2);
+                                var parts = param.Split(separator: ':', count: 2);
                                 if (parts.Length == 2)
                                 {
                                     builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);

@@ -11,19 +11,35 @@ public sealed partial class SidePanelHost(ISidepanelService sidePanelService)
         sidePanelService.VisibleChanged += VisibleChanged;
     }
     private bool IsVisable = true;
-    private async void VisibleChanged(bool obj)
+    private void VisibleChanged(bool obj)
     {
-        if(obj == IsVisable)
-        {}
-        else
-        {
-            if (obj == false)
-            {
-                await Task.Delay(500).ConfigureAwait(true);
-            }
-            IsVisable = obj;
-            StateHasChanged();
-        }
+        //todo: check for fix to solve in the dom
+        // try
+        // {
+        //     Console.WriteLine(obj);
+        //     if(obj == IsVisable)
+        //     {}
+        //     else
+        //     {
+        //         // if (obj == false)
+        //         // {
+        //         //
+        //         //    await Task.Delay(millisecondsDelay: 500).ConfigureAwait(false);
+        //         //    if(sidePanelService.IsVisible == false)
+        //         //    {
+        //         //        IsVisable = false;
+        //         //        StateHasChanged();
+        //         //
+        //         //    }
+        //         // }
+        //     }
+        // }
+        // catch (Exception ex)
+        // {
+        //
+        //     Console.WriteLine(ex.Message);
+        //     throw; // TODO handle exception
+        // }
     }
 
     public void Dispose() => sidePanelService.OnStateChanged -= StateHasChanged;

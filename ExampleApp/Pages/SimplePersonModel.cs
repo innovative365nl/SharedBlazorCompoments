@@ -1,3 +1,4 @@
+using ExampleApp.Components;
 using Innovative.Blazor.Components.Components;
 
 namespace ExampleApp.Pages;
@@ -22,7 +23,7 @@ public class SimplePersonModel : FormModel
     [UIFormField(name: "Last name", ColumnGroup = NameColumn)]
     public string? LastName { get; set; }
 
-    [UIFormField(name: "Is active", ColumnGroup = DataColumn)]
+    [UIFormField(name: "Is active", ColumnGroup = DataColumn, DisplayComponent = typeof(CustomBooleanStyle), DisplayParameters = ["YesColor:blue"])]
     public bool IsActive { get; set; }
 
     [UIFormField(name: "Birth date", ColumnGroup = DataColumn)]
