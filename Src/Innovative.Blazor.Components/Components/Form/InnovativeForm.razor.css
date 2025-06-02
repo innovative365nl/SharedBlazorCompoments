@@ -1,5 +1,6 @@
 ﻿.rz-dialog-side-content-layout {
     display: grid;
+    grid-template-columns: auto;
     gap: 1rem;
 }
 
@@ -7,8 +8,7 @@
     width: max-content;
 }
 
-.rz-dialog-side-content-layout ::deep .rz-text-box {
-    display: block;
+.rz-dialog-side-content-layout ::deep .rz-textbox {
     width: 100%;
 }
 
@@ -64,16 +64,24 @@
     grid-column: 1 / -1;
 }
 
-/* Small width of container on mobile */
-@container (width < 480px) {
+/* Small screens */
+@media (max-width: 1280px) {
     .rz-dialog-side-content-layout {
-        grid-template-columns: 1fr;
+        grid-template-columns: 100%;
     }
 
-    /* Full width for everything on mobile */
-    [class*="column-span-"] {
-        grid-template-columns: 1fr;
-        align-items: start;
+    .column-span-2 {
         grid-column: 1 / -1;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
+
+    .column-span-3,
+    .column-span-4 {
+        grid-column: 1 / -1;
+    }
+
+    .rz-dialog-side-content-layout ::deep .rz-label{
+        margin-bottom: -.75rem;
     }
 }
