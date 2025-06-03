@@ -28,9 +28,12 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
 
         person.SaveFormAction = () =>
         {
-            var logEntry = "Model saved";
-            LogAction(logEntry);
-            return Task.CompletedTask;
+#pragma warning disable CA2201
+            throw new Exception("This is an exception");
+#pragma warning restore CA2201
+            // var logEntry = "Model saved";
+            // LogAction(logEntry);
+            // return Task.CompletedTask;
         };
         person.DeleteFormAction = () =>
         {
@@ -52,7 +55,7 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
 
     private static PersonModel CreatePerson()
     {
-        return new PersonModel
+        var personmodel = new PersonModel
                {
                    FirstName = "John",
                    LastName = "Doe",
@@ -64,6 +67,9 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
                                           Description = "This is a complex component"
                                       }
                };
+
+
+        return personmodel;
     }
 
     private void LogAction(string message)

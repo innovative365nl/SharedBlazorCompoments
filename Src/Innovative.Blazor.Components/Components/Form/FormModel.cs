@@ -6,6 +6,8 @@ public abstract class FormModel
 {
     protected Collection<Column> ViewColumns { get; } = [];
 
+    public Collection<Exception> Exceptions { get; } = [];
+
     /// <summary>
     /// The name (used as caption or label) of the form component.
     /// </summary>
@@ -41,5 +43,12 @@ public abstract class FormModel
             Width = width,
             Offset = offset
         });
+    }
+
+    public void AddException(Exception exception) => Exceptions.Add(exception);
+
+    public void ClearExceptions()
+    {
+        Exceptions.Clear();
     }
 }

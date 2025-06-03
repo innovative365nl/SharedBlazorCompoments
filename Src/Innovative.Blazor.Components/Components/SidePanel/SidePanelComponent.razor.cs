@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using Innovative.Blazor.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 
 namespace Innovative.Blazor.Components.Components;
 
+[SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelService) : ComponentBase
 {
     private IFormComponent? formComponent;
@@ -63,37 +65,77 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
         if (Model is FormModel model)
         {
-            model.SaveFormAction?.Invoke();
+            try
+            {
+                await (model.SaveFormAction?.Invoke()!).ConfigureAwait(true);
+                isCustomDialog = false;
+                IsEditing = false;
+            }
+            catch (Exception e)
+            {
+                model.AddException(e);
+              //  throw;
+            }
+        }
+        else
+        {
+            isCustomDialog = false;
+            IsEditing = false;
         }
 
-        isCustomDialog = false;
-        IsEditing = false;
+
     }
 
-    private Task HandleDeleteClick()
+    private async Task HandleDeleteClick()
     {
         if (Model is FormModel model)
         {
-            model.DeleteFormAction?.Invoke();
-        }
+            try
+            {
+               await (model.DeleteFormAction?.Invoke()!).ConfigureAwait(true);
+               isCustomDialog = false;
+               IsEditing = false;
+               sidePanelService.CloseSidepanel();
 
-        isCustomDialog = false;
-        IsEditing = false;
-        sidePanelService.CloseSidepanel();
-        return Task.CompletedTask;
+            }
+            catch (Exception e)
+            {
+                model.AddException(e);
+            }
+        }
+        else
+        {
+            isCustomDialog = false;
+            IsEditing = false;
+            sidePanelService.CloseSidepanel();
+        }
     }
 
-    private Task HandleCancelClick()
+    private async Task HandleCancelClick()
     {
         if (Model is FormModel model)
         {
+            try
+            {
+                await (model.CancelFormAction.Invoke()!).ConfigureAwait(true);
+                IsEditing = false;
+                isCustomDialog = false;
+                ActionChildContent = null;
+            }
+            catch (Exception e)
+            {
+                model.AddException(e);
+            }
             model.CancelFormAction?.Invoke();
         }
+        else
+        {
+            IsEditing = false;
+            isCustomDialog = false;
+            ActionChildContent = null;
+        }
 
-        IsEditing = false;
-        isCustomDialog = false;
-        ActionChildContent = null;
 
-        return Task.CompletedTask;
+
     }
 }
