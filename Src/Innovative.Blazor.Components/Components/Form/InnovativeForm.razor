@@ -9,7 +9,7 @@
             System.Diagnostics.Debug.Assert(model != null, nameof(model) + " != null");
             foreach (var exception in model.Exceptions)
             {
-                <p>@exception.Message</p>
+                <p>@exception.Key - @exception.Value</p>
             }
         }
 

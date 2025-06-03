@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Innovative.Blazor.Components.Components;
 
@@ -6,7 +7,7 @@ public abstract class FormModel
 {
     protected Collection<Column> ViewColumns { get; } = [];
 
-    public Collection<Exception> Exceptions { get; } = [];
+    public Dictionary<string,string> Exceptions { get; } = [];
 
     /// <summary>
     /// The name (used as caption or label) of the form component.
@@ -45,7 +46,38 @@ public abstract class FormModel
         });
     }
 
-    public void AddException(Exception exception) => Exceptions.Add(exception);
+    public void AddException(Exception exception)
+    {
+        try
+        {
+
+            Debug.Assert(exception != null, nameof(exception) + " != null");
+            var errors = exception!.Data["errors"];
+                if (errors is not null && errors is IEnumerable<string> errorList)
+                {
+                    foreach (var error in errorList)
+                    {
+                        if (!Exceptions.ContainsKey(error))
+                        {
+                            Exceptions.TryAdd(error, error);
+                        }
+                    }
+                }
+                else
+                {
+                    if (!Exceptions.ContainsKey(exception.Message))
+                    {
+                        Exceptions.Add("General", exception.Message);
+                    }
+                }
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
 
     public void ClearExceptions()
     {
