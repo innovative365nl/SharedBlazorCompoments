@@ -52,7 +52,7 @@ public abstract class FormModel
         {
 
             Debug.Assert(exception != null, nameof(exception) + " != null");
-            var errors = exception!.Data["errors"];
+            var errors = exception!.["errors"];
                 if (errors is not null && errors is Dictionary<string,string> errorList)
                 {
                     foreach (var error in errorList)
@@ -78,6 +78,8 @@ public abstract class FormModel
             throw;
         }
     }
+
+    public void AddException(string key, string message) => Exceptions.TryAdd(key, message);
 
     public void ClearExceptions()
     {
