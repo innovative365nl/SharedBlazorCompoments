@@ -48,8 +48,27 @@ public abstract class FormModel
 
     public void AddException(Exception exception)
     {
+
         Debug.Assert(exception != null, nameof(exception) + " != null");
-        Exceptions.Add("General", exception.Message);
+        // check if exception is of type MicrosoftAspNetCoreMvcProblemDetails
+
+        if (exception.GetType().Name == "MicrosoftAspNetCoreMvcProblemDetails")
+        {
+            // Use reflection to access AdditionalData property
+            var additionalDataProp = exception.GetType().GetProperty("AdditionalData");
+            if (additionalDataProp != null)
+            {
+                var additionalData = additionalDataProp.GetValue(exception) as IDictionary<string, object>;
+                if (additionalData != null)
+                {
+                    foreach (var kvp in additionalData)
+                    {
+                        Exceptions.TryAdd(kvp.Key, kvp.Value?.ToString() ?? string.Empty);
+                    }
+                    return;
+                }
+            }
+        }
     }
 
     public void AddException(string key, string message) => Exceptions.TryAdd(key, message);
