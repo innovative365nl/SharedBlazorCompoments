@@ -48,35 +48,8 @@ public abstract class FormModel
 
     public void AddException(Exception exception)
     {
-        try
-        {
-
-            Debug.Assert(exception != null, nameof(exception) + " != null");
-            var errors = exception!.["errors"];
-                if (errors is not null && errors is Dictionary<string,string> errorList)
-                {
-                    foreach (var error in errorList)
-                    {
-                        if (!Exceptions.ContainsKey(error.Key))
-                        {
-                            Exceptions.TryAdd(error.Key, error.Value);
-                        }
-                    }
-                }
-                else
-                {
-                    if (!Exceptions.ContainsKey(exception.Message))
-                    {
-                        Exceptions.Add("General", exception.Message);
-                    }
-                }
-
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        Debug.Assert(exception != null, nameof(exception) + " != null");
+        Exceptions.Add("General", exception.Message);
     }
 
     public void AddException(string key, string message) => Exceptions.TryAdd(key, message);
