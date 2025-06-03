@@ -17,7 +17,6 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" />
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" />
         <PackageReference Include="Microsoft.Extensions.Localization" />
         <PackageReference Include="Radzen.Blazor" />
