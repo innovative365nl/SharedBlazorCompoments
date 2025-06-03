@@ -117,7 +117,7 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
         {
             try
             {
-                await (model.CancelFormAction.Invoke()!).ConfigureAwait(true);
+                await (model.CancelFormAction!.Invoke()!).ConfigureAwait(true);
                 IsEditing = false;
                 isCustomDialog = false;
                 ActionChildContent = null;
