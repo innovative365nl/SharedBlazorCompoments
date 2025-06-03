@@ -53,13 +53,13 @@ public abstract class FormModel
 
             Debug.Assert(exception != null, nameof(exception) + " != null");
             var errors = exception!.Data["errors"];
-                if (errors is not null && errors is IEnumerable<string> errorList)
+                if (errors is not null && errors is Dictionary<string,string> errorList)
                 {
                     foreach (var error in errorList)
                     {
-                        if (!Exceptions.ContainsKey(error))
+                        if (!Exceptions.ContainsKey(error.Key))
                         {
-                            Exceptions.TryAdd(error, error);
+                            Exceptions.TryAdd(error.Key, error.Value);
                         }
                     }
                 }
