@@ -40,7 +40,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     }
 
     private IInnovativeStringLocalizerFactory localizerFactory { get; }
-    [Parameter] public string DataTestId { get; set; }
+    [Parameter] public string? DataTestId { get; set; }
 
 
     private FilterMode filterMode => FilterStyle == FilterStyle.Advanced ? FilterMode.Advanced : FilterMode.Simple;
