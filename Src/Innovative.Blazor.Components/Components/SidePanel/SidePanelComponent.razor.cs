@@ -21,6 +21,8 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
     [Parameter] public RenderFragment? ActionChildContent { get; set; }
     [Parameter] public RenderFragment? EditChildContent { get; set; }
     [Parameter] public TModel? Model { get; set; }
+    [Parameter] public string? DataTestId { get; set; }
+
     [Parameter] public string? Title { get; set; }
 
     public object? ComponentInstance { get; private set; }

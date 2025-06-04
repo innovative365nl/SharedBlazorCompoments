@@ -16,12 +16,12 @@ public interface IInnovativeSidePanelService
     /// <summary>
     /// Opens a side panel dialog with the specified model in display mode.
     /// </summary>
-    Task OpenInDisplayMode<T>(T model, bool showEdit = true, bool showClose = true, bool showDelete = false) where T : class;
+    Task OpenInDisplayMode<T>(T model, bool showEdit = true, bool showClose = true, bool showDelete = false, string? dataTestId = null) where T : class;
 
     /// <summary>
     /// Opens a side panel dialog with the specified model in edit mode as a new instance of <code>T</code> is created.
     /// </summary>
-    Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false) where T : class;
+    Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false, string? dataTestId = null) where T : class;
 
     /// <summary>
     /// Closes the side panel dialog if it is open.
@@ -37,15 +37,15 @@ internal sealed class InnovativeSidePanelService
 {
     public bool IsVisible => sidePanelService.IsVisible;
 
-    public async Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false) where T : class
+    public async Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false, string? dataTestId = null) where T : class
     {
-        await OpenDynamicFormDialogWithOptions(model: model,  isEditing: true, showEdit: true, showClose: showClose, showDelete: showDelete)
+        await OpenDynamicFormDialogWithOptions(model: model,  isEditing: true, showEdit: true, showClose: showClose, showDelete: showDelete, dataTestId)
                 .ConfigureAwait(false);
     }
 
-    public async Task OpenInDisplayMode<T>(T model, bool showEdit = true, bool showClose = true, bool showDelete = false) where T : class
+    public async Task OpenInDisplayMode<T>(T model, bool showEdit = true, bool showClose = true, bool showDelete = false,  string? dataTestId = null) where T : class
     {
-        await OpenDynamicFormDialogWithOptions(model: model,  isEditing: false, showEdit: showEdit, showClose: showClose, showDelete: showDelete)
+        await OpenDynamicFormDialogWithOptions(model: model,  isEditing: false, showEdit: showEdit, showClose: showClose, showDelete: showDelete, dataTestId)
                 .ConfigureAwait(false);
     }
 
@@ -55,6 +55,7 @@ internal sealed class InnovativeSidePanelService
     , bool showEdit = true
     , bool showClose = true
     , bool showDelete = false
+     , string? dataTestId = null
     ) where T : class
     {
         var viewContent = new RenderFragment(builder =>
@@ -82,7 +83,8 @@ internal sealed class InnovativeSidePanelService
             { "ShowDelete", showDelete },
             { "ViewChildContent", viewContent },
             { "EditChildContent", editContent },
-            { "IsEditing", isEditing}
+            { "IsEditing", isEditing},
+            {"DataTestId", dataTestId ?? string.Empty }
         };
 
         var options = new SidepanelOptions

@@ -57,7 +57,7 @@
                                                       Sortable="@IsSortableColumn(property: property.PropertyInfo)"
                                                       SortOrder="@(property.Name == defaultSortField ? SortOrder.Ascending : null)"
                                                       Visible="@IsVisibleColumn(property: property.PropertyInfo)"
-                                                      Filterable="true">
+                                                      Filterable="true" data-test-id="@DataTestId">
                                     <Template>
                                         @if (HasCustomComponent(property: property.PropertyInfo))
                                         {
