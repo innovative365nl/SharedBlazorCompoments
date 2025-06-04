@@ -10,7 +10,7 @@
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="9.0.5" />
     <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.5" />
     <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.Kiota.Serialization.Text" Version="1.17.4" />
+    <PackageVersion Include="Microsoft.Kiota.Abstractions" Version="1.17.4" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.0" />
     <!-- Testing Packages -->
     <PackageVersion Include="bunit" Version="1.39.5" />
@@ -20,6 +20,6 @@
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <!-- UI Components -->
-    <PackageVersion Include="Radzen.Blazor" Version="7.0.6" />
+    <PackageVersion Include="Radzen.Blazor" Version="7.0.7" />
   </ItemGroup>
 </Project>
