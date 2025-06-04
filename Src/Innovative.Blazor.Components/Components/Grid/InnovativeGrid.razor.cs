@@ -48,7 +48,33 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     ///     including filtering, sorting, and pagination. The data must be of type TItem.
     /// </summary>
     [Parameter]
-    public IEnumerable<TItem>? Data { get; set; }
+#pragma warning disable BL0007
+    public IEnumerable<TItem>? Data
+#pragma warning restore BL0007
+    {
+        get
+        {
+            return _data;
+
+        }
+        set
+        {
+            var currentSelection = this.SelectedItems.ToList();;
+            _data = value;
+            selectedItems.Clear();
+            if (currentSelection.Any())
+            {
+                foreach (TItem item in currentSelection.Where(item => _data?.Contains(item) == true))
+                {
+                    selectedItems.Add(item);
+                }
+            }
+
+        }
+    }
+
+    private IEnumerable<TItem>? _data { get; set; }
+
 
     /// <summary>
     ///     Determines the selection behavior of the grid. This can be set to Single for allowing only one item
