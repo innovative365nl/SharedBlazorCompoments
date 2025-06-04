@@ -67,7 +67,8 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
         {
             try
             {
-                await (model.SaveFormAction?.Invoke()!).ConfigureAwait(true);
+                if(model.SaveFormAction is not null)
+                    await (model.SaveFormAction.Invoke()!).ConfigureAwait(true);
                 isCustomDialog = false;
                 IsEditing = false;
             }
@@ -93,7 +94,8 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
         {
             try
             {
-               await (model.DeleteFormAction?.Invoke()!).ConfigureAwait(true);
+                if(model.DeleteFormAction is not null)
+                 await (model.DeleteFormAction.Invoke()!).ConfigureAwait(true);
                isCustomDialog = false;
                IsEditing = false;
                sidePanelService.CloseSidepanel();
@@ -124,7 +126,8 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
         {
             try
             {
-                await (model.CancelFormAction!.Invoke()!).ConfigureAwait(true);
+                if(model.CancelFormAction is not null)
+                    await (model.CancelFormAction!.Invoke()!).ConfigureAwait(true);
                 IsEditing = false;
                 isCustomDialog = false;
                 ActionChildContent = null;
