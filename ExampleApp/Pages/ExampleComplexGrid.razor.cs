@@ -103,6 +103,7 @@ public partial class ExampleComplexGrid
 
 
 // This type defines the viewmodel for the grid.
+[UIGridClass(AllowSorting = true)]
 public sealed class AttributesGridModel
 {
     [UIGridField(Name = "Property")]
