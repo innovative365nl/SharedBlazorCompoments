@@ -88,6 +88,7 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
     private async Task HandleDeleteClick()
     {
+
         if (Model is FormModel model)
         {
             try
@@ -113,6 +114,12 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
     private async Task HandleCancelClick()
     {
+        if (formComponent is not null)
+        {
+            await formComponent
+                  .OnFormReset()
+                  .ConfigureAwait(true);
+        }
         if (Model is FormModel model)
         {
             try
