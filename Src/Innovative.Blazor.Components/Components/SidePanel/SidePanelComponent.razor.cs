@@ -74,7 +74,7 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
             }
             catch (Exception e)
             {
-                model.AddException(e);
+                await model.AddExceptionAsync(e).ConfigureAwait(false);
               //  throw;
             }
         }
@@ -103,7 +103,7 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
             }
             catch (Exception e)
             {
-                model.AddException(e);
+                await model.AddExceptionAsync(e).ConfigureAwait(false);
             }
         }
         else
@@ -134,7 +134,7 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
             }
             catch (Exception e)
             {
-                model.AddException(e);
+                await model.AddExceptionAsync(e).ConfigureAwait(false);
             }
             model.CancelFormAction?.Invoke();
         }

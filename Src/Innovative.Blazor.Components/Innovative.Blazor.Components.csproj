@@ -19,6 +19,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" />
         <PackageReference Include="Microsoft.Extensions.Localization" />
+        <PackageReference Include="Microsoft.Kiota.Serialization.Text" />
         <PackageReference Include="Radzen.Blazor" />
         <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" />
     </ItemGroup>

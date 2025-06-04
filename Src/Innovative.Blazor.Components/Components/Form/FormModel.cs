@@ -1,14 +1,17 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text.Json.Nodes;
+using Microsoft.Kiota.Abstractions.Serialization;
 
 namespace Innovative.Blazor.Components.Components;
 
 public abstract class FormModel
 {
+    private readonly List<string> exceptions = [];
     protected Collection<Column> ViewColumns { get; } = [];
 
-    public Dictionary<string,string> Exceptions { get; } = [];
+    public IEnumerable<string> Exceptions => exceptions;
 
     /// <summary>
     /// The name (used as caption or label) of the form component.
@@ -47,7 +50,7 @@ public abstract class FormModel
         });
     }
 
-    public void AddException(Exception exception)
+    public async Task AddExceptionAsync(Exception exception)
     {
         Debug.Assert(exception != null, nameof(exception) + " != null");
 
@@ -62,30 +65,69 @@ public abstract class FormModel
             {
                 if (additionalDataProp.GetValue(exception) is IDictionary<string, object> additionalData)
                 {
-                    if (additionalData.TryGetValue("errors", out var errorsObj) && errorsObj is IDictionary<string, object> errorsDict)
+
+                    // Check if the additionalData contains an "errors" key and cast object as Erros class
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+                    if (additionalData.TryGetValue("errors", out dynamic errorsObj))
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                     {
-                        foreach (var kvp in errorsDict)
+                        var serializedData = await KiotaJsonSerializer.SerializeAsStringAsync(errorsObj);
+
+                        var root = JsonNode.Parse(serializedData); // of JsonDocument, zie alternatief onderaan
+
+                        if (root is JsonObject obj)
                         {
-                            Exceptions.TryAdd(kvp.Key, kvp.Value.ToString() ?? string.Empty);
+                            foreach (var kvp in obj)
+                            {
+                                if (kvp.Value is JsonArray arr)
+                                {
+                                    foreach (var item in arr)
+                                    {
+                                        exceptions.Add(item!.ToString());
+                                    }
+                                }
+                            }
+                        }
+
+                        else
+                        {
+                            foreach (var kvp in additionalData)
+                            {
+                                exceptions.Add(kvp.Value.ToString()!);
+                            }
+                            // Check if the additionalData contains an "errors" key and cast object as Erros class
+
+
                         }
                     }
-                    // else
-                    // {
-                    //     foreach (var kvp in additionalData)
-                    //     {
-                    //         Exceptions.TryAdd(kvp.Key, kvp.Value?.ToString() ?? string.Empty);
-                    //     }
-                    // }
-                    return;
                 }
             }
         }
     }
-
-    public void AddException(string key, string message) => Exceptions.TryAdd(key, message);
+    public void AddException(string key, string message) => exceptions.Add(message);
 
     public void ClearExceptions()
     {
-        Exceptions.Clear();
+        exceptions.Clear();
     }
 }
+
+#nullable disable
+public class ErrorObject
+{
+    public string Type { get; set; }
+    public string Detail { get; set; }
+    public Errors errors { get; set; }
+}
+
+public class Errors
+{
+    // ReSharper disable once UnusedMember.Global
+#pragma warning disable CA1819
+    public string[] Name { get; set; }
+    // ReSharper disable once UnusedMember.Global
+    public string[] Data { get; set; }
+#pragma warning restore CA1819
+
+}
+
