@@ -1,79 +1,55 @@
 .rz-dialog-side-content-layout {
-    --grid-max-col-count: 3;
-    --grid-min-col-size: max(10px, 250px);
-    --grid-gap: 1rem;
-
-    /* Calculations */
-    --grid-col-size-calc: calc(
-        (100% - var(--grid-gap) * var(--grid-max-col-count)) /
-        var(--grid-max-col-count)
-    );
-    --grid-col-min-size-calc: min(
-        100%,
-        max(var(--grid-min-col-size), var(--grid-col-size-calc))
-    );
-
     display: grid;
-    gap: var(--grid-gap);
-
-    grid-template-columns: repeat(
-    auto-fit,
-    minmax(var(--grid-col-min-size-calc), 1fr)
-  );
-}
-
-/* Column spanning classes */
-.column-span-2 {
-    grid-column: span 2;
-}
-
-.column-span-3 {
-    grid-column: span 3;
-}
-
-.column-span-4 {
-    grid-column: span 4;
-}
-
-/* Full width column */
-.column-span-full {
-    grid-column: 1 / -1;
+    grid-template-columns: auto;
+    gap: 1rem;
 }
 
 .form-column-group {
-    margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
 }
 
 .form-ungrouped {
+    display: grid;
+    grid-template-columns: 100%;
     margin-top: 1rem;
 }
 
-.html-content {
-    max-width: 100%;
-    overflow-wrap: break-word;
+/* Second grid for labels and inputs */
+.form-column-group div {
+    display: grid;
+    grid-template-columns: minmax(100px, auto) 1fr;
+    gap: 0.25rem;
+    align-items: baseline;
 }
 
-/* Column span classes remain necessary for explicit control */
-.column-span-1 { grid-column: span 1; }
-.column-span-2 { grid-column: span 2; }
-.column-span-3 { grid-column: span 3; }
-.column-span-4 { grid-column: span 4; }
-.column-span-5 { grid-column: span 5; }
-.column-span-6 { grid-column: span 6; }
-.column-span-7 { grid-column: span 7; }
-.column-span-8 { grid-column: span 8; }
-.column-span-9 { grid-column: span 9; }
-.column-span-10 { grid-column: span 10; }
-.column-span-11 { grid-column: span 11; }
-.column-span-12 { grid-column: span 12; }
+.form-ungrouped div div div pre code .x_ng-scope {
+    float: unset !important;
+}
 
-@media (max-width: 480px) {
-    .innovative-grid-layout {
-        grid-template-columns: 1fr;
+.form-ungrouped div div div pre {
+    white-space: pre-wrap !important;
+}
+
+/* Column spanning classes */
+.column-span-4 {
+    grid-template-columns: 100%;
+}
+
+.column-span-4 div {
+    grid-template-columns: 100%;
+}
+
+/* Small screens */
+@media (max-width: 1280px) {
+    .rz-dialog-side-content-layout,
+    .form-column-group,
+    .form-column-group div {
+        grid-template-columns: 100%;
     }
 
-    /* Full width for everything on mobile */
-    [class*="column-span-"] {
-        grid-column: 1 / -1;
+    .rz-dialog-side-content-layout ::deep .rz-label{
+        margin-bottom: -.75rem;
     }
 }
