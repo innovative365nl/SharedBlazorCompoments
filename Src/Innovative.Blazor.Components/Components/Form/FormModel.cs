@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace Innovative.Blazor.Components.Components;
 
@@ -52,11 +53,10 @@ public abstract class FormModel
 
         if (exception.GetType().Name == "MicrosoftAspNetCoreMvcProblemDetails")
         {
-            var additionalDataProp = exception.GetType().GetProperty("AdditionalData");
+            PropertyInfo? additionalDataProp = exception.GetType().GetProperty("AdditionalData");
             if (additionalDataProp != null)
             {
-                var additionalData = additionalDataProp.GetValue(exception) as IDictionary<string, object>;
-                if (additionalData != null)
+                if (additionalDataProp.GetValue(exception) is IDictionary<string, object> additionalData)
                 {
                     if (additionalData.TryGetValue("errors", out var errorsObj) && errorsObj is IDictionary<string, string> errorsDict)
                     {
@@ -65,13 +65,13 @@ public abstract class FormModel
                             Exceptions.TryAdd(kvp.Key, kvp.Value ?? string.Empty);
                         }
                     }
-                    else
-                    {
-                        foreach (var kvp in additionalData)
-                        {
-                            Exceptions.TryAdd(kvp.Key, kvp.Value?.ToString() ?? string.Empty);
-                        }
-                    }
+                    // else
+                    // {
+                    //     foreach (var kvp in additionalData)
+                    //     {
+                    //         Exceptions.TryAdd(kvp.Key, kvp.Value?.ToString() ?? string.Empty);
+                    //     }
+                    // }
                     return;
                 }
             }
