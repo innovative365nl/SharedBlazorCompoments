@@ -54,15 +54,19 @@ public abstract class FormModel
         if (exception.GetType().Name == "MicrosoftAspNetCoreMvcProblemDetails")
         {
             PropertyInfo? additionalDataProp = exception.GetType().GetProperty("AdditionalData");
+            //additionalData is a dictionary of string keys and object values
+            //this should be use the get the errors
+
+
             if (additionalDataProp != null)
             {
                 if (additionalDataProp.GetValue(exception) is IDictionary<string, object> additionalData)
                 {
-                    if (additionalData.TryGetValue("errors", out var errorsObj) && errorsObj is IDictionary<string, string> errorsDict)
+                    if (additionalData.TryGetValue("errors", out var errorsObj) && errorsObj is IDictionary<string, object> errorsDict)
                     {
                         foreach (var kvp in errorsDict)
                         {
-                            Exceptions.TryAdd(kvp.Key, kvp.Value ?? string.Empty);
+                            Exceptions.TryAdd(kvp.Key, kvp.Value.ToString() ?? string.Empty);
                         }
                     }
                     // else
