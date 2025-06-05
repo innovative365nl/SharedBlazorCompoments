@@ -1,1 +1,2 @@
-<RadzenIcon IconColor="@(Value ? YesColor: NoColor)" Icon="@(Value ? "Check": "Close")" />
+@inherits Innovative.Blazor.Components.Components.CustomComponent<bool>
+<RadzenIcon IconColor="@(Value? YesColor: NoColor)" Icon="@(Value ? "Check" : "Close")" data-test-id="@DataTestId" />
