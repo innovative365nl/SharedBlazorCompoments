@@ -126,6 +126,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         builder.OpenComponent<RadzenLabel>(sequence++);
         builder.AddAttribute(sequence++, "Component", propName);
 
+
         if (fieldAttribute?.Name != null)
         {
             builder.AddAttribute(sequence++, "Text", localizer.GetString(fieldAttribute.Name));
@@ -141,6 +142,8 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             {
                 builder.OpenComponent<RadzenHtmlEditor>(sequence++);
                 builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.Value), value);
+                builder.AddAttribute(sequence++,"data-test-id", fieldAttribute.DataTestId);
+
                 builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.ValueChanged),
                                      EventCallback.Factory.Create<string>(this, val => SetValue(propertyName: propName, value: val)));
                 builder.AddAttribute(sequence++, "Style", "height: max-content; min-height: 250px; max-height: 400px;");
@@ -151,9 +154,13 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             {
                 builder.OpenComponent<RadzenTextBox>(8);
                 builder.AddAttribute(sequence++, nameof(RadzenTextBox.Value), value);
+                builder.AddAttribute(sequence++,"data-test-id", fieldAttribute?.DataTestId);
+
                 builder.AddAttribute(sequence++, nameof(RadzenTextBox.ValueChanged),
+
                                      EventCallback.Factory.Create<string>(this, val => SetValue(propertyName: propName, value: val)));
                 builder.AddAttribute(sequence, "Name", propName);
+
                 builder.CloseComponent();
             }
         }
@@ -164,6 +171,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
             builder.OpenComponent(sequence++, typeof(RadzenNumeric<int?>));
             builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Value), value);
+            builder.AddAttribute(sequence++,"data-test-id", fieldAttribute?.DataTestId);
             builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.ValueChanged),
                                  EventCallback.Factory.Create<int?>(this, val => SetValue(propertyName: propName, value: val)));
             builder.AddAttribute(sequence++, "Name", propName);
@@ -176,6 +184,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
             builder.OpenComponent(sequence++, typeof(RadzenCheckBox<bool?>));
             builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.Value), value);
+            builder.AddAttribute(sequence++,"data-test-id", fieldAttribute?.DataTestId);
             builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.ValueChanged),
                                  EventCallback.Factory.Create<bool?>(this, val => SetValue(propertyName: propName, value: val)));
             builder.AddAttribute(sequence, "Name", propName);
@@ -187,6 +196,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
             builder.OpenComponent(sequence++, typeof(RadzenDatePicker<DateTime?>));
             builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Value), value);
+            builder.AddAttribute(sequence++,"data-test-id", fieldAttribute?.DataTestId);
             builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.ValueChanged),
                                  EventCallback.Factory.Create<DateTime?>(this, val => SetValue(propertyName: propName, value: val)));
             builder.AddAttribute(sequence, "Name", propName);
@@ -221,6 +231,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                     sequence = 0;
                     builder.OpenComponent(sequence: sequence++, componentType: attribute.FormComponent);
                     builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
+                    builder.AddAttribute(sequence++,"data-test-id", attribute.DataTestId);
                     builder.AddAttribute(sequence++, "ValueChanged",
                                          EventCallback.Factory.Create(this, val => SetValue(propertyName: propName, value: val)));
 

@@ -10,7 +10,7 @@ namespace Innovative.Blazor.Components.Components;
 public partial class InnovativeDetail<TModel> : ComponentBase
 {
     private readonly IInnovativeStringLocalizer localizer;
-    private const int StartSequenceNumberLoop = 4;
+    private const int StartSequenceNumberLoop = 5;
     private const int MaxNumberOfButtonsBesideEachOther = 2;
 
     public InnovativeDetail(IInnovativeStringLocalizerFactory localizerFactory)
@@ -214,6 +214,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                            builder.OpenComponent(sequence: 0, componentType: attribute.DisplayComponent);
                        }
                        builder.AddAttribute(sequence: 1, name: "Value", value: value);
+                       builder.AddAttribute(sequence: 2,"data-test-id", attribute?.DataTestId);
 
                        if (attribute.DisplayParameters?.Length > 0)
                        {

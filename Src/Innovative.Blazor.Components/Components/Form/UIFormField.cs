@@ -14,4 +14,5 @@ public sealed class UIFormField(string name) : UIField(name)
     public Type? FormComponent { get; set; }
     public string[]? FormParameters { get; set; }
     public string? TextProperty { get; set; }
+    public string DataTestId { get; set; } = string.Empty;
 }
