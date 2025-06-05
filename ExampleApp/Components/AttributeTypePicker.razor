@@ -1,3 +1,4 @@
 @using ExampleApp.Pages
 @inherits Innovative.Blazor.Components.Components.CustomComponent<AttributeTypeModel>
-<RadzenDropDown TItem="@(nameof(AttributeTypeModel))" @bind-Value="_attributeTypeId" TextProperty="@(nameof(AttributeTypeModel.Value))" ValueProperty="@(nameof(AttributeTypeModel.Id))" Data="_attributeTypes" Change="OnSelectedItemChanged" />
+<RadzenDropDown TItem="@(nameof(AttributeTypeModel))" @bind-Value="_attributeTypeId" TextProperty="@(nameof(AttributeTypeModel.Value))"
+                ValueProperty="@(nameof(AttributeTypeModel.Id))" Data="_attributeTypes" Change="OnSelectedItemChanged" data-test-id="@DataTestId" />

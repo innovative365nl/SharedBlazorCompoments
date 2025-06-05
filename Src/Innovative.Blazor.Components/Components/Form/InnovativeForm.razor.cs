@@ -231,7 +231,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                     sequence = 0;
                     builder.OpenComponent(sequence: sequence++, componentType: attribute.FormComponent);
                     builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
-                    builder.AddAttribute(sequence++,"data-test-id", attribute.DataTestId);
+                    builder.AddAttribute(sequence++, "DataTestId", attribute.DataTestId);
                     builder.AddAttribute(sequence++, "ValueChanged",
                                          EventCallback.Factory.Create(this, val => SetValue(propertyName: propName, value: val)));
 
