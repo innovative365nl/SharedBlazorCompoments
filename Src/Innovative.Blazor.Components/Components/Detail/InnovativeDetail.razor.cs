@@ -216,7 +216,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                        builder.AddAttribute(sequence: 1, name: "Value", value: value);
                        builder.AddAttribute(sequence: 2,"data-test-id", attribute?.DataTestId);
 
-                       if (attribute.DisplayParameters?.Length > 0)
+                       if (attribute!.DisplayParameters?.Length > 0)
                        {
                             var index = StartSequenceNumberLoop;
                             foreach (var param in attribute.DisplayParameters)
