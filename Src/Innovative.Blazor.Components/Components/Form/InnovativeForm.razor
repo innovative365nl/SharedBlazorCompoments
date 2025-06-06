@@ -9,7 +9,12 @@
             System.Diagnostics.Debug.Assert(model != null, nameof(model) + " != null");
             foreach (var exception in model.Exceptions)
             {
-                <p>@exception </p>
+                <section class="rz-alert rz-background-color-danger-lighter gap-3">
+                    <span class="material-symbols-outlined rz-color-danger-darker">
+                        error
+                    </span>
+                    <span class="rz-color-danger-darker">@exception</span>
+                </section>
             }
         }
 
