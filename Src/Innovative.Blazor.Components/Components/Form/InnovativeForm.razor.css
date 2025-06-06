@@ -64,6 +64,10 @@
     grid-column: 1 / -1;
 }
 
+.material-symbols-outlined {
+    font-family: 'Material Symbols', sans-serif;
+}
+
 /* Small screens */
 @media (max-width: 1280px) {
     .rz-dialog-side-content-layout {
