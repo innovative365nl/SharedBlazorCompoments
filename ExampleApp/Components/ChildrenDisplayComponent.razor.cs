@@ -1,28 +1,30 @@
 using ExampleApp.Pages;
 using Innovative.Blazor.Components.Components;
-using Microsoft.AspNetCore.Components;
 
 namespace ExampleApp.Components;
 
 public partial class ChildrenDisplayComponent : CustomComponent<IEnumerable<Child>>
 {
-    private MarkupString ChildrenView { get; set; }
+    private string? result;
 
     protected override void OnParametersSet()
     {
-        var children = string.Join(separator: ",<br/>"
-                                 , values: (Value ?? [])
-                                           .Where(predicate: x => !string.IsNullOrEmpty(value: x.Value))
-                                           .Select(selector: x => GetReadableLicenseName(name: x.Value)));
+        var items = Value?
+                             .Where(predicate: x => !string.IsNullOrEmpty(value: x.Value))
+                             .Select(selector: x => GetReadableName(name: x.Value))
+                             .OrderBy(x=>x)
+                             .ToHashSet()
+                          ?? [];
 
-        ChildrenView = new MarkupString(value: string.IsNullOrEmpty(value: children)
-                                                   ? $"<span>{children}</span>"
-                                                   : "<span class=\"text-muted\">No children assigned</span>");
+        if (items.Count > 0)
+        {
+            result = string.Join(",<br/>", items);
+        }
     }
 
-    private static string GetReadableLicenseName(string name)
+    private static string GetReadableName(string name)
     {
-        const int maxDisplayChars = 20;
+        const int maxDisplayChars = 18;
 
         if (name.Length <= maxDisplayChars)
         {

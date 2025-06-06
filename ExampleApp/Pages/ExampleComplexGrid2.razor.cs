@@ -33,7 +33,6 @@ public partial class ExampleComplexGrid2
     }
 }
 
-
 // This type defines the viewmodel for the grid.
 [UIGridClass(AllowSorting = true)]
 public sealed class ParentGridModel

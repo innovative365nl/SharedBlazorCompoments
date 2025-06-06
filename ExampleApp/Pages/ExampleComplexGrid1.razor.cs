@@ -6,7 +6,7 @@ using Radzen;
 
 namespace ExampleApp.Pages;
 
-public partial class ExampleComplexGrid
+public partial class ExampleComplexGrid1
 (
     IAttributeState state,
     IInnovativeSidePanelService sidePanelService,
