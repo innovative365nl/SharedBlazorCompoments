@@ -310,72 +310,51 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         {
             try
             {
-                var value = property.GetValue(obj: context);
+                object? value = property.GetValue(obj: context);
                 if (value == null)
                 {
                     builder.AddMarkupContent(sequence: 0, markupContent: "<span class=\"text-muted\">-</span>");
                     return;
                 }
 
-                if (value is IEnumerable<object> list && !value.GetType().Equals(o: typeof(string)))
+                int counter = 0;
+                if (gridField.CustomComponentType != null)
                 {
-                    builder.OpenElement(sequence: 0, elementName: "div");
-                    var index = 1;
-                    foreach (var item in list)
-                    {
-                        builder.OpenComponent(sequence: index++, componentType: gridField.CustomComponentType!);
-                        builder.AddAttribute(sequence: index++, name: "Value", value: item);
-
-                        if (gridField.Parameters?.Length > 0)
-                        {
-                            foreach (var param in gridField.Parameters)
-                            {
-                                var parts = param.Split(separator: ':');
-                                if (parts.Length == 2)
-                                {
-                                    builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);
-                                }
-                            }
-                        }
-
-                        builder.CloseComponent();
-                    }
-
-                    builder.CloseElement();
+                    builder.OpenComponent(sequence: counter++, componentType: gridField.CustomComponentType);
+                }
+                if (IsList(value: value) && gridField.CustomComponentType == null)
+                {
+                    builder.AddContent(sequence: counter++, textContent: string.Join(separator: ", ", values: AsList(value)));
                 }
                 else
                 {
-                    if (gridField.CustomComponentType != null)
-                    {
-                        builder.OpenComponent(sequence: 0, componentType: gridField.CustomComponentType);
-                    }
-                    builder.AddAttribute(sequence: 1, name: "Value", value: value);
+                    builder.AddAttribute(sequence: counter++, name: "Value", value: value);
+                }
 
-                    if (gridField.Parameters?.Length > 0)
+                foreach (string param in gridField.Parameters ?? [])
+                {
+                    string[] parts = param.Split(separator: '=');
+                    if (parts.Length == 2)
                     {
-                        var index = 2;
-                        foreach (var param in gridField.Parameters)
-                        {
-                            var parts = param.Split(separator: ':');
-                            if (parts.Length == 2)
-                            {
-                                builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);
-                            }
-                        }
+                        builder.AddAttribute(sequence: counter++, name: parts[0], value: parts[1]);
                     }
+                }
 
+                if (gridField.CustomComponentType != null)
+                {
                     builder.CloseComponent();
                 }
             }
-#pragma warning disable CA1031
-            catch (Exception ex)
-#pragma warning restore CA1031
+            catch (Exception ex) when (ex is ArgumentException or InvalidOperationException)
             {
-                builder.AddMarkupContent(sequence: 0,
-                    markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
+                builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
             }
         };
     }
+
+    private static bool IsList(object value) => value is IEnumerable<object> && value.GetType() != typeof(string);
+
+    private static IEnumerable<object> AsList(object value) => value as IEnumerable<object> ?? new List<object>();
 
     private record PropertyWithAttribute(PropertyInfo PropertyInfo, string Name, UIGridField GridField);
 }
