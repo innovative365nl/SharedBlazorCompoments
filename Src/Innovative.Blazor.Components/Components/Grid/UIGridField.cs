@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace Innovative.Blazor.Components.Components;
 
 [AttributeUsage(validOn: AttributeTargets.Property)]
