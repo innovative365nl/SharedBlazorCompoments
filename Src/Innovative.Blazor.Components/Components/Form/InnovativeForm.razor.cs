@@ -256,12 +256,9 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                     builder.CloseComponent();
                 }
             }
-#pragma warning disable CA1031
-            catch (Exception ex)
-#pragma warning restore CA1031
+            catch (Exception ex) when (ex is ArgumentException or InvalidOperationException)
             {
-                builder.AddMarkupContent(sequence: 0,
-                    markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
+                builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
             }
         };
     }
