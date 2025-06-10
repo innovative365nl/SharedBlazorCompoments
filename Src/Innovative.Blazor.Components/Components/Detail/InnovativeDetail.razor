@@ -18,7 +18,7 @@
                                       ButtonStyle="ButtonStyle.Primary"/>
                 }
             }
-            else 
+            else
             {
                 <RadzenSplitButton Text="@splitButton.ActionName"
                                    Click="@(() => HandleActionProperty(property: splitButton.Property, actionAttribute: splitButton.ActionAttribute))"
@@ -42,7 +42,6 @@
                 var fieldAttribute = property.GetCustomAttribute<UIFormField>();
                 var value = property.GetValue(obj: Model);
 
-                <div style="display: grid; grid-template-columns: minmax(100px, auto) 1fr; gap: 0.25rem; align-items: baseline; margin-bottom: 0.5rem;">
                     <div>
                         <RadzenLabel Style="font-weight: bold">@localizer.GetString(fieldAttribute!.Name!):</RadzenLabel>
                     </div>
@@ -77,7 +76,6 @@
                             <InnovativeText TextStyle="Components.TextStyle.Body1">@(displayValue?.ToString() ?? "-")</InnovativeText>
                         }
                     </div>
-                </div>
             }
             </div>
         }
@@ -90,7 +88,6 @@
                     var fieldAttribute = property.GetCustomAttribute<UIFormField>();
                     var value = property.GetValue(obj: Model);
 
-                    <div style="display: grid; grid-template-columns: minmax(100px, auto) 1fr; gap: 0.25rem; align-items: baseline; margin-bottom: 0.5rem;">
                         <div>
                             <RadzenLabel Style="font-weight: bold">@localizer.GetString(fieldAttribute!.Name!):</RadzenLabel>
                         </div>
@@ -125,7 +122,6 @@
                                 <InnovativeText TextStyle="Components.TextStyle.Body1" class="truncated-text">@(displayValue?.ToString() ?? "-")</InnovativeText>
                             }
                         </div>
-                    </div>
                 }
             </div>
         }
