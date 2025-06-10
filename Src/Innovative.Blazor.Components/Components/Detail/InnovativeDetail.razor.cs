@@ -214,7 +214,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                            builder.OpenComponent(sequence: 0, componentType: attribute.DisplayComponent);
                        }
                        builder.AddAttribute(sequence: 1, name: "Value", value: value);
-                       builder.AddAttribute(sequence: 2,"data-test-id", attribute?.DataTestId);
+                       builder.AddAttribute(sequence: sequence++, "DataTestId", attribute.DataTestId);
 
                        if (attribute!.DisplayParameters?.Length > 0)
                        {
