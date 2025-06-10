@@ -336,9 +336,9 @@ public partial class InnovativeGrid<TItem> : ComponentBase
                     int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
                     if (equalIndex > 0 && equalIndex < parameter.Length - 1)
                     {
-                        string paramNName = parameter[..equalIndex];
+                        string paramName = parameter[..equalIndex];
                         string paramValue = parameter[(equalIndex + 1)..];
-                        builder.AddAttribute(sequence: sequence++, name: paramNName, value: paramValue);
+                        builder.AddAttribute(sequence: sequence++, name: paramName, value: paramValue);
                     }
                 }
 
