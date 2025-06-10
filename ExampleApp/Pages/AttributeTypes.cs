@@ -4,7 +4,7 @@ namespace ExampleApp.Pages;
 
 public record AttributeTypeModel(int Id, string Value);
 
-public record AttributeModel(Guid Id, string Name, AttributeTypeModel Type);
+public record AttributeModel(Guid Id, string Name, AttributeTypeModel Type, bool IsActive);
 
 public interface IAttributeState
 {
@@ -74,8 +74,9 @@ internal sealed class AttributeState : IAttributeState
         _attributes[index: _attributes.IndexOf(item: attribute)] = attribute with
                                                                    {
                                                                        Name = model.Name,
-                                                                       Type = model.Type
-                                                                   };
+                                                                       Type = model.Type,
+                                                                       IsActive = model.IsActive
+        };
         await Task.Delay(millisecondsDelay: 500).ConfigureAwait(continueOnCapturedContext: false);
     }
 
@@ -123,20 +124,20 @@ internal sealed class AttributeState : IAttributeState
         }
 
         _attributes.AddRange(collection:
-                             [ new AttributeModel(Id: Guid.Parse(input: "32DCF3DB-F1B2-4A93-9AEA-08DC4BF24B47"), Name: "Innovative", Type: _attributeTypes.Single(predicate: x => x.Id          == 10))
-                             , new AttributeModel(Id: Guid.Parse(input: "F1D07FEC-7B7E-425B-9AEB-08DC4BF24B47"), Name: "ODNHN", Type: _attributeTypes.Single(predicate: x => x.Id               == 10))
-                             , new AttributeModel(Id: Guid.Parse(input: "9283F6D1-0C11-4777-9051-08DC5197DFDF"), Name: "Development", Type: _attributeTypes.Single(predicate: x => x.Id         == 20))
-                             , new AttributeModel(Id: Guid.Parse(input: "7F793953-4270-4EEC-9054-08DC5197DFDF"), Name: "Fullstack developer", Type: _attributeTypes.Single(predicate: x => x.Id == 30))
-                             , new AttributeModel(Id: Guid.Parse(input: "2F972E79-56BB-4152-9055-08DC5197DFDF"), Name: "Frontend developer", Type: _attributeTypes.Single(predicate: x => x.Id  == 30))
-                             , new AttributeModel(Id: Guid.Parse(input: "1BB0EC46-E7C3-4C6E-9056-08DC5197DFDF"), Name: "Backend developer", Type: _attributeTypes.Single(predicate: x => x.Id   == 30))
-                             , new AttributeModel(Id: Guid.Parse(input: "3B50D46F-030F-47CF-D7B4-08DCC3490EB6"), Name: "Medewerker", Type: _attributeTypes.Single(predicate: x => x.Id          == 90))
-                             , new AttributeModel(Id: Guid.Parse(input: "08ABE2BC-24DF-4F2F-B706-08DCFF43F0D7"), Name: "Extern", Type: _attributeTypes.Single(predicate: x => x.Id              == 90))
-                             , new AttributeModel(Id: Guid.Parse(input: "D94FF357-98C6-4F48-B707-08DCFF43F0D7"), Name: "Externe", Type: _attributeTypes.Single(predicate: x => x.Id             == 90))
-                             , new AttributeModel(Id: Guid.Parse(input: "D89863CF-026E-45A8-8E7E-08DD448B031A"), Name: "JPO20250206", Type: _attributeTypes.Single(predicate: x => x.Id         == 20))
-                             , new AttributeModel(Id: Guid.Parse(input: "436E3AB1-5C3B-4E31-63B5-08DD66BA4A96"), Name: "Nederland", Type: _attributeTypes.Single(predicate: x => x.Id           == 50))
-                             , new AttributeModel(Id: Guid.Parse(input: "9EDBEF00-D7DD-4F51-63B6-08DD66BA4A96"), Name: "Test", Type: _attributeTypes.Single(predicate: x => x.Id                == 30))
-                             , new AttributeModel(Id: Guid.Parse(input: "DC3E143F-BF40-42E3-9FB0-08DD6C72B6CC"), Name: "Belgie", Type: _attributeTypes.Single(predicate: x => x.Id              == 50))
-                             , new AttributeModel(Id: Guid.Parse(input: "D047AFF8-C291-4776-9FB1-08DD6C72B6CC"), Name: "Sales", Type: _attributeTypes.Single(predicate: x => x.Id               == 30))
+                             [ new AttributeModel(Id: Guid.Parse(input: "32DCF3DB-F1B2-4A93-9AEA-08DC4BF24B47"), Name: "Innovative", Type: _attributeTypes.Single(predicate: x => x.Id          == 10), IsActive: true)
+                             , new AttributeModel(Id: Guid.Parse(input: "F1D07FEC-7B7E-425B-9AEB-08DC4BF24B47"), Name: "ODNHN", Type: _attributeTypes.Single(predicate: x => x.Id               == 10), IsActive: true)
+                             , new AttributeModel(Id: Guid.Parse(input: "9283F6D1-0C11-4777-9051-08DC5197DFDF"), Name: "Development", Type: _attributeTypes.Single(predicate: x => x.Id         == 20), IsActive: false)
+                             , new AttributeModel(Id: Guid.Parse(input: "7F793953-4270-4EEC-9054-08DC5197DFDF"), Name: "Fullstack developer", Type: _attributeTypes.Single(predicate: x => x.Id == 30), IsActive: false)
+                             , new AttributeModel(Id: Guid.Parse(input: "2F972E79-56BB-4152-9055-08DC5197DFDF"), Name: "Frontend developer", Type: _attributeTypes.Single(predicate: x => x.Id  == 30), IsActive: true)
+                             , new AttributeModel(Id: Guid.Parse(input: "1BB0EC46-E7C3-4C6E-9056-08DC5197DFDF"), Name: "Backend developer", Type: _attributeTypes.Single(predicate: x => x.Id   == 30), IsActive: true)
+                             , new AttributeModel(Id: Guid.Parse(input: "3B50D46F-030F-47CF-D7B4-08DCC3490EB6"), Name: "Medewerker", Type: _attributeTypes.Single(predicate: x => x.Id          == 90), IsActive: false)
+                             , new AttributeModel(Id: Guid.Parse(input: "08ABE2BC-24DF-4F2F-B706-08DCFF43F0D7"), Name: "Extern", Type: _attributeTypes.Single(predicate: x => x.Id              == 90), IsActive: false)
+                             , new AttributeModel(Id: Guid.Parse(input: "D94FF357-98C6-4F48-B707-08DCFF43F0D7"), Name: "Externe", Type: _attributeTypes.Single(predicate: x => x.Id             == 90), IsActive: true)
+                             , new AttributeModel(Id: Guid.Parse(input: "D89863CF-026E-45A8-8E7E-08DD448B031A"), Name: "JPO20250206", Type: _attributeTypes.Single(predicate: x => x.Id         == 20), IsActive: true)
+                             , new AttributeModel(Id: Guid.Parse(input: "436E3AB1-5C3B-4E31-63B5-08DD66BA4A96"), Name: "Nederland", Type: _attributeTypes.Single(predicate: x => x.Id           == 50), IsActive: false)
+                             , new AttributeModel(Id: Guid.Parse(input: "9EDBEF00-D7DD-4F51-63B6-08DD66BA4A96"), Name: "Test", Type: _attributeTypes.Single(predicate: x => x.Id                == 30), IsActive: false)
+                             , new AttributeModel(Id: Guid.Parse(input: "DC3E143F-BF40-42E3-9FB0-08DD6C72B6CC"), Name: "Belgie", Type: _attributeTypes.Single(predicate: x => x.Id              == 50), IsActive: true)
+                             , new AttributeModel(Id: Guid.Parse(input: "D047AFF8-C291-4776-9FB1-08DD6C72B6CC"), Name: "Sales", Type: _attributeTypes.Single(predicate: x => x.Id               == 30), IsActive: true)
                              ]);
 
         await Task.Delay(millisecondsDelay: 500).ConfigureAwait(continueOnCapturedContext: false);
