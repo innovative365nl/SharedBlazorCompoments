@@ -317,26 +317,28 @@ public partial class InnovativeGrid<TItem> : ComponentBase
                     return;
                 }
 
-                int counter = 0;
+                int sequence = 0;
                 if (gridField.CustomComponentType != null)
                 {
-                    builder.OpenComponent(sequence: counter++, componentType: gridField.CustomComponentType);
+                    builder.OpenComponent(sequence: sequence++, componentType: gridField.CustomComponentType);
                 }
                 if (IsList(value: value) && gridField.CustomComponentType == null)
                 {
-                    builder.AddContent(sequence: counter++, textContent: string.Join(separator: ", ", values: AsList(value)));
+                    builder.AddContent(sequence: sequence++, textContent: string.Join(separator: ", ", values: AsList(value)));
                 }
                 else
                 {
-                    builder.AddAttribute(sequence: counter++, name: "Value", value: value);
+                    builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
                 }
 
-                foreach (string param in gridField.Parameters ?? [])
+                foreach (string parameter in gridField.Parameters ?? [])
                 {
-                    string[] parts = param.Split(separator: '=');
-                    if (parts.Length == 2)
+                    int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
+                    if (equalIndex > 0 && equalIndex < parameter.Length - 1)
                     {
-                        builder.AddAttribute(sequence: counter++, name: parts[0], value: parts[1]);
+                        string paramNName = parameter[..equalIndex];
+                        string paramValue = parameter[(equalIndex + 1)..];
+                        builder.AddAttribute(sequence: sequence++, name: paramNName, value: paramValue);
                     }
                 }
 
