@@ -4,12 +4,12 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Microsoft Packages -->
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.6" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
-    <PackageVersion Include="Microsoft.Extensions.Localization" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.6" />
     <PackageVersion Include="Microsoft.Kiota.Abstractions" Version="1.17.4" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <!-- Testing Packages -->
