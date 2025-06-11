@@ -1,1 +1,4 @@
-<h3>Complex Component</h3>
+@inherits Innovative.Blazor.Components.Components.CustomComponent<ComplexModel>
+<h3 data-test-id="@DataTestId">@Value?.Name</h3>
+<p>@Value?.Description</p>
+

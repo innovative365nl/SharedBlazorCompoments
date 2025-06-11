@@ -115,13 +115,12 @@ public class PersonModel : FormModel
     [UIFormField(name : "Description", UseWysiwyg = true, ColumnGroup = "Description")]
     public string? Description { get; set; }
 
-    [UIFormField(name: "Complex Component", ColumnGroup = "Description", FormComponent = typeof(ComplexComponent),
-                 TextProperty = nameof(ComplexComponent.Description))]
-    public ComplexModel? ComplexComponent { get; set; } = new()
-    {
-        Name = "Complex Component",
-        Description = "This is a complex component"
-    };
+    [UIFormField(name: "Complex Component", ColumnGroup = "Description", FormComponent = typeof(ComplexComponent), TextProperty = nameof(ComplexComponent.Description))]
+    public ComplexModel? ComplexComponent { get; set; } = new ComplexModel
+                                                          {
+                                                              Name = "Complex Component Name",
+                                                              Description = "This is a complex component description."
+                                                          };
 
     [UIFormViewAction(name: "Update Password", Order = 1, CustomComponent = typeof(PasswordUpdateComponent))]
     public Action<int>? UpdatePasswordAction { get; set; }
