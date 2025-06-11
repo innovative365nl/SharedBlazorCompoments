@@ -13,5 +13,11 @@ public abstract class CustomComponent<T>: ComponentBase
     [Parameter]
     public EventCallback ValueChanged { get; set; }
 
-    protected void OnValueChanged() => ValueChanged.InvokeAsync(Value);
+    protected void OnValueChanged()
+    {
+        if (ValueChanged.HasDelegate)
+        {
+            ValueChanged.InvokeAsync(Value);
+        }
+    }
 }
