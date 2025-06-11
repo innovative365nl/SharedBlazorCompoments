@@ -164,7 +164,7 @@ public sealed class AttributeFormModel : FormModel
     [UIFormField(name: "Value", ColumnGroup = ValueColumnName)]
     public required string AttributeValue { get; set; }
 
-    [UIFormField(name: "Active", DisplayComponent = typeof(CustomBooleanStyle))]
+    [UIFormField(name: "Active", ColumnGroup = ValueColumnName, DisplayComponent = typeof(CustomBooleanStyle))]
     public bool IsActive { get; set; }
 
     public static AttributeFormModel ToFormModel([NotNull]AttributeModel instance)
