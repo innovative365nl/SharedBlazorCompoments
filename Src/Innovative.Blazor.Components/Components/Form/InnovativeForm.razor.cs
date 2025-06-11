@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Metrics;
 using System.Globalization;
 using System.Reflection;
 using Innovative.Blazor.Components.Localizer;
@@ -239,12 +240,14 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                     {
                         if (attribute.FormParameters != null)
                         {
-                            foreach (var param in attribute.FormParameters)
+                            foreach (string parameter in attribute.FormParameters ?? [])
                             {
-                                var parts = param.Split(separator: '=', count: 2);
-                                if (parts.Length == 2)
+                                int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
+                                if (equalIndex > 0 && equalIndex < parameter.Length - 1)
                                 {
-                                    builder.AddAttribute(sequence: sequence++, name: parts[0], value: parts[1]);
+                                    string paramName = parameter[..equalIndex];
+                                    string paramValue = parameter[(equalIndex + 1)..];
+                                    builder.AddAttribute(sequence: sequence++, name: paramName, value: paramValue);
                                 }
                             }
                         }
@@ -253,12 +256,9 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                     builder.CloseComponent();
                 }
             }
-#pragma warning disable CA1031
-            catch (Exception ex)
-#pragma warning restore CA1031
+            catch (Exception ex) when (ex is ArgumentException or InvalidOperationException)
             {
-                builder.AddMarkupContent(sequence: 0,
-                    markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
+                builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
             }
         };
     }

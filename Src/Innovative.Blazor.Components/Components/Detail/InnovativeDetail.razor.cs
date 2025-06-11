@@ -10,7 +10,6 @@ namespace Innovative.Blazor.Components.Components;
 public partial class InnovativeDetail<TModel> : ComponentBase
 {
     private readonly IInnovativeStringLocalizer localizer;
-    private const int StartSequenceNumberLoop = 5;
     private const int MaxNumberOfButtonsBesideEachOther = 2;
 
     public InnovativeDetail(IInnovativeStringLocalizerFactory localizerFactory)
@@ -208,32 +207,31 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                            builder.AddMarkupContent(sequence: 0, markupContent: "<span class=\"text-muted\">-</span>");
                            return;
                        }
-
+                       int sequence = 0;
                        if (attribute.DisplayComponent != null)
                        {
-                           builder.OpenComponent(sequence: 0, componentType: attribute.DisplayComponent);
+                           builder.OpenComponent(sequence: sequence++, componentType: attribute.DisplayComponent);
                        }
-                       builder.AddAttribute(sequence: 1, name: "Value", value: value);
-                       builder.AddAttribute(sequence: 2,"data-test-id", attribute?.DataTestId);
+                       builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
+                       builder.AddAttribute(sequence: sequence++, "DataTestId", attribute.DataTestId);
 
-                       if (attribute!.DisplayParameters?.Length > 0)
+                       if (attribute.DisplayParameters?.Length > 0)
                        {
-                            var index = StartSequenceNumberLoop;
-                            foreach (var param in attribute.DisplayParameters)
+                            foreach (var parameter in attribute.DisplayParameters)
                             {
-                                var parts = param.Split(separator: ':', count: 2);
-                                if (parts.Length == 2)
+                                int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
+                                if (equalIndex > 0 && equalIndex < parameter.Length - 1)
                                 {
-                                    builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);
+                                    string paramName = parameter[..equalIndex];
+                                    string paramValue = parameter[(equalIndex + 1)..];
+                                    builder.AddAttribute(sequence: sequence++, name: paramName, value: paramValue);
                                 }
                             }
                        }
 
                        builder.CloseComponent();
                    }
-#pragma warning disable CA1031
-                   catch (Exception ex)
-#pragma warning restore CA1031
+                   catch (Exception ex) when (ex is ArgumentException or InvalidOperationException)
                    {
                        builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
                    }

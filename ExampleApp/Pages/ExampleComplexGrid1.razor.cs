@@ -6,7 +6,7 @@ using Radzen;
 
 namespace ExampleApp.Pages;
 
-public partial class ExampleComplexGrid
+public partial class ExampleComplexGrid1
 (
     IAttributeState state,
     IInnovativeSidePanelService sidePanelService,
@@ -114,6 +114,9 @@ public sealed class AttributesGridModel
     [UIGridField(Name = "Value")]
     public required string PropertyValue { get; set; }
 
+    [UIGridField(Name = "Active", CustomComponentType = typeof(CustomBooleanStyle))]
+    public bool IsActive { get; set; } 
+
     public static AttributesGridModel ToGridModel([NotNull]AttributeModel instance)
     {
         return new AttributesGridModel
@@ -121,6 +124,7 @@ public sealed class AttributesGridModel
             PropertyName = instance.Type.Value,
             PropertyId = instance.Id,
             PropertyValue = instance.Name,
+            IsActive = instance.IsActive
         };
     }
 }
@@ -160,6 +164,9 @@ public sealed class AttributeFormModel : FormModel
     [UIFormField(name: "Value", ColumnGroup = ValueColumnName)]
     public required string AttributeValue { get; set; }
 
+    [UIFormField(name: "Active", DisplayComponent = typeof(CustomBooleanStyle))]
+    public bool IsActive { get; set; }
+
     public static AttributeFormModel ToFormModel([NotNull]AttributeModel instance)
     {
         return new AttributeFormModel
@@ -167,8 +174,15 @@ public sealed class AttributeFormModel : FormModel
             AttributeId = instance.Id,
             AttributeValue = instance.Name,
             AttributeType = instance.Type,
+            IsActive = instance.IsActive,
         };
     }
 
-    public static AttributeModel ToDomainModel([NotNull]AttributeFormModel instance) => new AttributeModel(Id: instance.AttributeId, Name: instance.AttributeValue, Type: instance.AttributeType);
+    public static AttributeModel ToDomainModel([NotNull]AttributeFormModel instance) => new AttributeModel
+        (
+          Id: instance.AttributeId,
+          Name: instance.AttributeValue,
+          Type: instance.AttributeType,
+          IsActive: instance.IsActive
+        );
 }

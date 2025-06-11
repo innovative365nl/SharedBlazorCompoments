@@ -1,0 +1,13 @@
+@page "/grid/complex/2"
+@using Innovative.Blazor.Components.Components
+
+<h3>Complex Grid Example (2)</h3>
+<p>This grid is an example with a custom component that displays a multi-line item in a grid cell.</p>
+<RadzenNotification />
+<div style="float: right;">
+    <RadzenButton Click="@(() => OnRefreshData())">🔄</RadzenButton>
+</div>
+<InnovativeGrid TItem="ParentGridModel"
+                MinHeightOption="GridHeight.Max"
+                Data="_parentsView"
+                EnableRowSelection="true" />
