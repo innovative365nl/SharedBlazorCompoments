@@ -1,13 +1,10 @@
+using Innovative.Blazor.Components.Components;
 using Microsoft.AspNetCore.Components;
 
 namespace ExampleApp.Components;
 
-public partial class ComplexComponent : ComponentBase
+public partial class ComplexComponent : CustomComponent<ComplexModel>
 {
-    [Parameter]
-    public ComplexModel? Value { get; set; }
 
-    [Parameter]
-    public EventCallback ValueChanged { get; set; }
 }
 
