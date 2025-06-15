@@ -1,3 +1,4 @@
 @inherits Innovative.Blazor.Components.Components.CustomComponent<ComplexModel>
 
-<h3>Complex Component</h3>
+<RadzenDropDown TItem="ComplexModel" @bind-Value="Value" TextProperty="Name" Data="Items">
+</RadzenDropDown>
