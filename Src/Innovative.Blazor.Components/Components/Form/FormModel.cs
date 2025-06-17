@@ -55,7 +55,7 @@ public abstract class FormModel
         Debug.Assert(exception != null, nameof(exception) + " != null");
         var exceptionName = exception.GetType().Name;
 
-        if (exceptionName == "MicrosoftAspNetCoreMvcProblemDetails" || exceptionName == "ProblemDetails2")
+        if (exceptionName == "MicrosoftAspNetCoreMvcProblemDetails" || exceptionName.StartsWith("ProblemDetails",StringComparison.InvariantCulture ))
         {
             PropertyInfo? additionalDataProp = exception.GetType().GetProperty("AdditionalData");
             //additionalData is a dictionary of string keys and object values
@@ -82,10 +82,15 @@ public abstract class FormModel
                             {
                                 if (kvp.Value is JsonArray arr)
                                 {
+                                    var errorString = string.Empty;
                                     foreach (var item in arr)
                                     {
-                                        exceptions.Add(item!.ToString());
+                                        if (item is JsonValue value)
+                                        {
+                                            errorString += value.ToString() + "/n ";
+                                        }
                                     }
+                                    exceptions.Add(errorString);
                                 }
                             }
                         }
