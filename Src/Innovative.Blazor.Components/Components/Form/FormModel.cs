@@ -53,8 +53,9 @@ public abstract class FormModel
     public async Task AddExceptionAsync(Exception exception)
     {
         Debug.Assert(exception != null, nameof(exception) + " != null");
+        var exceptionName = exception.GetType().Name;
 
-        if (exception.GetType().Name == "MicrosoftAspNetCoreMvcProblemDetails")
+        if (exceptionName == "MicrosoftAspNetCoreMvcProblemDetails" || exceptionName == "ProblemDetails2")
         {
             PropertyInfo? additionalDataProp = exception.GetType().GetProperty("AdditionalData");
             //additionalData is a dictionary of string keys and object values
@@ -102,6 +103,10 @@ public abstract class FormModel
                     }
                 }
             }
+        }
+        else
+        {
+            exceptions.Add(exception.Message);
         }
     }
     public void AddException(string key, string message) => exceptions.Add(message);
