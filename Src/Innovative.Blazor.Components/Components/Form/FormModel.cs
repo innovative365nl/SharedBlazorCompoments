@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.Kiota.Abstractions.Serialization;
 
@@ -55,7 +56,7 @@ public abstract class FormModel
         Debug.Assert(exception != null, nameof(exception) + " != null");
         var exceptionName = exception.GetType().Name;
 
-        if (exceptionName == "MicrosoftAspNetCoreMvcProblemDetails" || exceptionName.StartsWith("ProblemDetails",StringComparison.InvariantCulture ))
+        if (exceptionName == "MicrosoftAspNetCoreMvcProblemDetails" || exceptionName.StartsWith("ProblemDetails",StringComparison.InvariantCulture ) )
         {
             PropertyInfo? additionalDataProp = exception.GetType().GetProperty("AdditionalData");
             //additionalData is a dictionary of string keys and object values
@@ -87,7 +88,7 @@ public abstract class FormModel
                                     {
                                         if (item is JsonValue value)
                                         {
-                                            errorString += value.ToString() + "/n ";
+                                            errorString += value.ToString() + "<br/> ";
                                         }
                                     }
                                     exceptions.Add(errorString);
@@ -109,6 +110,36 @@ public abstract class FormModel
                 }
             }
         }
+        else if (exceptionName.Equals("ErrorResponse", StringComparison.OrdinalIgnoreCase))
+        {
+            PropertyInfo? additionalDataProp = exception.GetType().GetProperty("Errors");
+            var values = additionalDataProp?.GetValue(exception) as dynamic;
+            //get the AdditionalData property from the values
+            var additionalData = values?.AdditionalData;
+
+            var serializedData =   await KiotaJsonSerializer.SerializeAsStringAsync(additionalData);
+            var root = JsonNode.Parse(serializedData); // of JsonDocument, zie alternatief onderaan
+            
+            if (root is JsonObject obj)
+            {
+                foreach (var kvp in obj)
+                {
+                    if (kvp.Value is JsonArray arr)
+                    {
+                        var errorString = string.Empty;
+                        foreach (var item in arr)
+                        {
+                            if (item is JsonValue value)
+                            {
+                                errorString += value.ToString() + "<br/> ";
+                            }
+                        }
+                        exceptions.Add(errorString);
+                    }
+                }
+            }
+
+        }
         else
         {
             exceptions.Add(exception.Message);
@@ -122,22 +153,8 @@ public abstract class FormModel
     }
 }
 
-#nullable disable
-public class ErrorObject
+public class ErrorResponseDetails
 {
-    public string Type { get; set; }
-    public string Detail { get; set; }
-    public Errors errors { get; set; }
-}
-
-public class Errors
-{
-    // ReSharper disable once UnusedMember.Global
-#pragma warning disable CA1819
-    public string[] Name { get; set; }
-    // ReSharper disable once UnusedMember.Global
-    public string[] Data { get; set; }
-#pragma warning restore CA1819
-
+    public Dictionary<string, object>? AdditionalData { get;  } 
 }
 
