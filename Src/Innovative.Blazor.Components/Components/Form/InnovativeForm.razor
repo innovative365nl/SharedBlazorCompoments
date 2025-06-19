@@ -13,10 +13,11 @@
                     <span class="material-symbols-outlined rz-color-danger-darker">
                         error
                     </span>
-                    <span class="rz-color-danger-darker">@exception</span>
+                    <span class="rz-color-danger-darker">@((MarkupString)exception)</span>
                 </section>
             }
         }
+        <br/>
 
         @foreach (var group in OrderedColumnGroups)
         {

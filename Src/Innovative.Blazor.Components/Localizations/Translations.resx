@@ -60,4 +60,7 @@
   <data name="applyFilter" xml:space="preserve">
     <value>Apply filter</value>
   </data>
+  <data name="emptyText" xml:space="preserve">
+    <value>No data available</value>
+  </data>
 </root>

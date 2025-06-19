@@ -69,10 +69,14 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
         {
             try
             {
-                if(model.SaveFormAction is not null)
-                    await (model.SaveFormAction.Invoke()!).ConfigureAwait(true);
-                isCustomDialog = false;
-                IsEditing = false;
+                if (model.SaveFormAction is not null)
+                    // The correct way to invoke a Func<Task> and await it
+                {
+
+                    await model.SaveFormAction!.Invoke().ConfigureAwait(true);
+                    isCustomDialog = false;
+                    IsEditing = false;
+                }
             }
             catch (Exception e)
             {

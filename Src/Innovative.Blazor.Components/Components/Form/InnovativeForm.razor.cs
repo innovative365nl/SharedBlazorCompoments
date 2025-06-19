@@ -213,11 +213,6 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         {
             try
             {
-                if (value == null)
-                {
-                    builder.AddMarkupContent(sequence: 0, markupContent: "<span class=\"text-muted\">-</span>");
-                    return;
-                }
 
                 if (attribute.FormComponent != null)
                 {
