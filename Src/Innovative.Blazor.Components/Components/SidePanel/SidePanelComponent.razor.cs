@@ -27,6 +27,8 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
     [Parameter] public bool CloseOnSaveForm { get; set; } = false;
 
+    private string? modelError;
+
     public object? ComponentInstance { get; private set; }
 
     public void SetFormComponent(IFormComponent? component)
@@ -58,8 +60,25 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
         StateHasChanged();
     }
 
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (Model is not null && Model is not FormModel)
+        {
+            modelError = $"Cannot render model of type '{Model.GetType().Name}'. Only FormModel types are supported.";
+        }
+        else
+        {
+            modelError = null;
+        }
+    }
+
     private async Task HandleSaveClick()
     {
+        if (modelError != null)
+        {
+            return;
+        }
         if (formComponent is not null)
         {
             await formComponent

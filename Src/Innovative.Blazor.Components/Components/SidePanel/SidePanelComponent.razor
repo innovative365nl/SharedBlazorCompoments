@@ -44,20 +44,27 @@
         </div>
     </div>
     <div class="sidepanel-content">
-        <CascadingValue Value="this">
-            @if (!IsEditing && !isCustomDialog)
-            {
-                @ViewChildContent
-            }
-            else if (!isCustomDialog)
-            {
-                @EditChildContent
-            }
-            else
-            {
-                @ActionChildContent
-            }
-        </CascadingValue>
+        @if (modelError != null)
+        {
+            <div class="alert alert-danger">@modelError</div>
+        }
+        else
+        {
+            <CascadingValue Value="this">
+                @if (!IsEditing && !isCustomDialog)
+                {
+                    @ViewChildContent
+                }
+                else if (!isCustomDialog)
+                {
+                    @EditChildContent
+                }
+                else
+                {
+                    @ActionChildContent
+                }
+            </CascadingValue>
+        }
     </div>
     <div class="sidepanel-footer">
         @BottomBarContent
