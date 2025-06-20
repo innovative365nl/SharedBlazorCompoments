@@ -25,6 +25,8 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
     [Parameter] public string? Title { get; set; }
 
+    [Parameter] public bool CloseOnSaveForm { get; set; } = false;
+
     public object? ComponentInstance { get; private set; }
 
     public void SetFormComponent(IFormComponent? component)
@@ -70,24 +72,30 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
             try
             {
                 if (model.SaveFormAction is not null)
-                    // The correct way to invoke a Func<Task> and await it
                 {
-
                     await model.SaveFormAction!.Invoke().ConfigureAwait(true);
+
+                }
+                if (CloseOnSaveForm)
+                {
                     isCustomDialog = false;
                     IsEditing = false;
+                    sidePanelService.CloseSidepanel();
                 }
             }
             catch (Exception e)
             {
                 await model.AddExceptionAsync(e).ConfigureAwait(false);
-              //  throw;
             }
         }
         else
         {
-            isCustomDialog = false;
-            IsEditing = false;
+            if (CloseOnSaveForm)
+            {
+                isCustomDialog = false;
+                IsEditing = false;
+                sidePanelService.CloseSidepanel();
+            }
         }
 
 

@@ -1,0 +1,26 @@
+@page "/example-close-on-save-form"
+@using Innovative.Blazor.Components.Services
+@inject IInnovativeSidePanelService SidePanelService
+
+<h3>Example: OpenInEditMode with CloseOnSaveForm</h3>
+
+<button class="btn btn-primary" @onclick="OpenPanelAndCloseOnSave">Open Panel (Close on Save)</button>
+<button class="btn btn-secondary" @onclick="OpenPanelAndStayOpen">Open Panel (Stay Open on Save)</button>
+
+@code {
+
+    private SimplePersonModel model = new() { Name = "Test User" };
+
+    private async Task OpenPanelAndCloseOnSave()
+    {
+        await SidePanelService.OpenInEditMode(model, closeOnSaveForm: true);
+    }
+
+    private async Task OpenPanelAndStayOpen()
+    {
+        await SidePanelService.OpenInEditMode(model, closeOnSaveForm: false);
+    }
+
+
+}
+
