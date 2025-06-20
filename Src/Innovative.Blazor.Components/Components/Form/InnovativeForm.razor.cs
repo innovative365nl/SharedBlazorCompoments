@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Metrics;
 using System.Globalization;
 using System.Reflection;
 using Innovative.Blazor.Components.Localizer;
