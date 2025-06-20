@@ -16,7 +16,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
     {
         Debug.Assert(localizerFactory != null, $"{nameof(localizerFactory)} is null");
 
-        var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIGridClass>();
+        var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
         var resourceType = uiClassAttribute?.ResourceType ?? typeof(TModel);
         localizer = localizerFactory.Create(resourceType);
     }

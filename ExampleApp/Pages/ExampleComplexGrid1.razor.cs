@@ -15,13 +15,17 @@ public partial class ExampleComplexGrid1
 {
     // This is the datasource for the grid
     private IEnumerable<AttributesGridModel>? _attributesView;
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
+    private IEnumerable<AttributesGridModel>? attributeTypesEmpty;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
 
     protected override async Task OnInitializedAsync() => await OnRefreshData().ConfigureAwait(true);
 
     // RadzenButton 🔄 Click
     internal protected async Task OnRefreshData()
     {
-            await state
+        attributeTypesEmpty = new List<AttributesGridModel>();
+;            await state
                 .RefreshDataAsync()
                 .ConfigureAwait(true);
 
@@ -115,7 +119,7 @@ public sealed class AttributesGridModel
     public required string PropertyValue { get; set; }
 
     [UIGridField(Name = "Active", CustomComponentType = typeof(CustomBooleanStyle))]
-    public bool IsActive { get; set; } 
+    public bool IsActive { get; set; }
 
     public static AttributesGridModel ToGridModel([NotNull]AttributeModel instance)
     {
