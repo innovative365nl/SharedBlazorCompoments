@@ -27,6 +27,8 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
     [Parameter] public bool CloseOnSaveForm { get; set; } = false;
 
+    [Parameter] public bool IsNewModel { get; set; } = false;
+
     private string? modelError;
 
     public object? ComponentInstance { get; private set; }
@@ -93,7 +95,7 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
                 if (model.SaveFormAction is not null)
                 {
                     await model.SaveFormAction!.Invoke().ConfigureAwait(true);
-
+                    IsNewModel = false;
                 }
                 if (CloseOnSaveForm)
                 {
