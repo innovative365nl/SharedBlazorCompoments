@@ -1,0 +1,41 @@
+@page "/example-innovative-alert"
+@using Innovative.Blazor.Components.Components.Alert
+
+<h2>InnovativeAlert Example</h2>
+
+<p>This page demonstrates the <b>InnovativeAlert</b> component and its options.</p>
+
+<InnovativeAlert Severity="AlertSeverity.Info" Summary="Info Alert" Detail="This is an informational alert." />
+
+<InnovativeAlert Severity="AlertSeverity.Success" Summary="Success!" Detail="Your operation was successful." />
+
+<InnovativeAlert Severity="AlertSeverity.Warning" Summary="Warning!" Detail="Be careful with this action." />
+
+<InnovativeAlert Severity="AlertSeverity.Error" Summary="Error!" Detail="Something went wrong." />
+
+<InnovativeAlert Severity="AlertSeverity.Info" Closable="false" Summary="Non-closable Alert" Detail="This alert cannot be closed by the user." />
+
+<InnovativeAlert Severity="AlertSeverity.Success" Summary="Custom Content">
+    <ChildContent>
+        <ul>
+            <li>Supports <b>custom</b> content via <code>ChildContent</code>.</li>
+            <li>You can add lists, links, or any Blazor content here.</li>
+        </ul>
+    </ChildContent>
+</InnovativeAlert>
+
+<InnovativeAlert Severity="AlertSeverity.Warning" Summary="OnClose Event" Detail="This alert will show a message when closed." OnClose="OnAlertClosed" />
+
+@if (alertClosed)
+{
+    <div style="margin-top:1em; color:green;">Alert was closed!</div>
+}
+
+@code {
+    private bool alertClosed = false;
+    private void OnAlertClosed()
+    {
+        alertClosed = true;
+    }
+}
+

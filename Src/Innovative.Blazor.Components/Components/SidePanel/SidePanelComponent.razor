@@ -2,62 +2,69 @@
 
 @typeparam TModel
 
-<div class="sidepanel-content-wrapper" @onclick:stopPropagation>
+<div class="sidepanel-content-wrapper" @onclick:stopPropagation data-test-id="@DataTestId">
     <div class="sidepanel-header">
-        @if (ShowClose)
-        {
-            <button class="sidepanel-back-button" id="sidePanelCloseButton"
-                    @onclick="@sidePanelService.CloseSidepanel">
-                <i class="icon-arrow-back">←</i>
-            </button>
-        }
         <div class="sidepanel-title">
+            @if (ShowClose)
+            {
+            <button class="sidepanel-icon-button" id="sidePanelCloseButton"
+                    @onclick="@sidePanelService.CloseSidepanel">
+                <span class="material-symbols-outlined">keyboard_tab</span>
+            </button>
+            }
             <h3>@Title</h3>
         </div>
         <div class="sidepanel-actions">
             @TitleBarContent
             @if (ShowEdit && !IsEditing && !isCustomDialog)
             {
-                <button class="sidepanel-icon-button" id="sidePanelEditButton"
-                        @onclick="@(args => IsEditing = !IsEditing)">
-                    <i class="icon-edit">✏️</i>
-                </button>
+                <RadzenButton id="sidePanelEditButton"
+                        Click="@(args => IsEditing = !IsEditing)">
+                    <span class="material-symbols-outlined">edit</span>
+                </RadzenButton>
             }
             else if (ShowEdit && (IsEditing || isCustomDialog))
             {
+                <RadzenButton
+                    Click="@HandleSaveClick">
+                    <span class="material-symbols-outlined">save</span>
+                </RadzenButton>
                 <button class="sidepanel-icon-button"
                         @onclick="@HandleCancelClick">
-                    <i class="icon-close">✕</i>
-                </button>
-                <button class="sidepanel-icon-button"
-                        @onclick="@HandleSaveClick">
-                    <i class="icon-save">💾</i>
+                    <span class="material-symbols-outlined">close</span>
                 </button>
             }
             @if (ShowDelete && !IsEditing && !isCustomDialog)
             {
-                <button class="sidepanel-icon-button"
-                        @onclick="@HandleDeleteClick">
-                    <i class="icon-delete">🗑</i>
-                </button>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger"
+                        Click="@HandleDeleteClick">
+                    <span class="material-symbols-outlined">delete</span>
+                </RadzenButton>
             }
         </div>
     </div>
     <div class="sidepanel-content">
-        <CascadingValue Value="this">
-            @if (!IsEditing && !isCustomDialog)
-            {
-                @ViewChildContent
-            }
-            else if (!isCustomDialog)
-            {
-                @EditChildContent
-            }
-            else
-            {
-                @ActionChildContent
-            }
-        </CascadingValue>
+        @if (modelError != null)
+        {
+            <div class="alert alert-danger">@modelError</div>
+        }
+        else
+        {
+            <CascadingValue Value="this">
+                @if (!IsEditing && !isCustomDialog)
+                {
+                    @ViewChildContent
+                }
+                else if (!isCustomDialog)
+                {
+                    @EditChildContent
+                }
+                else
+                {
+                    @ActionChildContent
+                }
+            </CascadingValue>
+        }
     </div>
     <div class="sidepanel-footer">
         @BottomBarContent

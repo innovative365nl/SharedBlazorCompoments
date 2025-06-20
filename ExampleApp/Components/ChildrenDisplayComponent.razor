@@ -1,0 +1,9 @@
+@inherits Innovative.Blazor.Components.Components.CustomComponent<IEnumerable<ExampleApp.Pages.Child>>
+@if (string.IsNullOrEmpty(result))
+{
+    <span class="text-muted">No children assigned</span>
+}
+else
+{
+    <span>@((MarkupString)result)</span>
+}

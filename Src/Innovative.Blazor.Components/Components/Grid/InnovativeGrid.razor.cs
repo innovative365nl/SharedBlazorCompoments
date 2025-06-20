@@ -40,6 +40,8 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     }
 
     private IInnovativeStringLocalizerFactory localizerFactory { get; }
+    [Parameter] public string? DataTestId { get; set; }
+
 
     private FilterMode filterMode => FilterStyle == FilterStyle.Advanced ? FilterMode.Advanced : FilterMode.Simple;
 
@@ -48,7 +50,33 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     ///     including filtering, sorting, and pagination. The data must be of type TItem.
     /// </summary>
     [Parameter]
-    public IEnumerable<TItem>? Data { get; set; }
+#pragma warning disable BL0007
+    public IEnumerable<TItem>? Data
+#pragma warning restore BL0007
+    {
+        get
+        {
+            return _data;
+
+        }
+        set
+        {
+            var currentSelection = this.SelectedItems.ToList();;
+            _data = value;
+            selectedItems.Clear();
+            if (currentSelection.Any())
+            {
+                foreach (TItem item in currentSelection.Where(item => _data?.Contains(item) == true))
+                {
+                    selectedItems.Add(item);
+                }
+            }
+
+        }
+    }
+
+    private IEnumerable<TItem>? _data { get; set; }
+
 
     /// <summary>
     ///     Determines the selection behavior of the grid. This can be set to Single for allowing only one item
@@ -282,72 +310,53 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         {
             try
             {
-                var value = property.GetValue(obj: context);
+                object? value = property.GetValue(obj: context);
                 if (value == null)
                 {
                     builder.AddMarkupContent(sequence: 0, markupContent: "<span class=\"text-muted\">-</span>");
                     return;
                 }
 
-                if (value is IEnumerable<object> list && !value.GetType().Equals(o: typeof(string)))
+                int sequence = 0;
+                if (gridField.CustomComponentType != null)
                 {
-                    builder.OpenElement(sequence: 0, elementName: "div");
-                    var index = 1;
-                    foreach (var item in list)
-                    {
-                        builder.OpenComponent(sequence: index++, componentType: gridField.CustomComponentType!);
-                        builder.AddAttribute(sequence: index++, name: "Value", value: item.ToString());
-
-                        if (gridField.Parameters?.Length > 0)
-                        {
-                            foreach (var param in gridField.Parameters)
-                            {
-                                var parts = param.Split(separator: ':');
-                                if (parts.Length == 2)
-                                {
-                                    builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);
-                                }
-                            }
-                        }
-
-                        builder.CloseComponent();
-                    }
-
-                    builder.CloseElement();
+                    builder.OpenComponent(sequence: sequence++, componentType: gridField.CustomComponentType);
+                }
+                if (IsList(value: value) && gridField.CustomComponentType == null)
+                {
+                    builder.AddContent(sequence: sequence++, textContent: string.Join(separator: ", ", values: AsList(value)));
                 }
                 else
                 {
-                    if (gridField.CustomComponentType != null)
-                    {
-                        builder.OpenComponent(sequence: 0, componentType: gridField.CustomComponentType);
-                    }
-                    builder.AddAttribute(sequence: 1, name: "Value", value: value);
+                    builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
+                }
 
-                    if (gridField.Parameters?.Length > 0)
+                foreach (string parameter in gridField.Parameters ?? [])
+                {
+                    int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
+                    if (equalIndex > 0 && equalIndex < parameter.Length - 1)
                     {
-                        var index = 2;
-                        foreach (var param in gridField.Parameters)
-                        {
-                            var parts = param.Split(separator: ':');
-                            if (parts.Length == 2)
-                            {
-                                builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);
-                            }
-                        }
+                        string paramName = parameter[..equalIndex];
+                        string paramValue = parameter[(equalIndex + 1)..];
+                        builder.AddAttribute(sequence: sequence++, name: paramName, value: paramValue);
                     }
+                }
 
+                if (gridField.CustomComponentType != null)
+                {
                     builder.CloseComponent();
                 }
             }
-#pragma warning disable CA1031
-            catch (Exception ex)
-#pragma warning restore CA1031
+            catch (Exception ex) when (ex is ArgumentException or InvalidOperationException)
             {
-                builder.AddMarkupContent(sequence: 0,
-                    markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
+                builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
             }
         };
     }
+
+    private static bool IsList(object value) => value is IEnumerable<object> && value.GetType() != typeof(string);
+
+    private static IEnumerable<object> AsList(object value) => value as IEnumerable<object> ?? new List<object>();
 
     private record PropertyWithAttribute(PropertyInfo PropertyInfo, string Name, UIGridField GridField);
 }

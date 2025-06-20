@@ -4,6 +4,21 @@
 
 <RadzenTemplateForm TItem="TModel" Data="@Model" Submit="@OnFormSubmit">
     <section class="rz-dialog-side-content-layout">
+        @{
+            var model = Model as FormModel;
+            System.Diagnostics.Debug.Assert(model != null, nameof(model) + " != null");
+            foreach (var exception in model.Exceptions)
+            {
+                <section class="rz-alert rz-background-color-danger-lighter gap-2 column-span-4">
+                    <span class="material-symbols-outlined rz-color-danger-darker">
+                        error
+                    </span>
+                    <span class="rz-color-danger-darker">@((MarkupString)exception)</span>
+                </section>
+            }
+        }
+        <br/>
+
         @foreach (var group in OrderedColumnGroups)
         {
             <div class="form-column-group @GetColumnWidthClass(group.Key)">
@@ -13,7 +28,7 @@
 
                     if (fieldAttribute?.FormComponent != null)
                     {
-                        @RenderFormComponent(value : property.GetValue(Model), attribute: fieldAttribute, property)
+                        @RenderFormComponent(value: property.GetValue(Model), attribute: fieldAttribute, property)
                     }
                     else
                     {
@@ -31,6 +46,6 @@
                 }
             </div>
         }
-        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" />
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem"/>
     </section>
 </RadzenTemplateForm>

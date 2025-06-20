@@ -6,7 +6,7 @@ using Radzen;
 
 namespace ExampleApp.Pages;
 
-public partial class ExampleComplexGrid
+public partial class ExampleComplexGrid1
 (
     IAttributeState state,
     IInnovativeSidePanelService sidePanelService,
@@ -15,13 +15,17 @@ public partial class ExampleComplexGrid
 {
     // This is the datasource for the grid
     private IEnumerable<AttributesGridModel>? _attributesView;
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
+    private IEnumerable<AttributesGridModel>? attributeTypesEmpty;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
 
     protected override async Task OnInitializedAsync() => await OnRefreshData().ConfigureAwait(true);
 
     // RadzenButton 🔄 Click
     internal protected async Task OnRefreshData()
     {
-            await state
+        attributeTypesEmpty = new List<AttributesGridModel>();
+;            await state
                 .RefreshDataAsync()
                 .ConfigureAwait(true);
 
@@ -103,6 +107,7 @@ public partial class ExampleComplexGrid
 
 
 // This type defines the viewmodel for the grid.
+[UIGridClass(AllowSorting = true)]
 public sealed class AttributesGridModel
 {
     [UIGridField(Name = "Property")]
@@ -113,6 +118,9 @@ public sealed class AttributesGridModel
     [UIGridField(Name = "Value")]
     public required string PropertyValue { get; set; }
 
+    [UIGridField(Name = "Active", CustomComponentType = typeof(CustomBooleanStyle))]
+    public bool IsActive { get; set; }
+
     public static AttributesGridModel ToGridModel([NotNull]AttributeModel instance)
     {
         return new AttributesGridModel
@@ -120,6 +128,7 @@ public sealed class AttributesGridModel
             PropertyName = instance.Type.Value,
             PropertyId = instance.Id,
             PropertyValue = instance.Name,
+            IsActive = instance.IsActive
         };
     }
 }
@@ -159,6 +168,9 @@ public sealed class AttributeFormModel : FormModel
     [UIFormField(name: "Value", ColumnGroup = ValueColumnName)]
     public required string AttributeValue { get; set; }
 
+    [UIFormField(name: "Active", DisplayComponent = typeof(CustomBooleanStyle))]
+    public bool IsActive { get; set; }
+
     public static AttributeFormModel ToFormModel([NotNull]AttributeModel instance)
     {
         return new AttributeFormModel
@@ -166,8 +178,15 @@ public sealed class AttributeFormModel : FormModel
             AttributeId = instance.Id,
             AttributeValue = instance.Name,
             AttributeType = instance.Type,
+            IsActive = instance.IsActive,
         };
     }
 
-    public static AttributeModel ToDomainModel([NotNull]AttributeFormModel instance) => new AttributeModel(Id: instance.AttributeId, Name: instance.AttributeValue, Type: instance.AttributeType);
+    public static AttributeModel ToDomainModel([NotNull]AttributeFormModel instance) => new AttributeModel
+        (
+          Id: instance.AttributeId,
+          Name: instance.AttributeValue,
+          Type: instance.AttributeType,
+          IsActive: instance.IsActive
+        );
 }

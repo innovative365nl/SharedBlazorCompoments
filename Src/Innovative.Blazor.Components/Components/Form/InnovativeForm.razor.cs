@@ -122,9 +122,10 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         var fieldAttribute = property.GetCustomAttribute<UIFormField>();
         var propName = property.Name;
         int sequence = 0;
-        
+
         builder.OpenComponent<RadzenLabel>(sequence++);
         builder.AddAttribute(sequence++, "Component", propName);
+
 
         if (fieldAttribute?.Name != null)
         {
@@ -141,9 +142,11 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             {
                 builder.OpenComponent<RadzenHtmlEditor>(sequence++);
                 builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.Value), value);
+                builder.AddAttribute(sequence++,"data-test-id", fieldAttribute.DataTestId);
+
                 builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.ValueChanged),
                                      EventCallback.Factory.Create<string>(this, val => SetValue(propertyName: propName, value: val)));
-                builder.AddAttribute(sequence++, "Style", "height: 250px;");
+                builder.AddAttribute(sequence++, "Style", "height: max-content; min-height: 250px; max-height: 400px;");
                 builder.AddAttribute(sequence, "Name", propName);
                 builder.CloseComponent();
             }
@@ -151,9 +154,13 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             {
                 builder.OpenComponent<RadzenTextBox>(8);
                 builder.AddAttribute(sequence++, nameof(RadzenTextBox.Value), value);
+                builder.AddAttribute(sequence++,"data-test-id", fieldAttribute?.DataTestId);
+
                 builder.AddAttribute(sequence++, nameof(RadzenTextBox.ValueChanged),
+
                                      EventCallback.Factory.Create<string>(this, val => SetValue(propertyName: propName, value: val)));
                 builder.AddAttribute(sequence, "Name", propName);
+
                 builder.CloseComponent();
             }
         }
@@ -164,6 +171,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
             builder.OpenComponent(sequence++, typeof(RadzenNumeric<int?>));
             builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Value), value);
+            builder.AddAttribute(sequence++,"data-test-id", fieldAttribute?.DataTestId);
             builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.ValueChanged),
                                  EventCallback.Factory.Create<int?>(this, val => SetValue(propertyName: propName, value: val)));
             builder.AddAttribute(sequence++, "Name", propName);
@@ -176,6 +184,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
             builder.OpenComponent(sequence++, typeof(RadzenCheckBox<bool?>));
             builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.Value), value);
+            builder.AddAttribute(sequence++,"data-test-id", fieldAttribute?.DataTestId);
             builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.ValueChanged),
                                  EventCallback.Factory.Create<bool?>(this, val => SetValue(propertyName: propName, value: val)));
             builder.AddAttribute(sequence, "Name", propName);
@@ -187,6 +196,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
             builder.OpenComponent(sequence++, typeof(RadzenDatePicker<DateTime?>));
             builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Value), value);
+            builder.AddAttribute(sequence++,"data-test-id", fieldAttribute?.DataTestId);
             builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.ValueChanged),
                                  EventCallback.Factory.Create<DateTime?>(this, val => SetValue(propertyName: propName, value: val)));
             builder.AddAttribute(sequence, "Name", propName);
@@ -202,11 +212,6 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         {
             try
             {
-                if (value == null)
-                {
-                    builder.AddMarkupContent(sequence: 0, markupContent: "<span class=\"text-muted\">-</span>");
-                    return;
-                }
 
                 if (attribute.FormComponent != null)
                 {
@@ -221,6 +226,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                     sequence = 0;
                     builder.OpenComponent(sequence: sequence++, componentType: attribute.FormComponent);
                     builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
+                    builder.AddAttribute(sequence++, "DataTestId", attribute.DataTestId);
                     builder.AddAttribute(sequence++, "ValueChanged",
                                          EventCallback.Factory.Create(this, val => SetValue(propertyName: propName, value: val)));
 
@@ -228,12 +234,14 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                     {
                         if (attribute.FormParameters != null)
                         {
-                            foreach (var param in attribute.FormParameters)
+                            foreach (string parameter in attribute.FormParameters ?? [])
                             {
-                                var parts = param.Split(separator: '=', count: 2);
-                                if (parts.Length == 2)
+                                int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
+                                if (equalIndex > 0 && equalIndex < parameter.Length - 1)
                                 {
-                                    builder.AddAttribute(sequence: sequence++, name: parts[0], value: parts[1]);
+                                    string paramName = parameter[..equalIndex];
+                                    string paramValue = parameter[(equalIndex + 1)..];
+                                    builder.AddAttribute(sequence: sequence++, name: paramName, value: paramValue);
                                 }
                             }
                         }
@@ -242,16 +250,13 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                     builder.CloseComponent();
                 }
             }
-#pragma warning disable CA1031
-            catch (Exception ex)
-#pragma warning restore CA1031
+            catch (Exception ex) when (ex is ArgumentException or InvalidOperationException)
             {
-                builder.AddMarkupContent(sequence: 0,
-                    markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
+                builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
             }
         };
     }
-    
+
     private string GetStringValue(string propertyName)
     {
         if (formValues.TryGetValue(key: propertyName, value: out var value))

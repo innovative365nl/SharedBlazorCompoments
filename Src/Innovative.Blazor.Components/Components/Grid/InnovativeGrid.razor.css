@@ -41,11 +41,26 @@
 ::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight td:first-child:before {
     --_rz-grid-selected-icon: var(--rz-grid-selected-icon, "arrow_forward_ios");
     content: var(--_rz-grid-selected-icon);
-    padding-left: .5rem;
+    margin-left: -1.25rem;
     font-family: var(--rz-icon-font-family);
     color: var(--rz-grid-selected-color);
     align-content: center;
     position: absolute;
+    background-color: unset;
+}
+
+::deep .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell:before,
+.rz-selectable tbody tr.rz-data-row td.rz-frozen-cell:after,
+.rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell:before,
+.rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell:after {
+    inset: unset;
+}
+
+::deep .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left:after,
+.rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left-inner:after,
+.rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell-left:after,
+.rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell-left-inner:after {
+    background: unset;
 }
 
 /* Table head */
@@ -89,10 +104,10 @@
     padding: var(--rz-pager-padding);
 }
 
-::deep .rz-pager-page, 
-::deep .rz-pager-first, 
-::deep .rz-pager-prev, 
-::deep .rz-pager-next, 
+::deep .rz-pager-page,
+::deep .rz-pager-first,
+::deep .rz-pager-prev,
+::deep .rz-pager-next,
 ::deep .rz-pager-last {
     --_rz-pager-page-buttons-border-radius: var(--rz-pager-page-buttons-border-radius, 4px);
     --_rz-pager-page-buttons-width: var(--rz-pager-page-buttons-width, 48px);
@@ -102,13 +117,13 @@
     height: var(--_rz-pager-page-buttons-height);
 }
 
-::deep .rz-pager-element, 
+::deep .rz-pager-element,
 ::deep .rz-button-lg {
     min-width: var(--_rz-pager-page-buttons-width);
     min-height: var(--_rz-pager-page-buttons-height);
 }
 
-::deep .rz-pager-element, 
+::deep .rz-pager-element,
 ::deep .rz-button-lg.rz-button-icon-only {
     --_rz-pager-numeric-button-selected-padding: var(--rz-pager-numeric-button-selected-padding, .25rem);
     padding: var(--_rz-pager-numeric-button-selected-padding);

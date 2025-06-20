@@ -53,4 +53,7 @@
   <data name="applyFilter" xml:space="preserve">
     <value>Filter toepassen</value>
   </data>
+  <data name="emptyText" xml:space="preserve">
+    <value>Geen data gevonden.</value>
+  </data>
 </root>

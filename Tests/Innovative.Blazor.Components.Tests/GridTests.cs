@@ -73,7 +73,7 @@ public class GridTests : LocalizedTestBase
 
         // Assert
         var content = cut.Find("p").TextContent;
-        cut.Find("p").TextContent.Should().Contain("No records to\n                            display.");
+        cut.Find("p").TextContent.Should().Contain("No data available");
     }
 
     /// <summary>

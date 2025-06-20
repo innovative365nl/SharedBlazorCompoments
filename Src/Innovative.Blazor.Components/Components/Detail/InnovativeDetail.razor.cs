@@ -10,14 +10,13 @@ namespace Innovative.Blazor.Components.Components;
 public partial class InnovativeDetail<TModel> : ComponentBase
 {
     private readonly IInnovativeStringLocalizer localizer;
-    private const int StartSequenceNumberLoop = 4;
     private const int MaxNumberOfButtonsBesideEachOther = 2;
 
     public InnovativeDetail(IInnovativeStringLocalizerFactory localizerFactory)
     {
         Debug.Assert(localizerFactory != null, $"{nameof(localizerFactory)} is null");
 
-        var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIGridClass>();
+        var uiClassAttribute = typeof(TModel).GetCustomAttribute<UIFormClass>();
         var resourceType = uiClassAttribute?.ResourceType ?? typeof(TModel);
         localizer = localizerFactory.Create(resourceType);
     }
@@ -122,27 +121,22 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 
         if (actionAttribute.CustomComponent != null)
         {
-            var (component, parameters, title) = GetActionDetails(propertyName: property.Name);
-
             if (parentDialog != null)
             {
 #pragma warning disable BL0005
                 parentDialog.ActionChildContent = builder =>
 #pragma warning restore BL0005
-                                                  {
-                                                      builder.OpenComponent(sequence: 0, componentType: component);
-                                                      {
-                                                          var i = 1;
-                        foreach (var param in parameters)
-                                                          {
-                                                              builder.AddAttribute(sequence: i++, name: param.Key, value: param.Value);
-                                                          }
-
-                                                          builder.AddAttribute(sequence: i++, name: "ParentDialog", value: parentDialog);
-                                                      }
-
-                                                      builder.CloseComponent();
-                                                  };
+                {
+                    var (component, parameters, title) = GetActionDetails(propertyName: property.Name);
+                    var i = 0;
+                    builder.OpenComponent(sequence: i++, componentType: component);
+                    foreach (var param in parameters)
+                    {
+                        builder.AddAttribute(sequence: i++, name: param.Key, value: param.Value);
+                    }
+                    builder.AddAttribute(sequence: i, name: "ParentDialog", value: parentDialog);
+                    builder.CloseComponent();
+                };
 
                 parentDialog.OpenCustomDialog();
             }
@@ -213,31 +207,31 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                            builder.AddMarkupContent(sequence: 0, markupContent: "<span class=\"text-muted\">-</span>");
                            return;
                        }
-
+                       int sequence = 0;
                        if (attribute.DisplayComponent != null)
                        {
-                           builder.OpenComponent(sequence: 0, componentType: attribute.DisplayComponent);
+                           builder.OpenComponent(sequence: sequence++, componentType: attribute.DisplayComponent);
                        }
-                       builder.AddAttribute(sequence: 1, name: "Value", value: value);
+                       builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
+                       builder.AddAttribute(sequence: sequence++, "DataTestId", attribute.DataTestId);
 
                        if (attribute.DisplayParameters?.Length > 0)
                        {
-                            var index = StartSequenceNumberLoop;
-                            foreach (var param in attribute.DisplayParameters)
+                            foreach (var parameter in attribute.DisplayParameters)
                             {
-                                var parts = param.Split(separator: '=', count: 2);
-                                if (parts.Length == 2)
+                                int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
+                                if (equalIndex > 0 && equalIndex < parameter.Length - 1)
                                 {
-                                    builder.AddAttribute(sequence: index++, name: parts[0], value: parts[1]);
+                                    string paramName = parameter[..equalIndex];
+                                    string paramValue = parameter[(equalIndex + 1)..];
+                                    builder.AddAttribute(sequence: sequence++, name: paramName, value: paramValue);
                                 }
                             }
                        }
 
                        builder.CloseComponent();
                    }
-#pragma warning disable CA1031
-                   catch (Exception ex)
-#pragma warning restore CA1031
+                   catch (Exception ex) when (ex is ArgumentException or InvalidOperationException)
                    {
                        builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
                    }
@@ -294,11 +288,13 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         {
             foreach (var property in actionProperties)
             {
-                var actionAttribute = property.GetCustomAttribute<UIFormViewAction>()!;
-                var actionName = actionAttribute?.Name ?? property.Name;
-                var translatedActionName = localizer.GetString(actionName);
-
-                result.Add(new ButtonDefinition{ActionName = translatedActionName, Property = property, ActionAttribute = actionAttribute! });
+                var prop = property;
+                var actionAttribute = prop.GetCustomAttribute<UIFormViewAction>();
+                if(actionAttribute != null)
+                {
+                    var actionName = localizer.GetString(actionAttribute.Name);
+                    result.Add(new ButtonDefinition { ActionName = actionName, Property = prop, ActionAttribute = actionAttribute });
+                }
             }
         }
         return result.ToArray();

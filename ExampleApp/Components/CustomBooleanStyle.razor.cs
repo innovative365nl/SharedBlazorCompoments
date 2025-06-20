@@ -1,12 +1,10 @@
+using Innovative.Blazor.Components.Components;
 using Microsoft.AspNetCore.Components;
 
 namespace ExampleApp.Components;
 
-public partial class CustomBooleanStyle : ComponentBase
+public partial class CustomBooleanStyle : CustomComponent<bool>
 {
-    [Parameter]
-    public bool Value { get; set; }
-
     [Parameter]
     public string NoColor { get; set; } = "red";
 

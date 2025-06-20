@@ -6,6 +6,7 @@ namespace Innovative.Blazor.Components.Services;
 public class SidepanelService : ISidepanelService
 {
     public bool IsVisible { get; private set; }
+    public Action<bool>? VisibleChanged { get; set; }
     public Type? CurrentComponentType { get; private set; }
     public Dictionary<string, object>? CurrentParameters { get; private set; }
     public SidepanelOptions? CurrentOptions { get; private set; }
@@ -20,6 +21,7 @@ public class SidepanelService : ISidepanelService
             throw new InvalidOperationException("A sidepanel is already open.");
         }
         IsVisible = true;
+        VisibleChanged?.Invoke(IsVisible);
         CurrentComponentType = typeof(T);
         CurrentParameters = parameters;
         CurrentOptions = options;
@@ -34,6 +36,7 @@ public class SidepanelService : ISidepanelService
         if (!IsVisible)
             return;
         IsVisible = false;
+        VisibleChanged?.Invoke(IsVisible);
         CurrentComponentType = null;
         CurrentParameters = null;
         CurrentOptions = null;

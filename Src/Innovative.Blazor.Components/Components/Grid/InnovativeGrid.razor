@@ -18,6 +18,8 @@
                                 ShowPagingSummary="true" PagingSummaryFormat="{2} items"
                                 PagerHorizontalAlign="HorizontalAlign.Right"
                                 AllowSorting="@allowSorting"
+                                AllowMultiColumnSorting="true"
+                                ShowMultiColumnSortingIndex="true"
                                 AllowFiltering="true"
                                 FilterMode="filterMode"
                                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
@@ -25,7 +27,6 @@
                                 OrOperatorText="@Translations.or"
                                 ClearFilterText="@Translations.clearFilter"
                                 ApplyFilterText="@Translations.applyFilter"
-
                                 EqualsText="@Translations.equal"
                                 NotEqualsText="@Translations.notEqual"
                                 ContainsText="@Translations.contains"
@@ -36,36 +37,63 @@
                                 LessThanText="@Translations.lessThan"
                                 LessThanOrEqualsText="@Translations.lessThanOrEqual"
                                 FilterText="@Translations.filter"
-
-                                PageSize="20">
+                                PageSize="20"
+                                data-test-id="@DataTestId">
                     <EmptyTemplate>
-                        <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">No records to
-                            display.</p>
+                        <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">@Translations.emptyText.</p>
                     </EmptyTemplate>
                     <Columns>
                         @foreach (var property in GetPropertiesWithAttributes())
                         {
-                            <RadzenDataGridColumn TItem="TItem"
-                                                  Property="@property.Name"
-                                                  Title="@GetColumnTitle(property: property.PropertyInfo, attribute: property.GridField)"
-                                                  Frozen="IsFrozenColumn(property: property.PropertyInfo)"
-                                                  Sortable="@IsSortableColumn(property: property.PropertyInfo)"
-                                                  SortOrder="@(property.Name == defaultSortField ? SortOrder.Ascending : null)"
-                                                  Visible="@IsVisibleColumn(property: property.PropertyInfo)"
-                                                  Filterable="true">
-                                <Template>
-                                    @if (HasCustomComponent(property: property.PropertyInfo))
-                                    {
-                                        @RenderCustomComponent(property: property.PropertyInfo, context: context!, gridField: property.GridField)
-                                    }
-                                    else
-                                    {
-                                        <div data-text="@property.PropertyInfo.GetValue(obj: context)">
-                                            @property.PropertyInfo.GetValue(obj: context)
-                                        </div>
-                                    }
-                                </Template>
-                            </RadzenDataGridColumn>
+                            //check if property has default sort field
+                            @if (defaultSortField != null && allowSorting == true)
+                            {
+                                <RadzenDataGridColumn TItem="TItem"
+                                                      Property="@property.Name"
+                                                      Title="@GetColumnTitle(property: property.PropertyInfo, attribute: property.GridField)"
+                                                      Frozen="IsFrozenColumn(property: property.PropertyInfo)"
+                                                      Sortable="@IsSortableColumn(property: property.PropertyInfo)"
+                                                      SortOrder="@(property.Name == defaultSortField ? SortOrder.Ascending : null)"
+                                                      Visible="@IsVisibleColumn(property: property.PropertyInfo)"
+                                                      Filterable="true" >
+                                    <Template>
+                                        @if (HasCustomComponent(property: property.PropertyInfo))
+                                        {
+                                            @RenderCustomComponent(property: property.PropertyInfo, context: context!, gridField: property.GridField)
+                                        }
+                                        else
+                                        {
+                                            <div data-text="@property.PropertyInfo.GetValue(obj: context)">
+                                                @property.PropertyInfo.GetValue(obj: context)
+                                            </div>
+                                        }
+                                    </Template>
+                                </RadzenDataGridColumn>
+                            }
+
+                            else
+                            {
+                                <RadzenDataGridColumn TItem="TItem"
+                                                      Property="@property.Name"
+                                                      Title="@GetColumnTitle(property: property.PropertyInfo, attribute: property.GridField)"
+                                                      Frozen="IsFrozenColumn(property: property.PropertyInfo)"
+                                                      Visible="@IsVisibleColumn(property: property.PropertyInfo)"
+                                                      Filterable="true">
+                                    <Template>
+                                        @if (HasCustomComponent(property: property.PropertyInfo))
+                                        {
+                                            @RenderCustomComponent(property: property.PropertyInfo, context: context!, gridField: property.GridField)
+                                        }
+                                        else
+                                        {
+                                            <div data-text="@property.PropertyInfo.GetValue(obj: context)">
+                                                @property.PropertyInfo.GetValue(obj: context)
+                                            </div>
+                                        }
+                                    </Template>
+                                </RadzenDataGridColumn>
+                            }
+
                         }
                     </Columns>
                 </RadzenDataGrid>

@@ -7,27 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Resources;
-
-[assembly: NeutralResourcesLanguage("en")]
-
 namespace Innovative.Blazor.Components.Localizations {
     using System;
-
-
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Translations {
-
+        
         private static System.Resources.ResourceManager resourceMan;
-
+        
         private static System.Globalization.CultureInfo resourceCulture;
-
+        
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Translations() {
         }
-
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
@@ -38,7 +34,7 @@ namespace Innovative.Blazor.Components.Localizations {
                 return resourceMan;
             }
         }
-
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Globalization.CultureInfo Culture {
             get {
@@ -48,88 +44,94 @@ namespace Innovative.Blazor.Components.Localizations {
                 resourceCulture = value;
             }
         }
-
+        
         internal static string and {
             get {
                 return ResourceManager.GetString("and", resourceCulture);
             }
         }
-
+        
         internal static string or {
             get {
                 return ResourceManager.GetString("or", resourceCulture);
             }
         }
-
+        
         internal static string equal {
             get {
                 return ResourceManager.GetString("equal", resourceCulture);
             }
         }
-
+        
         internal static string notEqual {
             get {
                 return ResourceManager.GetString("notEqual", resourceCulture);
             }
         }
-
+        
         internal static string contains {
             get {
                 return ResourceManager.GetString("contains", resourceCulture);
             }
         }
-
+        
         internal static string startsWith {
             get {
                 return ResourceManager.GetString("startsWith", resourceCulture);
             }
         }
-
+        
         internal static string endsWith {
             get {
                 return ResourceManager.GetString("endsWith", resourceCulture);
             }
         }
-
+        
         internal static string greaterThan {
             get {
                 return ResourceManager.GetString("greaterThan", resourceCulture);
             }
         }
-
+        
         internal static string greaterThanOrEqual {
             get {
                 return ResourceManager.GetString("greaterThanOrEqual", resourceCulture);
             }
         }
-
+        
         internal static string lessThan {
             get {
                 return ResourceManager.GetString("lessThan", resourceCulture);
             }
         }
-
+        
         internal static string lessThanOrEqual {
             get {
                 return ResourceManager.GetString("lessThanOrEqual", resourceCulture);
             }
         }
-
+        
         internal static string filter {
             get {
                 return ResourceManager.GetString("filter", resourceCulture);
             }
         }
-
+        
         internal static string clearFilter {
             get {
                 return ResourceManager.GetString("clearFilter", resourceCulture);
             }
         }
-
+        
         internal static string applyFilter {
             get {
                 return ResourceManager.GetString("applyFilter", resourceCulture);
+            }
+        }
+        
+        internal static string emptyText {
+            get {
+                return ResourceManager.GetString("emptyText", resourceCulture);
             }
         }
     }

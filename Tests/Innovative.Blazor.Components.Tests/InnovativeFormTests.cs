@@ -75,7 +75,8 @@ public class InnovativeFormTests : LocalizedTestBase
         component.SetFormValue(nameof(model.DateProperty), testDate);
 
         // Act
-        await component.OnFormSubmit();
+        await component.OnFormSubmit()
+                       .ConfigureAwait(true);
 
         // Assert
         Assert.Equal("Updated", model.StringProperty);
@@ -118,7 +119,8 @@ public class InnovativeFormTests : LocalizedTestBase
         component.SetFormValue(nameof(actual.DateProperty), testDate);
 
         // Act
-        await component.OnFormReset();
+        await component.OnFormReset()
+                       .ConfigureAwait(true);
 
         // Assert
         Assert.Equal(expected.StringProperty, actual.StringProperty);
