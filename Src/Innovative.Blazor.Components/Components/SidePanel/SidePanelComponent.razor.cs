@@ -169,7 +169,6 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
             {
                 await model.AddExceptionAsync(e).ConfigureAwait(false);
             }
-            model.CancelFormAction?.Invoke();
         }
         else
         {
