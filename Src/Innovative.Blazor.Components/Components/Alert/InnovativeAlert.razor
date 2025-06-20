@@ -1,0 +1,33 @@
+<h3>InnovativeAlert</h3>
+
+@if (visible)
+{
+    <div class="innovative-alert @GetSeverityClass()">
+        @if (Closable)
+        {
+            <button class="innovative-alert-close" @onclick="Close" aria-label="Close">&times;</button>
+        }
+        @if (!string.IsNullOrEmpty(Summary))
+        {
+            <div class="innovative-alert-summary">@Summary</div>
+        }
+        @if (!string.IsNullOrEmpty(Detail))
+        {
+            <div class="innovative-alert-detail">@Detail</div>
+        }
+        @if (ChildContent != null)
+        {
+            <div class="innovative-alert-content">@ChildContent</div>
+        }
+    </div>
+}
+
+@code {
+    private string GetSeverityClass() => Severity switch
+    {
+        AlertSeverity.Success => "innovative-alert-success",
+        AlertSeverity.Warning => "innovative-alert-warning",
+        AlertSeverity.Error => "innovative-alert-error",
+        _ => "innovative-alert-info"
+    };
+}
