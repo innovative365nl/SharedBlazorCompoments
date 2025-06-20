@@ -42,7 +42,11 @@ public sealed partial class SidePanelHost(ISidepanelService sidePanelService)
         // }
     }
 
-    public void Dispose() => sidePanelService.OnStateChanged -= StateHasChanged;
+    public void Dispose()
+    {
+        sidePanelService.OnStateChanged -= StateHasChanged;
+        sidePanelService.VisibleChanged -= VisibleChanged;
+    }
 
     private void Close() => sidePanelService.CloseSidepanel();
 
