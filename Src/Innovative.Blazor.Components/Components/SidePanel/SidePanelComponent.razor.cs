@@ -113,11 +113,12 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
         {
             if (CloseOnSaveForm)
             {
-                isCustomDialog = false;
-                IsEditing = false;
+ 
                 sidePanelService.CloseSidepanel();
             }
         }
+        isCustomDialog = false;
+        IsEditing = false;
 
 
     }

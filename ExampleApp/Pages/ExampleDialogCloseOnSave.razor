@@ -10,13 +10,13 @@
 
 @code {
 
-    private SimplePersonModel model = new() { Name = "Test User", FirstName = "Test", LastName = "User" };
+    private SimplePersonModel model = new() {};
 
     private TestModelWithoutBaseClass testModel = new() { Name = "test" };
 
     private async Task OpenPanelAndCloseOnSave()
     {
-        await SidePanelService.OpenInEditMode<SimplePersonModel>(closeOnSaveForm: true);
+        await SidePanelService.OpenInEditMode<SimplePersonModel>(model, closeOnSaveForm: true);
     }
 
     private async Task OpenPanelAndStayOpen()

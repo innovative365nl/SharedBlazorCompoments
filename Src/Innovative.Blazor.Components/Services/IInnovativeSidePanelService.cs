@@ -21,13 +21,8 @@ public interface IInnovativeSidePanelService
     /// <summary>
     /// Opens a side panel dialog with the specified model in edit mode as a new instance of <code>T</code> is created.
     /// </summary>
-    Task OpenInEditMode<T>(bool showClose = true, bool showDelete = false, string? dataTestId = null, bool closeOnSaveForm = true) where T : class, new();
-
-    /// <summary>
-    /// Opens a side panel dialog with the specified model in edit mode as a new instance of <code>T</code> is created.
-    /// </summary>
-    Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false, string? dataTestId = null, bool closeOnSaveForm = true) where T : class;
-
+    Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false, string? dataTestId = null, bool closeOnSaveForm = false, bool isNewModel = true) where T : class;
+    
     /// <summary>
     /// Closes the side panel dialog if it is open.
     /// </summary>
@@ -42,22 +37,9 @@ internal sealed class InnovativeSidePanelService
 {
     public bool IsVisible => sidePanelService.IsVisible;
 
-    public async Task OpenInEditMode<T>(bool showClose = true, bool showDelete = false, string? dataTestId = null, bool closeOnSaveForm = false) where T : class, new()
+    public async Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false, string? dataTestId = null, bool closeOnSaveForm = false, bool isNewModel = true) where T : class
     {
-        Type type = typeof(T);
-        ConstructorInfo? ctor = type.GetConstructor(Type.EmptyTypes);
-        if (ctor == null)
-        {
-            throw new InvalidOperationException($"Type '{type.FullName}' does not have a parameterless constructor.");
-        }
-        var model = new T();
-        await OpenDynamicFormDialogWithOptions(model: model,  isEditing: true, showEdit: true, showClose: showClose, showDelete: showDelete, dataTestId, closeOnSaveForm, isNewModel: true)
-                .ConfigureAwait(false);
-    }
-
-    public async Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false, string? dataTestId = null, bool closeOnSaveForm = false) where T : class
-    {
-        await OpenDynamicFormDialogWithOptions(model: model,  isEditing: true, showEdit: true, showClose: showClose, showDelete: showDelete, dataTestId, closeOnSaveForm, isNewModel: false)
+        await OpenDynamicFormDialogWithOptions(model: model,  isEditing: true, showEdit: true, showClose: showClose, showDelete: showDelete, dataTestId, closeOnSaveForm, isNewModel)
                 .ConfigureAwait(false);
     }
 
