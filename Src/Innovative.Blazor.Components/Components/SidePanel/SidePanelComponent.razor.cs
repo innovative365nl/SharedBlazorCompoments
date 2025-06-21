@@ -96,13 +96,14 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
                 {
                     await model.SaveFormAction!.Invoke().ConfigureAwait(true);
                     IsNewModel = false;
+                    ShowDelete = true;
                 }
                 if (CloseOnSaveForm)
                 {
-                    isCustomDialog = false;
-                    IsEditing = false;
                     sidePanelService.CloseSidepanel();
                 }
+                isCustomDialog = false;
+                IsEditing = false;
             }
             catch (Exception e)
             {
@@ -116,9 +117,10 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
  
                 sidePanelService.CloseSidepanel();
             }
+            isCustomDialog = false;
+            IsEditing = false;
         }
-        isCustomDialog = false;
-        IsEditing = false;
+
 
 
     }
@@ -130,12 +132,13 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
         {
             try
             {
-                if(model.DeleteFormAction is not null)
-                 await (model.DeleteFormAction.Invoke()!).ConfigureAwait(true);
-               isCustomDialog = false;
-               IsEditing = false;
-               sidePanelService.CloseSidepanel();
-
+                if (model.DeleteFormAction is not null)
+                {
+                    await (model.DeleteFormAction.Invoke()!).ConfigureAwait(true);
+                }
+                isCustomDialog = false;
+                IsEditing = false;
+                sidePanelService.CloseSidepanel();
             }
             catch (Exception e)
             {
@@ -144,10 +147,10 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
         }
         else
         {
-            isCustomDialog = false;
-            IsEditing = false;
             sidePanelService.CloseSidepanel();
         }
+        isCustomDialog = false;
+        IsEditing = false;
     }
 
     private async Task HandleCancelClick()
