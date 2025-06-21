@@ -21,7 +21,7 @@ public interface IInnovativeSidePanelService
     /// <summary>
     /// Opens a side panel dialog with the specified model in edit mode as a new instance of <code>T</code> is created.
     /// </summary>
-    Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false, string? dataTestId = null, bool closeOnSaveForm = false, bool isNewModel = true) where T : class;
+    Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false, string? dataTestId = null, bool closeOnSaveForm = false, bool isNewModel = false) where T : class;
     
     /// <summary>
     /// Closes the side panel dialog if it is open.
