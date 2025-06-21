@@ -103,12 +103,13 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
                     sidePanelService.CloseSidepanel();
                 }
                 isCustomDialog = false;
-                IsEditing = false;
+                IsEditing = false; 
             }
             catch (Exception e)
             {
                 await model.AddExceptionAsync(e).ConfigureAwait(false);
             }
+            StateHasChanged();
         }
         else
         {
