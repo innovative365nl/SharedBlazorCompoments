@@ -29,10 +29,13 @@
                     Click="@HandleSaveClick">
                     <span class="material-symbols-outlined">save</span>
                 </RadzenButton>
-                <button class="sidepanel-icon-button"
-                        @onclick="@HandleCancelClick">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
+                @if (!IsNewModel)
+                {
+                    <button class="sidepanel-icon-button"
+                            @onclick="@HandleCancelClick">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                }
             }
             @if (ShowDelete && !IsEditing && !isCustomDialog)
             {

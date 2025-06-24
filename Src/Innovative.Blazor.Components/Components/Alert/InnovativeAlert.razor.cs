@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Innovative.Blazor.Components.Components.Alert;
+namespace Innovative.Blazor.Components.Components;
 
 public enum AlertSeverity
 {
