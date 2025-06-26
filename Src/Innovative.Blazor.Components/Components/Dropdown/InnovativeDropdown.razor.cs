@@ -20,6 +20,7 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     private object? _selectedItem;
     private IEnumerable<object>? _filteredData;
     private bool _hasInitialized;
+    private bool _isToggling;
 
     /// <summary>
     /// Gets or sets a value indicating whether the dropdown is open.
@@ -309,6 +310,7 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     {
         if (Disabled || ReadOnly) return;
 
+        _isToggling = true;
         IsOpen = !IsOpen;
         StateHasChanged();
         
@@ -318,6 +320,10 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
             await Task.Delay(1); // Small delay to ensure DOM is updated
             await FilterInput.FocusAsync();
         }
+        
+        // Reset the toggling flag after a short delay
+        await Task.Delay(100);
+        _isToggling = false;
     }
 
     /// <summary>
@@ -429,17 +435,21 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     /// </summary>
     protected void OnBlur()
     {
-        // Close dropdown when focus is lost (with a small delay to allow for clicks on items)
-        Task.Delay(150).ContinueWith(_ =>
+        // Don't close if we're in the middle of toggling
+        if (_isToggling) return;
+        
+        // Close dropdown when focus is lost (with a delay to handle clicks within the dropdown)
+        Task.Delay(200).ContinueWith(_ =>
         {
-            if (IsOpen)
+            InvokeAsync(() =>
             {
-                InvokeAsync(() =>
+                // Only close if the dropdown is still open and we're not toggling
+                if (IsOpen && !_isToggling)
                 {
                     IsOpen = false;
                     StateHasChanged();
-                });
-            }
+                }
+            });
         });
     }
 

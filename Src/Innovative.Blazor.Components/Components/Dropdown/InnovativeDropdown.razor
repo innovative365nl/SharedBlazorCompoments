@@ -5,7 +5,7 @@
 @if (Visible)
 {
     <div @ref="@ElementRef" @attributes="@Attributes" class="@GetCssClass()" 
-         @onclick="@ToggleDropdown" @onclick:preventDefault @onclick:stopPropagation 
+         @onclick="@ToggleDropdown"
          style="@Style" tabindex="@(Disabled ? "-1" : TabIndex)"
          @onkeydown="@OnKeyDown" id="@Id" @onfocus="@OnFocus" @onblur="@OnBlur">
         
@@ -13,7 +13,7 @@
         <input type="hidden" name="@Name" value="@(GetValueAsString())" disabled="@Disabled" />
         
         <!-- Display area -->
-        <div class="innovative-dropdown-display" @onclick:stopPropagation>
+        <div class="innovative-dropdown-display">
             @if (ValueTemplate != null && SelectedItem != null)
             {
                 @ValueTemplate(SelectedItem)
