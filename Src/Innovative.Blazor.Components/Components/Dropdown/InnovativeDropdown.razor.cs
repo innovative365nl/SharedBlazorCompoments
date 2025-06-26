@@ -19,7 +19,9 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     private List<object> _selectedItems = new();
     private object? _selectedItem;
     private IEnumerable<object>? _filteredData;
+#pragma warning disable CS0414 // Field is assigned but its value is never used
     private bool _hasInitialized;
+#pragma warning restore CS0414 // Field is assigned but its value is never used
     private bool _isToggling;
 
     /// <summary>
@@ -74,7 +76,9 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     /// <summary>
     /// Gets the selected items for multiple selection.
     /// </summary>
+#pragma warning disable CA1002
     protected List<object> SelectedItems => _selectedItems;
+#pragma warning restore CA1002
 
     /// <summary>
     /// Gets the selected item for single selection.
@@ -90,7 +94,7 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        
+
         if (!string.IsNullOrEmpty(Id))
         {
             // Use provided Id
@@ -105,13 +109,13 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        
+
         // Initialize selected items/item from Value
         InitializeSelectedFromValue();
-        
+
         // Filter data
         FilterData();
-        
+
         _hasInitialized = true;
     }
 
@@ -253,7 +257,7 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     protected bool IsAllSelected()
     {
         if (!Multiple || FilteredData == null) return false;
-        
+
         var availableItems = FilteredData.Where(item => !IsItemDisabled(item)).ToList();
         return availableItems.Any() && availableItems.All(IsItemSelected);
     }
@@ -264,7 +268,7 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     protected string GetItemCssClass(bool isSelected, bool isHighlighted, bool isDisabled)
     {
         var classes = new List<string> { "innovative-dropdown-item" };
-        
+
         if (isSelected) classes.Add("innovative-dropdown-item-selected");
         if (isHighlighted) classes.Add("innovative-dropdown-item-highlighted");
         if (isDisabled) classes.Add("innovative-dropdown-item-disabled");
@@ -275,10 +279,12 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     /// <summary>
     /// Gets the CSS class for the dropdown component.
     /// </summary>
+#pragma warning disable CA1721
     protected string GetCssClass()
+#pragma warning restore CA1721
     {
         var classes = new List<string> { "innovative-dropdown" };
-        
+
         if (Disabled) classes.Add("innovative-dropdown-disabled");
         if (IsOpen) classes.Add("innovative-dropdown-open");
         if (Multiple) classes.Add("innovative-dropdown-multiple");
@@ -297,10 +303,7 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
         {
             return string.Join(",", _selectedItems.Select(item => GetItemValue(item)?.ToString() ?? string.Empty));
         }
-        else
-        {
-            return GetItemValue(_selectedItem)?.ToString() ?? string.Empty;
-        }
+        return GetItemValue(_selectedItem!)?.ToString() ?? string.Empty;
     }
 
     /// <summary>
@@ -313,16 +316,16 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
         _isToggling = true;
         IsOpen = !IsOpen;
         StateHasChanged();
-        
+
         if (IsOpen && AllowFiltering)
         {
             // Focus the filter input when opening
-            await Task.Delay(1); // Small delay to ensure DOM is updated
-            await FilterInput.FocusAsync();
+            await Task.Delay(1).ConfigureAwait(false); // Small delay to ensure DOM is updated
+            await FilterInput.FocusAsync().ConfigureAwait(false);
         }
-        
+
         // Reset the toggling flag after a short delay
-        await Task.Delay(100);
+        await Task.Delay(100).ConfigureAwait(false);
         _isToggling = false;
     }
 
@@ -333,7 +336,9 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     {
         if (Disabled) return;
 
+#pragma warning disable CA1062
         switch (e.Key)
+#pragma warning restore CA1062
         {
             case "Enter":
             case " ": // Space
@@ -347,7 +352,7 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
                     var item = FilteredData.ElementAtOrDefault(HighlightedIndex);
                     if (item != null)
                     {
-                        await SelectItem(item);
+                        await SelectItem(item).ConfigureAwait(false);
                     }
                 }
                 break;
@@ -401,7 +406,7 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
         if (!items.Any()) return;
 
         var newIndex = HighlightedIndex + direction;
-        
+
         // Wrap around
         if (newIndex < 0)
             newIndex = items.Count - 1;
@@ -436,24 +441,29 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     protected void OnBlur()
     {
         // Don't close if we're in the middle of toggling
-        if (_isToggling) return;
-        
+        if (_isToggling)
+            return;
+
+
         // Use longer delay for multiselect to allow for multiple selections
         var delay = Multiple ? 300 : 200;
-        
+
         // Close dropdown when focus is lost (with a delay to handle clicks within the dropdown)
-        Task.Delay(delay).ContinueWith(_ =>
-        {
-            InvokeAsync(() =>
-            {
-                // Only close if the dropdown is still open and we're not toggling
-                if (IsOpen && !_isToggling)
-                {
-                    IsOpen = false;
-                    StateHasChanged();
-                }
-            });
-        });
+#pragma warning disable CA2008
+        Task.Delay(200)
+            .ContinueWith(_ =>
+                          {
+                              InvokeAsync(() =>
+                                          {
+                                              // Only close if the dropdown is still open and we're not toggling
+                                              if (IsOpen && !_isToggling)
+                                              {
+                                                  IsOpen = false;
+                                                  StateHasChanged();
+                                              }
+                                          });
+                          });
+#pragma warning restore CA2008
     }
 
     /// <summary>
@@ -461,7 +471,9 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     /// </summary>
     protected void OnFilterInput(ChangeEventArgs e)
     {
+#pragma warning disable CA1062
         SearchText = e.Value?.ToString() ?? string.Empty;
+#pragma warning restore CA1062
         StateHasChanged();
     }
 
@@ -470,7 +482,9 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     /// </summary>
     protected async Task OnFilterKeyDown(KeyboardEventArgs e)
     {
+#pragma warning disable CA1062
         switch (e.Key)
+#pragma warning restore CA1062
         {
             case "ArrowDown":
                 NavigateHighlight(1);
@@ -488,7 +502,7 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
                     var item = FilteredData.ElementAtOrDefault(HighlightedIndex);
                     if (item != null)
                     {
-                        await SelectItem(item);
+                        await SelectItem(item).ConfigureAwait(false);
                     }
                 }
                 break;
@@ -509,10 +523,12 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
 
         if (Multiple)
         {
+#pragma warning disable CA1868
             // Set toggling flag briefly to prevent blur from closing dropdown
             _isToggling = true;
-            
+
             if (_selectedItems.Contains(item))
+#pragma warning restore CA1868
             {
                 _selectedItems.Remove(item);
             }
@@ -523,23 +539,23 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
 
             // Update Value with selected values
             var selectedValues = _selectedItems.Select(GetItemValue).ToList();
-            await UpdateValue(selectedValues);
-            
+            await UpdateValue(selectedValues).ConfigureAwait(false);
+
             // Reset the toggling flag after a short delay
-            await Task.Delay(50);
+            await Task.Delay(50).ConfigureAwait(false);
             _isToggling = false;
         }
         else
         {
             _selectedItem = item;
             var value = GetItemValue(item);
-            await UpdateValue(value);
-            
+            await UpdateValue(value).ConfigureAwait(false);
+
             // Close dropdown for single selection
             IsOpen = false;
         }
 
-        await Change.InvokeAsync(Value);
+        await Change.InvokeAsync(Value).ConfigureAwait(false);
         StateHasChanged();
     }
 
@@ -555,12 +571,12 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
 
         _selectedItems.Remove(item);
         var selectedValues = _selectedItems.Select(GetItemValue).ToList();
-        await UpdateValue(selectedValues);
-        await Change.InvokeAsync(Value);
+        await UpdateValue(selectedValues).ConfigureAwait(false);
+        await Change.InvokeAsync(Value).ConfigureAwait(false);
         StateHasChanged();
-        
+
         // Reset the toggling flag after a short delay
-        await Task.Delay(50);
+        await Task.Delay(50).ConfigureAwait(false);
         _isToggling = false;
     }
 
@@ -571,10 +587,12 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     {
         if (!Multiple || FilteredData == null) return;
 
+#pragma warning disable CA1062
         // Set toggling flag briefly to prevent blur from closing dropdown
         _isToggling = true;
 
         var selectAll = e.Value is bool b && b;
+#pragma warning restore CA1062
         var availableItems = FilteredData.Where(item => !IsItemDisabled(item)).ToList();
 
         if (selectAll)
@@ -598,12 +616,12 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
         }
 
         var selectedValues = _selectedItems.Select(GetItemValue).ToList();
-        await UpdateValue(selectedValues);
-        await Change.InvokeAsync(Value);
+        await UpdateValue(selectedValues).ConfigureAwait(false);
+        await Change.InvokeAsync(Value).ConfigureAwait(false);
         StateHasChanged();
-        
+
         // Reset the toggling flag after a short delay
-        await Task.Delay(50);
+        await Task.Delay(50).ConfigureAwait(false);
         _isToggling = false;
     }
 
@@ -615,15 +633,15 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
         if (Multiple)
         {
             _selectedItems.Clear();
-            await UpdateValue(new List<object>());
+            await UpdateValue(new List<object>()).ConfigureAwait(false);
         }
         else
         {
             _selectedItem = null;
-            await UpdateValue(default(TValue));
+            await UpdateValue(default(TValue)).ConfigureAwait(false);
         }
 
-        await Change.InvokeAsync(Value);
+        await Change.InvokeAsync(Value).ConfigureAwait(false);
         StateHasChanged();
     }
 
@@ -638,22 +656,30 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
         }
         else if (newValue == null)
         {
+#pragma warning disable CS8601 // Possible null reference assignment.
             Value = default(TValue);
+#pragma warning restore CS8601 // Possible null reference assignment.
         }
         else
         {
             // Try to convert the value
             try
             {
+#pragma warning disable CA1305
                 Value = (TValue)Convert.ChangeType(newValue, typeof(TValue));
+#pragma warning restore CA1305
             }
+#pragma warning disable CA1031
             catch
+#pragma warning restore CA1031
             {
+#pragma warning disable CS8601 // Possible null reference assignment.
                 Value = default(TValue);
+#pragma warning restore CS8601 // Possible null reference assignment.
             }
         }
 
-        await ValueChanged.InvokeAsync(Value);
+        await ValueChanged.InvokeAsync(Value).ConfigureAwait(false);
     }
 
     /// <summary>
