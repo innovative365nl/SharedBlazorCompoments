@@ -157,7 +157,10 @@
                                         <input type="checkbox" 
                                                checked="@isSelected" 
                                                disabled="@isDisabled"
-                                               tabindex="-1" />
+                                               readonly
+                                               tabindex="-1"
+                                               @onclick:stopPropagation
+                                               @onclick:preventDefault />
                                     }
                                     
                                     @if (ItemTemplate != null)

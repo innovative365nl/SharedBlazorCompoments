@@ -445,7 +445,7 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
             return;
 
         // Use longer delay for multiselect to allow for multiple selections
-        var delay = Multiple ? 300 : 200;
+        var delay = Multiple ? 400 : 200;
 
         // Close dropdown when focus is lost (with a delay to handle clicks within the dropdown)
 #pragma warning disable CA2008
@@ -522,12 +522,10 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
 
         if (Multiple)
         {
-#pragma warning disable CA1868
             // Set toggling flag to prevent blur from closing dropdown
             _isToggling = true;
 
             if (_selectedItems.Contains(item))
-#pragma warning restore CA1868
             {
                 _selectedItems.Remove(item);
             }
@@ -539,9 +537,11 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
             // Update Value with selected values
             var selectedValues = _selectedItems.Select(GetItemValue).ToList();
             await UpdateValue(selectedValues).ConfigureAwait(false);
+            await Change.InvokeAsync(Value).ConfigureAwait(false);
+            StateHasChanged();
 
             // Reset the toggling flag after a longer delay for multiselect
-            await Task.Delay(100).ConfigureAwait(false);
+            await Task.Delay(150).ConfigureAwait(false);
             _isToggling = false;
         }
         else
@@ -549,13 +549,12 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
             _selectedItem = item;
             var value = GetItemValue(item);
             await UpdateValue(value).ConfigureAwait(false);
+            await Change.InvokeAsync(Value).ConfigureAwait(false);
 
             // Close dropdown for single selection
             IsOpen = false;
+            StateHasChanged();
         }
-
-        await Change.InvokeAsync(Value).ConfigureAwait(false);
-        StateHasChanged();
     }
 
     /// <summary>
@@ -575,7 +574,7 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
         StateHasChanged();
 
         // Reset the toggling flag after a longer delay for multiselect
-        await Task.Delay(100).ConfigureAwait(false);
+        await Task.Delay(150).ConfigureAwait(false);
         _isToggling = false;
     }
 
@@ -586,12 +585,10 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
     {
         if (!Multiple || FilteredData == null) return;
 
-#pragma warning disable CA1062
         // Set toggling flag to prevent blur from closing dropdown
         _isToggling = true;
 
         var selectAll = e.Value is bool b && b;
-#pragma warning restore CA1062
         var availableItems = FilteredData.Where(item => !IsItemDisabled(item)).ToList();
 
         if (selectAll)
@@ -620,7 +617,7 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
         StateHasChanged();
 
         // Reset the toggling flag after a longer delay for multiselect
-        await Task.Delay(100).ConfigureAwait(false);
+        await Task.Delay(150).ConfigureAwait(false);
         _isToggling = false;
     }
 
