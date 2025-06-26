@@ -310,6 +310,7 @@ public partial class InnovativeDropdown<TValue> : InnovativeDropdownBase<TValue>
         if (Disabled || ReadOnly) return;
 
         IsOpen = !IsOpen;
+        StateHasChanged();
         
         if (IsOpen && AllowFiltering)
         {
