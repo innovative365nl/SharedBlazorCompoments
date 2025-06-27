@@ -1,0 +1,212 @@
+@page "/example-innovative-dropdown"
+@using Innovative.Blazor.Components.Components
+
+<h2>InnovativeDropdown Example</h2>
+
+<p>This page demonstrates the <b>InnovativeDropdown</b> component and its various features.</p>
+
+<div style="margin-bottom: 2rem;">
+    <h3>Basic String Dropdown</h3>
+    <p>Simple dropdown with string values.</p>
+    <InnovativeDropdown TValue="string" 
+                       Data="@stringItems" 
+                       @bind-Value="@selectedString"
+                       Placeholder="Select a fruit" />
+    <p style="margin-top: 0.5rem;"><strong>Selected:</strong> @selectedString</p>
+</div>
+
+@* <div style="margin-bottom: 2rem;">
+    <h3>Multiple Selection with Chips</h3>
+    <p>Multiple selection mode with chip display and select all functionality.</p>
+    <InnovativeDropdown TValue="List<string>" 
+                       Data="@stringItems" 
+                       @bind-Value="@selectedMultipleStrings"
+                       Multiple="true"
+                       Chips="true"
+                       AllowSelectAll="true"
+                       AllowClear="true"
+                       Placeholder="Select multiple fruits" />
+    <p style="margin-top: 0.5rem;"><strong>Selected Count:</strong> @(selectedMultipleStrings?.Count ?? 0)</p>
+</div> *@
+
+<div style="margin-bottom: 2rem;">
+    <h3>Object Dropdown with Search</h3>
+    <p>Dropdown with complex objects, property binding, and filtering capability.</p>
+    <InnovativeDropdown TValue="int?" 
+                       Data="@people" 
+                       @bind-Value="@selectedPersonId"
+                       TextProperty="@nameof(Person.Name)"
+                       ValueProperty="@nameof(Person.Id)"
+                       AllowFiltering="true"
+                       AllowClear="true"
+                       FilterPlaceholder="Search people..."
+                       Placeholder="Select a person" />
+    <p style="margin-top: 0.5rem;"><strong>Selected Person ID:</strong> @selectedPersonId</p>
+</div>
+
+@* <div style="margin-bottom: 2rem;">
+    <h3>Multiple Object Selection</h3>
+    <p>Multiple selection of complex objects.</p>
+    <InnovativeDropdown TValue="List<int>" 
+                       Data="@people" 
+                       @bind-Value="@selectedPersonIds"
+                       TextProperty="@nameof(Person.Name)"
+                       ValueProperty="@nameof(Person.Id)"
+                       Multiple="true"
+                       AllowFiltering="true"
+                       AllowSelectAll="true"
+                       Separator=" | "
+                       MaxSelectedLabels="2"
+                       Placeholder="Select multiple people" />
+    <p style="margin-top: 0.5rem;"><strong>Selected Count:</strong> @(selectedPersonIds?.Count ?? 0)</p>
+</div> *@
+
+<div style="margin-bottom: 2rem;">
+    <h3>Custom Templates</h3>
+    <p>Dropdown with custom item and value templates.</p>
+    <InnovativeDropdown TValue="int?" 
+                       Data="@people" 
+                       @bind-Value="@selectedPersonIdWithTemplate"
+                       ValueProperty="@nameof(Person.Id)"
+                       AllowFiltering="true"
+                       Placeholder="Select a person">
+        <ItemTemplate>
+            <div style="display: flex; align-items: center; padding: 0.25rem;">
+                <div style="width: 32px; height: 32px; border-radius: 50%; background-color: @((context as Person)?.Color); margin-right: 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                    @((context as Person)?.Name?.Substring(0, 1))
+                </div>
+                <div>
+                    <div style="font-weight: 500;">@((context as Person)?.Name)</div>
+                    <div style="font-size: 0.875rem; color: #666;">@((context as Person)?.Department)</div>
+                </div>
+            </div>
+        </ItemTemplate>
+        <ValueTemplate>
+            <div style="display: flex; align-items: center;">
+                <div style="width: 24px; height: 24px; border-radius: 50%; background-color: @((context as Person)?.Color); margin-right: 0.5rem; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.75rem;">
+                    @((context as Person)?.Name?.Substring(0, 1))
+                </div>
+                @((context as Person)?.Name)
+            </div>
+        </ValueTemplate>
+    </InnovativeDropdown>
+    <p style="margin-top: 0.5rem;"><strong>Selected Person ID:</strong> @selectedPersonIdWithTemplate</p>
+</div>
+
+<div style="margin-bottom: 2rem;">
+    <h3>Disabled Items</h3>
+    <p>Dropdown with some disabled items.</p>
+    <InnovativeDropdown TValue="int?" 
+                       Data="@statusItems" 
+                       @bind-Value="@selectedStatusId"
+                       TextProperty="@nameof(StatusItem.Name)"
+                       ValueProperty="@nameof(StatusItem.Id)"
+                       DisabledProperty="@nameof(StatusItem.IsDisabled)"
+                       Placeholder="Select a status" />
+    <p style="margin-top: 0.5rem;"><strong>Selected Status ID:</strong> @selectedStatusId</p>
+</div>
+
+<div style="margin-bottom: 2rem;">
+    <h3>Disabled Dropdown</h3>
+    <p>The entire dropdown component is disabled.</p>
+    <InnovativeDropdown TValue="string" 
+                       Data="@stringItems" 
+                       @bind-Value="@selectedString"
+                       Disabled="true"
+                       Placeholder="This dropdown is disabled" />
+</div>
+
+<div style="margin-bottom: 2rem;">
+    <h3>Events</h3>
+    <p>Dropdown with event callbacks.</p>
+    <InnovativeDropdown TValue="string" 
+                       Data="@stringItems" 
+                       @bind-Value="@selectedStringWithEvents"
+                       Change="@OnDropdownChange"
+                       OnOpen="@OnDropdownOpen"
+                       OnClose="@OnDropdownClose"
+                       Placeholder="Select to trigger events" />
+    <div style="margin-top: 0.5rem;">
+        <p><strong>Selected:</strong> @selectedStringWithEvents</p>
+        <p><strong>Last Event:</strong> @lastEvent</p>
+    </div>
+</div>
+
+@code {
+    // Simple string dropdown
+    private string? selectedString;
+    private List<string> stringItems = new() { "Apple", "Banana", "Cherry", "Date", "Elderberry", "Fig", "Grape", "Honeydew" };
+
+    // Multiple selection
+    // private List<string>? selectedMultipleStrings = new();
+
+    // People dropdown
+    private int? selectedPersonId;
+    // private List<int>? selectedPersonIds = new();
+    private int? selectedPersonIdWithTemplate;
+    private List<Person> people = new();
+
+    // Status dropdown
+    private int? selectedStatusId;
+    private List<StatusItem> statusItems = new();
+
+    // Events
+    private string? selectedStringWithEvents;
+    private string lastEvent = "None";
+
+    protected override void OnInitialized()
+    {
+        // Initialize people data
+        people = new List<Person>
+        {
+            new Person { Id = 1, Name = "John Doe", Department = "Engineering", Color = "#007bff" },
+            new Person { Id = 2, Name = "Jane Smith", Department = "Design", Color = "#28a745" },
+            new Person { Id = 3, Name = "Bob Johnson", Department = "Marketing", Color = "#ffc107" },
+            new Person { Id = 4, Name = "Alice Brown", Department = "Sales", Color = "#dc3545" },
+            new Person { Id = 5, Name = "Charlie Wilson", Department = "Support", Color = "#6f42c1" },
+            new Person { Id = 6, Name = "Diana Davis", Department = "HR", Color = "#fd7e14" },
+            new Person { Id = 7, Name = "Edward Miller", Department = "Finance", Color = "#20c997" },
+            new Person { Id = 8, Name = "Fiona Garcia", Department = "Legal", Color = "#6c757d" }
+        };
+
+        // Initialize status items
+        statusItems = new List<StatusItem>
+        {
+            new StatusItem { Id = 1, Name = "Active", IsDisabled = false },
+            new StatusItem { Id = 2, Name = "Inactive", IsDisabled = false },
+            new StatusItem { Id = 3, Name = "Pending", IsDisabled = false },
+            new StatusItem { Id = 4, Name = "Archived", IsDisabled = true },
+            new StatusItem { Id = 5, Name = "Deleted", IsDisabled = true }
+        };
+    }
+
+    private void OnDropdownChange(string value)
+    {
+        lastEvent = $"Change: {value}";
+    }
+
+    private void OnDropdownOpen()
+    {
+        lastEvent = "Dropdown opened";
+    }
+
+    private void OnDropdownClose()
+    {
+        lastEvent = "Dropdown closed";
+    }
+
+    public class Person
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Department { get; set; } = string.Empty;
+        public string Color { get; set; } = string.Empty;
+    }
+
+    public class StatusItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public bool IsDisabled { get; set; }
+    }
+}

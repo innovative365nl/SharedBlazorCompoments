@@ -1,0 +1,197 @@
+@namespace Innovative.Blazor.Components.Components
+@typeparam TValue
+@inherits InnovativeDropdownBase<TValue>
+
+@if (Visible)
+{
+    <div @ref="@ElementRef" @attributes="@Attributes" class="@GetCssClass()" 
+         @onclick="@ToggleDropdown"
+         style="@Style" tabindex="@(Disabled ? "-1" : TabIndex)"
+         @onkeydown="@OnKeyDown" id="@Id" @onfocus="@OnFocus" @onblur="@OnBlur">
+        
+        <!-- Hidden input for form submission and accessibility -->
+        <input type="hidden" name="@Name" value="@(GetValueAsString())" disabled="@Disabled" />
+        
+        <!-- Display area -->
+        <div class="innovative-dropdown-display">
+            @if (ValueTemplate != null && SelectedItem != null)
+            {
+                @ValueTemplate(SelectedItem)
+            }
+            else if (SelectedItem != null && !Multiple)
+            {
+                <span class="innovative-dropdown-text">
+                    @GetItemText(SelectedItem)
+                </span>
+            }
+            else if (Multiple && SelectedItems.Count > 0)
+            {
+                @if (Chips && SelectedItems.Count <= MaxSelectedLabels)
+                {
+                    <div class="innovative-dropdown-chips">
+                        @foreach (var item in SelectedItems)
+                        {
+                            <span class="innovative-chip">
+                                <span class="innovative-chip-text">
+                                    @if (ValueTemplate != null)
+                                    {
+                                        @ValueTemplate(item)
+                                    }
+                                    else
+                                    {
+                                        @GetItemText(item)
+                                    }
+                                </span>
+                                @if (!Disabled && !ReadOnly)
+                                {
+                                    <button type="button" class="innovative-chip-remove" 
+                                            @onclick="@(() => RemoveSelectedItem(item))" 
+                                            @onclick:stopPropagation>
+                                        ×
+                                    </button>
+                                }
+                            </span>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <span class="innovative-dropdown-text">
+                        @if (SelectedItems.Count <= MaxSelectedLabels)
+                        {
+                            @(string.Join(Separator, SelectedItems.Select(GetItemText)))
+                        }
+                        else
+                        {
+                            @($"{SelectedItems.Count} {SelectedItemsText}")
+                        }
+                    </span>
+                }
+            }
+            else if (!string.IsNullOrEmpty(Placeholder))
+            {
+                <span class="innovative-dropdown-placeholder">
+                    @Placeholder
+                </span>
+            }
+            else
+            {
+                <span class="innovative-dropdown-text">&nbsp;</span>
+            }
+        </div>
+
+        <!-- Dropdown arrow -->
+        <div class="innovative-dropdown-arrow">
+            <span class="innovative-dropdown-arrow-icon">▼</span>
+        </div>
+
+        <!-- Clear button -->
+        @if (AllowClear && HasValue && !Disabled && !ReadOnly)
+        {
+            <button type="button" class="innovative-dropdown-clear" 
+                    @onclick="@ClearValue" @onclick:stopPropagation
+                    title="Clear selection">
+                ×
+            </button>
+        }
+
+        <!-- Dropdown panel -->
+        @if (IsOpen)
+        {
+            <div class="innovative-dropdown-panel" @onclick:stopPropagation>
+                @if (HeaderTemplate != null)
+                {
+                    <div class="innovative-dropdown-header">
+                        @HeaderTemplate
+                    </div>
+                }
+                else if (AllowFiltering || (Multiple && AllowSelectAll))
+                {
+                    <div class="innovative-dropdown-header">
+                        @if (Multiple && AllowSelectAll && FilteredData?.Any() == true)
+                        {
+                            <label class="innovative-dropdown-select-all">
+                                <input type="checkbox" 
+                                       checked="@IsAllSelected()" 
+                                       @onchange="@ToggleSelectAll" />
+                                @SelectAllText
+                            </label>
+                        }
+                        
+                        @if (AllowFiltering)
+                        {
+                            <div class="innovative-dropdown-filter">
+                                <input type="text" 
+                                       @ref="@FilterInput"
+                                       class="innovative-dropdown-filter-input"
+                                       placeholder="@FilterPlaceholder"
+                                       value="@SearchText"
+                                       @oninput="@OnFilterInput"
+                                       @onkeydown="@OnFilterKeyDown" />
+                            </div>
+                        }
+                    </div>
+                }
+
+                <div class="innovative-dropdown-items-wrapper" style="@PopupStyle">
+                    @if (FilteredData?.Any() == true)
+                    {
+                        <ul class="innovative-dropdown-items" role="listbox">
+                            @{int index = 0;}
+                            @foreach (var item in FilteredData)
+                            {
+                                var isSelected = IsItemSelected(item);
+                                var isHighlighted = index == HighlightedIndex;
+                                var isDisabled = IsItemDisabled(item);
+                                var itemIndex = index;
+                                
+                                <li class="@GetItemCssClass(isSelected, isHighlighted, isDisabled)"
+                                    role="option"
+                                    aria-selected="@isSelected.ToString().ToLowerInvariant()"
+                                    @onclick="@(() => SelectItem(item))"
+                                    @onclick:stopPropagation="@Multiple"
+                                    @onmouseover="@(() => SetHighlightedIndex(itemIndex))">
+                                    
+                                    @if (Multiple)
+                                    {
+                                        <input type="checkbox" 
+                                               checked="@isSelected" 
+                                               disabled="@isDisabled"
+                                               readonly
+                                               tabindex="-1"
+                                               @onclick:stopPropagation
+                                               @onclick:preventDefault />
+                                    }
+                                    
+                                    @if (ItemTemplate != null)
+                                    {
+                                        @ItemTemplate(item)
+                                    }
+                                    else
+                                    {
+                                        <span class="innovative-dropdown-item-text">@GetItemText(item)</span>
+                                    }
+                                </li>
+                                
+                                index++;
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="innovative-dropdown-empty">
+                            @if (EmptyTemplate != null)
+                            {
+                                @EmptyTemplate
+                            }
+                            else
+                            {
+                                <span>No items found</span>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
