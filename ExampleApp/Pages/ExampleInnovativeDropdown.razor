@@ -15,7 +15,7 @@
     <p style="margin-top: 0.5rem;"><strong>Selected:</strong> @selectedString</p>
 </div>
 
-<div style="margin-bottom: 2rem;">
+@* <div style="margin-bottom: 2rem;">
     <h3>Multiple Selection with Chips</h3>
     <p>Multiple selection mode with chip display and select all functionality.</p>
     <InnovativeDropdown TValue="List<string>" 
@@ -27,7 +27,7 @@
                        AllowClear="true"
                        Placeholder="Select multiple fruits" />
     <p style="margin-top: 0.5rem;"><strong>Selected Count:</strong> @(selectedMultipleStrings?.Count ?? 0)</p>
-</div>
+</div> *@
 
 <div style="margin-bottom: 2rem;">
     <h3>Object Dropdown with Search</h3>
@@ -44,7 +44,7 @@
     <p style="margin-top: 0.5rem;"><strong>Selected Person ID:</strong> @selectedPersonId</p>
 </div>
 
-<div style="margin-bottom: 2rem;">
+@* <div style="margin-bottom: 2rem;">
     <h3>Multiple Object Selection</h3>
     <p>Multiple selection of complex objects.</p>
     <InnovativeDropdown TValue="List<int>" 
@@ -59,7 +59,7 @@
                        MaxSelectedLabels="2"
                        Placeholder="Select multiple people" />
     <p style="margin-top: 0.5rem;"><strong>Selected Count:</strong> @(selectedPersonIds?.Count ?? 0)</p>
-</div>
+</div> *@
 
 <div style="margin-bottom: 2rem;">
     <h3>Custom Templates</h3>
@@ -138,11 +138,11 @@
     private List<string> stringItems = new() { "Apple", "Banana", "Cherry", "Date", "Elderberry", "Fig", "Grape", "Honeydew" };
 
     // Multiple selection
-    private List<string>? selectedMultipleStrings = new();
+    // private List<string>? selectedMultipleStrings = new();
 
     // People dropdown
     private int? selectedPersonId;
-    private List<int>? selectedPersonIds = new();
+    // private List<int>? selectedPersonIds = new();
     private int? selectedPersonIdWithTemplate;
     private List<Person> people = new();
 
