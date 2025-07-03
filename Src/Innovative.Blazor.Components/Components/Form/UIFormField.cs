@@ -9,7 +9,7 @@ public sealed class UIFormField(string name) : UIField(name)
 {
     public string? ColumnGroup { get; set; }
     public bool UseWysiwyg { get; set; }
-    private static bool InheritsFromGenericCustomComponent(Type? type)
+    internal static bool InheritsFromGenericCustomComponent(Type? type)
     {
         while (type != null && type != typeof(object))
         {

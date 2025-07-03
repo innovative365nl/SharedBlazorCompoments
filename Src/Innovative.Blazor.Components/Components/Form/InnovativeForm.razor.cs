@@ -314,12 +314,20 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     private void NotifyChange(string propertyName, object? value)
     {
-        var type = Model?.GetType();
-         
-        if (type is not null && type.IsGenericType && type.GetGenericTypeDefinition() == typeof(CustomComponent<>))
+        var props = Model?.GetType().GetProperties() ?? [];
+        foreach (PropertyInfo prop in props)
         {
-            var instance = Model as CustomComponent<TModel>;
-            instance?.OnFormValueChanged(pair: new KeyValuePair<string, object?>(key: propertyName, value: value));
+            var attr = prop?.GetCustomAttribute(typeof(UIFormField));
+
+            if(attr is UIFormField {ShouldNotifyChanges: true } comp && UIFormField.InheritsFromGenericCustomComponent(comp.FormComponent))
+            {
+                /*
+                    // Do some magic to get the instance of CustomComponent<TypeOfProperty>
+                    var instance = prop as CustomComponent<TypeOfProperty>;
+                    // And then invoke OnFormValueChanged
+                    instance?.OnFormValueChanged(pair: new KeyValuePair<string, object?>(key: propertyName, value: value));
+                */
+            }
         }
     }
 
