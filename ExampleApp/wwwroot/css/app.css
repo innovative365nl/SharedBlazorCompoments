@@ -124,3 +124,86 @@ code {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+
+:root {
+    --innov-primary: #a43f13;
+    --innov-primary-light: #db8d75;
+    --innov-primary-lighter: #e6c2b7;
+    --innov-primary-dark: #651c06;
+    --innov-primary-darker: #1f0700;
+    --innov-secondary: #654176;
+    --innov-secondary-light: #B28FC1;
+    --innov-secondary-lighter: #D2C5D8;
+    --innov-secondary-dark: #3E214A;
+    --innov-secondary-darker: #120817;
+
+    --innov-info: #1F82E5;
+    --innov-info-light: #6CA8E4;
+    --innov-info-lighter: #B2CFEB;
+    --innov-info-dark: #0A5CAE;
+    --innov-info-darker: #01366B;
+    --innov-success: #A1DC41;
+    --innov-success-light: #C6E46C;
+    --innov-success-lighter: #DDEBB2;
+    --innov-success-dark: #607D07;
+    --innov-success-darker: #2A3800;
+    --innov-warning: #E5931F;
+    --innov-warning-light: #E4B26C;
+    --innov-warning-lighter: #EBD3B2;
+    --innov-warning-dark: #AE690a;
+    --innov-warning-darker: #6A3E01;
+    --innov-danger: #E52421;
+    --innov-danger-light: #E46E6C;
+    --innov-danger-lighter: #EBB3B2;
+    --innov-danger-dark: #AE0D0A;
+    --innov-danger-darker: #6B0201;
+
+    --innov-on-info: #ffffff;
+    --innov-on-info-light: #000000;
+    --innov-on-info-lighter: #000000;
+    --innov-on-info-dark: #ffffff;
+    --innov-on-info-darker: #ffffff;
+    --innov-on-success: #000000;
+    --innov-on-success-light: #000000;
+    --innov-on-success-lighter: #000000;
+    --innov-on-success-dark: #ffffff;
+    --innov-on-success-darker: #ffffff;
+    --innov-on-warning: #000000;
+    --innov-on-warning-light: #000000;
+    --innov-on-warning-lighter: #000000;
+    --innov-on-warning-dark: #ffffff;
+    --innov-on-warning-darker: #ffffff;
+    --innov-on-danger: #000000;
+    --innov-on-danger-light: #000000;
+    --innov-on-danger-lighter: #000000;
+    --innov-on-danger-dark: #ffffff;
+    --innov-on-danger-darker: #ffffff;
+
+    --innov-on-base: #000000;
+    --innov-on-base-light: #000000;
+    --innov-on-base-lighter: #000000;
+    --innov-on-base-dark: #ffffff;
+    --innov-on-base-darker: #ffffff;
+    --innov-on-primary: #ffffff;
+    --innov-on-primary-light: #000000;
+    --innov-on-primary-lighter: #000000;
+    --innov-on-primary-dark: #ffffff;
+    --innov-on-primary-darker: #ffffff;
+    --innov-on-secondary: #ffffff;
+    --innov-on-secondary-light: #000000;
+    --innov-on-secondary-lighter: #000000;
+    --innov-on-secondary-dark: #ffffff;
+    --innov-on-secondary-darker: #ffffff;
+
+    --innov-base: #383838;
+    --innov-base-50: #fafafa;
+    --innov-base-100: #f3f2f2;
+    --innov-base-200: #d7d4d4;
+    --innov-base-300: #bcb6b6;
+    --innov-base-400: #a09898;
+    --innov-base-500: #857b7b;
+    --innov-base-600: #675f5f;
+    --innov-base-700: #494343;
+    --innov-base-800: #2b2828;
+    --innov-base-900: #0d0c0c;
+}
