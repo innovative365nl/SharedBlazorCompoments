@@ -2,13 +2,35 @@
 @if (visible)
 {
     <div class="innovative-alert @GetSeverityClass()">
-        @if (Closable)
+        @if (GetSeverityClass() == "innovative-alert-info")
         {
-            <button class="innovative-alert-close" @onclick="Close" aria-label="Close">&times;</button>
+            <span class="material-symbols-outlined">
+                info
+            </span>
+        }
+        @if (GetSeverityClass() == "innovative-alert-success")
+        {
+            <span class="material-symbols-outlined">
+                check_small
+            </span>
+        }
+        @if (GetSeverityClass() == "innovative-alert-warning")
+        {
+            <span class="material-symbols-outlined">
+                campaign
+            </span>
+        }
+        @if (GetSeverityClass() == "innovative-alert-error")
+        {
+            <span class="material-symbols-outlined">
+                dangerous
+            </span>
         }
         @if (!string.IsNullOrEmpty(Summary))
         {
-            <div class="innovative-alert-summary">@Summary</div>
+            <div class="innovative-alert-summary">
+                @Summary
+            </div>
         }
         @if (!string.IsNullOrEmpty(Detail))
         {
@@ -17,6 +39,14 @@
         @if (ChildContent != null)
         {
             <div class="innovative-alert-content">@ChildContent</div>
+        }
+        @if (Closable)
+        {
+        <button class="innovative-alert-close" @onclick="Close" aria-label="Close">
+                <span class="material-symbols-outlined">
+                    close
+                </span>
+        </button>
         }
     </div>
 }
