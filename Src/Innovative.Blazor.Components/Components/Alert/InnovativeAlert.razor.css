@@ -5,8 +5,8 @@
     margin: 1rem 0;
     position: relative;
     font-size: 1rem;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: auto 1fr;
     gap: 0.5rem;
     box-shadow: 0px 2px 3px rgba(87, 90, 103, 0.5);
 }
@@ -50,14 +50,17 @@
 .innovative-alert-summary {
     font-weight: bold;
     font-size: 1.1em;
+    display: flex;
 }
 
 .innovative-alert-detail {
     font-size: 0.98em;
+    grid-column-start: 2;
 }
 
 .innovative-alert-content {
     margin-top: 0.5em;
+    grid-column-start: 2;
 }
 
 .material-symbols-outlined {
