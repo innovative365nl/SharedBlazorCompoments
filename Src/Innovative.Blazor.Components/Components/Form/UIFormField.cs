@@ -49,4 +49,5 @@ public sealed class UIFormField(string name) : UIField(name)
     public string[]? FormParameters { get; set; }
     public string? TextProperty { get; set; }
     public string DataTestId { get; set; } = string.Empty;
+    public bool ShouldNotifyChanges { get; set; }
 }
