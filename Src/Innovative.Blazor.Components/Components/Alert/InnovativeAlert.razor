@@ -2,6 +2,14 @@
 @if (visible)
 {
     <div class="innovative-alert @GetSeverityClass()">
+        @if (Closable)
+        {
+        <button class="innovative-alert-close" @onclick="Close" aria-label="Close">
+            <span class="material-symbols-outlined">
+                close
+            </span>
+        </button>
+        }
         @if (GetSeverityClass() == "innovative-alert-info")
         {
             <span class="material-symbols-outlined" aria-hidden="true">
@@ -39,14 +47,6 @@
         @if (ChildContent != null)
         {
             <div class="innovative-alert-content">@ChildContent</div>
-        }
-        @if (Closable)
-        {
-        <button class="innovative-alert-close" @onclick="Close" aria-label="Close">
-                <span class="material-symbols-outlined">
-                    close
-                </span>
-        </button>
         }
     </div>
 }
