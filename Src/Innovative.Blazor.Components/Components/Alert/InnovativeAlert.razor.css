@@ -22,7 +22,7 @@
 }
 
 .innovative-alert-warning {
-    background: var(--innov-warning-light, #C6E46C);
+    background: var(--innov-warning-light, #E4B26C);
     color: var(--innov-on-warning-light, #000000);
 }
 
