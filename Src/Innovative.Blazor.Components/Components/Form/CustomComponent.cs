@@ -14,6 +14,4 @@ public abstract class CustomComponent<T> : ComponentBase
     public EventCallback ValueChanged { get; set; }
 
     protected void OnValueChanged() => ValueChanged.InvokeAsync(arg: Value);
-
-    public virtual void OnFormValueChanged(KeyValuePair<string, object?> pair) { }
 }

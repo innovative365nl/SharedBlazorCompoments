@@ -233,11 +233,11 @@ public static class DynamicFormViewTestExtensions
         return formValues?.TryGetValue(propertyName, out var value) == true ? value : null;
     }
 
-    public static void SetFormValue<T>(this InnovativeForm<T> component, string propertyName, object value)
+    public static void SetFormValue<T>(this InnovativeForm<T> component, string propertyName, object value, bool shouldNotifyChange = false)
     {
         var setValueMethod = typeof(InnovativeForm<T>).GetMethod("SetValue",
                                                                             BindingFlags.NonPublic | BindingFlags.Instance);
-        setValueMethod?.Invoke(component, new[] { propertyName, value });
+        setValueMethod?.Invoke(component, new[] { propertyName, value, shouldNotifyChange });
     }
 
     public static IReadOnlyCollection<PropertyInfo>? GetUngroupedProperties<T>(this InnovativeForm<T> component)

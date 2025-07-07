@@ -18,19 +18,4 @@ public partial class FullNamePreviewComponent : CustomComponent<PersonPreviewMod
             }
         }
     }
-
-    public override void OnFormValueChanged(KeyValuePair<string, object?> pair)
-    {
-        if (Value != null)
-        {
-            if (pair is {Key: nameof(PersonPreviewModel.FirstName), Value: string firstName})
-            {
-                Value.FirstName = firstName;
-            }
-            if (pair is {Key: nameof(PersonPreviewModel.LastName), Value: string lastName})
-            {
-                Value.LastName = lastName;
-            }
-        }
-    }
 }

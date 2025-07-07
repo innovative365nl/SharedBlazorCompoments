@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -103,8 +102,23 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     public Task OnFormReset()
     {
+        ResetToOriginalValues();
         ParentDialog?.CloseCustomDialog();
         return Task.CompletedTask;
+    }
+
+    private void ResetToOriginalValues()
+    {
+        foreach (var property in GetPropertiesWithUiFormField())
+        {
+            var fieldAttribute = property.GetCustomAttribute<UIFormField>();
+            bool notifyChanges = fieldAttribute?.ShouldNotifyChanges ?? false;
+
+            if (notifyChanges)
+            {
+                NotifyPropertyChanged(property.Name, property.GetValue(obj: Model));
+            }
+        }
     }
 
     protected string GetColumnWidthClass(string columnGroup)
@@ -216,7 +230,6 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         {
             try
             {
-
                 if (attribute.FormComponent != null)
                 {
                     // Add label for component
@@ -307,26 +320,21 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         formValues[key: propertyName] = value;
         if (shouldNotifyChange)
         {
-            Console.WriteLine($"Setting value for {propertyName} to {value}");
-            NotifyChange(propertyName: propertyName, value: value);
+            NotifyPropertyChanged(propertyName: propertyName, value: value);
         }
     }
 
-    private void NotifyChange(string propertyName, object? value)
+    private void NotifyPropertyChanged(string propertyName, object? value)
     {
-        var props = Model?.GetType().GetProperties() ?? [];
-        foreach (PropertyInfo prop in props)
+        var properties = Model?.GetType().GetProperties() ?? [];
+        foreach (PropertyInfo info in properties)
         {
-            var attr = prop?.GetCustomAttribute(typeof(UIFormField));
+            var modelProperty = info?.GetValue(Model);
 
-            if(attr is UIFormField {ShouldNotifyChanges: true } comp && UIFormField.InheritsFromGenericCustomComponent(comp.FormComponent))
+            if (modelProperty is INotifyFormValueChanged complexType)
             {
-                /*
-                    // Do some magic to get the instance of CustomComponent<TypeOfProperty>
-                    var instance = prop as CustomComponent<TypeOfProperty>;
-                    // And then invoke OnFormValueChanged
-                    instance?.OnFormValueChanged(pair: new KeyValuePair<string, object?>(key: propertyName, value: value));
-                */
+                complexType.OnFormValueChanged(propertyName, value);
+                return;
             }
         }
     }

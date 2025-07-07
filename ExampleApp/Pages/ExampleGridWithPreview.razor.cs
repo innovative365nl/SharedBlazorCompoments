@@ -48,7 +48,7 @@ public partial class ExampleGridWithPreview(IInnovativeSidePanelService sidePane
     }
 }
 
-public record PersonPreviewModel
+public record PersonPreviewModel: INotifyFormValueChanged
 {
     public Guid Id { get; set; }
 
@@ -57,6 +57,19 @@ public record PersonPreviewModel
     public string? LastName { get; set; }
 
     public override string ToString() => $"{FirstName} {LastName}";
+
+    public void OnFormValueChanged(string propertyName, object? value)
+    {
+        switch (propertyName)
+        {
+            case nameof(FirstName):
+                FirstName = value?.ToString();
+                break;
+            case nameof(LastName):
+                LastName = value?.ToString();
+                break;
+        }
+    }
 }
 
 [UIGridClass(AllowSorting = true)]

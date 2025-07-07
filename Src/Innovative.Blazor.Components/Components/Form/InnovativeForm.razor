@@ -6,7 +6,7 @@
     <section class="rz-dialog-side-content-layout">
         @{
             var model = Model as FormModel;
-            System.Diagnostics.Debug.Assert(model != null, nameof(model) + " != null");
+            System.Diagnostics.Debug.Assert(model != null, $"{nameof(model)} is null!");
             foreach (var exception in model.Exceptions)
             {
                 <section class="rz-alert rz-background-color-danger-lighter gap-2 column-span-4">
