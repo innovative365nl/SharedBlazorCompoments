@@ -1,7 +1,7 @@
 @namespace Innovative.Blazor.Components.Components
 @if (visible)
 {
-    <div class="innovative-alert @GetSeverityClass()">
+    <article class="innovative-alert @GetSeverityClass()">
         @if (Closable)
         {
             <button class="innovative-alert-close" @onclick="Close" aria-label="Close">
@@ -36,19 +36,19 @@
         }
         @if (!string.IsNullOrEmpty(Summary))
         {
-            <div class="innovative-alert-summary">
+            <h3 class="innovative-alert-summary">
                 @Summary
-            </div>
+            </h3>
         }
         @if (!string.IsNullOrEmpty(Detail))
         {
-            <div class="innovative-alert-detail">@Detail</div>
+            <p class="innovative-alert-detail">@Detail</p>
         }
         @if (ChildContent != null)
         {
-            <div class="innovative-alert-content">@ChildContent</div>
+            <p class="innovative-alert-content">@ChildContent</p>
         }
-    </div>
+    </article>
 }
 
 @code {

@@ -36,6 +36,7 @@
     top: .5rem;
     right: .5rem;
     padding: .5rem;
+    line-height: 1;
     background: none;
     border: none;
     color: inherit;
@@ -50,12 +51,12 @@
 
 .innovative-alert-summary {
     font-weight: bold;
-    font-size: 1.1em;
+    font-size: 1.125rem;
     display: flex;
 }
 
 .innovative-alert-detail {
-    font-size: 0.98em;
+    font-size: 1rem;
     grid-column-start: 2;
 }
 
@@ -67,4 +68,8 @@
 .material-symbols-outlined {
     font-family: 'Material Symbols', sans-serif;
     display: inline-block;
+}
+
+h3, p {
+    margin-bottom: 0;
 }
