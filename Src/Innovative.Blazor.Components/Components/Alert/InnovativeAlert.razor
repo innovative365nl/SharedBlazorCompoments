@@ -4,11 +4,20 @@
     <div class="innovative-alert @GetSeverityClass()">
         @if (Closable)
         {
-            <button class="innovative-alert-close" @onclick="Close" aria-label="Close">&times;</button>
+            <button class="innovative-alert-close" @onclick="Close" aria-label="Close">
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+            </button>
         }
+        <span class="material-symbols-outlined" aria-hidden="true">
+            @GetIconName()
+        </span>
         @if (!string.IsNullOrEmpty(Summary))
         {
-            <div class="innovative-alert-summary">@Summary</div>
+            <div class="innovative-alert-summary">
+                @Summary
+            </div>
         }
         @if (!string.IsNullOrEmpty(Detail))
         {
@@ -29,4 +38,14 @@
         AlertSeverity.Error => "innovative-alert-error",
         _ => "innovative-alert-info"
     };
+
+    @code {
+        private string GetIconName() => Severity switch
+        {
+            AlertSeverity.Success => "check_small",
+            AlertSeverity.Warning => "campaign",
+            AlertSeverity.Error => "dangerous",
+            _ => "info"
+        };
+    }
 }
