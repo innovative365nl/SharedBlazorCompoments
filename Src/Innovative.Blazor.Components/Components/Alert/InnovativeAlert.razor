@@ -5,35 +5,14 @@
         @if (Closable)
         {
             <button class="innovative-alert-close" @onclick="Close" aria-label="Close">
-                <span class="material-symbols-outlined">
-                    close
-                </span>
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
             </button>
         }
-        @if (GetSeverityClass() == "innovative-alert-info")
-        {
-            <span class="material-symbols-outlined" aria-hidden="true">
-                info
-            </span>
-        }
-        @if (GetSeverityClass() == "innovative-alert-success")
-        {
-            <span class="material-symbols-outlined" aria-hidden="true">
-                check_small
-            </span>
-        }
-        @if (GetSeverityClass() == "innovative-alert-warning")
-        {
-            <span class="material-symbols-outlined" aria-hidden="true">
-                campaign
-            </span>
-        }
-        @if (GetSeverityClass() == "innovative-alert-error")
-        {
-            <span class="material-symbols-outlined" aria-hidden="true">
-                dangerous
-            </span>
-        }
+        <span class="material-symbols-outlined" aria-hidden="true">
+            @GetIconName()
+        </span>
         @if (!string.IsNullOrEmpty(Summary))
         {
             <div class="innovative-alert-summary">
@@ -59,4 +38,14 @@
         AlertSeverity.Error => "innovative-alert-error",
         _ => "innovative-alert-info"
     };
+
+    @code {
+        private string GetIconName() => Severity switch
+        {
+            AlertSeverity.Success => "check_small",
+            AlertSeverity.Warning => "campaign",
+            AlertSeverity.Error => "dangerous",
+            _ => "info"
+        };
+    }
 }
