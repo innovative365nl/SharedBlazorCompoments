@@ -30,10 +30,10 @@
         <LastGenOutput>Translations.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Update="Localizations\Translations.nl.resx">
-        <DependentUpon>Localizations\Translations.resx</DependentUpon>
+        <DependentUpon>Translations.resx</DependentUpon>
       </EmbeddedResource>
       <EmbeddedResource Update="Localizations\Translations.nl-nl.resx">
-        <DependentUpon>Localizations\Translations.resx</DependentUpon>
+        <DependentUpon>Translations.resx</DependentUpon>
       </EmbeddedResource>
       <Compile Update="Localizations\Translations.Designer.cs">
         <DesignTime>True</DesignTime>
