@@ -102,8 +102,23 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     public Task OnFormReset()
     {
+        ResetToOriginalValues();
         ParentDialog?.CloseCustomDialog();
         return Task.CompletedTask;
+    }
+
+    private void ResetToOriginalValues()
+    {
+        foreach (var property in GetPropertiesWithUiFormField())
+        {
+            var fieldAttribute = property.GetCustomAttribute<UIFormField>();
+            bool notifyChanges = fieldAttribute?.ShouldNotifyChanges ?? false;
+
+            if (notifyChanges)
+            {
+                NotifyPropertyChanged(property.Name, property.GetValue(obj: Model));
+            }
+        }
     }
 
     protected string GetColumnWidthClass(string columnGroup)
@@ -120,6 +135,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     protected RenderFragment RenderPropertyField(PropertyInfo property) => builder =>
     {
         var fieldAttribute = property.GetCustomAttribute<UIFormField>();
+        bool notifyChanges = fieldAttribute?.ShouldNotifyChanges ?? false;
         var propName = property.Name;
         int sequence = 0;
 
@@ -145,7 +161,8 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                 builder.AddAttribute(sequence++,"data-test-id", fieldAttribute.DataTestId);
 
                 builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.ValueChanged),
-                                     EventCallback.Factory.Create<string>(this, val => SetValue(propertyName: propName, value: val)));
+                                     EventCallback.Factory.Create<string>(this, val =>
+                                                                                    SetValue(propertyName: propName, value: val, notifyChanges)));
                 builder.AddAttribute(sequence++, "Style", "height: max-content; min-height: 250px; max-height: 400px;");
                 builder.AddAttribute(sequence, "Name", propName);
                 builder.CloseComponent();
@@ -158,7 +175,8 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
                 builder.AddAttribute(sequence++, nameof(RadzenTextBox.ValueChanged),
 
-                                     EventCallback.Factory.Create<string>(this, val => SetValue(propertyName: propName, value: val)));
+                                     EventCallback.Factory.Create<string>(this, val =>
+                                                                                    SetValue(propertyName: propName, value: val, notifyChanges)));
                 builder.AddAttribute(sequence, "Name", propName);
 
                 builder.CloseComponent();
@@ -173,7 +191,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Value), value);
             builder.AddAttribute(sequence++,"data-test-id", fieldAttribute?.DataTestId);
             builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.ValueChanged),
-                                 EventCallback.Factory.Create<int?>(this, val => SetValue(propertyName: propName, value: val)));
+                                 EventCallback.Factory.Create<int?>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
             builder.AddAttribute(sequence++, "Name", propName);
             builder.AddAttribute(sequence, "ReadOnly", isReadOnly);
             builder.CloseComponent();
@@ -186,7 +204,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.Value), value);
             builder.AddAttribute(sequence++,"data-test-id", fieldAttribute?.DataTestId);
             builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.ValueChanged),
-                                 EventCallback.Factory.Create<bool?>(this, val => SetValue(propertyName: propName, value: val)));
+                                 EventCallback.Factory.Create<bool?>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
             builder.AddAttribute(sequence, "Name", propName);
             builder.CloseComponent();
         }
@@ -198,7 +216,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Value), value);
             builder.AddAttribute(sequence++,"data-test-id", fieldAttribute?.DataTestId);
             builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.ValueChanged),
-                                 EventCallback.Factory.Create<DateTime?>(this, val => SetValue(propertyName: propName, value: val)));
+                                 EventCallback.Factory.Create<DateTime?>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
             builder.AddAttribute(sequence, "Name", propName);
             builder.CloseComponent();
         }
@@ -212,7 +230,6 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         {
             try
             {
-
                 if (attribute.FormComponent != null)
                 {
                     // Add label for component
@@ -228,7 +245,8 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                     builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
                     builder.AddAttribute(sequence++, "DataTestId", attribute.DataTestId);
                     builder.AddAttribute(sequence++, "ValueChanged",
-                                         EventCallback.Factory.Create(this, val => SetValue(propertyName: propName, value: val)));
+                                         EventCallback.Factory.Create(this, val =>
+                                                                                SetValue(propertyName: propName, value: val, attribute.ShouldNotifyChanges)));
 
                     if (attribute.DisplayParameters?.Length > 0)
                     {
@@ -297,7 +315,29 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         return null;
     }
 
-    private void SetValue(string propertyName, object? value) => formValues[key: propertyName] = value;
+    private void SetValue(string propertyName, object? value, bool shouldNotifyChange = false)
+    {
+        formValues[key: propertyName] = value;
+        if (shouldNotifyChange)
+        {
+            NotifyPropertyChanged(propertyName: propertyName, value: value);
+        }
+    }
+
+    private void NotifyPropertyChanged(string propertyName, object? value)
+    {
+        var properties = Model?.GetType().GetProperties() ?? [];
+        foreach (PropertyInfo info in properties)
+        {
+            var modelProperty = info?.GetValue(Model);
+
+            if (modelProperty is INotifyFormValueChanged complexType)
+            {
+                complexType.OnFormValueChanged(propertyName, value);
+                return;
+            }
+        }
+    }
 
     private static PropertyInfo[] GetPropertiesWithUiFormField()
     {

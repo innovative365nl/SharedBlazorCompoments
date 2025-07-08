@@ -9,7 +9,8 @@ public sealed class UIFormField(string name) : UIField(name)
 {
     public string? ColumnGroup { get; set; }
     public bool UseWysiwyg { get; set; }
-    private static bool InheritsFromGenericCustomComponent(Type? type)
+
+    internal static bool InheritsFromGenericCustomComponent(Type? type)
     {
         while (type != null && type != typeof(object))
         {
@@ -19,6 +20,7 @@ public sealed class UIFormField(string name) : UIField(name)
         }
         return false;
     }
+
     private Type? _displayComponent;
     public Type? DisplayComponent
     {
@@ -32,7 +34,7 @@ public sealed class UIFormField(string name) : UIField(name)
             _displayComponent = value;
         }
     }
-    public string[]? DisplayParameters { get; set; }
+
     private Type? _formComponent;
     public Type? FormComponent
     {
@@ -46,7 +48,10 @@ public sealed class UIFormField(string name) : UIField(name)
             _formComponent = value;
         }
     }
+
+    public string[]? DisplayParameters { get; set; }
     public string[]? FormParameters { get; set; }
     public string? TextProperty { get; set; }
     public string DataTestId { get; set; } = string.Empty;
+    public bool ShouldNotifyChanges { get; set; }
 }
