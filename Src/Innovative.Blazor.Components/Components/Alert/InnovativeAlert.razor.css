@@ -39,8 +39,7 @@
     line-height: 1;
     min-height: 2.25rem;
     min-width: 2.25rem;
-    display: grid;
-    align-items: center;
+    place-items: center;
     background: none;
     border: none;
     color: inherit;
