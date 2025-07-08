@@ -19,9 +19,9 @@
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" />
         <PackageReference Include="Microsoft.Extensions.Localization" />
+        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" />
         <PackageReference Include="Microsoft.Kiota.Abstractions" />
         <PackageReference Include="Radzen.Blazor" />
-        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,9 +29,12 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Translations.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
+      <EmbeddedResource Update="Localizations\Translations.nl.resx">
+        <DependentUpon>Localizations\Translations.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Localizations\Translations.nl-nl.resx">
+        <DependentUpon>Localizations\Translations.resx</DependentUpon>
+      </EmbeddedResource>
       <Compile Update="Localizations\Translations.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
