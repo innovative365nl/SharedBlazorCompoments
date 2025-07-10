@@ -48,7 +48,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
             var column = formModel.Columns.FirstOrDefault(c => c.Name == columnGroup);
             if (column is { Width: > 0 })
             {
-                return $"column-span-{column.Width}";
+                return $"col-{column.Width}";
             }
         }
 

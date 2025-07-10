@@ -128,7 +128,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                         ? model.Columns.SingleOrDefault(predicate: col => col.Name == columnGroup)?.Width ?? none
                         : none;
 
-        return width == none ? string.Empty : $"column-span-{width}";
+        return width == none ? string.Empty : $"col-{width}";
     }
 
     [ExcludeFromCodeCoverage]
