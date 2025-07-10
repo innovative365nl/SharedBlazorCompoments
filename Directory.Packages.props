@@ -4,16 +4,16 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Microsoft Packages -->
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.7" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
-    <PackageVersion Include="Microsoft.Extensions.Localization" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.7" />
     <PackageVersion Include="Microsoft.Kiota.Abstractions" Version="1.19.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <!-- 3rd party Packages -->
-    <PackageVersion Include="Radzen.Blazor" Version="7.1.4" />
+    <PackageVersion Include="Radzen.Blazor" Version="7.1.5" />
     <!-- Testing Packages -->
     <PackageVersion Include="bunit" Version="1.40.0" />
     <PackageVersion Include="FluentAssertions" Version="8.4.0" />
