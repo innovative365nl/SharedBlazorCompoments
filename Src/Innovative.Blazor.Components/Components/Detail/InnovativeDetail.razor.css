@@ -70,7 +70,6 @@
     grid-column: span 10;
 }
 
-.col,
 .col-12 {
     width: auto;
     grid-column: span 12;
@@ -86,15 +85,7 @@
 
 .form-ungrouped {
     margin-top: 1rem;
-    grid-column: span 4;
-}
-
-.form-column-group ::deep .rz-datepicker {
-    display: grid;
-}
-
-.form-column-group ::deep  .rz-datepicker > .rz-inputtext {
-    width: unset;
+    grid-column: span 12;
 }
 
 .html-content {
