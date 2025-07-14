@@ -121,6 +121,11 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         }
     }
 
+    // TODO: Implement a col-12 class system (similar to Bootstrap).
+    // Example usage:
+    // - col-6: Two equally sized columns side by side (each taking 6 cols)
+    // - col-12: Full-width column (taking 12 cols)
+    // Note: A class named 'col' without a number is not used or supported in this system.
     protected string GetColumnWidthClass(string columnGroup)
     {
         const int none = 0; // 0 width should return empty string

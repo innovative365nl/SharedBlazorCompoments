@@ -40,6 +40,11 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         }
     }
 
+    // TODO: Implement a col-12 class system (similar to Bootstrap).
+    // Example usage:
+    // - col-6: Two equally sized columns side by side (each taking 6 cols)
+    // - col-12: Full-width column (taking 12 cols)
+    // Note: A class named 'col' without a number is not used or supported in this system.
     private string GetColumnWidthClass(string columnGroup)
     {
         // First check if Model is DisplayFormModel and get column info from there
