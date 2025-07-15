@@ -3,7 +3,7 @@
 @typeparam TModel
 
 <RadzenTemplateForm TItem="TModel" Data="@Model" Submit="@OnFormSubmit">
-    <section class="rz-dialog-side-content-layout">
+    <section class="innovative-grid-layout">
         @{
             var model = Model as FormModel;
             System.Diagnostics.Debug.Assert(model != null, $"{nameof(model)} is null!");
@@ -17,7 +17,6 @@
                 </section>
             }
         }
-        <br/>
 
         @foreach (var group in OrderedColumnGroups)
         {

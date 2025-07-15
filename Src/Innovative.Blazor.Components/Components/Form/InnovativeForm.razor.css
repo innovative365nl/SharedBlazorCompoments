@@ -1,68 +1,116 @@
-﻿.rz-dialog-side-content-layout {
+﻿.innovative-grid-layout {
     display: grid;
-    grid-template-columns: auto;
+    grid-template-columns: repeat(12, 1fr);
     gap: 1rem;
 }
 
-.rz-dialog-side-content-layout ::deep .rz-label {
-    width: max-content;
+/* Column spanning classes */
+.col-1 {
+    width: auto;
+    grid-column: span 1;
 }
 
-.rz-dialog-side-content-layout ::deep .rz-textbox {
-    width: 100%;
+.col-2 {
+    width: auto;
+    grid-column: span 2;
 }
 
-/* Second grid for labels and inputs */
+.col-3 {
+    width: auto;
+    grid-column: span 3;
+}
+
+.col-4 {
+    width: auto;
+    grid-column: span 4;
+}
+
+.col-5 {
+    width: auto;
+    grid-column: span 5;
+}
+
+.col-6 {
+    width: auto;
+    grid-column: span 6;
+}
+
+.col-6 {
+    width: auto;
+    grid-column: span 6;
+}
+
+.col-7 {
+    width: auto;
+    grid-column: span 7;
+}
+
+.col-8 {
+    width: auto;
+    grid-column: span 8;
+}
+
+.col-9 {
+    width: auto;
+    grid-column: span 9;
+}
+
+.col-9 {
+    width: auto;
+    grid-column: span 9;
+}
+
+.col-10 {
+    width: auto;
+    grid-column: span 10;
+}
+
+.col-11 {
+    width: auto;
+    grid-column: span 11;
+}
+
+.col-12 {
+    width: auto;
+    grid-column: span 12;
+}
+
 .form-column-group {
     margin-bottom: 1rem;
     display: grid;
-    gap: 1rem;
+    grid-template-rows: auto 1fr;
+    gap: 0.25rem;
+    align-items: baseline;
 }
 
 .form-ungrouped {
     margin-top: 1rem;
+    grid-column: span 12;
 }
 
-/* Column spanning classes */
-.column-span-1 {
-    grid-template-columns: 1fr 2fr;
-    align-items: center;
+.form-column-group ::deep .rz-datepicker {
+    display: grid;
 }
 
-.column-span-2 {
-    grid-column: span 2;
-}
-
-.column-span-3 {
-    align-items: start;
-
-    grid-column: span 3;
-}
-
-.column-span-4 {
-    grid-column: span 4;
-}
-
-/* Full width column */
-.column-span-full {
-    grid-column: 1 / -1;
-}
-
-.material-symbols-outlined {
-    font-family: 'Material Symbols', sans-serif;
+.form-column-group ::deep  .rz-datepicker > .rz-inputtext {
+    width: unset;
 }
 
 /* Small screens */
 @media (max-width: 1280px) {
-    .column-span-2 {
-        grid-column: span 4;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
-    }
-
-    .column-span-3,
-    .column-span-4 {
-        grid-column: span 4;
+    /* Every span goes full width */
+    .col-1,
+    .col-2,
+    .col-3,
+    .col-4,
+    .col-5,
+    .col-6,
+    .col-7,
+    .col-8,
+    .col-9,
+    .col-10,
+    .col-11 {
+        grid-column: span 12;
     }
 
     .rz-dialog-side-content-layout ::deep .rz-label{
