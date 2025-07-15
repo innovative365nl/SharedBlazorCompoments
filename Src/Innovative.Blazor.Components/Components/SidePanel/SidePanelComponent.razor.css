@@ -32,13 +32,22 @@
 }
 
 .sidepanel-icon-button {
-    border: 0;
+    padding: .5rem;
+    line-height: 1;
+    min-height: 2.25rem;
+    min-width: 2.25rem;
+    display: grid;
+    place-items: center;
+    background: none;
+    border: none;
+    color: inherit;
     cursor: pointer;
-    background-color: transparent;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.sidepanel-icon-button:hover {
+    background: rgba(0,0,0,0.1);
 }
 
 .sidepanel-icon-button .material-symbols-outlined {
