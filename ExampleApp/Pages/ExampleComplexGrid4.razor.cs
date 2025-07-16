@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using ExampleApp.Components;
+using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Services;
 
@@ -103,6 +104,7 @@ public sealed class Person4GridModel
     }
 }
 
+[UIFormClass(title: "Person", ResourceType = typeof(Example))]
 public sealed class Person4FormModel : FormModel
 {
     private const string ColumnGroup1 = "PropertyColumn1";

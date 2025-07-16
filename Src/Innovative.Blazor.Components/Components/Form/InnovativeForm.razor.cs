@@ -140,9 +140,12 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     [ExcludeFromCodeCoverage]
     protected RenderFragment RenderPropertyField(PropertyInfo property) => builder =>
     {
+        const string testIdKey = "data-test-id";
+
         var fieldAttribute = property.GetCustomAttribute<UIFormField>();
         bool notifyChanges = fieldAttribute?.ShouldNotifyChanges ?? false;
         var propName = property.Name;
+        var isReadOnly = !property.CanWrite;
         int sequence = 0;
 
         builder.OpenComponent<RadzenLabel>(sequence++);
@@ -153,7 +156,6 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         }
         builder.CloseComponent();
 
-        var isReadOnly = !property.CanWrite;
         if (property.PropertyType == typeof(string))
         {
             var value = GetStringValue(propertyName: propName);
@@ -170,7 +172,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                 if (isReadOnly)
                     builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.Disabled), true);
                 if (!string.IsNullOrEmpty(fieldAttribute.DataTestId))
-                    builder.AddAttribute(sequence++, "data-test-id", fieldAttribute.DataTestId);
+                    builder.AddAttribute(sequence++, testIdKey, fieldAttribute.DataTestId);
 
                 AppendFormParameters(builder, fieldAttribute.FormParameters, ref sequence);
                 builder.CloseComponent();
@@ -186,7 +188,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                 if (isReadOnly)
                     builder.AddAttribute(sequence++, nameof(RadzenTextBox.Disabled), true);
                 if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
-                    builder.AddAttribute(sequence++, "data-test-id", fieldAttribute.DataTestId);
+                    builder.AddAttribute(sequence++, testIdKey, fieldAttribute.DataTestId);
 
                 AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
                 builder.CloseComponent();
@@ -205,7 +207,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             if (isReadOnly)
                 builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Disabled), true);
             if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
-                builder.AddAttribute(sequence++, "data-test-id", fieldAttribute.DataTestId);
+                builder.AddAttribute(sequence++, testIdKey, fieldAttribute.DataTestId);
 
             AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
             builder.CloseComponent();
@@ -223,7 +225,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             if (isReadOnly)
                 builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.Disabled), true);
             if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
-                builder.AddAttribute(sequence++, "data-test-id", fieldAttribute.DataTestId);
+                builder.AddAttribute(sequence++, testIdKey, fieldAttribute.DataTestId);
 
             AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
             builder.CloseComponent();
@@ -241,7 +243,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             if (isReadOnly)
                 builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Disabled), true);
             if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
-                builder.AddAttribute(sequence++, "data-test-id", fieldAttribute.DataTestId);
+                builder.AddAttribute(sequence++, testIdKey, fieldAttribute.DataTestId);
 
             AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
             builder.CloseComponent();
@@ -256,10 +258,28 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             if (equalIndex > 0 && equalIndex < parameter.Length - 1)
             {
                 string paramName = parameter[..equalIndex];
-                string paramValue = parameter[(equalIndex + 1)..];
-                builder.AddAttribute(sequence: sequence++, name: paramName, value: paramValue);
+                equalIndex++;
+                string paramValue = parameter[equalIndex..];
+                builder.AddAttribute(sequence: sequence++, name: paramName, value: Objectify(paramValue));
             }
         }
+    }
+
+    private static object? Objectify(string? value)
+    {
+        if (value == null)
+            return null;
+
+        if (bool.TryParse(value, out bool boolValue))
+            return boolValue;
+
+        if (int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int intValue))
+            return intValue;
+
+        if (double.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out double doubleValue))
+            return doubleValue;
+
+        return value;
     }
 
     [ExcludeFromCodeCoverage]
