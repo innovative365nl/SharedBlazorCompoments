@@ -3,9 +3,9 @@ using Innovative.Blazor.Components.Components;
 
 namespace ExampleApp.Components;
 
-public partial class FullNamePreviewComponent : CustomComponent<PersonPreviewModel>
+public partial class FullNamePreviewComponent : CustomComponent<Person4Model>
 {
-    public new PersonPreviewModel? Value
+    public new Person4Model? Value
     {
         get => base.Value;
         set
