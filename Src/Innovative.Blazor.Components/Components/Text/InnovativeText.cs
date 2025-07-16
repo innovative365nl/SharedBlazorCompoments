@@ -160,55 +160,56 @@ protected override void BuildRenderTree(RenderTreeBuilder builder)
     }
 
     // Open the element with the determined tag name
-    builder.OpenElement(0, tagName);
+    int sequence = 0;
+    builder.OpenElement(sequence++, tagName);
 
     // Add style attribute if provided
     if (!string.IsNullOrEmpty(Style))
     {
-        builder.AddAttribute(1, "style", Style);
+        builder.AddAttribute(sequence++, "style", Style);
     }
 
     // Add class attribute with all calculated classes
-    builder.AddAttribute(2, "class", classNames);
+    builder.AddAttribute(sequence++, "class", classNames);
 
     // Add any additional attributes passed to the component
     if (Attributes != null)
     {
-        builder.AddMultipleAttributes(3, Attributes);
+        builder.AddMultipleAttributes(sequence++, Attributes);
     }
 
     // Add the content - either formatted property+value, text, or child content
     if (ShowPropertyName && !string.IsNullOrEmpty(displayPropertyName) && !string.IsNullOrEmpty(displayText))
     {
         // Create property name with bold formatting
-        builder.OpenElement(4, "span");
-        builder.AddAttribute(5, "class", "innovative-text-property-name");
-        builder.AddAttribute(6, "style", "font-weight: bold;");
-        builder.AddContent(7, displayPropertyName);
+        builder.OpenElement(sequence++, "span");
+        builder.AddAttribute(sequence++, "class", "innovative-text-property-name");
+        builder.AddAttribute(sequence++, "style", "font-weight: bold;");
+        builder.AddContent(sequence++, displayPropertyName);
         builder.CloseElement(); // Close property name span
 
         // Add separator
-        builder.AddContent(8, ": ");
+        builder.AddContent(sequence++, ": ");
 
         // Add value
-        builder.AddContent(9, displayText);
+        builder.AddContent(sequence++, displayText);
     }
     else if (!string.IsNullOrEmpty(displayText))
     {
-        builder.AddContent(10, displayText);
+        builder.AddContent(sequence++, displayText);
     }
     else if (ChildContent != null)
     {
-        builder.AddContent(11, ChildContent);
+        builder.AddContent(sequence++, ChildContent);
     }
 
     // Add anchor if specified
     if (!string.IsNullOrEmpty(Anchor))
     {
-        builder.OpenElement(12, "a");
-        builder.AddAttribute(13, "id", Anchor);
-        builder.AddAttribute(14, "href", $"#{Anchor}");
-        builder.AddAttribute(15, "class", "innovative-link");
+        builder.OpenElement(sequence++, "a");
+        builder.AddAttribute(sequence++, "id", Anchor);
+        builder.AddAttribute(sequence++, "href", $"#{Anchor}");
+        builder.AddAttribute(sequence, "class", "innovative-link");
         builder.CloseElement();
     }
 
