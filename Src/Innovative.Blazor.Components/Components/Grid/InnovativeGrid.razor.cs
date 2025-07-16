@@ -215,7 +215,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         }
 
         var localizedString = localizer[name: attribute.Name];
-        return localizedString.ResourceNotFound ? property.Name : localizedString.Value;
+        return localizedString.ResourceNotFound ? attribute.Name : localizedString.Value;
     }
 
     /// <summary>
