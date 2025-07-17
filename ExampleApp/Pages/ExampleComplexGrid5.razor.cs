@@ -42,6 +42,7 @@ public partial class ExampleComplexGrid5(IInnovativeSidePanelService sidePanelSe
                                        Person5GridModel item = items.Single(predicate: x => x.Id == model.Id);
                                        item.FirstName = model.FirstName;
                                        item.LastName = model.LastName;
+                                       item.DateOfBirth = model.DateOfBirth?.ToString(format: "yyyy-MM-dd", provider: CultureInfo.CurrentCulture);
                                        return Task.CompletedTask;
                                    };
 
