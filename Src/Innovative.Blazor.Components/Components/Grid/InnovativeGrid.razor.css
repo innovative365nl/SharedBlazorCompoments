@@ -64,11 +64,11 @@
 }
 
 /* Table head */
-::deep .rz-grid-table thead th div {
+::deep .rz-grid-table thead th {
     background: var(--rz-grid-header-stripe-background-color);
 }
 
-::deep .rz-grid-table thead th {
+::deep .rz-grid-table thead th div {
     background: var(--rz-grid-header-stripe-background-color);
 }
 
@@ -96,6 +96,10 @@
     --_rz-grid-table-fixed-border: var(--rz-grid-table-fixed-border, unset);
     box-shadow: var(--_rz-grid-table-fixed-shadow);
     border-inline-end: var(--_rz-grid-table-fixed-border) !important;
+}
+
+::deep .rz-column-title-content {
+    font-weight: bold;
 }
 
 /* Pager */
