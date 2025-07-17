@@ -12,6 +12,8 @@ namespace Innovative.Blazor.Components.Components;
 
 public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 {
+    private const string DataTestIdKey = "data-test-id";
+
     private readonly Dictionary<string, object?> formValues = new Dictionary<string, object?>();
     private readonly IInnovativeStringLocalizer localizer;
 
@@ -140,8 +142,6 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     [ExcludeFromCodeCoverage]
     protected RenderFragment RenderPropertyField(PropertyInfo property) => builder =>
     {
-        const string testIdKey = "data-test-id";
-
         var fieldAttribute = property.GetCustomAttribute<UIFormField>();
         bool notifyChanges = fieldAttribute?.ShouldNotifyChanges ?? false;
         var propName = property.Name;
@@ -172,7 +172,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                 if (isReadOnly)
                     builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.Disabled), true);
                 if (!string.IsNullOrEmpty(fieldAttribute.DataTestId))
-                    builder.AddAttribute(sequence++, testIdKey, fieldAttribute.DataTestId);
+                    builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
 
                 AppendFormParameters(builder, fieldAttribute.FormParameters, ref sequence);
                 builder.CloseComponent();
@@ -188,7 +188,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                 if (isReadOnly)
                     builder.AddAttribute(sequence++, nameof(RadzenTextBox.Disabled), true);
                 if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
-                    builder.AddAttribute(sequence++, testIdKey, fieldAttribute.DataTestId);
+                    builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
 
                 AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
                 builder.CloseComponent();
@@ -207,7 +207,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             if (isReadOnly)
                 builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Disabled), true);
             if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
-                builder.AddAttribute(sequence++, testIdKey, fieldAttribute.DataTestId);
+                builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
 
             AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
             builder.CloseComponent();
@@ -225,7 +225,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             if (isReadOnly)
                 builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.Disabled), true);
             if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
-                builder.AddAttribute(sequence++, testIdKey, fieldAttribute.DataTestId);
+                builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
 
             AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
             builder.CloseComponent();
@@ -243,7 +243,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             if (isReadOnly)
                 builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Disabled), true);
             if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
-                builder.AddAttribute(sequence++, testIdKey, fieldAttribute.DataTestId);
+                builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
 
             AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
             builder.CloseComponent();
@@ -307,7 +307,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                                                                                                             SetValue(propertyName: propName, value: val, attribute.ShouldNotifyChanges)));
 
                     if (!string.IsNullOrEmpty(attribute?.DataTestId))
-                        builder.AddAttribute(sequence++, "data-test-id", attribute.DataTestId);
+                        builder.AddAttribute(sequence++, DataTestIdKey, attribute.DataTestId);
 
                     AppendFormParameters(builder, attribute?.FormParameters, ref sequence);
                     builder.CloseComponent();
