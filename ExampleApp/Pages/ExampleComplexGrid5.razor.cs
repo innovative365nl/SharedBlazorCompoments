@@ -10,21 +10,22 @@ public partial class ExampleComplexGrid5(IInnovativeSidePanelService sidePanelSe
 {
     private readonly string[] firstNames = ["Jan", "Jaap", "Piet", "Kees", "Tom"];
 
-    private readonly List<Person5GridModel> items = [];
-
     private readonly string[] lastNames = ["Appelboom", "Perenboom", "Kersenboom", "Kerstboom", "Pruimenboom"];
+
+    private readonly List<Person5GridModel> items = [];
 
     protected override void OnInitialized()
     {
         var data = Enumerable.Range(start: 1, count: 10)
                              .Select(selector: i => new Person5Model
                                                     {
-                                                        Id = Guid.NewGuid()
-                                                      , FirstName = firstNames[RandomNumberGenerator.GetInt32(toExclusive: firstNames.Length)]
-                                                      , LastName = lastNames[RandomNumberGenerator.GetInt32(toExclusive: lastNames.Length)]
-                                                      , DateOfBirth = new DateTime(year: (RandomNumberGenerator.GetInt32(toExclusive: 50) + 1950)
-                                                                                 , month: (RandomNumberGenerator.GetInt32(toExclusive: 11) + 1)
-                                                                                 , day: (RandomNumberGenerator.GetInt32(toExclusive: 27)   + 1))
+                                                        Id = Guid.NewGuid(),
+                                                        FirstName = firstNames[RandomNumberGenerator.GetInt32(toExclusive: firstNames.Length)],
+                                                        LastName = lastNames[RandomNumberGenerator.GetInt32(toExclusive: lastNames.Length)],
+                                                        DateOfBirth = new DateTime(year: (RandomNumberGenerator.GetInt32(toExclusive: 50)  + 1950),
+                                                                                   month: (RandomNumberGenerator.GetInt32(toExclusive: 11) + 1),
+                                                                                   day: (RandomNumberGenerator.GetInt32(toExclusive: 27)  + 1)
+                                                                                   )
                                                     })
                              .ToList();
 
@@ -84,20 +85,24 @@ public sealed class Person5GridModel
     {
         return new Person5GridModel
                {
-                   Id = instance?.Id ?? Guid.NewGuid()
-                 , FirstName = instance?.FirstName
-                 , LastName = instance?.LastName
-                 , DateOfBirth = instance?.DateOfBirth.HasValue ?? false ? instance.DateOfBirth.Value.ToString(format: "yyyy-MM-dd", provider: CultureInfo.CurrentCulture) : null
+                   Id = instance?.Id ?? Guid.NewGuid(),
+                   FirstName = instance?.FirstName,
+                   LastName = instance?.LastName,
+                   DateOfBirth = instance?.DateOfBirth.HasValue ?? false
+                                     ? instance.DateOfBirth.Value.ToString(format: "yyyy-MM-dd", provider: CultureInfo.CurrentCulture)
+                                     : null
                };
     }
     public static Person5Model ToModel(Person5GridModel instance)
     {
         return new Person5Model
                {
-                   Id = instance?.Id ?? Guid.NewGuid()
-                 , FirstName = instance?.FirstName
-                 , LastName = instance?.LastName
-                 , DateOfBirth = DateTime.TryParse(s: instance?.DateOfBirth, provider: CultureInfo.CurrentCulture, result: out DateTime result) ? result : null
+                   Id = instance?.Id ?? Guid.NewGuid(),
+                   FirstName = instance?.FirstName,
+                   LastName = instance?.LastName,
+                   DateOfBirth = DateTime.TryParse(s: instance?.DateOfBirth, provider: CultureInfo.CurrentCulture, result: out DateTime result)
+                                     ? result
+                                     : null
                };
     }
 }
@@ -151,10 +156,10 @@ public sealed class Person5FormModel : FormModel
     {
         return new Person5FormModel
                {
-                   Id = instance?.Id ?? Guid.NewGuid()
-                 , FirstName = instance?.FirstName
-                 , LastName = instance?.LastName
-                 , DateOfBirth = instance?.DateOfBirth
+                   Id = instance?.Id ?? Guid.NewGuid(),
+                   FirstName = instance?.FirstName,
+                   LastName = instance?.LastName,
+                   DateOfBirth = instance?.DateOfBirth
                };
     }
 }

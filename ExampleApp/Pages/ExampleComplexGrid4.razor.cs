@@ -10,18 +10,18 @@ public partial class ExampleComplexGrid4(IInnovativeSidePanelService sidePanelSe
 {
     private readonly string[] firstNames = ["Jan", "Jaap", "Piet", "Kees", "Tom"];
 
-    private readonly List<Person4GridModel> items = [];
-
     private readonly string[] lastNames = ["Appelboom", "Perenboom", "Kersenboom", "Kerstboom"];
+
+    private readonly List<Person4GridModel> items = [];
 
     protected override void OnInitialized()
     {
         var data = Enumerable.Range(start: 1, count: 10)
                              .Select(selector: i => new Person4Model
                                                     {
-                                                        Id = Guid.NewGuid()
-                                                      , FirstName = firstNames[RandomNumberGenerator.GetInt32(toExclusive: firstNames.Length)]
-                                                      , LastName = lastNames[RandomNumberGenerator.GetInt32(toExclusive: lastNames.Length)]
+                                                        Id = Guid.NewGuid(),
+                                                        FirstName = firstNames[RandomNumberGenerator.GetInt32(toExclusive: firstNames.Length)],
+                                                        LastName = lastNames[RandomNumberGenerator.GetInt32(toExclusive: lastNames.Length)]
                                                     })
                              .ToList();
 
@@ -88,18 +88,18 @@ public sealed class Person4GridModel
     {
         return new Person4GridModel
                {
-                   Id = instance?.Id ?? Guid.NewGuid()
-                 , FirstName = instance?.FirstName
-                 , LastName = instance?.LastName
+                   Id = instance?.Id ?? Guid.NewGuid(),
+                   FirstName = instance?.FirstName,
+                   LastName = instance?.LastName
                };
     }
     public static Person4Model ToModel(Person4GridModel instance)
     {
         return new Person4Model
                {
-                   Id = instance?.Id ?? Guid.NewGuid()
-                 , FirstName = instance?.FirstName
-                 , LastName = instance?.LastName
+                   Id = instance?.Id ?? Guid.NewGuid(),
+                   FirstName = instance?.FirstName,
+                   LastName = instance?.LastName
                };
     }
 }
@@ -109,11 +109,8 @@ public sealed class Person4FormModel : FormModel
 {
     private const string ColumnGroup1 = "PropertyColumn1";
 
-    public Person4FormModel()
-    {
-        AddViewColumn(name: ColumnGroup1, width: 1, order: 1, offset: 0);
+    public Person4FormModel() => AddViewColumn(name: ColumnGroup1, width: 1, order: 1, offset: 0);
 
-    }
     public Guid Id { get; set; }
 
     [UIFormField(name: "Voornaam", ShouldNotifyChanges = true, ColumnGroup = ColumnGroup1)]
@@ -129,10 +126,10 @@ public sealed class Person4FormModel : FormModel
     {
         return new Person4FormModel
                {
-                   Id = instance?.Id ?? Guid.NewGuid()
-                 , FirstName = instance?.FirstName
-                 , LastName = instance?.LastName
-                 , FullName = instance
+                   Id = instance?.Id ?? Guid.NewGuid(),
+                   FirstName = instance?.FirstName,
+                   LastName = instance?.LastName,
+                   FullName = instance
                };
     }
 }
