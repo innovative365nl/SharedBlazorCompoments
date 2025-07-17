@@ -1,22 +1,23 @@
 using System.Security.Cryptography;
 using ExampleApp.Components;
+using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Services;
 
 namespace ExampleApp.Pages;
 
-public partial class ExampleGridWithPreview(IInnovativeSidePanelService sidePanelService)
+public partial class ExampleComplexGrid4(IInnovativeSidePanelService sidePanelService)
 {
     private readonly string[] firstNames = ["Jan", "Jaap", "Piet", "Kees", "Tom"];
 
     private readonly string[] lastNames = ["Appelboom", "Perenboom", "Kersenboom", "Kerstboom"];
 
-    private readonly List<PersonPreviewGridModel> items = [];
+    private readonly List<Person4GridModel> items = [];
 
     protected override void OnInitialized()
     {
         var data = Enumerable.Range(start: 1, count: 10)
-                             .Select(selector: i => new PersonPreviewModel
+                             .Select(selector: i => new Person4Model
                                                     {
                                                         Id = Guid.NewGuid(),
                                                         FirstName = firstNames[RandomNumberGenerator.GetInt32(toExclusive: firstNames.Length)],
@@ -24,18 +25,18 @@ public partial class ExampleGridWithPreview(IInnovativeSidePanelService sidePane
                                                     })
                              .ToList();
 
-        items.AddRange(collection: data.Select(selector: PersonPreviewGridModel.ToGridModel));
+        items.AddRange(collection: data.Select(selector: Person4GridModel.ToGridModel));
     }
 
-    private async Task OnRowSelected(IEnumerable<PersonPreviewGridModel> obj)
+    private async Task OnRowSelected(IEnumerable<Person4GridModel> obj)
     {
-        PersonPreviewGridModel? rowItem = obj.FirstOrDefault();
+        Person4GridModel? rowItem = obj.FirstOrDefault();
         if (rowItem != null)
         {
-            var model = PersonPreviewFormModel.ToFormModel(instance: PersonPreviewGridModel.ToModel(instance: rowItem));
+            var model = Person4FormModel.ToFormModel(instance: Person4GridModel.ToModel(instance: rowItem));
             model.SaveFormAction = () =>
                                    {
-                                       var item = items.Single(x => x.Id == model.Id);
+                                       Person4GridModel item = items.Single(predicate: x => x.Id == model.Id);
                                        item.FirstName = model.FirstName;
                                        item.LastName = model.LastName;
                                        return Task.CompletedTask;
@@ -48,15 +49,13 @@ public partial class ExampleGridWithPreview(IInnovativeSidePanelService sidePane
     }
 }
 
-public record PersonPreviewModel: INotifyFormValueChanged
+public record Person4Model : INotifyFormValueChanged
 {
     public Guid Id { get; set; }
 
     public string? FirstName { get; set; }
 
     public string? LastName { get; set; }
-
-    public override string ToString() => $"{FirstName} {LastName}";
 
     public void OnFormValueChanged(string propertyName, object? value)
     {
@@ -70,10 +69,12 @@ public record PersonPreviewModel: INotifyFormValueChanged
                 break;
         }
     }
+
+    public override string ToString() => $"{FirstName} {LastName}";
 }
 
 [UIGridClass(AllowSorting = true)]
-public sealed class PersonPreviewGridModel
+public sealed class Person4GridModel
 {
     public Guid Id { get; set; }
 
@@ -83,18 +84,18 @@ public sealed class PersonPreviewGridModel
     [UIGridField(Name = "Achternaam")]
     public string? LastName { get; set; }
 
-    public static PersonPreviewGridModel ToGridModel(PersonPreviewModel instance)
+    public static Person4GridModel ToGridModel(Person4Model instance)
     {
-        return new PersonPreviewGridModel
+        return new Person4GridModel
                {
                    Id = instance?.Id ?? Guid.NewGuid(),
                    FirstName = instance?.FirstName,
                    LastName = instance?.LastName
                };
     }
-    public static PersonPreviewModel ToModel(PersonPreviewGridModel instance)
+    public static Person4Model ToModel(Person4GridModel instance)
     {
-        return new PersonPreviewModel
+        return new Person4Model
                {
                    Id = instance?.Id ?? Guid.NewGuid(),
                    FirstName = instance?.FirstName,
@@ -103,20 +104,13 @@ public sealed class PersonPreviewGridModel
     }
 }
 
-public sealed class PersonPreviewFormModel : FormModel
+[UIFormClass(title: "Person", ResourceType = typeof(Example))]
+public sealed class Person4FormModel : FormModel
 {
     private const string ColumnGroup1 = "PropertyColumn1";
 
-    public PersonPreviewFormModel()
-    {
-        AddViewColumn(
-                      name: ColumnGroup1,
-                      width: 1,
-                      order: 1,
-                      offset: 0
-                     );
+    public Person4FormModel() => AddViewColumn(name: ColumnGroup1, width: 1, order: 1, offset: 0);
 
-    }
     public Guid Id { get; set; }
 
     [UIFormField(name: "Voornaam", ShouldNotifyChanges = true, ColumnGroup = ColumnGroup1)]
@@ -126,11 +120,11 @@ public sealed class PersonPreviewFormModel : FormModel
     public string? LastName { get; init; }
 
     [UIFormField(name: "Naam", FormComponent = typeof(FullNamePreviewComponent), ColumnGroup = ColumnGroup1)]
-    public PersonPreviewModel? FullName { get; init; }
+    public Person4Model? FullName { get; init; }
 
-    public static PersonPreviewFormModel ToFormModel(PersonPreviewModel instance)
+    public static Person4FormModel ToFormModel(Person4Model instance)
     {
-        return new PersonPreviewFormModel
+        return new Person4FormModel
                {
                    Id = instance?.Id ?? Guid.NewGuid(),
                    FirstName = instance?.FirstName,

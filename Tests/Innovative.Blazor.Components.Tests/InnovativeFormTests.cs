@@ -173,7 +173,7 @@ public class InnovativeFormTests : LocalizedTestBase
         var widthNonExistent = component.CallGetColumnWidthClass("NonExistent");
 
         // Assert
-        Assert.Equal("column-span-3", width1);
+        Assert.Equal("col-3", width1);
         Assert.Equal("", width2); // 0 width should return empty string
         Assert.Equal("", widthNonExistent);
     }

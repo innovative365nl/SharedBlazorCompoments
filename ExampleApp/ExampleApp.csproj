@@ -20,10 +20,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Example.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Translations\Example.en-us.resx">
+    <EmbeddedResource Update="Translations\Example.en-US.resx">
       <DependentUpon>Example.resx</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Update="Translations\Example.nl-nl.resx">
+    <EmbeddedResource Update="Translations\Example.nl-NL.resx">
       <DependentUpon>Example.resx</DependentUpon>
     </EmbeddedResource>
     <Compile Update="Translations\Example.Designer.cs">
