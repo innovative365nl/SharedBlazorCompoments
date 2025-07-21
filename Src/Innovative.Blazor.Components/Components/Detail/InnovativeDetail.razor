@@ -41,10 +41,12 @@
                 @foreach (var property in group.Value)
                 {
                     var fieldAttribute = property.GetCustomAttribute<UIFormField>();
-                var value = property.GetValue(obj: Model);
-
+                    var value = property.GetValue(obj: Model);
                     <div>
-                        <RadzenLabel Style="font-weight: bold">@localizer.GetString(fieldAttribute!.Name!):</RadzenLabel>
+                        @if (ShouldShowLabel(fieldAttribute))
+                        {
+                            <RadzenLabel Style="font-weight: bold">@localizer.GetString(fieldAttribute!.Name!):</RadzenLabel>
+                        }
                     </div>
                     <div>
                         @if (fieldAttribute?.DisplayComponent != null)
@@ -99,12 +101,15 @@
                     var value = property.GetValue(obj: Model);
 
                     <div>
-                        <RadzenLabel Style="font-weight: bold">@localizer.GetString(fieldAttribute!.Name!):</RadzenLabel>
+                        @if (ShouldShowLabel(fieldAttribute))
+                        {
+                            <RadzenLabel Style="font-weight: bold">@localizer.GetString(fieldAttribute!.Name!):</RadzenLabel>
+                        }
                     </div>
                     <div>
                         @if (fieldAttribute?.DisplayComponent != null)
                         {
-                                @RenderViewComponent(value: value, attribute: fieldAttribute)
+                            @RenderViewComponent(value: value, attribute: fieldAttribute)
                         }
                         else if (fieldAttribute!.UseWysiwyg && property.PropertyType == typeof(string) && value != null)
                         {
