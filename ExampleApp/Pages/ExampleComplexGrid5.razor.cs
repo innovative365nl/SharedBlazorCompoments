@@ -135,6 +135,9 @@ public sealed class Person5FormModel : FormModel
     [UIFormField(name: "Nr", ColumnGroup = ColumnGroup2, FormParameters = ["Disabled=true"])]
     public int? LotNummer { get; set; } = 90;
 
+    [UIFormField(name: "Summary", ColumnGroup = ColumnGroup2, DisplayParameters = ["DisplayLabel=false"], FormParameters = ["Disabled=true", "DisplayLabel=false"])]
+    public string? Summary => $"{FirstName} {LastName} ({Age}) was born on {DateOfBirth:dddd d MMMM yyyy}.";
+
     public static int? CalculateAge(DateTime? dateOfBirth)
     {
         if (dateOfBirth is null)

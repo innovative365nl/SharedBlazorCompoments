@@ -323,6 +323,10 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 
         return result;
     }
+
+    private static bool ShouldShowLabel(UIFormField? formField)
+        => formField?.DisplayParameters == null
+        || !formField.DisplayParameters.Contains("DisplayLabel=false", StringComparer.InvariantCultureIgnoreCase);
 }
 
 internal record ButtonDefinition

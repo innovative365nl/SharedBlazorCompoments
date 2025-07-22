@@ -148,13 +148,16 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         var isReadOnly = !property.CanWrite;
         int sequence = 0;
 
-        builder.OpenComponent<RadzenLabel>(sequence++);
-        builder.AddAttribute(sequence++, "Component", propName);
-        if (fieldAttribute?.Name != null)
+        if (ShouldShowLabel(fieldAttribute))
         {
-            builder.AddAttribute(sequence++, "Text", localizer.GetString(fieldAttribute.Name));
+            builder.OpenComponent<RadzenLabel>(sequence++);
+            builder.AddAttribute(sequence++, "Component", propName);
+            if (fieldAttribute?.Name != null)
+            {
+                builder.AddAttribute(sequence++, "Text", localizer.GetString(fieldAttribute.Name));
+            }
+            builder.CloseComponent();
         }
-        builder.CloseComponent();
 
         if (property.PropertyType == typeof(string))
         {
@@ -289,28 +292,33 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         {
             try
             {
-                if (attribute.FormComponent != null)
+                if (attribute.FormComponent == null)
+                {
+                    return;
+                }
+                int sequence = 0;
+
+                if (ShouldShowLabel(attribute))
                 {
                     // Add label for component
-                    int sequence = 0;
                     builder.OpenComponent<RadzenLabel>(sequence++);
                     builder.AddAttribute(sequence++, "Component", attribute.Name);
                     builder.AddAttribute(sequence, "Text", localizer.GetString(attribute.Name));
                     builder.CloseComponent();
-
-                    // Add custom component
-                    sequence = 0;
-                    builder.OpenComponent(sequence: sequence++, componentType: attribute.FormComponent);
-                    builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
-                    builder.AddAttribute(sequence++, "ValueChanged", EventCallback.Factory.Create(this, val =>
-                                                                                                            SetValue(propertyName: propName, value: val, attribute.ShouldNotifyChanges)));
-
-                    if (!string.IsNullOrEmpty(attribute?.DataTestId))
-                        builder.AddAttribute(sequence++, nameof(attribute.DataTestId), attribute.DataTestId);
-
-                    AppendFormParameters(builder, attribute?.FormParameters, ref sequence);
-                    builder.CloseComponent();
                 }
+
+                // Add custom component
+                sequence = 0;
+                builder.OpenComponent(sequence: sequence++, componentType: attribute.FormComponent);
+                builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
+                builder.AddAttribute(sequence++, "ValueChanged", EventCallback.Factory.Create(this, val =>
+                                                                                                        SetValue(propertyName: propName, value: val, attribute.ShouldNotifyChanges)));
+
+                if (!string.IsNullOrEmpty(attribute?.DataTestId))
+                    builder.AddAttribute(sequence++, nameof(attribute.DataTestId), attribute.DataTestId);
+
+                AppendFormParameters(builder, attribute?.FormParameters, ref sequence);
+                builder.CloseComponent();
             }
             catch (Exception ex) when (ex is ArgumentException or InvalidOperationException)
             {
@@ -389,4 +397,9 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             .Where(predicate: p => p.GetCustomAttribute<UIFormField>() != null)
             .ToArray();
     }
+
+    private static bool ShouldShowLabel(UIFormField? formField)
+        => formField?.FormParameters == null
+        || !formField.FormParameters.Contains("DisplayLabel=false", StringComparer.InvariantCultureIgnoreCase);
+
 }
