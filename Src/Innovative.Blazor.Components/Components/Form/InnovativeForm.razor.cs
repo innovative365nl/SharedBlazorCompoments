@@ -258,8 +258,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             if (equalIndex > 0 && equalIndex < parameter.Length - 1)
             {
                 string paramName = parameter[..equalIndex];
-                equalIndex++;
-                string paramValue = parameter[equalIndex..];
+                string paramValue = parameter[++equalIndex..];
                 builder.AddAttribute(sequence: sequence++, name: paramName, value: Objectify(paramValue));
             }
         }
@@ -307,7 +306,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                                                                                                             SetValue(propertyName: propName, value: val, attribute.ShouldNotifyChanges)));
 
                     if (!string.IsNullOrEmpty(attribute?.DataTestId))
-                        builder.AddAttribute(sequence++, DataTestIdKey, attribute.DataTestId);
+                        builder.AddAttribute(sequence++, nameof(attribute.DataTestId), attribute.DataTestId);
 
                     AppendFormParameters(builder, attribute?.FormParameters, ref sequence);
                     builder.CloseComponent();
