@@ -218,7 +218,9 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                            builder.OpenComponent(sequence: sequence++, componentType: attribute.DisplayComponent);
                        }
                        builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
-                       builder.AddAttribute(sequence: sequence++, "DataTestId", attribute.DataTestId);
+                       if (!string.IsNullOrEmpty(attribute.DataTestId))
+                           builder.AddAttribute(sequence: sequence++, nameof(attribute.DataTestId), attribute.DataTestId);
+                       
 
                        if (attribute.DisplayParameters?.Length > 0)
                        {
@@ -228,8 +230,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                                 if (equalIndex > 0 && equalIndex < parameter.Length - 1)
                                 {
                                     string paramName = parameter[..equalIndex];
-                                    equalIndex++;
-                                    string paramValue = parameter[equalIndex..];
+                                    string paramValue = parameter[++equalIndex..];
                                     builder.AddAttribute(sequence: sequence++, name: paramName, value: paramValue);
                                 }
                             }
