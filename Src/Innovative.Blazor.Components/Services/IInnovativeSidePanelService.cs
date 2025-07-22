@@ -86,9 +86,9 @@ internal sealed class InnovativeSidePanelService
             { "ViewChildContent", viewContent },
             { "EditChildContent", editContent },
             { "IsEditing", isEditing},
-            {"DataTestId", dataTestId ?? string.Empty },
-            {"CloseOnSaveForm", closeOnSaveForm},
-            {"IsNewModel", isNewModel}
+            { "DataTestId", dataTestId ?? string.Empty },
+            { "CloseOnSaveForm", closeOnSaveForm },
+            { "IsNewModel", isNewModel }
         };
 
         var options = new SidepanelOptions
@@ -107,7 +107,7 @@ internal sealed class InnovativeSidePanelService
         var type = typeof(T);
         var formAttribute = type.GetCustomAttribute<UIFormClass>();
 
-        if (formAttribute != null && !string.IsNullOrEmpty(formAttribute.Title))
+        if (!string.IsNullOrEmpty(formAttribute?.Title))
         {
             var resourceType = formAttribute.ResourceType ?? typeof(T);
 
@@ -121,21 +121,18 @@ internal sealed class InnovativeSidePanelService
 
     private static string GetWidth(SideDialogWidth width)
     {
-        var size = width switch
+        return width switch
         {
             SideDialogWidth.Normal => "40vw",
             SideDialogWidth.Large => "60vw",
             SideDialogWidth.ExtraLarge => "80vw",
             _ => "30vw"
         };
-        return size;
     }
 
     public void ClosePanel<T>(T model) where T : class
     {
         if (IsVisible)
-        {
             sidePanelService.CloseSidepanel(model);
-        }
     }
 }
