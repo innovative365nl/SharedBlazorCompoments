@@ -95,6 +95,15 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
                            .OpenInEditMode<PersonModel>(person)
                            .ConfigureAwait(true);
     }
+
+    private async Task OpenLargeWidthDialog()
+    {
+        person = new PersonModel { IsActive = true };
+
+        await sidePanelService
+            .OpenInEditMode<PersonModel>(person, width: "800px")
+            .ConfigureAwait(true);
+    }
 }
 
 [UIFormClass(title: nameof(Example.DialogService_Person), ResourceType = typeof(Example))]
