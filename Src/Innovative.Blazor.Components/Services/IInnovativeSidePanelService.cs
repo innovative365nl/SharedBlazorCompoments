@@ -16,7 +16,7 @@ public interface IInnovativeSidePanelService
     /// <summary>
     /// Opens a side panel dialog with the specified model in display mode.
     /// </summary>
-    Task OpenInDisplayMode<T>(T model, bool showEdit = true, bool showClose = true, bool showDelete = false, string? dataTestId = null, string? width =null) where T : class;
+    Task OpenInDisplayMode<T>(T model, bool showEdit = true, bool showClose = true, bool showDelete = false, string? dataTestId = null, string? width = null) where T : class;
 
     /// <summary>
     /// Opens a side panel dialog with the specified model in edit mode as a new instance of <code>T</code> is created.
