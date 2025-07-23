@@ -1,6 +1,7 @@
 using ExampleApp.Components;
 using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components;
+using Innovative.Blazor.Components.Enumerators;
 using Innovative.Blazor.Components.Services;
 using PasswordUpdateComponent = ExampleApp.Components.PasswordUpdateComponent;
 
@@ -99,8 +100,15 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
     private async Task OpenLargeWidthDialog()
     {
         await sidePanelService
-              .OpenInDisplayMode(person, width: "800px")
-              .ConfigureAwait(false);      
+              .OpenInDisplayMode(person, width: SideDialogWidth.Large)
+              .ConfigureAwait(false);
+    }
+
+    private async Task OpenExtraLargeWidthDialog()
+    {
+        await sidePanelService
+              .OpenInDisplayMode(person, width: SideDialogWidth.ExtraLarge)
+              .ConfigureAwait(false);
     }
 }
 
