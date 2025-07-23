@@ -95,7 +95,7 @@ internal sealed class InnovativeSidePanelService
         var options = new SidepanelOptions
         {
             Title = title,
-            Width = width ?? GetWidth(width: SideDialogWidth.Normal)            
+            Width = width ?? GetWidth(SideDialogWidth.Normal)            
         };
 
         await sidePanelService

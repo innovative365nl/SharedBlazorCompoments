@@ -98,11 +98,9 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
 
     private async Task OpenLargeWidthDialog()
     {
-        person = new PersonModel { IsActive = true };
-
         await sidePanelService
-            .OpenInEditMode<PersonModel>(person, width: "800px")
-            .ConfigureAwait(true);
+              .OpenInDisplayMode(person, width: "800px")
+              .ConfigureAwait(false);      
     }
 }
 
