@@ -18,14 +18,14 @@
             @TitleBarContent
             @if (ShowEdit && !IsEditing && !isCustomDialog)
             {
-                <RadzenButton id="sidePanelEditButton"
+                <RadzenButton class="sidepanel-icon-button" id="sidePanelEditButton"
                         Click="@(args => IsEditing = !IsEditing)">
                     <span class="material-symbols-outlined">edit</span>
                 </RadzenButton>
             }
             else if (ShowEdit && (IsEditing || isCustomDialog))
             {
-                <RadzenButton
+                <RadzenButton class="sidepanel-icon-button"
                     Click="@HandleSaveClick">
                     <span class="material-symbols-outlined">save</span>
                 </RadzenButton>
@@ -39,7 +39,7 @@
             }
             @if (ShowDelete && !IsEditing && !isCustomDialog)
             {
-                <RadzenButton ButtonStyle="ButtonStyle.Danger"
+                <RadzenButton class="sidepanel-icon-button" ButtonStyle="ButtonStyle.Danger"
                         Click="@HandleDeleteClick">
                     <span class="material-symbols-outlined">delete</span>
                 </RadzenButton>
