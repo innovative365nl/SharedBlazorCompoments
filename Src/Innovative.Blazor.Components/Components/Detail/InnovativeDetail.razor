@@ -84,7 +84,7 @@
                                         Debug.WriteLine($"Error accessing TextProperty '{fieldAttribute.TextProperty}' on type '{value.GetType().Name}': {ex.Message}");
                                     }
                                 }
-                                <InnovativeText TextStyle="TextStyle.Body1">@(displayValue?.ToString() ?? "-")</InnovativeText>
+                                <InnovativeText TextStyle="TextStyle.Body1" Attributes="@GetAttributesFromParameters(fieldAttribute?.DisplayParameters ?? [])">@(displayValue?.ToString() ?? "-")</InnovativeText>
                             }
                         }
                     </div>

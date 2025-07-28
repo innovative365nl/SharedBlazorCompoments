@@ -94,6 +94,6 @@ public class ThreeColumnModel : FormModel
     public string Field2 { get; set; } = "Field2";
     [UIFormField(name: "FieldRight3", ColumnGroup = ThirdColumn)]
     public string Field3 { get; set; } = "Field3";
-    [UIFormField(name: "FieldRight4", ColumnGroup = FullWidthColumn)]
+    [UIFormField(name: "FieldRight4", ColumnGroup = FullWidthColumn, FormParameters = ["style=background-color: pink;"], DisplayParameters = ["style=background-color: pink;"])]
     public string Field4 { get; set; } = "Field4";
 }

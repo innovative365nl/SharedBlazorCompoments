@@ -220,7 +220,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                        builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
                        if (!string.IsNullOrEmpty(attribute.DataTestId))
                            builder.AddAttribute(sequence: sequence++, nameof(attribute.DataTestId), attribute.DataTestId);
-                       
+
 
                        if (attribute.DisplayParameters?.Length > 0)
                        {
@@ -243,6 +243,22 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                        builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
                    }
                };
+    }
+
+    private static Dictionary<string, object> GetAttributesFromParameters(string[] parameters)
+    {
+        var result = new Dictionary<string, object>();
+        foreach (var parameter in parameters)
+        {
+            int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
+            if (equalIndex > 0 && equalIndex < parameter.Length - 1)
+            {
+                string paramName = parameter[..equalIndex];
+                string paramValue = parameter[++equalIndex..];
+                result.Add(key: paramName, value: paramValue);
+            }
+        }
+        return result;
     }
 
     internal ButtonDefinition? GetSplitButtonDefinition()
