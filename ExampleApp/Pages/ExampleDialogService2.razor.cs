@@ -100,6 +100,16 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
 [UIFormClass(title: nameof(Example.DialogService_Person), ResourceType = typeof(Example))]
 public class PersonModel : FormModel
 {
+    private const string NameColumn = "Name";
+    private const string EmployeeInfoColumn = "EmployeeInfo";
+    private const string DescriptionColumn = "Description";
+
+    public PersonModel()
+    {
+        AddViewColumn(NameColumn, 1, 6, 0);;
+        AddViewColumn(EmployeeInfoColumn, 1, 6, 0);
+        AddViewColumn(DescriptionColumn, 1, 12, 0);;
+    }
     [UIFormField(name: "First Name", ColumnGroup = "Name")]
     public string? FirstName { get; set; }
 

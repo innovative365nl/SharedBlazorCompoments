@@ -180,6 +180,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             else
             {
                 builder.OpenComponent<RadzenTextBox>(sequence++);
+                builder.AddAttribute(sequence++, "style", "width: 100%;");
                 builder.AddAttribute(sequence++, nameof(RadzenTextBox.Name), propName);
                 builder.AddAttribute(sequence++, nameof(RadzenTextBox.Value), value);
                 builder.AddAttribute(sequence++, nameof(RadzenTextBox.ValueChanged),

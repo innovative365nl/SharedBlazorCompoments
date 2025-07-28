@@ -3,7 +3,7 @@
 @typeparam TModel
 
 <RadzenTemplateForm TItem="TModel" Data="@Model" Submit="@OnFormSubmit">
-    <section class="innovative-grid-layout">
+    <section class="innovative-form-layout">
         @{
             var model = Model as FormModel;
             System.Diagnostics.Debug.Assert(model != null, $"{nameof(model)} is null!");
