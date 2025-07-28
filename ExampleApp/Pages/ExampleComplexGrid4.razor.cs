@@ -119,7 +119,7 @@ public sealed class Person4FormModel : FormModel
     [UIFormField(name: "Achternaam", ShouldNotifyChanges = true, ColumnGroup = ColumnGroup1)]
     public string? LastName { get; init; }
 
-    [UIFormField(name: "Naam", FormComponent = typeof(FullNamePreviewComponent), ColumnGroup = ColumnGroup1)]
+    [UIFormField(name: "Naam", FormComponent = typeof(FullNamePreviewComponent), FormParameters = ["DisplayLabel=false"], ColumnGroup = ColumnGroup1)]
     public Person4Model? FullName { get; init; }
 
     public static Person4FormModel ToFormModel(Person4Model instance)

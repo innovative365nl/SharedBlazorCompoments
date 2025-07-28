@@ -218,7 +218,9 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                            builder.OpenComponent(sequence: sequence++, componentType: attribute.DisplayComponent);
                        }
                        builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
-                       builder.AddAttribute(sequence: sequence++, "DataTestId", attribute.DataTestId);
+                       if (!string.IsNullOrEmpty(attribute.DataTestId))
+                           builder.AddAttribute(sequence: sequence++, nameof(attribute.DataTestId), attribute.DataTestId);
+                       
 
                        if (attribute.DisplayParameters?.Length > 0)
                        {
@@ -228,7 +230,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                                 if (equalIndex > 0 && equalIndex < parameter.Length - 1)
                                 {
                                     string paramName = parameter[..equalIndex];
-                                    string paramValue = parameter[(equalIndex + 1)..];
+                                    string paramValue = parameter[++equalIndex..];
                                     builder.AddAttribute(sequence: sequence++, name: paramName, value: paramValue);
                                 }
                             }
@@ -321,6 +323,10 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 
         return result;
     }
+
+    private static bool ShouldShowLabel(UIFormField? formField)
+        => formField?.DisplayParameters == null
+        || !formField.DisplayParameters.Contains("DisplayLabel=false", StringComparer.InvariantCultureIgnoreCase);
 }
 
 internal record ButtonDefinition

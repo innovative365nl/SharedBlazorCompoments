@@ -16,12 +16,12 @@ public interface IInnovativeSidePanelService
     /// <summary>
     /// Opens a side panel dialog with the specified model in display mode.
     /// </summary>
-    Task OpenInDisplayMode<T>(T model, bool showEdit = true, bool showClose = true, bool showDelete = false, string? dataTestId = null) where T : class;
+    Task OpenInDisplayMode<T>(T model, bool showEdit = true, bool showClose = true, bool showDelete = false, string? dataTestId = null, SideDialogWidth width = SideDialogWidth.Normal) where T : class;
 
     /// <summary>
     /// Opens a side panel dialog with the specified model in edit mode as a new instance of <code>T</code> is created.
     /// </summary>
-    Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false, string? dataTestId = null, bool closeOnSaveForm = false, bool isNewModel = false) where T : class;
+    Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false, string? dataTestId = null, bool closeOnSaveForm = false, bool isNewModel = false, SideDialogWidth width = SideDialogWidth.Normal) where T : class;
     
     /// <summary>
     /// Closes the side panel dialog if it is open.
@@ -37,15 +37,15 @@ internal sealed class InnovativeSidePanelService
 {
     public bool IsVisible => sidePanelService.IsVisible;
 
-    public async Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false, string? dataTestId = null, bool closeOnSaveForm = false, bool isNewModel = true) where T : class
+    public async Task OpenInEditMode<T>(T model, bool showClose = true, bool showDelete = false, string? dataTestId = null, bool closeOnSaveForm = false, bool isNewModel = true, SideDialogWidth width = SideDialogWidth.Normal) where T : class
     {
-        await OpenDynamicFormDialogWithOptions(model: model,  isEditing: true, showEdit: true, showClose: showClose, showDelete: showDelete, dataTestId, closeOnSaveForm, isNewModel)
+        await OpenDynamicFormDialogWithOptions(model: model,  isEditing: true, showEdit: true, showClose: showClose, showDelete: showDelete, dataTestId, closeOnSaveForm, isNewModel,width)
                 .ConfigureAwait(false);
     }
 
-    public async Task OpenInDisplayMode<T>(T model, bool showEdit = true, bool showClose = true, bool showDelete = false,  string? dataTestId = null) where T : class
+    public async Task OpenInDisplayMode<T>(T model, bool showEdit = true, bool showClose = true, bool showDelete = false,  string? dataTestId = null, SideDialogWidth width = SideDialogWidth.Normal) where T : class
     {
-        await OpenDynamicFormDialogWithOptions(model: model,  isEditing: false, showEdit: showEdit, showClose: showClose, showDelete: showDelete, dataTestId)
+        await OpenDynamicFormDialogWithOptions(model: model,  isEditing: false, showEdit: showEdit, showClose: showClose, showDelete: showDelete, dataTestId, width: width)
                 .ConfigureAwait(false);
     }
 
@@ -58,6 +58,7 @@ internal sealed class InnovativeSidePanelService
     , string? dataTestId = null
     , bool closeOnSaveForm = false
     , bool isNewModel = false
+    , SideDialogWidth width = SideDialogWidth.Normal
     ) where T : class
     {
         var viewContent = new RenderFragment(builder =>
@@ -86,15 +87,15 @@ internal sealed class InnovativeSidePanelService
             { "ViewChildContent", viewContent },
             { "EditChildContent", editContent },
             { "IsEditing", isEditing},
-            {"DataTestId", dataTestId ?? string.Empty },
-            {"CloseOnSaveForm", closeOnSaveForm},
-            {"IsNewModel", isNewModel}
+            { "DataTestId", dataTestId ?? string.Empty },
+            { "CloseOnSaveForm", closeOnSaveForm },
+            { "IsNewModel", isNewModel }
         };
 
         var options = new SidepanelOptions
         {
             Title = title,
-            Width = GetWidth(width: SideDialogWidth.Normal)
+            Width = GetWidth(width)
         };
 
         await sidePanelService
@@ -107,7 +108,7 @@ internal sealed class InnovativeSidePanelService
         var type = typeof(T);
         var formAttribute = type.GetCustomAttribute<UIFormClass>();
 
-        if (formAttribute != null && !string.IsNullOrEmpty(formAttribute.Title))
+        if (!string.IsNullOrEmpty(formAttribute?.Title))
         {
             var resourceType = formAttribute.ResourceType ?? typeof(T);
 
@@ -121,21 +122,18 @@ internal sealed class InnovativeSidePanelService
 
     private static string GetWidth(SideDialogWidth width)
     {
-        var size = width switch
+        return width switch
         {
             SideDialogWidth.Normal => "40vw",
             SideDialogWidth.Large => "60vw",
             SideDialogWidth.ExtraLarge => "80vw",
             _ => "30vw"
         };
-        return size;
     }
 
     public void ClosePanel<T>(T model) where T : class
     {
         if (IsVisible)
-        {
             sidePanelService.CloseSidepanel(model);
-        }
     }
 }
