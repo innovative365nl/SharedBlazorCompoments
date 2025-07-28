@@ -83,7 +83,7 @@
 /* Small screens */
 @media (max-width: 1280px) {
     /* Every span goes full width */
-    .innovative-detail-layout.col-* {
+    .innovative-detail-layout > * {
         width: 100%;
     }
 
