@@ -131,11 +131,11 @@ public class PersonModel : FormModel
     [UIFormField(name: "Last Name", ColumnGroup = "Name")]
     public string? LastName { get; set; }
 
-    [UIFormField(name: "Is Active", DisplayComponent = typeof(CustomBooleanStyle), FormComponent = typeof(CustomBooleanStyle), ColumnGroup = "EmployeeInfo")]
-    public bool IsActive { get; set; }
-
     [UIFormField(name: "Birth Date",  ColumnGroup = "EmployeeInfo")]
     public DateTime? BirthDate { get; set; }
+
+    [UIFormField(name: "Is Active", DisplayComponent = typeof(CustomBooleanStyle), FormComponent = typeof(CustomBooleanStyle), ColumnGroup = "EmployeeInfo")]
+    public bool IsActive { get; set; }
 
     [UIFormField(name : "Description", UseWysiwyg = true, ColumnGroup = "Description")]
     public string? Description { get; set; }

@@ -12,6 +12,7 @@ public partial class ExampleDialogService3(IInnovativeSidePanelService sidePanel
     private SingleColumnModel singleColumn = new();
     private DoubleColumnModel doubleColumn = new();
     private MultiColumnModel multiColumn = new();
+    private UngroupedColumnModel ungroupedColumn = new();
 
     public async Task OpenOneColumnDialog()
     {
@@ -47,6 +48,26 @@ public partial class ExampleDialogService3(IInnovativeSidePanelService sidePanel
               .OpenInDisplayMode(multiColumn, width: SideDialogWidth.ExtraLarge)
               .ConfigureAwait(false);
     }
+
+    public async Task OpenUngroupedDialog()
+    {
+        await sidePanelService
+              .OpenInDisplayMode(ungroupedColumn)
+              .ConfigureAwait(false);
+    }
+}
+
+[UIFormClass(title: "Single Column Form", ResourceType = typeof(Example))]
+public class UngroupedColumnModel : FormModel
+{
+    [UIFormField(name: "Field1")]
+    public string Field1 { get; set; } = "Field1";
+    [UIFormField(name: "Field2")]
+    public string Field2 { get; set; } = "Field2";
+    [UIFormField(name: "Field3")]
+    public string Field3 { get; set; } = "Field3";
+    [UIFormField(name: "Field4")]
+    public string Field4 { get; set; } = "Field4";
 }
 
 [UIFormClass(title: "Single Column Form", ResourceType = typeof(Example))]

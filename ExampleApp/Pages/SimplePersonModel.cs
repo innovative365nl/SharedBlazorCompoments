@@ -12,9 +12,9 @@ public class SimplePersonModel : FormModel
 
     public SimplePersonModel()
     {
-        AddViewColumn(name: NameColumn, order: 1, width: 2, offset: 0);
-        AddViewColumn(name: DataColumn, order: 2, width: 2, offset: 0);
-        AddViewColumn(name: InfoColumn, order: 3, width: 4, offset: 0);
+        AddViewColumn(name: NameColumn, order: 1, width: 6, offset: 0);
+        AddViewColumn(name: DataColumn, order: 2, width: 6, offset: 0);
+        AddViewColumn(name: InfoColumn, order: 3, width: 12, offset: 0);
     }
 
     [UIFormField(name: "First name", ColumnGroup = NameColumn)]
