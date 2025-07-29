@@ -90,10 +90,10 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
 
     private async Task OpenNewPersonDialog()
     {
-        person = new PersonModel { IsActive = true };
+        var newPerson = new PersonModel { IsActive = true };
 
         await sidePanelService
-                           .OpenInEditMode<PersonModel>(person)
+                           .OpenInEditMode(newPerson)
                            .ConfigureAwait(true);
     }
 
@@ -131,7 +131,7 @@ public class PersonModel : FormModel
     [UIFormField(name: "Last Name", ColumnGroup = "Name")]
     public string? LastName { get; set; }
 
-    [UIFormField(name: "Birth Date",  ColumnGroup = "EmployeeInfo")]
+    [UIFormField(name: "Birth Date",  ColumnGroup = "EmployeeInfo", DisplayParameters = ["Format={0:dddd d MMMM yyyy}"], FormParameters = ["DateFormat=yyyy-MM-dd"])]
     public DateTime? BirthDate { get; set; }
 
     [UIFormField(name: "Is Active", DisplayComponent = typeof(CustomBooleanStyle), FormComponent = typeof(CustomBooleanStyle), ColumnGroup = "EmployeeInfo")]
