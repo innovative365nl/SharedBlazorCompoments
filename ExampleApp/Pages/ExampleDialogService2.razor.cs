@@ -90,10 +90,10 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
 
     private async Task OpenNewPersonDialog()
     {
-        var tempPerson = new PersonModel { IsActive = true };
+        var newPerson = new PersonModel { IsActive = true };
 
         await sidePanelService
-                           .OpenInEditMode(tempPerson)
+                           .OpenInEditMode(newPerson)
                            .ConfigureAwait(true);
     }
 
