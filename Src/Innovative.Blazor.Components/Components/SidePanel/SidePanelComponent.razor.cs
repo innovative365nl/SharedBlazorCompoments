@@ -96,14 +96,13 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
                 {
                     await model.SaveFormAction!.Invoke().ConfigureAwait(true);
                     IsNewModel = false;
-                    ShowDelete = true;
                 }
                 if (CloseOnSaveForm)
                 {
                     sidePanelService.CloseSidepanel();
                 }
                 isCustomDialog = false;
-                IsEditing = false; 
+                IsEditing = false;
             }
             catch (Exception e)
             {
@@ -115,15 +114,12 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
         {
             if (CloseOnSaveForm)
             {
- 
+
                 sidePanelService.CloseSidepanel();
             }
             isCustomDialog = false;
             IsEditing = false;
         }
-
-
-
     }
 
     private async Task HandleDeleteClick()
@@ -183,8 +179,5 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
             isCustomDialog = false;
             ActionChildContent = null;
         }
-
-
-
     }
 }

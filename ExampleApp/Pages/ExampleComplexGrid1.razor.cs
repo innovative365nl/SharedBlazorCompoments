@@ -146,13 +146,13 @@ public sealed class AttributeFormModel : FormModel
     {
         AddViewColumn(
             name: PropertyColumnName,
-            width: 1,
+            width: 12,
             order: 1,
             offset: 0
         );
         AddViewColumn(
             name: ValueColumnName,
-            width: 1,
+            width: 12,
             order: 2,
             offset: 0
         );
