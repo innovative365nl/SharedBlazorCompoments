@@ -109,7 +109,7 @@ public sealed class Person4FormModel : FormModel
 {
     private const string ColumnGroup1 = "PropertyColumn1";
 
-    public Person4FormModel() => AddViewColumn(name: ColumnGroup1, width: 1, order: 1, offset: 0);
+    public Person4FormModel() => AddViewColumn(name: ColumnGroup1, width: 12, order: 1, offset: 0);
 
     public Guid Id { get; set; }
 
