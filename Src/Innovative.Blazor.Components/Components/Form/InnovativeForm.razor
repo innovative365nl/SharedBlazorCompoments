@@ -41,7 +41,16 @@
             <div class="form-ungrouped">
                 @foreach (var property in ungroupedProperties)
                 {
-                    @RenderPropertyField(property)
+                    var fieldAttribute = property.GetCustomAttribute<UIFormField>();
+
+                    if (fieldAttribute?.FormComponent != null)
+                    {
+                        @RenderFormComponent(value: property.GetValue(Model), attribute: fieldAttribute, property)
+                    }
+                    else
+                    {
+                        @RenderPropertyField(property)
+                    }
                 }
             </div>
         }
