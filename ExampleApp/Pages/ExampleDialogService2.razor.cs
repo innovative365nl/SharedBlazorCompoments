@@ -1,6 +1,7 @@
 using ExampleApp.Components;
 using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components;
+using Innovative.Blazor.Components.Enumerators;
 using Innovative.Blazor.Components.Services;
 using PasswordUpdateComponent = ExampleApp.Components.PasswordUpdateComponent;
 
@@ -89,28 +90,52 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
 
     private async Task OpenNewPersonDialog()
     {
-        person = new PersonModel { IsActive = true };
+        var newPerson = new PersonModel { IsActive = true };
 
         await sidePanelService
-                           .OpenInEditMode<PersonModel>(person)
+                           .OpenInEditMode(newPerson)
                            .ConfigureAwait(true);
+    }
+
+    private async Task OpenLargeWidthDialog()
+    {
+        await sidePanelService
+              .OpenInDisplayMode(person, width: SideDialogWidth.Large)
+              .ConfigureAwait(false);
+    }
+
+    private async Task OpenExtraLargeWidthDialog()
+    {
+        await sidePanelService
+              .OpenInDisplayMode(person, width: SideDialogWidth.ExtraLarge)
+              .ConfigureAwait(false);
     }
 }
 
 [UIFormClass(title: nameof(Example.DialogService_Person), ResourceType = typeof(Example))]
 public class PersonModel : FormModel
 {
+    private const string NameColumn = "Name";
+    private const string EmployeeInfoColumn = "EmployeeInfo";
+    private const string DescriptionColumn = "Description";
+
+    public PersonModel()
+    {
+        AddViewColumn(NameColumn, 1, 6, 0);;
+        AddViewColumn(EmployeeInfoColumn, 1, 6, 0);
+        AddViewColumn(DescriptionColumn, 1, 12, 0);;
+    }
     [UIFormField(name: "First Name", ColumnGroup = "Name")]
     public string? FirstName { get; set; }
 
     [UIFormField(name: "Last Name", ColumnGroup = "Name")]
     public string? LastName { get; set; }
 
+    [UIFormField(name: "Birth Date",  ColumnGroup = "EmployeeInfo", DisplayParameters = ["Format={0:dddd d MMMM yyyy}"], FormParameters = ["DateFormat=yyyy-MM-dd"])]
+    public DateTime? BirthDate { get; set; }
+
     [UIFormField(name: "Is Active", DisplayComponent = typeof(CustomBooleanStyle), FormComponent = typeof(CustomBooleanStyle), ColumnGroup = "EmployeeInfo")]
     public bool IsActive { get; set; }
-
-    [UIFormField(name: "Birth Date",  ColumnGroup = "EmployeeInfo")]
-    public DateTime? BirthDate { get; set; }
 
     [UIFormField(name : "Description", UseWysiwyg = true, ColumnGroup = "Description")]
     public string? Description { get; set; }

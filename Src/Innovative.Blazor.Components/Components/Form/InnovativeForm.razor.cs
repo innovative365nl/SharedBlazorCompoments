@@ -183,7 +183,8 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             else
             {
                 builder.OpenComponent<RadzenTextBox>(sequence++);
-                builder.AddAttribute(sequence++, nameof(RadzenTextBox.Name), propName);
+                builder.AddAttribute(sequence++, "class", "w-100");
+                builder.AddComponentParameter(sequence++, nameof(RadzenTextBox.Name), propName);
                 builder.AddAttribute(sequence++, nameof(RadzenTextBox.Value), value);
                 builder.AddAttribute(sequence++, nameof(RadzenTextBox.ValueChanged),
                                      EventCallback.Factory.Create<string>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
@@ -202,6 +203,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             var value = GetIntValue(propertyName: propName);
 
             builder.OpenComponent(sequence++, typeof(RadzenNumeric<int?>));
+            builder.AddAttribute(sequence++, "class", "w-100");
             builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Name), propName);
             builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Value), value);
             builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.ValueChanged),
@@ -238,6 +240,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             var value = GetDateTimeValue(propertyName: propName);
 
             builder.OpenComponent(sequence++, typeof(RadzenDatePicker<DateTime?>));
+            builder.AddAttribute(sequence++, "class", "w-100");
             builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Name), propName);
             builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Value), value);
             builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.ValueChanged),
@@ -261,8 +264,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             if (equalIndex > 0 && equalIndex < parameter.Length - 1)
             {
                 string paramName = parameter[..equalIndex];
-                equalIndex++;
-                string paramValue = parameter[equalIndex..];
+                string paramValue = parameter[++equalIndex..];
                 builder.AddAttribute(sequence: sequence++, name: paramName, value: Objectify(paramValue));
             }
         }
@@ -316,7 +318,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                                                                                                         SetValue(propertyName: propName, value: val, attribute.ShouldNotifyChanges)));
 
                 if (!string.IsNullOrEmpty(attribute?.DataTestId))
-                    builder.AddAttribute(sequence++, DataTestIdKey, attribute.DataTestId);
+                    builder.AddAttribute(sequence++, nameof(attribute.DataTestId), attribute.DataTestId);
 
                 AppendFormParameters(builder, attribute?.FormParameters, ref sequence);
                 builder.CloseComponent();

@@ -31,7 +31,8 @@
     gap: 1rem;
 }
 
-.sidepanel-icon-button {
+.sidepanel-icon-button,
+.sidepanel-actions ::deep .sidepanel-icon-button {
     padding: .5rem;
     line-height: 1;
     min-height: 2.25rem;
@@ -40,7 +41,6 @@
     place-items: center;
     background: none;
     border: none;
-    color: inherit;
     cursor: pointer;
     border-radius: 4px;
     transition: background 0.2s;
@@ -51,12 +51,17 @@
 }
 
 .sidepanel-icon-button .material-symbols-outlined {
-    color: var(--rz-text-tertiary-color);
+    color: var(--innov-base-600, #675f5f);
     font-size: 1.25rem;
 }
 
-.sidepanel-icon-button:hover .material-symbols-outlined {
-    color: var(--rz-text-title-color);
+.sidepanel-icon-button:hover  .material-symbols-outlined {
+    color: var(--innov-base-900, #0d0c0c);
+}
+
+.sidepanel-actions ::deep .sidepanel-icon-button .rz-button-box .material-symbols-outlined,
+.sidepanel-actions ::deep .sidepanel-icon-button:hover .rz-button-box .material-symbols-outlined {
+    color: var(--innov-base-50, #fafafa);
 }
 
 .material-symbols-outlined {

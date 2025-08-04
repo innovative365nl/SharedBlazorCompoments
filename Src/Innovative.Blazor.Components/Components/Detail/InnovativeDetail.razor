@@ -34,7 +34,7 @@
         }
     </RadzenStack>
 
-    <section class="innovative-grid-layout">
+    <section class="innovative-detail-layout">
         @foreach (var group in orderedColumnGroups)
         {
             <div class="form-column-group @GetColumnWidthClass(group.Key)">
@@ -84,7 +84,7 @@
                                         Debug.WriteLine($"Error accessing TextProperty '{fieldAttribute.TextProperty}' on type '{value.GetType().Name}': {ex.Message}");
                                     }
                                 }
-                                <InnovativeText TextStyle="TextStyle.Body1">@(displayValue?.ToString() ?? "-")</InnovativeText>
+                                <InnovativeText TextStyle="TextStyle.Body1" Attributes="@GetAttributesFromParameters(fieldAttribute?.DisplayParameters ?? [])">@(displayValue?.ToString() ?? "-")</InnovativeText>
                             }
                         }
                     </div>

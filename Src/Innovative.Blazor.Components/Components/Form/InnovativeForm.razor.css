@@ -1,119 +1,96 @@
-﻿.innovative-grid-layout {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 1rem;
+﻿.innovative-form-layout {
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.innovative-form-layout > * {
+    padding: 0.5rem;
+}
+
+.innovative-form-layout.col-* > * {
+    margin-bottom: 0.25rem;
 }
 
 /* Column spanning classes */
-.col-1 {
-    width: auto;
-    grid-column: span 1;
+.innovative-form-layout.col-1 {
+    width: 8.33%;
 }
 
-.col-2 {
-    width: auto;
-    grid-column: span 2;
+.innovative-form-layout.col-2 {
+    width: 16.66%;
 }
 
-.col-3 {
-    width: auto;
-    grid-column: span 3;
+.innovative-form-layout.col-3 {
+    width: 25%;
 }
 
-.col-4 {
-    width: auto;
-    grid-column: span 4;
+.innovative-form-layout.col-4 {
+    width: 33.33%;
 }
 
-.col-5 {
-    width: auto;
-    grid-column: span 5;
+.innovative-form-layout.col-5 {
+    width: 41.66%;
 }
 
-.col-6 {
-    width: auto;
-    grid-column: span 6;
+.innovative-form-layout.col-6 {
+    width: 50%;
 }
 
-.col-6 {
-    width: auto;
-    grid-column: span 6;
+.innovative-form-layout.col-7 {
+    width: 58.33%;
 }
 
-.col-7 {
-    width: auto;
-    grid-column: span 7;
+.innovative-form-layout.col-8 {
+    width: 66.66%;
 }
 
-.col-8 {
-    width: auto;
-    grid-column: span 8;
+.innovative-form-layout.col-9 {
+    width: 75%;
 }
 
-.col-9 {
-    width: auto;
-    grid-column: span 9;
+.innovative-form-layout.col-10 {
+    width: 83.33%;
 }
 
-.col-9 {
-    width: auto;
-    grid-column: span 9;
+.innovative-form-layout.col-11 {
+    width: 91.66%;
 }
 
-.col-10 {
-    width: auto;
-    grid-column: span 10;
-}
-
-.col-11 {
-    width: auto;
-    grid-column: span 11;
-}
-
-.col-12 {
-    width: auto;
-    grid-column: span 12;
+.innovative-form-layout.col-12 {
+    width: 100%;
 }
 
 .form-column-group {
-    margin-bottom: 1rem;
-    display: grid;
-    grid-template-rows: auto 1fr;
-    gap: 0.25rem;
+    display: flex;
+    flex-direction: column;
     align-items: baseline;
+    gap: 0.5rem;
 }
 
 .form-ungrouped {
-    margin-top: 1rem;
-    grid-column: span 12;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
 }
 
 .form-column-group ::deep .rz-datepicker {
     display: grid;
 }
 
-.form-column-group ::deep  .rz-datepicker > .rz-inputtext {
+.form-column-group ::deep .rz-datepicker > .rz-inputtext {
     width: unset;
 }
 
 /* Small screens */
 @media (max-width: 1280px) {
-    /* Every span goes full width */
-    .col-1,
-    .col-2,
-    .col-3,
-    .col-4,
-    .col-5,
-    .col-6,
-    .col-7,
-    .col-8,
-    .col-9,
-    .col-10,
-    .col-11 {
-        grid-column: span 12;
+    /* Every child goes full width */
+    .innovative-form-layout > * {
+        width: 100%;
     }
 
-    .rz-dialog-side-content-layout ::deep .rz-label{
+    .rz-dialog-side-content-layout ::deep .rz-label {
         margin-bottom: -.75rem;
     }
 }

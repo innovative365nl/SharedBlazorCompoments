@@ -117,6 +117,7 @@ public sealed class Person5FormModel : FormModel
     {
         AddViewColumn(name: ColumnGroup1, width: 12, order: 1, offset: 0);
         AddViewColumn(name: ColumnGroup2, width: 6, order: 1, offset: 0);
+
     }
     public Guid Id { get; set; }
 
@@ -130,7 +131,7 @@ public sealed class Person5FormModel : FormModel
     public DateTime? DateOfBirth { get; set; }
 
     [UIFormField(name: "Age", ColumnGroup = ColumnGroup2)]
-    public int? Age => CalculateAge(dateOfBirth: DateOfBirth);  
+    public int? Age => CalculateAge(dateOfBirth: DateOfBirth);
 
     [UIFormField(name: "Nr", ColumnGroup = ColumnGroup2, FormParameters = ["Disabled=true"])]
     public int? LotNummer { get; set; } = 90;

@@ -3,7 +3,7 @@
 @typeparam TModel
 
 <RadzenTemplateForm TItem="TModel" Data="@Model" Submit="@OnFormSubmit">
-    <section class="innovative-grid-layout">
+    <section class="innovative-form-layout">
         @{
             var model = Model as FormModel;
             System.Diagnostics.Debug.Assert(model != null, $"{nameof(model)} is null!");
@@ -41,7 +41,16 @@
             <div class="form-ungrouped">
                 @foreach (var property in ungroupedProperties)
                 {
-                    @RenderPropertyField(property)
+                    var fieldAttribute = property.GetCustomAttribute<UIFormField>();
+
+                    if (fieldAttribute?.FormComponent != null)
+                    {
+                        @RenderFormComponent(value: property.GetValue(Model), attribute: fieldAttribute, property: property)
+                    }
+                    else
+                    {
+                        @RenderPropertyField(property)
+                    }
                 }
             </div>
         }
