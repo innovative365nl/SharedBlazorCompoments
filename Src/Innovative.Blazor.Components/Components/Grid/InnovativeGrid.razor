@@ -86,7 +86,7 @@
                                         }
                                         else
                                         {
-                                            if (property.PropertyInfo.GetValue(context) is decimal decimalValue)
+                                            if (property.PropertyInfo.GetValue(context) is decimal)
                                             {
                                                 @RenderDecimalComponent(property, context!)
                                             }
