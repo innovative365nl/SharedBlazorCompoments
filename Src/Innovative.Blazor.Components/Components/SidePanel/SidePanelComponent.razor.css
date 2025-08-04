@@ -52,10 +52,15 @@
 
 .sidepanel-icon-button .material-symbols-outlined {
     color: var(--rz-text-tertiary-color);
+    font-size: 1.25rem;
 }
 
-.sidepanel-icon-button:hover  .material-symbols-outlined {
+.sidepanel-icon-button:hover .material-symbols-outlined {
     color: var(--rz-text-title-color);
+}
+
+.material-symbols-outlined {
+    font-family: 'Material Symbols', sans-serif;
 }
 
 .sidepanel-content {
@@ -69,8 +74,4 @@
     padding: 1rem;
     display: flex;
     gap: 10px;
-}
-
-.material-symbols-outlined {
-    font-family: 'Material Symbols', sans-serif;
 }
