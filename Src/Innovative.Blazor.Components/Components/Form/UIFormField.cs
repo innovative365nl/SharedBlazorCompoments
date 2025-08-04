@@ -55,6 +55,4 @@ public sealed class UIFormField(string name) : UIField(name)
     public string? TextProperty { get; set; }
     public string DataTestId { get; set; } = string.Empty;
     public bool ShouldNotifyChanges { get; set; }
-    public string CultureName { get; set; } = CultureInfo.CurrentCulture.Name;
-    public CultureInfo GetCultureInfo => new(CultureName);
 }

@@ -358,14 +358,8 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     [ExcludeFromCodeCoverage]
     private static RenderFragment RenderDecimalComponent(PropertyWithAttribute property, object context)
     {
-        var formatString = property.GridField.Parameters?.FirstOrDefault(e => e.StartsWith("Format=", StringComparison.OrdinalIgnoreCase));
-        var format = formatString is null
-                         ? $"N{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalDigits}"
-                         : formatString["Format=".Length..];
-
         return builder =>
                {
-                   int sequence = 0;
                    object? value = property.PropertyInfo.GetValue(obj: context);
                    if (value == null)
                    {
@@ -373,8 +367,14 @@ public partial class InnovativeGrid<TItem> : ComponentBase
                        return;
                    }
 
+                   var formatString = property.GridField.Parameters?.FirstOrDefault(e => e.StartsWith("Format=", StringComparison.OrdinalIgnoreCase));
+                   var format = formatString is null
+                                    ? $"N{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalDigits}"
+                                    : formatString["Format=".Length..];
+
+                   int sequence = 0;
                    var decimalText = Convert.ToDecimal(value, CultureInfo.CurrentCulture).ToString(format, CultureInfo.CurrentCulture);;
-                   builder.OpenElement(sequence++ , "div");
+                   builder.OpenElement(sequence , "div");
                    builder.AddAttribute(sequence++ , "data-text", decimalText);
                    builder.AddContent(sequence++, (MarkupString)decimalText);
                    builder.CloseElement();

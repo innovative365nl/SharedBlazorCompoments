@@ -225,7 +225,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             builder.AddAttribute(sequence++, "class", "w-100");
             builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Name), propName);
             builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Value), value);
-            builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Culture), fieldAttribute?.GetCultureInfo ?? CultureInfo.CurrentCulture);
+            builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Culture), CultureInfo.CurrentCulture);
             builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.ValueChanged),
                                  EventCallback.Factory.Create<decimal?>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
 
