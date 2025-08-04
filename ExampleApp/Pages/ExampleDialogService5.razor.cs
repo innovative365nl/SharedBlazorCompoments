@@ -9,8 +9,8 @@ public partial class ExampleDialogService5(
 {
     private DecimalModel TestClass1 { get; set; } = new DecimalModel()
                                                     {
-                                                        FirstValue = 123.4512314m,
-                                                        SecondValue = 123.45999m,
+                                                        FirstValue = 0.001m,
+                                                        SecondValue = 0.45999m,
                                                         ThirdValue = 333
                                                     };
 
@@ -19,7 +19,7 @@ public partial class ExampleDialogService5(
 
 internal sealed class DecimalModel : FormModel
 {
-    [UIFormField(name: "Decimal Value", DisplayParameters = ["Format=0.##"], FormParameters = ["Format=0.##"])]
+    [UIFormField(name: "Decimal Value", DisplayParameters = ["Format=0.00"], FormParameters = ["Format=N2"])]
     public decimal? FirstValue { get; set; }
     [UIFormField(name: "Decimal Value 2 (no format)")]
     public decimal? SecondValue { get; set; }

@@ -63,16 +63,10 @@
                             if (!string.IsNullOrEmpty(format))
                             {
                                 format = format["Format=".Length..];
-                                if (value is decimal decimalValue)
-                                {
-                                    <div
-                                        class="html-content">@((MarkupString)(decimalValue.ToString(format, CultureInfo.CurrentCulture)))</div>
-                                }
-                                else
-                                {
-                                    <div
-                                        class="html-content">@((MarkupString)(string.Format(CultureInfo.CurrentCulture, format, value)))</div>
-                                }
+                                var content = value is decimal decimalValue
+                                    ? (MarkupString)(decimalValue.ToString(format, CultureInfo.CurrentCulture))
+                                    : (MarkupString)(string.Format(CultureInfo.CurrentCulture, format, value));
+                                <div class="html-content">@content</div>
                             }
                             else
                             {
