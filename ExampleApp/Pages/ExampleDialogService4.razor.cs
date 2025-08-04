@@ -30,7 +30,7 @@ internal sealed class PersonExampleModel : FormModel
     [UIFormField(name: "First Name", ColumnGroup = "Name")]
     public string? FirstName { get; set; }
 
-    [UIFormField(name: "Last Name", ColumnGroup = "Name", FormComponent = typeof(ComplexPrimitveTypeComponent))]
+    [UIFormField(name: "Last Name", ColumnGroup = "Name", FormComponent = typeof(ComplexPrimitiveTypeComponent))]
     public string? LastName { get; set; }
 
     [UIFormField(name: "Birth Date",  ColumnGroup = "EmployeeInfo", DisplayParameters = ["Format={0:dddd d MMMM yyyy}"], FormParameters = ["DateFormat=yyyy-MM-dd"])]
