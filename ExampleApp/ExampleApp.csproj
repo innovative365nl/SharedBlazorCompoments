@@ -16,6 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.NET.ILLink.Tasks" />
+    <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" />
     <EmbeddedResource Update="Translations\Example.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Example.Designer.cs</LastGenOutput>
