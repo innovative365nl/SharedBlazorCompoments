@@ -63,9 +63,16 @@
                                         }
                                         else
                                         {
-                                            <div data-text="@property.PropertyInfo.GetValue(obj: context)">
-                                                @property.PropertyInfo.GetValue(obj: context)
-                                            </div>
+                                            if (property.PropertyInfo.GetValue(context) is decimal)
+                                            {
+                                                @RenderDecimalComponent(property, context!)
+                                            }
+                                            else
+                                            {
+                                                <div data-text="@property.PropertyInfo.GetValue(obj: context)">
+                                                    @property.PropertyInfo.GetValue(obj: context)
+                                                </div>
+                                            }
                                         }
                                     </Template>
                                 </RadzenDataGridColumn>
@@ -86,9 +93,16 @@
                                         }
                                         else
                                         {
-                                            <div data-text="@property.PropertyInfo.GetValue(obj: context)">
-                                                @property.PropertyInfo.GetValue(obj: context)
-                                            </div>
+                                            if (property.PropertyInfo.GetValue(context) is decimal)
+                                            {
+                                                @RenderDecimalComponent(property, context!)
+                                            }
+                                            else
+                                            {
+                                                <div data-text="@property.PropertyInfo.GetValue(obj: context)">
+                                                    @property.PropertyInfo.GetValue(obj: context)
+                                                </div>
+                                            }
                                         }
                                     </Template>
                                 </RadzenDataGridColumn>
