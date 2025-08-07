@@ -1,10 +1,11 @@
 :root {
-    --innov-grid-table-fixed-shadow: 6px 0 10px -2px rgba(64, 63, 63, 0.1);
     --innov-grid-table-fixed-border: unset;
+    --innov-grid-table-fixed-shadow: 6px 0 10px -2px rgba(64, 63, 63, 0.1);
     --innov-grid-first-header-cell-padding: .625rem 1rem;
     --innov-grid-header-border-bottom: var(--innov-border-2-dark);
 
     --innov-pager-padding: 1rem;
+    --innov-pager-numeric-button-selected-padding: .25rem;
 }
 
 :root {

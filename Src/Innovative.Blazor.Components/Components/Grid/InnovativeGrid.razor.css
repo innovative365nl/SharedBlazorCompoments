@@ -116,13 +116,11 @@
 
 ::deep .rz-pager-element,
 ::deep .rz-button-lg.rz-button-icon-only {
-    --innov-pager-numeric-button-selected-padding: .25rem;
     padding: var(--innov-pager-numeric-button-selected-padding);
     align-content: center;
 }
 
 ::deep .rz-pager-element, .rz-button-lg {
-    --innov-pager-numeric-button-selected-padding: .25rem;
     padding: var(--innov-pager-numeric-button-selected-padding);
     min-width: var(--innov-buttons-width);
     min-height: var(--innov-buttons-height);
