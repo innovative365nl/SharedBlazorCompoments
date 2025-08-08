@@ -165,16 +165,16 @@
     color: var(--innov-dropdown-item-selected-hover-color);
 }
 
-.rz-state-highlight.rz-menuitem,
-.rz-state-highlight.rz-autocomplete-list-item,
-.rz-state-highlight.rz-multiselect-item,
-.rz-autocomplete-items li.rz-state-highlight,
-.rz-dropdown-items li.rz-state-highlight,
-.rz-multiselect-items li.rz-state-highlight,
-.rz-dropdown-item.rz-state-highlight {
+::deep .rz-state-highlight.rz-menuitem,
+::deep .rz-state-highlight.rz-autocomplete-list-item,
+::deep .rz-state-highlight.rz-multiselect-item,
+::deep .rz-autocomplete-items li.rz-state-highlight,
+::deep .rz-dropdown-items li.rz-state-highlight,
+::deep .rz-multiselect-items li.rz-state-highlight,
+::deep .rz-dropdown-item.rz-state-highlight {
     background-color: var(--innov-dropdown-item-selected-background-color);
     color: var(--innov-dropdown-item-selected-color);
-    box-shadow: var(--innov-dropdown-item-selected-shadow);
+    box-shadow: none;
 }
 
 ::deep .rz-chkbox {
@@ -183,7 +183,7 @@
     min-width: unset;
 }
 
-.rz-chkbox-box:hover:not(.rz-state-disabled):after {
+::deep .rz-chkbox-box:hover:not(.rz-state-disabled):after {
     width: var(--innov-input-checkbox-circle-hover-width);
     height: var(--innov-input-checkbox-circle-hover-height);
     background-color: var(--innov-input-checkbox-circle-hover-background-color);
