@@ -1,51 +1,52 @@
 /* Base alert styles */
 .innovative-alert {
-    border-radius: 4px;
-    padding: 1rem;
-    margin: 1rem 0;
+    margin: var(--innov-alert-margin);
+    padding: var(--innov-alert-padding);
+    font-size: var(--innov-alert-font-size);
+    border: var(--innov-alert-border);
+    border-radius: var(--innov-alert-border-radius);
     position: relative;
-    font-size: 1rem;
     display: grid;
     grid-template-columns: auto 1fr;
     column-gap: 0.5rem;
-    box-shadow: 0px 2px 3px rgba(87, 90, 103, 0.5);
+    box-shadow: var(--innov-alert-shadow);
 }
 
 .innovative-alert-info {
-    background: var(--innov-info-light, #6CA8E4);
-    color: var(--innov-on-info-light, #000000);
+    background: var(--innov-info-light);
+    color: var(--innov-on-info-light);
 }
 
 .innovative-alert-success {
-    background: var(--innov-success-light, #C6E46C);
-    color: var(--innov-on-success-light, #000000);
+    background: var(--innov-success-light);
+    color: var(--innov-on-success-light);
 }
 
 .innovative-alert-warning {
-    background: var(--innov-warning-light, #E4B26C);
-    color: var(--innov-on-warning-light, #000000);
+    background: var(--innov-warning-light);
+    color: var(--innov-on-warning-light);
 }
 
 .innovative-alert-error {
-    background: var(--innov-danger-light, #E46E6C);
-    color: var(--innov-on-danger-light, #000000);
+    background: var(--innov-danger-light);
+    color: var(--innov-on-danger-light);
 }
 
 .innovative-alert-close {
     position: absolute;
     top: .5rem;
     right: .5rem;
-    padding: .5rem;
-    line-height: 1;
-    min-height: 2.25rem;
-    min-width: 2.25rem;
+    padding: var(--innov-alert-close-padding);
+    color: inherit;
+    line-height: var(--innov-alert-line-height);
+    width: var(--innov-alert-close-width);
+    height: var(--innov-alert-close-height);
     display: grid;
     place-items: center;
-    background: none;
-    border: none;
-    color: inherit;
+    background: var(--innov-alert-close-background);
+    border: var(--innov-alert-close-border);
+    border-radius: var(--innov-alert-close-border-radius);
     cursor: pointer;
-    border-radius:4px;
     transition: background 0.2s;
 }
 
@@ -70,7 +71,7 @@
 }
 
 .material-symbols-outlined {
-    font-family: 'Material Symbols', sans-serif;
+    font-family: var(--innov-font-family);
     display: inline-block;
 }
 

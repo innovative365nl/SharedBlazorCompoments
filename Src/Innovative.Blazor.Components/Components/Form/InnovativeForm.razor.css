@@ -83,6 +83,112 @@
     width: unset;
 }
 
+::deep .rz-label {
+    font-weight: var(--innov-label-font-weight);
+    font-size: var(--innov-label-font-size);
+    margin-block-start: unset;
+    margin-block-end: unset;
+    margin-bottom: 0;
+}
+
+::deep .rz-colorpicker,
+::deep .rz-lookup-search input,
+::deep .rz-spinner,
+::deep .rz-calendar .rz-inputtext,
+::deep .rz-multiselect,
+::deep .rz-dropdown,
+::deep .mask,
+::deep .rz-textarea,
+::deep .rz-textbox,
+::deep .rz-numeric,
+::deep .rz-chkbox-box {
+    color: var(--innov-input-value-color);
+    font-size: var(--innov-input-font-size);
+    line-height: var(--innov-input-line-height);
+    background-color: var(--innov-input-background-color);
+    border: var(--innov-input-border);
+    border-block-end: var(--innov-input-border-block-end);
+    border-radius: var(--innov-input-border-radius);
+    box-shadow: var(--innov-input-shadow);
+    transition: var(--innov-input-transition);
+}
+
+::deep .rz-form-field:hover .rz-form-field-content,
+::deep .rz-autocomplete:hover:not(.rz-state-disabled),
+::deep .rz-timespanpicker > .rz-inputtext:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-colorpicker:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-lookup-search input:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-numeric:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-datepicker > .rz-inputtext:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-multiselect:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-dropdown:not(:disabled):not(.rz-state-disabled):hover,
+::deep .mask:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-textarea:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-textbox:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-chkbox-box:hover:not(.rz-state-disabled) {
+    background-color: var(--innov-input-hover-background-color);
+    border: var(--innov-input-hover-border);
+    border-block-end: var(--innov-input-hover-border-block-end);
+    box-shadow: var(--innov-input-hover-shadow);
+}
+
+::deep .rz-form-field.rz-state-focused .rz-form-field-content,
+::deep .rz-numeric:focus-within:not(.rz-state-disabled),
+::deep .rz-autocomplete:focus-within:not(.rz-state-disabled),
+::deep .rz-timespanpicker > .rz-inputtext:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-colorpicker:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-lookup-search input:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-numeric:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-datepicker > .rz-inputtext:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-multiselect:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-dropdown:not(:disabled):not(.rz-state-disabled):focus,
+::deep .mask:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-textarea:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-textbox:not(:disabled):not(.rz-state-disabled):focus {
+    background-color: var(--innov-input-focus-background-color);
+    border: var(--innov-input-focus-border);
+    border-color: var(--innov-input-focus-border-color);
+    border-block-end: var(--innov-input-focus-border-block-end);
+    box-shadow: var(--innov-input-focus-shadow);
+    outline: var(--innov-input-focus-outline);
+    outline-offset: var(--innov-input-focus-outline-offset);
+}
+
+::deep .rz-state-highlight.rz-menuitem:hover,
+::deep .rz-state-highlight.rz-autocomplete-list-item:hover,
+::deep .rz-state-highlight.rz-multiselect-item:hover,
+::deep .rz-autocomplete-items li.rz-state-highlight:hover,
+::deep .rz-dropdown-items li.rz-state-highlight:hover,
+::deep .rz-multiselect-items li.rz-state-highlight:hover,
+::deep .rz-dropdown-item.rz-state-highlight:hover {
+    background-color: var(--innov-dropdown-item-selected-hover-background-color);
+    color: var(--innov-dropdown-item-selected-hover-color);
+}
+
+.rz-state-highlight.rz-menuitem,
+.rz-state-highlight.rz-autocomplete-list-item,
+.rz-state-highlight.rz-multiselect-item,
+.rz-autocomplete-items li.rz-state-highlight,
+.rz-dropdown-items li.rz-state-highlight,
+.rz-multiselect-items li.rz-state-highlight,
+.rz-dropdown-item.rz-state-highlight {
+    background-color: var(--innov-dropdown-item-selected-background-color);
+    color: var(--innov-dropdown-item-selected-color);
+    box-shadow: var(--innov-dropdown-item-selected-shadow);
+}
+
+::deep .rz-chkbox {
+    width: var(--innov-checkbox-width);
+    height: var(--innov-checkbox-height);
+    min-width: unset;
+}
+
+.rz-chkbox-box:hover:not(.rz-state-disabled):after {
+    width: var(--innov-input-checkbox-circle-hover-width);
+    height: var(--innov-input-checkbox-circle-hover-height);
+    background-color: var(--innov-input-checkbox-circle-hover-background-color);
+}
+
 /* Small screens */
 @media (max-width: 1280px) {
     /* Every child goes full width */

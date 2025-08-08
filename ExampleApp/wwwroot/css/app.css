@@ -1,27 +1,132 @@
 :root {
+    /* Components */
+    /* Grid */
+    --innov-data-grid-border: none;
+    --innov-data-grid-border-radius: var(--innov-border-radius);
     --innov-grid-table-fixed-border: unset;
     --innov-grid-table-fixed-shadow: 6px 0 10px -2px rgba(64, 63, 63, 0.1);
-    --innov-grid-first-header-cell-padding: .625rem 1rem;
+    --innov-grid-header-first-cell-padding: .625rem 1rem;
+    --innov-grid-header-font-size: 1rem;
+    --innov-grid-header-line-height: auto;
+    --innov-grid-header-text-transform: unset;
     --innov-grid-header-border-bottom: var(--innov-border-2-dark);
+    --innov-grid-first-cell-padding: 0.625rem 1rem 0.625rem 2rem;
+    --innov-grid-selected-font-weight: 600;;
 
+    /* Pager */
     --innov-pager-padding: 1rem;
     --innov-pager-numeric-button-selected-padding: .25rem;
+
+    /* Side panel */
+    --innov-side-panel-padding: 1rem 1rem .5rem 1rem;
 }
 
 :root {
+    /* Global Variables */
     --innov-font-family: 'Aptos', sans-serif;
+
     --innov-icon-font-family: 'Material Symbols', sans-serif;
+    --innov-icon-font-size: 1.25rem;
 
-    --innov-buttons-border-radius: 4px;
-    --innov-buttons-width: 48px;
-    --innov-buttons-height: 48px;
+    --innov-h1-font-size: 1.75rem;
+    --innov-h2-font-size: 1.5rem;
+    --innov-h3-font-size: 1.25rem;
+    --innov-h4-font-size: 1.125rem;
+    --innov-h5-font-size: auto;
+    --innov-h6-font-size: auto;
 
-    --innov-border-1-light: 1px solid var(--innov-base-400);
-    --innov-border-1-dark: 1px solid var(--innov-base-600);
-    --innov-border-2-light: 2px solid var(--innov-base-400);
-    --innov-border-2-dark: 2px solid var(--innov-base-600);
+    --innov-border-radius: 4px;
 
-    /* Colors */
+    --innov-border: 1px solid var(--innov-border-color-dark);
+    --innov-border-1-light: 1px solid var(--innov-border-color-light);
+    --innov-border-1-dark: 1px solid var(--innov-border-color-dark);
+    --innov-border-2-light: 2px solid var(--innov-border-color-light);
+    --innov-border-2-dark: 2px solid var(--innov-border-color-dark);
+
+    --innov-shadow-0: none;
+    --innov-shadow-1: 0px 2px 3px rgba(87, 90, 103, 0.5);
+    --innov-shadow-2: 0px 3px 4px rgba(87, 90, 103, 0.5);
+    --innov-shadow-3: 0px 4px 5px rgba(87, 90, 103, 0.5);
+    --innov-shadow-4: none;
+    --innov-shadow-5: none;
+    --innov-shadow-6: none;
+    --innov-shadow-7: none;
+    --innov-shadow-8: none;
+
+    /* Global components */
+    --innov-button-padding: .5rem;
+    --innov-button-line-height: 1;
+    --innov-button-border-radius: var(--innov-border-radius);
+    --innov-button-width: 2.25rem;
+    --innov-button-height: 2.25rem;
+    --innov-button-icon-only-transition: color .3s;
+
+    --innov-alert-margin: 1rem 0;
+    --innov-alert-padding: 1rem;
+    --innov-alert-font-size: 1rem;
+    --innov-alert-border-radius: var(--innov-border-radius);
+    --innov-alert-shadow: 0px 2px 3px rgba(87, 90, 103, 0.5);
+    --innov-alert-close-padding: .5rem;
+    --innov-alert-line-height: auto;
+    --innov-alert-close-width: 2.25rem;
+    --innov-alert-close-height: 2.25rem;
+    --innov-alert-close-background: none;
+    --innov-alert-close-border: none;
+    --innov-alert-close-border-radius: var(--innov-button-border-radius);
+
+    --innov-label-font-weight: 600;
+    --innov-label-font-size: 1rem;
+
+    --innov-input-font-size: 1rem;
+    --innov-input-line-height: auto;
+    --innov-input-transition: all 0.1s linear;
+    --innov-input-border: var(--innov-border-1-light);
+    --innov-input-border-block-end: var(--innov-border-1-dark);
+    --innov-input-border-radius: var(--innov-border-radius);
+    --innov-input-shadow: none;
+    --innov-input-hover-border: var(--innov-border-1-dark);
+    --innov-input-hover-border-block-end: var(--innov-border-1-dark);
+    --innov-input-hover-shadow: none;
+    --innov-input-focus-border: var(--innov-border);
+    --innov-input-focus-border-block-end: var(--innov-border-1-dark);
+    --innov-input-focus-border-radius: var(--innov-border-radius);
+    --innov-input-focus-outline: none;
+    --innov-input-focus-outline-offset: 0;
+    --innov-checkbox-width: 1.125rem;
+    --innov-checkbox-height: 1.125rem;
+    --innov-input-checkbox-circle-hover-width: 2.5rem;
+    --innov-input-checkbox-circle-hover-height: 2.5rem;
+}
+
+:root {
+    /* Component Colors */
+    /* Inputs */
+    --innov-input-value-color: #000;
+    --innov-input-background-color: #fff;
+    --innov-input-disabled-background-color: var(--innov-base-300);
+    --innov-input-hover-background-color: #fff;
+    --innov-input-focus-background-color: #fff;
+    --innov-input-focus-border-color: var(--innov-primary);
+    --innov-input-focus-shadow: inset 0 0 0 1px var(--innov-base-600);
+    --innov-input-checkbox-circle-hover-background-color: var(--innov-base-300);
+
+    --innov-dropdown-item-selected-hover-color: var(--innov-base-900);
+    --innov-dropdown-item-selected-hover-background-color: var(--innov-base-100);
+    --innov-dropdown-item-selected-color: #000;
+    --innov-dropdown-item-selected-background-color: var(--innov-primary-light);
+
+    /* Grid */
+    --innov-grid-header-color: #000;
+    --innov-grid-background-color: #fff;
+    --innov-grid-row-odd-background-color: #fff;
+    --innov-grid-row-even-background-color: var(--innov-base-50);
+    --innov-grid-selected-color: var(--innov-primary);
+    --innov-grid-filter-color: var(--innov-base-500);
+    --innov-grid-header-filter-icon-hover-color: var(--innov-base-600);
+
+    --innov-side-panel-background-color: var(--innov-base-100);
+
+    /* Global Colors */
     --innov-primary: #a43f13;
     --innov-primary-light: #db8d75;
     --innov-primary-lighter: #e6c2b7;
@@ -54,42 +159,42 @@
     --innov-danger-dark: #AE0D0A;
     --innov-danger-darker: #6B0201;
 
-    --innov-on-info: #ffffff;
-    --innov-on-info-light: #000000;
-    --innov-on-info-lighter: #000000;
-    --innov-on-info-dark: #ffffff;
-    --innov-on-info-darker: #ffffff;
-    --innov-on-success: #000000;
-    --innov-on-success-light: #000000;
-    --innov-on-success-lighter: #000000;
-    --innov-on-success-dark: #ffffff;
-    --innov-on-success-darker: #ffffff;
-    --innov-on-warning: #000000;
-    --innov-on-warning-light: #000000;
-    --innov-on-warning-lighter: #000000;
-    --innov-on-warning-dark: #ffffff;
-    --innov-on-warning-darker: #ffffff;
-    --innov-on-danger: #000000;
-    --innov-on-danger-light: #000000;
-    --innov-on-danger-lighter: #000000;
-    --innov-on-danger-dark: #ffffff;
-    --innov-on-danger-darker: #ffffff;
+    --innov-on-info: #fff;
+    --innov-on-info-light: #000;
+    --innov-on-info-lighter: #000;
+    --innov-on-info-dark: #fff;
+    --innov-on-info-darker: #fff;
+    --innov-on-success: #000;
+    --innov-on-success-light: #000;
+    --innov-on-success-lighter: #000;
+    --innov-on-success-dark: #fff;
+    --innov-on-success-darker: #fff;
+    --innov-on-warning: #000;
+    --innov-on-warning-light: #000;
+    --innov-on-warning-lighter: #000;
+    --innov-on-warning-dark: #fff;
+    --innov-on-warning-darker: #fff;
+    --innov-on-danger: #000;
+    --innov-on-danger-light: #000;
+    --innov-on-danger-lighter: #000;
+    --innov-on-danger-dark: #fff;
+    --innov-on-danger-darker: #fff;
 
-    --innov-on-base: #000000;
-    --innov-on-base-light: #000000;
-    --innov-on-base-lighter: #000000;
-    --innov-on-base-dark: #ffffff;
-    --innov-on-base-darker: #ffffff;
-    --innov-on-primary: #ffffff;
-    --innov-on-primary-light: #000000;
-    --innov-on-primary-lighter: #000000;
-    --innov-on-primary-dark: #ffffff;
-    --innov-on-primary-darker: #ffffff;
-    --innov-on-secondary: #ffffff;
-    --innov-on-secondary-light: #000000;
-    --innov-on-secondary-lighter: #000000;
-    --innov-on-secondary-dark: #ffffff;
-    --innov-on-secondary-darker: #ffffff;
+    --innov-on-base: #000;
+    --innov-on-base-light: #000;
+    --innov-on-base-lighter: #000;
+    --innov-on-base-dark: #fff;
+    --innov-on-base-darker: #fff;
+    --innov-on-primary: #fff;
+    --innov-on-primary-light: #000;
+    --innov-on-primary-lighter: #000;
+    --innov-on-primary-dark: #fff;
+    --innov-on-primary-darker: #fff;
+    --innov-on-secondary: #fff;
+    --innov-on-secondary-light: #000;
+    --innov-on-secondary-lighter: #000;
+    --innov-on-secondary-dark: #fff;
+    --innov-on-secondary-darker: #fff;
 
     --innov-base: #383838;
     --innov-base-50: #fafafa;
@@ -102,6 +207,9 @@
     --innov-base-700: #494343;
     --innov-base-800: #2b2828;
     --innov-base-900: #0d0c0c;
+
+    --innov-border-color-light: var(--innov-base-400);
+    --innov-border-color-dark: var(--innov-base-600);
 }
 
 @font-face {
@@ -117,7 +225,7 @@
 }
 
 html, body {
-    font-family: 'Aptos', sans-serif;
+    font-family: var(--innov-font-family);
 }
 
 h1:focus {
