@@ -260,7 +260,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             var value = GetDateTimeValue(propertyName: propName);
 
             builder.OpenComponent(sequence++, typeof(RadzenDatePicker<DateTime?>));
-            builder.AddAttribute(sequence++, "class", "innovative-datepicker");
+            builder.AddAttribute(sequence++, "class", "w-100");
             builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Name), propName);
             builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Value), value);
             builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.ValueChanged),
