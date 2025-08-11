@@ -276,6 +276,22 @@
 
     /* Side panel */
     --innov-side-panel-padding: 1rem 1rem .5rem 1rem;
+
+    /*Progress bar circular*/
+    --innov-progressbar-circular-label-font-size: .875rem;
+    --innov-progressbar-circular-label-font-weight: 500;
+    --innov-progressbar-circular-xs-width: 2rem;
+    --innov-progressbar-circular-xs-height: 2rem;
+    --innov-progressbar-circular-xs-font-size: .65rem;
+    --innov-progressbar-circular-sm-width: 3rem;
+    --innov-progressbar-circular-sm-height: 3rem;
+    --innov-progressbar-circular-sm-font-size: .75rem;
+    --innov-progressbar-circular-md-width: 4rem;
+    --innov-progressbar-circular-md-height: 4rem;
+    --innov-progressbar-circular-md-font-size: 1rem;
+    --innov-progressbar-circular-lg-width: 6rem;
+    --innov-progressbar-circular-lg-height: 6rem;
+    --innov-progressbar-circular-lg-font-size: 1rem;
 }
 
 @font-face {
