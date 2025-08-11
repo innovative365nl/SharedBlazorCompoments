@@ -17,7 +17,7 @@
 
 /* Table head */
 ::deep .rz-grid-table thead th {
-    background: var(--rz-grid-background-color);
+    background: var(--innov-grid-background-color);
     border-bottom: unset;
 }
 
@@ -43,20 +43,24 @@
 }
 
 ::deep .rz-grid-table thead th div {
-    background: var(--rz-grid-background-color);
+    background: var(--innov-grid-background-color);
 }
 
 ::deep .rz-column-title-content {
     font-weight: bold;
 }
 
+::deep .rz-sortable-column > div:hover .rzi-sort:not(.rzi-sort-asc):not(.rzi-sort-desc) {
+    color: var(--innov-grid-sort-icon-color);
+}
+
 /* Table body */
 ::deep .rz-grid-table-striped tbody > tr:not(.rz-expanded-row-content):nth-child(2n+1) > td {
-    background-color: var(--rz-grid-row-odd-background-color);
+    background-color: var(--innov-grid-row-odd-background-color);
 }
 
 ::deep .rz-grid-table-striped tbody > tr:not(.rz-expanded-row-content):nth-child(2n) > td {
-    background-color: var(--rz-grid-row-even-background-color);
+    background-color: var(--innov-grid-row-even-background-color);
 }
 
 ::deep .rz-datatable-data td:not(:last-child), .rz-grid-table td:not(:last-child) {
@@ -120,7 +124,7 @@
 
 ::deep .rz-grid-filter-icon {
     color: var(--innov-grid-filter-color);
-    /*margin-inline: var(--innov-grid-filter-margin-inline);*/
+    margin-inline: var(--innov-grid-filter-margin-inline);
     font-size: var(--innov-icon-font-size);
     transition: var(--rz-button-icon-only-transition);
 }

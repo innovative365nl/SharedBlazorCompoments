@@ -10,8 +10,11 @@
     --innov-grid-header-line-height: auto;
     --innov-grid-header-text-transform: unset;
     --innov-grid-header-border-bottom: var(--innov-border-2-dark);
+    --innov-grid-header-title-padding-inline: 1rem;
     --innov-grid-first-cell-padding: 0.625rem 1rem 0.625rem 2rem;
     --innov-grid-selected-font-weight: 600;;
+    --innov-grid-filter-margin-inline: unset;
+    --innov-grid-header-filter-icon-hover-color: rgba(0,0,0,0.1);
 
     /* Pager */
     --innov-pager-padding: 1rem;
@@ -64,15 +67,17 @@
     --innov-alert-margin: 1rem 0;
     --innov-alert-padding: 1rem;
     --innov-alert-font-size: 1rem;
+    --innov-alert-border: none;
     --innov-alert-border-radius: var(--innov-border-radius);
     --innov-alert-shadow: 0px 2px 3px rgba(87, 90, 103, 0.5);
     --innov-alert-close-padding: .5rem;
     --innov-alert-line-height: auto;
     --innov-alert-close-width: 2.25rem;
     --innov-alert-close-height: 2.25rem;
-    --innov-alert-close-background: none;
     --innov-alert-close-border: none;
     --innov-alert-close-border-radius: var(--innov-button-border-radius);
+    --innov-alert-summary-font-size: 1.125rem;
+    --innov-alert-detail-font-size: 1rem;
 
     --innov-label-font-weight: 600;
     --innov-label-font-size: 1rem;
@@ -122,9 +127,14 @@
     --innov-grid-row-even-background-color: var(--innov-base-50);
     --innov-grid-selected-color: var(--innov-primary);
     --innov-grid-filter-color: var(--innov-base-500);
+    --rz-grid-header-filter-icon-hover-color: rgba(0,0,0,0.1);
+    --innov-buttons-border-radius: 4px;
     --innov-grid-header-filter-icon-hover-color: var(--innov-base-600);
 
     --innov-side-panel-background-color: var(--innov-base-100);
+
+    --innov-alert-close-background: none;
+    --innov-alert-close-background-hover: rgba(0,0,0,0.1);
 
     /* Global Colors */
     --innov-primary: #a43f13;

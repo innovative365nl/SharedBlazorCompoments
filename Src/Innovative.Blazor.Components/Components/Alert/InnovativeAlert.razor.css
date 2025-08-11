@@ -51,17 +51,17 @@
 }
 
 .innovative-alert-close:hover {
-    background:rgba(0,0,0,0.1);
+    background: var(--innov-alert-close-background-hover);
 }
 
 .innovative-alert-summary {
     font-weight: bold;
-    font-size: 1.125rem;
+    font-size: var(--innov-alert-summary-font-size);
     display: flex;
 }
 
 .innovative-alert-detail {
-    font-size: 1rem;
+    font-size: var(--innov-alert-detail-font-size);
     grid-column-start: 2;
 }
 
