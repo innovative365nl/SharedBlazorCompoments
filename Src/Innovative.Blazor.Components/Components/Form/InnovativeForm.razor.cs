@@ -209,8 +209,28 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.ValueChanged),
                                  EventCallback.Factory.Create<int?>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
 
+
             if (isReadOnly)
                 builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Disabled), true);
+            if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
+                builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
+
+            AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
+            builder.CloseComponent();
+        }
+        else if (property.PropertyType == typeof(decimal) || property.PropertyType == typeof(decimal?))
+        {
+            var value = GetDecimalValue(propertyName: propName);
+            builder.OpenComponent(sequence++, typeof(RadzenNumeric<decimal?>));
+            builder.AddAttribute(sequence++, "class", "w-100");
+            builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Name), propName);
+            builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Value), value);
+            builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Culture), CultureInfo.CurrentCulture);
+            builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.ValueChanged),
+                                 EventCallback.Factory.Create<decimal?>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
+
+            if (isReadOnly)
+                builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Disabled), true);
             if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
                 builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
 
@@ -345,6 +365,16 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         if (formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
         {
             return Convert.ToInt32(value: value, CultureInfo.InvariantCulture);
+        }
+
+        return null;
+    }
+
+    private decimal? GetDecimalValue(string propertyName)
+    {
+        if (formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
+        {
+            return Convert.ToDecimal(value: value, CultureInfo.InvariantCulture);
         }
 
         return null;

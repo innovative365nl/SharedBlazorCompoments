@@ -22,6 +22,7 @@ public partial class ExampleComplexGrid5(IInnovativeSidePanelService sidePanelSe
                                                         Id = Guid.NewGuid(),
                                                         FirstName = firstNames[RandomNumberGenerator.GetInt32(toExclusive: firstNames.Length)],
                                                         LastName = lastNames[RandomNumberGenerator.GetInt32(toExclusive: lastNames.Length)],
+                                                        Income = (RandomNumberGenerator.GetInt32(toExclusive: 100000) + 10000) / 100.0m,
                                                         DateOfBirth = new DateTime(year: (RandomNumberGenerator.GetInt32(toExclusive: 50)  + 1950),
                                                                                    month: (RandomNumberGenerator.GetInt32(toExclusive: 11) + 1),
                                                                                    day: (RandomNumberGenerator.GetInt32(toExclusive: 27)  + 1)
@@ -43,6 +44,7 @@ public partial class ExampleComplexGrid5(IInnovativeSidePanelService sidePanelSe
                                        Person5GridModel item = items.Single(predicate: x => x.Id == model.Id);
                                        item.FirstName = model.FirstName;
                                        item.LastName = model.LastName;
+                                       item.Income = model.Income;
                                        item.DateOfBirth = model.DateOfBirth?.ToString(format: "yyyy-MM-dd", provider: CultureInfo.CurrentCulture);
                                        return Task.CompletedTask;
                                    };
@@ -63,7 +65,7 @@ public class Person5Model
     public string? LastName { get; set; }
 
     public DateTime? DateOfBirth { get; set; }
-
+    public decimal? Income { get; set; }
     public override string ToString() => $"{FirstName} {LastName}";
 }
 
@@ -80,6 +82,8 @@ public sealed class Person5GridModel
 
     [UIGridField(Name = "DateOfBirth")]
     public string? DateOfBirth { get; set; }
+    [UIGridField(Name = "Income")]
+    public decimal? Income { get; set; }
 
     public static Person5GridModel ToGridModel(Person5Model instance)
     {
@@ -88,6 +92,7 @@ public sealed class Person5GridModel
                    Id = instance?.Id ?? Guid.NewGuid(),
                    FirstName = instance?.FirstName,
                    LastName = instance?.LastName,
+                   Income = instance?.Income,
                    DateOfBirth = instance?.DateOfBirth.HasValue ?? false
                                      ? instance.DateOfBirth.Value.ToString(format: "yyyy-MM-dd", provider: CultureInfo.CurrentCulture)
                                      : null
@@ -100,6 +105,7 @@ public sealed class Person5GridModel
                    Id = instance?.Id ?? Guid.NewGuid(),
                    FirstName = instance?.FirstName,
                    LastName = instance?.LastName,
+                   Income = instance?.Income,
                    DateOfBirth = DateTime.TryParse(s: instance?.DateOfBirth, provider: CultureInfo.CurrentCulture, result: out DateTime result)
                                      ? result
                                      : null
@@ -139,6 +145,9 @@ public sealed class Person5FormModel : FormModel
     [UIFormField(name: "Summary", ColumnGroup = ColumnGroup2, DisplayParameters = ["DisplayLabel=false"], FormParameters = ["Disabled=true", "DisplayLabel=false"])]
     public string? Summary => $"{FirstName} {LastName} ({Age}) was born on {DateOfBirth:dddd d MMMM yyyy}.";
 
+    [UIFormField(name: "Income", ColumnGroup = ColumnGroup2)]
+    public decimal? Income { get; set; }
+
     public static int? CalculateAge(DateTime? dateOfBirth)
     {
         if (dateOfBirth is null)
@@ -163,6 +172,7 @@ public sealed class Person5FormModel : FormModel
                    Id = instance?.Id ?? Guid.NewGuid(),
                    FirstName = instance?.FirstName,
                    LastName = instance?.LastName,
+                   Income = instance?.Income,
                    DateOfBirth = instance?.DateOfBirth
                };
     }

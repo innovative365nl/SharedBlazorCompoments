@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Innovative.Blazor.Components.Attributes;
 
 namespace Innovative.Blazor.Components.Components;

@@ -2,6 +2,7 @@
 
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Reflection;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
@@ -352,6 +353,32 @@ public partial class InnovativeGrid<TItem> : ComponentBase
                 builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
             }
         };
+    }
+
+    [ExcludeFromCodeCoverage]
+    private static RenderFragment RenderDecimalComponent(PropertyWithAttribute property, object context)
+    {
+        return builder =>
+               {
+                   object? value = property.PropertyInfo.GetValue(obj: context);
+                   if (value == null)
+                   {
+                       builder.AddMarkupContent(sequence: 0, markupContent: "<span class=\"text-muted\">-</span>");
+                       return;
+                   }
+
+                   var formatString = property.GridField.Parameters?.FirstOrDefault(e => e.StartsWith("Format=", StringComparison.OrdinalIgnoreCase));
+                   var format = formatString is null
+                                    ? $"N{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalDigits}"
+                                    : formatString["Format=".Length..];
+
+                   int sequence = 0;
+                   var decimalText = Convert.ToDecimal(value, CultureInfo.CurrentCulture).ToString(format, CultureInfo.CurrentCulture);;
+                   builder.OpenElement(sequence , "div");
+                   builder.AddAttribute(sequence++ , "data-text", decimalText);
+                   builder.AddContent(sequence++, (MarkupString)decimalText);
+                   builder.CloseElement();
+               };
     }
 
     private static bool IsList(object value) => value is IEnumerable<object> && value.GetType() != typeof(string);

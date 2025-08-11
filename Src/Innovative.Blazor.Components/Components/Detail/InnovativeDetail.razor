@@ -27,7 +27,7 @@
                     @foreach (var item in GetSplitButtonDefinitionItems())
                     {
                         <RadzenSplitButtonItem Text="@item.ActionName"
-                                               Click="@(() => HandleActionProperty(property: item.Property, actionAttribute: item.ActionAttribute))" />
+                                               Click="@(() => HandleActionProperty(property: item.Property, actionAttribute: item.ActionAttribute))"/>
                     }
                 </RadzenSplitButton>
             }
@@ -63,7 +63,10 @@
                             if (!string.IsNullOrEmpty(format))
                             {
                                 format = format["Format=".Length..];
-                                <div class="html-content">@((MarkupString)(string.Format(CultureInfo.CurrentCulture, format, value)))</div>
+                                var content = value is decimal decimalValue
+                                    ? (MarkupString)(decimalValue.ToString(format, CultureInfo.CurrentCulture))
+                                    : (MarkupString)(string.Format(CultureInfo.CurrentCulture, format, value));
+                                <div class="html-content">@content</div>
                             }
                             else
                             {
@@ -84,7 +87,9 @@
                                         Debug.WriteLine($"Error accessing TextProperty '{fieldAttribute.TextProperty}' on type '{value.GetType().Name}': {ex.Message}");
                                     }
                                 }
-                                <InnovativeText TextStyle="TextStyle.Body1" Attributes="@GetAttributesFromParameters(fieldAttribute?.DisplayParameters ?? [])">@(displayValue?.ToString() ?? "-")</InnovativeText>
+
+                                <InnovativeText TextStyle="TextStyle.Body1"
+                                                Attributes="@GetAttributesFromParameters(fieldAttribute?.DisplayParameters ?? [])">@(displayValue?.ToString() ?? "-")</InnovativeText>
                             }
                         }
                     </div>
@@ -121,7 +126,10 @@
                             if (!string.IsNullOrEmpty(format))
                             {
                                 format = format["Format=".Length..];
-                                <div class="html-content">@((MarkupString)(string.Format(CultureInfo.CurrentCulture, format, value)))</div>
+                                var content = value is decimal decimalValue
+                                    ? (MarkupString)(decimalValue.ToString(format, CultureInfo.CurrentCulture))
+                                    : (MarkupString)(string.Format(CultureInfo.CurrentCulture, format, value));
+                                <div class="html-content">@content</div>
                             }
                             else
                             {

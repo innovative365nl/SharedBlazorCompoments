@@ -8,56 +8,56 @@
     padding: 0.5rem;
 }
 
-.innovative-form-layout.col-* > * {
+.innovative-form-layout .col-* > * {
     margin-bottom: 0.25rem;
 }
 
 /* Column spanning classes */
-.innovative-form-layout.col-1 {
+.innovative-form-layout .col-1 {
     width: 8.33%;
 }
 
-.innovative-form-layout.col-2 {
+.innovative-form-layout .col-2 {
     width: 16.66%;
 }
 
-.innovative-form-layout.col-3 {
+.innovative-form-layout .col-3 {
     width: 25%;
 }
 
-.innovative-form-layout.col-4 {
+.innovative-form-layout .col-4 {
     width: 33.33%;
 }
 
-.innovative-form-layout.col-5 {
+.innovative-form-layout .col-5 {
     width: 41.66%;
 }
 
-.innovative-form-layout.col-6 {
+.innovative-form-layout .col-6 {
     width: 50%;
 }
 
-.innovative-form-layout.col-7 {
+.innovative-form-layout .col-7 {
     width: 58.33%;
 }
 
-.innovative-form-layout.col-8 {
+.innovative-form-layout .col-8 {
     width: 66.66%;
 }
 
-.innovative-form-layout.col-9 {
+.innovative-form-layout .col-9 {
     width: 75%;
 }
 
-.innovative-form-layout.col-10 {
+.innovative-form-layout .col-10 {
     width: 83.33%;
 }
 
-.innovative-form-layout.col-11 {
+.innovative-form-layout .col-11 {
     width: 91.66%;
 }
 
-.innovative-form-layout.col-12 {
+.innovative-form-layout .col-12 {
     width: 100%;
 }
 
@@ -81,6 +81,10 @@
 
 .form-column-group ::deep .rz-datepicker > .rz-inputtext {
     width: unset;
+}
+
+.w-100 {
+    width: 100%;
 }
 
 ::deep .rz-label {
