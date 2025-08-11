@@ -108,6 +108,8 @@
     --innov-datepicker-header-color: var(--innov-base-500);
 
     /* Html editor */
+    --innov-editor-border-radius: var(--innov-border-radius);
+    --innov-editor-border: var(--innov-border-1-dark);
     --innov-editor-content-background-color: #fff;
     --innov-editor-focus-outline: 2px solid var(--innov-primary);
     --innov-editor-button-color: var(--innov-base-500);

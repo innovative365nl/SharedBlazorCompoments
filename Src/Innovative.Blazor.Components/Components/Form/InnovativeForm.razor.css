@@ -222,6 +222,11 @@
     padding: var(--innov-datepicker-calendar-item-padding);
 }
 
+::deep .rz-html-editor {
+    border-radius: var(--innov-editor-border-radius);
+    border: var(--innov-editor-border);
+}
+
 ::deep .rz-html-editor-content {
     background-color: var(--innov-editor-content-background-color);
 }
