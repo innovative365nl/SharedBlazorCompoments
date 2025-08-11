@@ -189,6 +189,78 @@
     background-color: var(--innov-input-checkbox-circle-hover-background-color);
 }
 
+::deep .rz-datepicker-popup-container {
+    width: var(--innov-datepicker-popup-width);
+    margin: var(--innov-datepicker-panel-margin);
+    box-shadow: var(--innov-datepicker-panel-shadow);
+    border: var(--innov-datepicker-panel-border);
+    border-radius: var(--innov-border-radius);
+    background-color: var(--innov-datepicker-panel-background-color);
+}
+
+::deep .rz-calendar-header {
+    background-color: var(--innov-datepicker-header-background-color);
+    border-bottom: var(--innov-datepicker-header-border);
+    color: var(--innov-datepicker-header-color);
+    padding-block: var(--innov-datepicker-header-padding-block);
+    padding-inline: var(--innov-datepicker-header-padding-inline);
+}
+
+::deep .rz-calendar-view-container {
+    padding-block: var(--innov-datepicker-calendar-padding-block);
+    padding-inline: var(--innov-datepicker-calendar-padding-inline);
+}
+
+::deep .rz-calendar-view td {
+    border-top: var(--innov-datepicker-calendar-border);
+}
+
+::deep .rz-calendar-view td .rz-state-active,
+::deep .rz-calendar-view td .rz-state-active.rz-calendar-today {
+    color: var(--innov-datepicker-calendar-selected-color);
+    background-color: var(--innov-datepicker-calendar-selected-background-color);
+    padding: var(--innov-datepicker-calendar-item-padding);
+}
+
+::deep .rz-html-editor-content {
+    background-color: var(--innov-editor-content-background-color);
+}
+
+::deep .rz-html-editor:focus-within {
+    outline: var(--innov-editor-focus-outline);
+    outline-offset: var(--innov-editor-focus-outline-offset);
+}
+
+::deep .rz-html-editor-toolbar {
+    border-bottom: var(--innov-editor-border);
+    background-color: var(--innov-editor-toolbar-background-color);
+}
+
+::deep .rz-html-editor-button {
+    color: var(--innov-editor-button-color);
+    background: var(--innov-editor-button-background-color);
+    padding: var(--innov-editor-button-padding);
+}
+
+::deep ::deep .rz-html-editor-button:disabled {
+    color: var(--innov-editor-button-disabled-color);
+}
+
+::deep ::deep .rz-html-editor-button:hover {
+    color: var(--innov-editor-button-hover-color);
+    background: var(--innov-editor-button-hover-background-color);
+}
+
+::deep .rz-html-editor-separator {
+    background-color: var(--innov-editor-separator-background-color);
+}
+
+::deep .rz-html-editor-button.rz-selected {
+    background-color: var(--innov-editor-button-selected-background-color);
+    color: var(--innov-editor-button-selected-color);
+    border-radius: var(--innov-editor-border-radius);
+}
+
 /* Small screens */
 @media (max-width: 1280px) {
     /* Every child goes full width */

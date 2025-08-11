@@ -1,141 +1,5 @@
+/* Colors */
 :root {
-    /* Components */
-    /* Grid */
-    --innov-data-grid-border: none;
-    --innov-data-grid-border-radius: var(--innov-border-radius);
-    --innov-grid-table-fixed-border: unset;
-    --innov-grid-table-fixed-shadow: 6px 0 10px -2px rgba(64, 63, 63, 0.1);
-    --innov-grid-header-first-cell-padding: .625rem 1rem;
-    --innov-grid-header-font-size: 1rem;
-    --innov-grid-header-line-height: auto;
-    --innov-grid-header-text-transform: unset;
-    --innov-grid-header-border-bottom: var(--innov-border-2-dark);
-    --innov-grid-header-title-padding-inline: 1rem;
-    --innov-grid-first-cell-padding: 0.625rem 1rem 0.625rem 2rem;
-    --innov-grid-selected-font-weight: 600;;
-    --innov-grid-filter-margin-inline: unset;
-    --innov-grid-header-filter-icon-hover-color: rgba(0,0,0,0.1);
-
-    /* Pager */
-    --innov-pager-padding: 1rem;
-    --innov-pager-numeric-button-selected-padding: .25rem;
-
-    /* Side panel */
-    --innov-side-panel-padding: 1rem 1rem .5rem 1rem;
-}
-
-:root {
-    /* Global Variables */
-    --innov-font-family: 'Aptos', sans-serif;
-
-    --innov-icon-font-family: 'Material Symbols', sans-serif;
-    --innov-icon-font-size: 1.25rem;
-
-    --innov-h1-font-size: 1.75rem;
-    --innov-h2-font-size: 1.5rem;
-    --innov-h3-font-size: 1.25rem;
-    --innov-h4-font-size: 1.125rem;
-    --innov-h5-font-size: auto;
-    --innov-h6-font-size: auto;
-
-    --innov-border-radius: 4px;
-
-    --innov-border: 1px solid var(--innov-border-color-dark);
-    --innov-border-1-light: 1px solid var(--innov-border-color-light);
-    --innov-border-1-dark: 1px solid var(--innov-border-color-dark);
-    --innov-border-2-light: 2px solid var(--innov-border-color-light);
-    --innov-border-2-dark: 2px solid var(--innov-border-color-dark);
-
-    --innov-shadow-0: none;
-    --innov-shadow-1: 0px 2px 3px rgba(87, 90, 103, 0.5);
-    --innov-shadow-2: 0px 3px 4px rgba(87, 90, 103, 0.5);
-    --innov-shadow-3: 0px 4px 5px rgba(87, 90, 103, 0.5);
-    --innov-shadow-4: none;
-    --innov-shadow-5: none;
-    --innov-shadow-6: none;
-    --innov-shadow-7: none;
-    --innov-shadow-8: none;
-
-    /* Global components */
-    --innov-button-padding: .5rem;
-    --innov-button-line-height: 1;
-    --innov-button-border-radius: var(--innov-border-radius);
-    --innov-button-width: 2.25rem;
-    --innov-button-height: 2.25rem;
-    --innov-button-icon-only-transition: color .3s;
-
-    --innov-alert-margin: 1rem 0;
-    --innov-alert-padding: 1rem;
-    --innov-alert-font-size: 1rem;
-    --innov-alert-border: none;
-    --innov-alert-border-radius: var(--innov-border-radius);
-    --innov-alert-shadow: 0px 2px 3px rgba(87, 90, 103, 0.5);
-    --innov-alert-close-padding: .5rem;
-    --innov-alert-line-height: auto;
-    --innov-alert-close-width: 2.25rem;
-    --innov-alert-close-height: 2.25rem;
-    --innov-alert-close-border: none;
-    --innov-alert-close-border-radius: var(--innov-button-border-radius);
-    --innov-alert-summary-font-size: 1.125rem;
-    --innov-alert-detail-font-size: 1rem;
-
-    --innov-label-font-weight: 600;
-    --innov-label-font-size: 1rem;
-
-    --innov-input-font-size: 1rem;
-    --innov-input-line-height: auto;
-    --innov-input-transition: all 0.1s linear;
-    --innov-input-border: var(--innov-border-1-light);
-    --innov-input-border-block-end: var(--innov-border-1-dark);
-    --innov-input-border-radius: var(--innov-border-radius);
-    --innov-input-shadow: none;
-    --innov-input-hover-border: var(--innov-border-1-dark);
-    --innov-input-hover-border-block-end: var(--innov-border-1-dark);
-    --innov-input-hover-shadow: none;
-    --innov-input-focus-border: var(--innov-border);
-    --innov-input-focus-border-block-end: var(--innov-border-1-dark);
-    --innov-input-focus-border-radius: var(--innov-border-radius);
-    --innov-input-focus-outline: none;
-    --innov-input-focus-outline-offset: 0;
-    --innov-checkbox-width: 1.125rem;
-    --innov-checkbox-height: 1.125rem;
-    --innov-input-checkbox-circle-hover-width: 2.5rem;
-    --innov-input-checkbox-circle-hover-height: 2.5rem;
-}
-
-:root {
-    /* Component Colors */
-    /* Inputs */
-    --innov-input-value-color: #000;
-    --innov-input-background-color: #fff;
-    --innov-input-disabled-background-color: var(--innov-base-300);
-    --innov-input-hover-background-color: #fff;
-    --innov-input-focus-background-color: #fff;
-    --innov-input-focus-border-color: var(--innov-primary);
-    --innov-input-focus-shadow: inset 0 0 0 1px var(--innov-base-600);
-    --innov-input-checkbox-circle-hover-background-color: var(--innov-base-300);
-
-    --innov-dropdown-item-selected-hover-color: var(--innov-base-900);
-    --innov-dropdown-item-selected-hover-background-color: var(--innov-base-100);
-    --innov-dropdown-item-selected-color: #000;
-    --innov-dropdown-item-selected-background-color: var(--innov-primary-light);
-
-    /* Grid */
-    --innov-grid-header-color: #000;
-    --innov-grid-background-color: #fff;
-    --innov-grid-row-odd-background-color: #fff;
-    --innov-grid-row-even-background-color: var(--innov-base-50);
-    --innov-grid-selected-color: var(--innov-primary);
-    --innov-grid-filter-color: var(--innov-base-500);
-    --rz-grid-header-filter-icon-hover-color: rgba(0,0,0,0.1);
-    --innov-buttons-border-radius: 4px;
-    --innov-grid-header-filter-icon-hover-color: var(--innov-base-600);
-
-    --innov-side-panel-background-color: var(--innov-base-100);
-
-    --innov-alert-close-background: none;
-    --innov-alert-close-background-hover: rgba(0,0,0,0.1);
-
     /* Global Colors */
     --innov-primary: #a43f13;
     --innov-primary-light: #db8d75;
@@ -169,6 +33,22 @@
     --innov-danger-dark: #AE0D0A;
     --innov-danger-darker: #6B0201;
 
+    --innov-base: #383838;
+    --innov-base-50: #fafafa;
+    --innov-base-100: #f3f2f2;
+    --innov-base-200: #d7d4d4;
+    --innov-base-300: #bcb6b6;
+    --innov-base-400: #a09898;
+    --innov-base-500: #857b7b;
+    --innov-base-600: #675f5f;
+    --innov-base-700: #494343;
+    --innov-base-800: #2b2828;
+    --innov-base-900: #0d0c0c;
+
+    --innov-border-color-light: var(--innov-base-400);
+    --innov-border-color-dark: var(--innov-base-600);
+
+    /* Text colors */
     --innov-on-info: #fff;
     --innov-on-info-light: #000;
     --innov-on-info-lighter: #000;
@@ -206,20 +86,196 @@
     --innov-on-secondary-dark: #fff;
     --innov-on-secondary-darker: #fff;
 
-    --innov-base: #383838;
-    --innov-base-50: #fafafa;
-    --innov-base-100: #f3f2f2;
-    --innov-base-200: #d7d4d4;
-    --innov-base-300: #bcb6b6;
-    --innov-base-400: #a09898;
-    --innov-base-500: #857b7b;
-    --innov-base-600: #675f5f;
-    --innov-base-700: #494343;
-    --innov-base-800: #2b2828;
-    --innov-base-900: #0d0c0c;
+    /* Component Colors */
+    /* Input */
+    --innov-input-value-color: #000;
+    --innov-input-background-color: #fff;
+    --innov-input-disabled-background-color: var(--innov-base-300);
+    --innov-input-hover-background-color: #fff;
+    --innov-input-focus-background-color: #fff;
+    --innov-input-focus-border-color: var(--innov-primary);
+    --innov-input-focus-shadow: inset 0 0 0 1px var(--innov-base-600);
+    --innov-input-checkbox-circle-hover-background-color: var(--innov-base-300);
 
-    --innov-border-color-light: var(--innov-base-400);
-    --innov-border-color-dark: var(--innov-base-600);
+    /* Dropdown */
+    --innov-dropdown-item-selected-hover-color: var(--innov-base-900);
+    --innov-dropdown-item-selected-hover-background-color: var(--innov-base-100);
+    --innov-dropdown-item-selected-color: #000;
+    --innov-dropdown-item-selected-background-color: var(--innov-primary-light);
+
+    /* Datepicker */
+    --innov-datepicker-header-background-color: #fff;
+    --innov-datepicker-header-color: var(--innov-base-500);
+
+    /* Html editor */
+    --innov-editor-content-background-color: #fff;
+    --innov-editor-focus-outline: 2px solid var(--innov-primary);
+    --innov-editor-button-color: var(--innov-base-500);
+    --innov-editor-button-background-color: none;
+    --innov-editor-button-disabled-color: var(--innov-base-200);
+    --innov-editor-button-hover-color: #000;
+    --innov-editor-button-hover-background-color: rgba(0,0,0,.1);
+    --innov-editor-toolbar-background-color: #fff;
+    --innov-editor-separator-background-color: var(--innov-base-200);
+    --innov-editor-button-selected-background-color: var(--innov-primary-light);
+    --innov-editor-button-selected-color: #000;
+
+    /* Grid */
+    --innov-grid-header-color: #000;
+    --innov-grid-background-color: #fff;
+    --innov-grid-row-odd-background-color: #fff;
+    --innov-grid-row-even-background-color: var(--innov-base-50);
+    --innov-grid-selected-color: var(--innov-primary);
+    --innov-grid-filter-color: var(--innov-base-500);
+    --innov-grid-header-filter-icon-hover-color: var(--innov-base-600);
+
+    /* Side panel */
+    --innov-side-panel-background-color: var(--innov-base-100);
+
+    /* Alert */
+    --innov-alert-close-background: none;
+    --innov-alert-close-background-hover: rgba(0,0,0,.1);
+
+    /* Progress bar circular */
+    --innov-progressbar-circular-background: var(--innov-base-100);
+    --innov-progressbar-primary: var(--innov-primary);
+    --innov-progressbar-secondary: var(--innov-secondary);
+    --innov-progressbar-success: var(--innov-success);
+    --innov-progressbar-info: var(--innov-info);
+    --innov-progressbar-warning: var(--innov-warning);
+    --innov-progressbar-danger-color: var(--innov-danger);
+    --innov-progressbar-light-color: var(--innov-base-100);
+    --innov-progressbar-dark-color: var(--innov-base-700);
+}
+
+/* Global variables & components */
+:root {
+    /* Global variables */
+    --innov-font-family: 'Aptos', sans-serif;
+
+    --innov-icon-font-family: 'Material Symbols', sans-serif;
+    --innov-icon-font-size: 1.25rem;
+
+    --innov-h1-font-size: 1.75rem;
+    --innov-h2-font-size: 1.5rem;
+    --innov-h3-font-size: 1.25rem;
+    --innov-h4-font-size: 1.125rem;
+    --innov-h5-font-size: auto;
+    --innov-h6-font-size: auto;
+
+    --innov-shadow-0: none;
+    --innov-shadow-1: 0px 2px 3px rgba(87, 90, 103, .5);
+    --innov-shadow-2: 0px 3px 4px rgba(87, 90, 103, .5);
+    --innov-shadow-3: 0px 4px 5px rgba(87, 90, 103, .5);
+    --innov-shadow-4: none;
+    --innov-shadow-5: none;
+    --innov-shadow-6: none;
+    --innov-shadow-7: none;
+    --innov-shadow-8: none;
+
+    --innov-border-radius: 4px;
+
+    --innov-border: 1px solid var(--innov-border-color-dark);
+    --innov-border-1-light: 1px solid var(--innov-border-color-light);
+    --innov-border-1-dark: 1px solid var(--innov-border-color-dark);
+    --innov-border-2-light: 2px solid var(--innov-border-color-light);
+    --innov-border-2-dark: 2px solid var(--innov-border-color-dark);
+
+    /* Components */
+    /* Button */
+    --innov-button-padding: .5rem;
+    --innov-button-line-height: 1;
+    --innov-button-border-radius: var(--innov-border-radius);
+    --innov-button-width: 2.25rem;
+    --innov-button-height: 2.25rem;
+    --innov-button-icon-only-transition: color .3s;
+
+    /* Alert */
+    --innov-alert-margin: 1rem 0;
+    --innov-alert-padding: 1rem;
+    --innov-alert-font-size: 1rem;
+    --innov-alert-border: none;
+    --innov-alert-border-radius: var(--innov-border-radius);
+    --innov-alert-shadow: 0px 2px 3px rgba(87, 90, 103, .5);
+    --innov-alert-close-padding: .5rem;
+    --innov-alert-line-height: auto;
+    --innov-alert-close-width: 2.25rem;
+    --innov-alert-close-height: 2.25rem;
+    --innov-alert-close-border: none;
+    --innov-alert-close-border-radius: var(--innov-button-border-radius);
+    --innov-alert-summary-font-size: 1.125rem;
+    --innov-alert-detail-font-size: 1rem;
+
+    /* Label */
+    --innov-label-font-weight: 600;
+    --innov-label-font-size: 1rem;
+
+    /* Input */
+    --innov-input-font-size: 1rem;
+    --innov-input-line-height: auto;
+    --innov-input-transition: all .1s linear;
+    --innov-input-border: var(--innov-border-1-light);
+    --innov-input-border-block-end: var(--innov-border-1-dark);
+    --innov-input-border-radius: var(--innov-border-radius);
+    --innov-input-shadow: none;
+    --innov-input-hover-border: var(--innov-border-1-dark);
+    --innov-input-hover-border-block-end: var(--innov-border-1-dark);
+    --innov-input-hover-shadow: none;
+    --innov-input-focus-border: var(--innov-border);
+    --innov-input-focus-border-block-end: var(--innov-border-1-dark);
+    --innov-input-focus-border-radius: var(--innov-border-radius);
+    --innov-input-focus-outline: none;
+    --innov-input-focus-outline-offset: 0;
+    --innov-checkbox-width: 1.125rem;
+    --innov-checkbox-height: 1.125rem;
+    --innov-input-checkbox-circle-hover-width: 2.5rem;
+    --innov-input-checkbox-circle-hover-height: 2.5rem;
+
+    /* Datepicker */
+    --innov-datepicker-popup-width: 22rem;
+    --innov-datepicker-panel-margin: 0;
+    --innov-datepicker-panel-shadow: 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.14);
+    --innov-datepicker-panel-border: none;
+    --innov-datepicker-panel-background-color: #fff;
+    --innov-datepicker-header-border: none;
+    --innov-datepicker-header-padding-block: .75rem;
+    --innov-datepicker-header-padding-inline: .75rem;
+    --innov-datepicker-calendar-padding-block: 0 .75rem;
+    --innov-datepicker-calendar-padding-inline: .75rem;
+    --innov-datepicker-calendar-border: none;
+    --innov-datepicker-calendar-selected-color: #fff;
+    --innov-datepicker-calendar-selected-background-color: var(--innov-primary);
+    --innov-datepicker-calendar-item-padding: .625rem 0;
+
+    /* Html editor */
+    --innov-editor-button-padding: .5rem;
+    --innov-editor-border-radius: var(--innov-border-radius);
+    --innov-editor-border: var(--innov-border-1-light);
+    --innov-editor-focus-outline-offset: unset;
+
+    /* Grid */
+    --innov-data-grid-border: none;
+    --innov-data-grid-border-radius: var(--innov-border-radius);
+    --innov-grid-header-first-cell-padding: .625rem 1rem;
+    --innov-grid-header-font-size: 1rem;
+    --innov-grid-header-line-height: auto;
+    --innov-grid-header-text-transform: unset;
+    --innov-grid-header-border-bottom: var(--innov-border-2-light);
+    --innov-grid-header-title-padding-inline: 1rem;
+    --innov-grid-filter-margin-inline: unset;
+    --innov-grid-header-filter-icon-hover-color: rgba(0,0,0,.1);
+    --innov-grid-sort-icon-color: var(--innov-base-500);
+    --innov-grid-first-cell-padding: .625rem 1rem .625rem 2rem;
+    --innov-grid-selected-font-weight: 600;;
+    --innov-grid-table-fixed-border: unset;
+    --innov-grid-table-fixed-shadow: 6px 0 10px -2px rgba(64, 63, 63, 0.1);
+
+    /* Pager */
+    --innov-pager-padding: 1rem;
+    --innov-pager-numeric-button-selected-padding: .25rem;
+
+    /* Side panel */
+    --innov-side-panel-padding: 1rem 1rem .5rem 1rem;
 }
 
 @font-face {

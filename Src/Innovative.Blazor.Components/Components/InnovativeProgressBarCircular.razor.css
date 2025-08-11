@@ -13,7 +13,7 @@
 }
 
 .innovative-progressbar-circular-background {
-    stroke: #e9ecef;
+    stroke: var(--innov-progressbar-circular-background);
     stroke-width: 4px;
 }
 
@@ -60,35 +60,35 @@
 
 /* Color styles */
 .innovative-progressbar-primary {
-    color: #007bff;
+    color: var(--innov-progressbar-primary)
 }
 
 .innovative-progressbar-secondary {
-    color: #6c757d;
+    color: var(--innov-progressbar-secondary);
 }
 
 .innovative-progressbar-success {
-    color: #28a745;
+    color: var(--innov-progressbar-success);
 }
 
 .innovative-progressbar-info {
-    color: #17a2b8;
+    color: var(--innov-progressbar-info);
 }
 
 .innovative-progressbar-warning {
-    color: #ffc107;
+    color: var(--innov-progressbar-warning);
 }
 
 .innovative-progressbar-danger {
-    color: #dc3545;
+    color: var(--innov-progressbar-danger-color);
 }
 
 .innovative-progressbar-light {
-    color: #f8f9fa;
+    color: var(--innov-progressbar-light-color);
 }
 
 .innovative-progressbar-dark {
-    color: #343a40;
+    color: var(--innov-progressbar-dark-color);
 }
 
 /* Indeterminate animation */
