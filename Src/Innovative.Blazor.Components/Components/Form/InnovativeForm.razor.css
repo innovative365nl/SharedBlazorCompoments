@@ -247,11 +247,11 @@
     padding: var(--innov-editor-button-padding);
 }
 
-::deep ::deep .rz-html-editor-button:disabled {
+::deep .rz-html-editor-button:disabled {
     color: var(--innov-editor-button-disabled-color);
 }
 
-::deep ::deep .rz-html-editor-button:hover {
+::deep .rz-html-editor-button:hover {
     color: var(--innov-editor-button-hover-color);
     background: var(--innov-editor-button-hover-background-color);
 }
