@@ -193,39 +193,6 @@
     background-color: var(--innov-input-checkbox-circle-hover-background-color);
 }
 
-::deep .rz-datepicker-popup-container {
-    width: var(--innov-datepicker-popup-width);
-    margin: var(--innov-datepicker-panel-margin);
-    box-shadow: var(--innov-datepicker-panel-shadow);
-    border: var(--innov-datepicker-panel-border);
-    border-radius: var(--innov-border-radius);
-    background-color: var(--innov-datepicker-panel-background-color);
-}
-
-::deep .rz-calendar-header {
-    background-color: var(--innov-datepicker-header-background-color);
-    border-bottom: var(--innov-datepicker-header-border);
-    color: var(--innov-datepicker-header-color);
-    padding-block: var(--innov-datepicker-header-padding-block);
-    padding-inline: var(--innov-datepicker-header-padding-inline);
-}
-
-::deep .rz-calendar-view-container {
-    padding-block: var(--innov-datepicker-calendar-padding-block);
-    padding-inline: var(--innov-datepicker-calendar-padding-inline);
-}
-
-::deep .rz-calendar-view td {
-    border-top: var(--innov-datepicker-calendar-border);
-}
-
-::deep .rz-calendar-view td .rz-state-active,
-::deep .rz-calendar-view td .rz-state-active.rz-calendar-today {
-    color: var(--innov-datepicker-calendar-selected-color);
-    background-color: var(--innov-datepicker-calendar-selected-background-color);
-    padding: var(--innov-datepicker-calendar-item-padding);
-}
-
 ::deep .rz-html-editor {
     border-radius: var(--innov-editor-border-radius);
     border: var(--innov-editor-border);
