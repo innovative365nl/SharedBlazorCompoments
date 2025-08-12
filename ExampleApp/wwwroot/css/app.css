@@ -275,6 +275,7 @@
     --innov-grid-header-first-cell-padding: .625rem 1rem;
     --innov-grid-header-font-size: 1rem;
     --innov-grid-header-line-height: auto;
+    --innov-grid-header-font-weight: 500;
     --innov-grid-header-text-transform: unset;
     --innov-grid-header-border-bottom: var(--innov-border-2-light);
     --innov-grid-header-title-padding-inline: 1rem;

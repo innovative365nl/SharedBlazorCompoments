@@ -12,7 +12,7 @@
 }
 
 ::deep .rz-stack {
-    height: clamp(var(--min-height), 100vh, var(--max-height));
+    height: clamp(var(--min-height, 0px), 100vh, var(--max-height, 100vh));
 }
 
 /* Table head */
@@ -126,11 +126,11 @@
     color: var(--innov-grid-filter-color);
     margin-inline: var(--innov-grid-filter-margin-inline);
     font-size: var(--innov-icon-font-size);
-    transition: var(--rz-button-icon-only-transition);
+    transition: var(--innov-button-icon-only-transition);
 }
 
 ::deep .rz-grid-filter-icon:hover {
-    color: var(--rz-grid-header-filter-icon-hover-color);
+    color: var(--innov-grid-header-filter-icon-hover-color);
 }
 
 /* Pager */
@@ -143,15 +143,15 @@
 ::deep .rz-pager-prev,
 ::deep .rz-pager-next,
 ::deep .rz-pager-last {
-    border-radius: var(--innov-buttons-border-radius);
-    min-width: var(--innov-buttons-width);
-    height: var(--innov-buttons-height);
+    border-radius: var(--innov-button-border-radius);
+    min-width: var(--innov-button-width);
+    height: var(--innov-button-height);
 }
 
 ::deep .rz-pager-element,
 ::deep .rz-button-lg {
-    min-width: var(--innov-buttons-width);
-    min-height: var(--innov-buttons-height);
+    min-width: var(--innov-button-width);
+    min-height: var(--innov-button-height);
 }
 
 ::deep .rz-pager-element,
@@ -162,6 +162,6 @@
 
 ::deep .rz-pager-element, .rz-button-lg {
     padding: var(--innov-pager-numeric-button-selected-padding);
-    min-width: var(--innov-buttons-width);
-    min-height: var(--innov-buttons-height);
+    min-width: var(--innov-button-width);
+    min-height: var(--innov-button-height);
 }
