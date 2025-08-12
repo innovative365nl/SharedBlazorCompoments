@@ -174,8 +174,8 @@
     --innov-h2-font-size: 1.5rem;
     --innov-h3-font-size: 1.25rem;
     --innov-h4-font-size: 1.125rem;
-    --innov-h5-font-size: auto;
-    --innov-h6-font-size: auto;
+    --innov-h5-font-size: unset;
+    --innov-h6-font-size: unset;
 
     --innov-shadow-0: none;
     --innov-shadow-1: 0px 2px 3px rgba(87, 90, 103, .5);
@@ -212,7 +212,7 @@
     --innov-alert-border-radius: var(--innov-border-radius);
     --innov-alert-shadow: 0px 2px 3px rgba(87, 90, 103, .5);
     --innov-alert-close-padding: .5rem;
-    --innov-alert-line-height: auto;
+    --innov-alert-line-height: normal;
     --innov-alert-close-width: 2.25rem;
     --innov-alert-close-height: 2.25rem;
     --innov-alert-close-border: none;
@@ -226,7 +226,7 @@
 
     /* Input */
     --innov-input-font-size: 1rem;
-    --innov-input-line-height: auto;
+    --innov-input-line-height: normal;
     --innov-input-transition: all .1s linear;
     --innov-input-border: var(--innov-border-1-light);
     --innov-input-border-block-end: var(--innov-border-1-dark);
@@ -246,8 +246,8 @@
     --innov-input-checkbox-circle-hover-width: 2.5rem;
     --innov-input-checkbox-circle-hover-height: 2.5rem;
 
-    --rz-dropdown-panel-border: var(--innov-border-1-dark);
-    --rz-dropdown-panel-shadow: none;
+    --innov-dropdown-panel-border: var(--innov-border-1-dark);
+    --innov-dropdown-panel-shadow: none;
 
     /* Datepicker */
     --innov-datepicker-popup-width: 22rem;
@@ -469,8 +469,8 @@ code {
 .rz-dropdown-panel {
     background-color: var(--innov-dropdown-background-color) !important;
     border-radius: var(--innov-border-radius) !important;
-    border: var(--rz-dropdown-panel-border) !important;
-    box-shadow: var(--rz-dropdown-panel-shadow) !important;
+    border: var(--innov-dropdown-panel-border) !important;
+    box-shadow: var(--innov-dropdown-panel-shadow) !important;
 }
 
 .rz-button.rz-variant-text.rz-secondary.rz-shade-default {
