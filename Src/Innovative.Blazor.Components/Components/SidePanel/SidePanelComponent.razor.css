@@ -39,7 +39,7 @@
     min-width: var(--innov-button-width);
     display: grid;
     place-items: center;
-    background: var(-innov-button-icon-only-background);
+    background: var(--innov-button-icon-only-background, transparent);
     border: none;
     cursor: pointer;
     border-radius: var(--innov-button-border-radius);
@@ -52,7 +52,7 @@
 
 .sidepanel-icon-button .material-symbols-outlined {
     color: var(--innov-base-600);
-    font-size: var(--rz-icon-font-size);
+    font-size: var(--innov-icon-font-size);
 }
 
 .sidepanel-icon-button:hover  .material-symbols-outlined {
