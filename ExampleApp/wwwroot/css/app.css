@@ -151,12 +151,12 @@
     --innov-alert-close-background-hover: rgba(0,0,0,.1);
 
     /* Progress bar circular */
-    --innov-progressbar-circular-background: var(--innov-base-100);
-    --innov-progressbar-primary: var(--innov-primary);
-    --innov-progressbar-secondary: var(--innov-secondary);
-    --innov-progressbar-success: var(--innov-success);
-    --innov-progressbar-info: var(--innov-info);
-    --innov-progressbar-warning: var(--innov-warning);
+    --innov-progressbar-circular-background-color: var(--innov-base-100);
+    --innov-progressbar-primary-color: var(--innov-primary);
+    --innov-progressbar-secondary-color: var(--innov-secondary);
+    --innov-progressbar-success-color: var(--innov-success);
+    --innov-progressbar-info-color: var(--innov-info);
+    --innov-progressbar-warning-color: var(--innov-warning);
     --innov-progressbar-danger-color: var(--innov-danger);
     --innov-progressbar-light-color: var(--innov-base-100);
     --innov-progressbar-dark-color: var(--innov-base-700);

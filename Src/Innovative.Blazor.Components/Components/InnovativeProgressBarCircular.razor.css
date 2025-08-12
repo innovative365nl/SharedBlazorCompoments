@@ -13,7 +13,7 @@
 }
 
 .innovative-progressbar-circular-background {
-    stroke: var(--innov-progressbar-circular-background);
+    stroke: var(--innov-progressbar-circular-background-color);
     stroke-width: 4px;
 }
 
@@ -61,19 +61,19 @@
 
 /* Color styles */
 .innovative-progressbar-primary {
-    color: var(--innov-progressbar-primary)
+    color: var(--innov-progressbar-primary-color)
 }
 
 .innovative-progressbar-secondary {
-    color: var(--innov-progressbar-secondary);
+    color: var(--innov-progressbar-secondary-color);
 }
 
 .innovative-progressbar-success {
-    color: var(--innov-progressbar-success);
+    color: var(--innov-progressbar-success-color);
 }
 
 .innovative-progressbar-info {
-    color: var(--innov-progressbar-info);
+    color: var(--innov-progressbar-info-color);
 }
 
 .innovative-progressbar-warning {
