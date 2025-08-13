@@ -3,14 +3,15 @@ using Microsoft.AspNetCore.Components;
 
 namespace ExampleApp.Components;
 
-public partial class ComplexComponent : CustomComponent<ComplexModel>
+public partial class ComplexEditComponent : CustomComponent<ComplexModel>
 {
-    private List<ComplexModel> Items  = new List<ComplexModel>();
+    private List<ComplexModel> _items  = [];
+    
     protected override async Task OnInitializedAsync()
     {
         // Simulate an asynchronous data fetch
         await Task.Delay(1000).ConfigureAwait(false);
-        Items =
+        _items =
         [
             new ComplexModel
             {
@@ -29,5 +30,10 @@ public partial class ComplexComponent : CustomComponent<ComplexModel>
             }
         ];
     }
-}
 
+    // This parameter is used to control the display of the label in the component.
+    // The only requirements are: it must be a parameter and its name must be "DisplayLabel".
+    // The property type should be as open as possible, so "object?" will do the job.
+    [Parameter]
+    public object? DisplayLabel { get; set; }
+}
