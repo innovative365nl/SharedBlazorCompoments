@@ -410,21 +410,33 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         {
             var propertyType = prop.PropertyType;
             object? convertedValue = value;
-            if (value != null && !propertyType.IsInstanceOfType(value))
+            var targetType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+
+            if (value != null && !targetType.IsInstanceOfType(value))
             {
                 try
                 {
-                    // Handle nullable types
-                    var targetType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+                    // Handle nullable types (already unwrapped in targetType)
                     convertedValue = Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture);
                 }
-                catch (ArgumentException ex)
+                catch (Exception ex) when (ex is FormatException
+                     or InvalidCastException
+                     or OverflowException
+                     or ArgumentException
+                     or NotSupportedException)
                 {
                     // Optionally log or handle conversion error
                     Debug.WriteLine($"Failed to convert value for property '{propertyName}': {ex.Message}");
                     return; // Skip setting the value if conversion fails
                 }
             }
+            // Prevent assigning null to non-nullable value types
+            if (convertedValue is null && propertyType.IsValueType && Nullable.GetUnderlyingType(propertyType) is null)
+            {
+                // Use default(T) as a safe fallback
+                convertedValue = Activator.CreateInstance(propertyType);
+            }
+
             prop.SetValue(obj: Model, value: convertedValue);
         }
         if (shouldNotifyChange)
