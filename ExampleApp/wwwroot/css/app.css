@@ -184,8 +184,8 @@
 
     --inn-shadow-0: none;
     --inn-shadow-1: 0px 2px 6px color-mix(in srgb, var(--inn-shadow-color) 25%, transparent);
-    --inn-shadow-2: 0px 3px 4px color-mix(in srgb, var(--inn-shadow-color) 25%, transparent);
-    --inn-shadow-3: 0px 4px 5px color-mix(in srgb, var(--inn-shadow-color) 50%, transparent);
+    --inn-shadow-2: 0px 3px 8px color-mix(in srgb, var(--inn-shadow-color) 25%, transparent);
+    --inn-shadow-3: 0px 4px 10px color-mix(in srgb, var(--inn-shadow-color) 25%, transparent);
     --inn-shadow-4: none;
     --inn-shadow-5: none;
     --inn-shadow-6: none;
@@ -212,7 +212,7 @@
     --inn-button-icon-only-transition: color .3s;
     --inn-button-hover-gradient: none;
     --inn-button-hover-background-size: auto;
-    --inn-button-hover-shadow: var(--inn-shadow-3);
+    --inn-button-hover-shadow: var(--inn-shadow-2);
 
     /* Alert */
     --inn-alert-margin: 1rem 0;
@@ -268,7 +268,7 @@
     /* Datepicker */
     --inn-datepicker-popup-width: 22rem;
     --inn-datepicker-panel-margin: 0;
-    --inn-datepicker-panel-shadow: var(--inn-shadow-3);
+    --inn-datepicker-panel-shadow: var(--inn-shadow-2);
     --inn-datepicker-panel-border: none;
     --inn-datepicker-header-border: none;
     --inn-datepicker-header-padding-block: .75rem;
