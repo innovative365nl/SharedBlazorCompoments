@@ -403,6 +403,11 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     private void SetValue(string propertyName, object? value, bool shouldNotifyChange = false)
     {
         formValues[key: propertyName] = value;
+        var prop = typeof(TModel).GetProperty(propertyName);
+        if (prop?.CanWrite ?? false)
+        {
+            prop.SetValue(obj: Model, value: value);
+        }
         if (shouldNotifyChange)
         {
             NotifyPropertyChanged(propertyName: propertyName, value: value);
