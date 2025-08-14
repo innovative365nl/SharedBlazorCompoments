@@ -49,42 +49,42 @@
     --inn-border-color-dark: var(--inn-base-600);
 
     /* Text colors */
-    --inn-on-info: #fff;
-    --inn-on-info-light: #000;
-    --inn-on-info-lighter: #000;
-    --inn-on-info-dark: #fff;
-    --inn-on-info-darker: #fff;
-    --inn-on-success: #000;
-    --inn-on-success-light: #000;
-    --inn-on-success-lighter: #000;
-    --inn-on-success-dark: #fff;
-    --inn-on-success-darker: #fff;
-    --inn-on-warning: #000;
-    --inn-on-warning-light: #000;
-    --inn-on-warning-lighter: #000;
-    --inn-on-warning-dark: #fff;
-    --inn-on-warning-darker: #fff;
-    --inn-on-danger: #000;
-    --inn-on-danger-light: #000;
-    --inn-on-danger-lighter: #000;
-    --inn-on-danger-dark: #fff;
-    --inn-on-danger-darker: #fff;
+    --inn-text-color-text-color-on-info: #fff;
+    --inn-text-color-text-color-on-light: #000;
+    --inn-text-color-text-color-on-lighter: #000;
+    --inn-text-color-text-color-on-dark: #fff;
+    --inn-text-color-text-color-on-darker: #fff;
+    --inn-text-color-text-color-on-success: #000;
+    --inn-text-color-text-color-on-success-light: #000;
+    --inn-text-color-text-color-on-success-lighter: #000;
+    --inn-text-color-on-success-dark: #fff;
+    --inn-text-color-on-success-darker: #fff;
+    --inn-text-color-on-warning: #000;
+    --inn-text-color-on-warning-light: #000;
+    --inn-text-color-on-warning-lighter: #000;
+    --inn-text-color-on-warning-dark: #fff;
+    --inn-text-color-on-warning-darker: #fff;
+    --inn-text-color-on-danger: #000;
+    --inn-text-color-on-danger-light: #000;
+    --inn-text-color-on-danger-lighter: #000;
+    --inn-text-color-on-danger-dark: #fff;
+    --inn-text-color-on-danger-darker: #fff;
 
-    --inn-on-base: #000;
-    --inn-on-base-light: #000;
-    --inn-on-base-lighter: #000;
-    --inn-on-base-dark: #fff;
-    --inn-on-base-darker: #fff;
-    --inn-on-primary: #fff;
-    --inn-on-primary-light: #000;
-    --inn-on-primary-lighter: #000;
-    --inn-on-primary-dark: #fff;
-    --inn-on-primary-darker: #fff;
-    --inn-on-secondary: #fff;
-    --inn-on-secondary-light: #000;
-    --inn-on-secondary-lighter: #000;
-    --inn-on-secondary-dark: #fff;
-    --inn-on-secondary-darker: #fff;
+    --inn-text-color-on-base: #000;
+    --inn-text-color-on-base-light: #000;
+    --inn-text-color-on-base-lighter: #000;
+    --inn-text-color-on-base-dark: #fff;
+    --inn-text-color-on-base-darker: #fff;
+    --inn-text-color-on-primary: #fff;
+    --inn-text-color-on-primary-light: #000;
+    --inn-text-color-on-primary-lighter: #000;
+    --inn-text-color-on-primary-dark: #fff;
+    --inn-text-color-on-primary-darker: #fff;
+    --inn-text-color-on-secondary: #fff;
+    --inn-text-color-on-secondary-light: #000;
+    --inn-text-color-on-secondary-lighter: #000;
+    --inn-text-color-on-secondary-dark: #fff;
+    --inn-text-color-on-secondary-darker: #fff;
 
     /* Component Colors */
     /* Button */
