@@ -1,312 +1,312 @@
 /* Colors */
 :root {
     /* Global Colors */
-    --innov-primary: #a43f13;
-    --innov-primary-light: #db8d75;
-    --innov-primary-lighter: #e6c2b7;
-    --innov-primary-dark: #651c06;
-    --innov-primary-darker: #1f0700;
-    --innov-secondary: #654176;
-    --innov-secondary-light: #B28FC1;
-    --innov-secondary-lighter: #D2C5D8;
-    --innov-secondary-dark: #3E214A;
-    --innov-secondary-darker: #120817;
+    --inn-primary: #a43f13;
+    --inn-primary-light: #db8d75;
+    --inn-primary-lighter: #e6c2b7;
+    --inn-primary-dark: #651c06;
+    --inn-primary-darker: #1f0700;
+    --inn-secondary: #654176;
+    --inn-secondary-light: #B28FC1;
+    --inn-secondary-lighter: #D2C5D8;
+    --inn-secondary-dark: #3E214A;
+    --inn-secondary-darker: #120817;
 
-    --innov-info: #1F82E5;
-    --innov-info-light: #6CA8E4;
-    --innov-info-lighter: #B2CFEB;
-    --innov-info-dark: #0A5CAE;
-    --innov-info-darker: #01366B;
-    --innov-success: #A1DC41;
-    --innov-success-light: #C6E46C;
-    --innov-success-lighter: #DDEBB2;
-    --innov-success-dark: #607D07;
-    --innov-success-darker: #2A3800;
-    --innov-warning: #E5931F;
-    --innov-warning-light: #E4B26C;
-    --innov-warning-lighter: #EBD3B2;
-    --innov-warning-dark: #AE690a;
-    --innov-warning-darker: #6A3E01;
-    --innov-danger: #E52421;
-    --innov-danger-light: #E46E6C;
-    --innov-danger-lighter: #EBB3B2;
-    --innov-danger-dark: #AE0D0A;
-    --innov-danger-darker: #6B0201;
+    --inn-info: #1F82E5;
+    --inn-info-light: #6CA8E4;
+    --inn-info-lighter: #B2CFEB;
+    --inn-info-dark: #0A5CAE;
+    --inn-info-darker: #01366B;
+    --inn-success: #A1DC41;
+    --inn-success-light: #C6E46C;
+    --inn-success-lighter: #DDEBB2;
+    --inn-success-dark: #607D07;
+    --inn-success-darker: #2A3800;
+    --inn-warning: #E5931F;
+    --inn-warning-light: #E4B26C;
+    --inn-warning-lighter: #EBD3B2;
+    --inn-warning-dark: #AE690a;
+    --inn-warning-darker: #6A3E01;
+    --inn-danger: #E52421;
+    --inn-danger-light: #E46E6C;
+    --inn-danger-lighter: #EBB3B2;
+    --inn-danger-dark: #AE0D0A;
+    --inn-danger-darker: #6B0201;
 
-    --innov-base: #383838;
-    --innov-base-50: #fafafa;
-    --innov-base-100: #f3f2f2;
-    --innov-base-200: #d7d4d4;
-    --innov-base-300: #bcb6b6;
-    --innov-base-400: #a09898;
-    --innov-base-500: #857b7b;
-    --innov-base-600: #675f5f;
-    --innov-base-700: #494343;
-    --innov-base-800: #2b2828;
-    --innov-base-900: #0d0c0c;
+    --inn-base: #383838;
+    --inn-base-50: #fafafa;
+    --inn-base-100: #f3f2f2;
+    --inn-base-200: #d7d4d4;
+    --inn-base-300: #bcb6b6;
+    --inn-base-400: #a09898;
+    --inn-base-500: #857b7b;
+    --inn-base-600: #675f5f;
+    --inn-base-700: #494343;
+    --inn-base-800: #2b2828;
+    --inn-base-900: #0d0c0c;
 
-    --innov-border-color-light: var(--innov-base-400);
-    --innov-border-color-dark: var(--innov-base-600);
+    --inn-border-color-light: var(--inn-base-400);
+    --inn-border-color-dark: var(--inn-base-600);
 
     /* Text colors */
-    --innov-on-info: #fff;
-    --innov-on-info-light: #000;
-    --innov-on-info-lighter: #000;
-    --innov-on-info-dark: #fff;
-    --innov-on-info-darker: #fff;
-    --innov-on-success: #000;
-    --innov-on-success-light: #000;
-    --innov-on-success-lighter: #000;
-    --innov-on-success-dark: #fff;
-    --innov-on-success-darker: #fff;
-    --innov-on-warning: #000;
-    --innov-on-warning-light: #000;
-    --innov-on-warning-lighter: #000;
-    --innov-on-warning-dark: #fff;
-    --innov-on-warning-darker: #fff;
-    --innov-on-danger: #000;
-    --innov-on-danger-light: #000;
-    --innov-on-danger-lighter: #000;
-    --innov-on-danger-dark: #fff;
-    --innov-on-danger-darker: #fff;
+    --inn-on-info: #fff;
+    --inn-on-info-light: #000;
+    --inn-on-info-lighter: #000;
+    --inn-on-info-dark: #fff;
+    --inn-on-info-darker: #fff;
+    --inn-on-success: #000;
+    --inn-on-success-light: #000;
+    --inn-on-success-lighter: #000;
+    --inn-on-success-dark: #fff;
+    --inn-on-success-darker: #fff;
+    --inn-on-warning: #000;
+    --inn-on-warning-light: #000;
+    --inn-on-warning-lighter: #000;
+    --inn-on-warning-dark: #fff;
+    --inn-on-warning-darker: #fff;
+    --inn-on-danger: #000;
+    --inn-on-danger-light: #000;
+    --inn-on-danger-lighter: #000;
+    --inn-on-danger-dark: #fff;
+    --inn-on-danger-darker: #fff;
 
-    --innov-on-base: #000;
-    --innov-on-base-light: #000;
-    --innov-on-base-lighter: #000;
-    --innov-on-base-dark: #fff;
-    --innov-on-base-darker: #fff;
-    --innov-on-primary: #fff;
-    --innov-on-primary-light: #000;
-    --innov-on-primary-lighter: #000;
-    --innov-on-primary-dark: #fff;
-    --innov-on-primary-darker: #fff;
-    --innov-on-secondary: #fff;
-    --innov-on-secondary-light: #000;
-    --innov-on-secondary-lighter: #000;
-    --innov-on-secondary-dark: #fff;
-    --innov-on-secondary-darker: #fff;
+    --inn-on-base: #000;
+    --inn-on-base-light: #000;
+    --inn-on-base-lighter: #000;
+    --inn-on-base-dark: #fff;
+    --inn-on-base-darker: #fff;
+    --inn-on-primary: #fff;
+    --inn-on-primary-light: #000;
+    --inn-on-primary-lighter: #000;
+    --inn-on-primary-dark: #fff;
+    --inn-on-primary-darker: #fff;
+    --inn-on-secondary: #fff;
+    --inn-on-secondary-light: #000;
+    --inn-on-secondary-lighter: #000;
+    --inn-on-secondary-dark: #fff;
+    --inn-on-secondary-darker: #fff;
 
     /* Component Colors */
     /* Button */
-    --innov-button-variant-text-color: var(--innov-base-500);
-    --innov-button-variant-text-hover-color: #000;
-    --innov-button-variant-text-hover-background-color: rgba(0,0,0,.1);
+    --inn-button-variant-text-color: var(--inn-base-500);
+    --inn-button-variant-text-hover-color: #000;
+    --inn-button-variant-text-hover-background-color: rgba(0,0,0,.1);
 
     /* Input */
-    --innov-input-value-color: #000;
-    --innov-input-background-color: #fff;
-    --innov-input-disabled-background-color: var(--innov-base-300);
-    --innov-input-hover-background-color: #fff;
-    --innov-input-focus-background-color: #fff;
-    --innov-input-focus-border-color: var(--innov-primary);
-    --innov-input-focus-shadow: inset 0 0 0 1px var(--innov-base-600);
-    --innov-input-checkbox-circle-hover-background-color: var(--innov-base-300);
+    --inn-input-value-color: #000;
+    --inn-input-background-color: #fff;
+    --inn-input-disabled-background-color: var(--inn-base-300);
+    --inn-input-hover-background-color: #fff;
+    --inn-input-focus-background-color: #fff;
+    --inn-input-focus-border-color: var(--inn-primary);
+    --inn-input-focus-shadow: inset 0 0 0 1px var(--inn-base-600);
+    --inn-input-checkbox-circle-hover-background-color: var(--inn-base-300);
 
     /* Dropdown */
-    --innov-dropdown-background-color: #fff;
-    --innov-dropdown-item-selected-hover-color: var(--innov-base-900);
-    --innov-dropdown-item-selected-hover-background-color: var(--innov-base-100);
-    --innov-dropdown-item-selected-color: #000;
-    --innov-dropdown-item-selected-background-color: var(--innov-primary-light);
+    --inn-dropdown-background-color: #fff;
+    --inn-dropdown-item-selected-hover-color: var(--inn-base-900);
+    --inn-dropdown-item-selected-hover-background-color: var(--inn-base-100);
+    --inn-dropdown-item-selected-color: #000;
+    --inn-dropdown-item-selected-background-color: var(--inn-primary-light);
 
     /* Datepicker */
-    --innov-datepicker-panel-background-color: #fff;
-    --innov-datepicker-header-background-color: #fff;
-    --innov-datepicker-header-color: var(--innov-base-500);
-    --innov-datepicker-calendar-selected-color: #fff;
-    --innov-datepicker-calendar-selected-background-color: var(--innov-primary);
-    --innov-datepicker-calendar-hover-color: #000;
-    --innov-datepicker-calendar-hover-background-color: rgba(0,0,0,.1);
+    --inn-datepicker-panel-background-color: #fff;
+    --inn-datepicker-header-background-color: #fff;
+    --inn-datepicker-header-color: var(--inn-base-500);
+    --inn-datepicker-calendar-selected-color: #fff;
+    --inn-datepicker-calendar-selected-background-color: var(--inn-primary);
+    --inn-datepicker-calendar-hover-color: #000;
+    --inn-datepicker-calendar-hover-background-color: rgba(0,0,0,.1);
 
     /* Html editor */
-    --innov-editor-border-radius: var(--innov-border-radius);
-    --innov-editor-border: var(--innov-border-1-dark);
-    --innov-editor-content-background-color: #fff;
-    --innov-editor-focus-outline: 2px solid var(--innov-primary);
-    --innov-editor-button-color: var(--innov-base-500);
-    --innov-editor-button-background-color: none;
-    --innov-editor-button-disabled-color: var(--innov-base-200);
-    --innov-editor-button-hover-color: #000;
-    --innov-editor-button-hover-background-color: rgba(0,0,0,.1);
-    --innov-editor-toolbar-background-color: #fff;
-    --innov-editor-separator-background-color: var(--innov-base-200);
-    --innov-editor-button-selected-background-color: var(--innov-primary-light);
-    --innov-editor-button-selected-color: #000;
+    --inn-editor-border-radius: var(--inn-border-radius);
+    --inn-editor-border: var(--inn-border-1-dark);
+    --inn-editor-content-background-color: #fff;
+    --inn-editor-focus-outline: 2px solid var(--inn-primary);
+    --inn-editor-button-color: var(--inn-base-500);
+    --inn-editor-button-background-color: none;
+    --inn-editor-button-disabled-color: var(--inn-base-200);
+    --inn-editor-button-hover-color: #000;
+    --inn-editor-button-hover-background-color: rgba(0,0,0,.1);
+    --inn-editor-toolbar-background-color: #fff;
+    --inn-editor-separator-background-color: var(--inn-base-200);
+    --inn-editor-button-selected-background-color: var(--inn-primary-light);
+    --inn-editor-button-selected-color: #000;
 
     /* Grid */
-    --innov-grid-header-color: #000;
-    --innov-grid-background-color: #fff;
-    --innov-grid-row-odd-background-color: #fff;
-    --innov-grid-row-even-background-color: var(--innov-base-50);
-    --innov-grid-selected-color: var(--innov-primary);
-    --innov-grid-filter-color: var(--innov-base-500);
-    --innov-grid-header-filter-icon-hover-color: var(--innov-base-600);
-    --innov-grid-sort-icon-color: var(--innov-base-500);
+    --inn-grid-header-color: #000;
+    --inn-grid-background-color: #fff;
+    --inn-grid-row-odd-background-color: #fff;
+    --inn-grid-row-even-background-color: var(--inn-base-50);
+    --inn-grid-selected-color: var(--inn-primary);
+    --inn-grid-filter-color: var(--inn-base-500);
+    --inn-grid-header-filter-icon-hover-color: var(--inn-base-600);
+    --inn-grid-sort-icon-color: var(--inn-base-500);
 
     /* Side panel */
-    --innov-side-panel-background-color: var(--innov-base-100);
+    --inn-side-panel-background-color: var(--inn-base-100);
 
     /* Alert */
-    --innov-alert-close-background: none;
-    --innov-alert-close-background-hover: rgba(0,0,0,.1);
+    --inn-alert-close-background: none;
+    --inn-alert-close-background-hover: rgba(0,0,0,.1);
 
     /* Progress bar circular */
-    --innov-progressbar-circular-background-color: var(--innov-base-100);
-    --innov-progressbar-primary-color: var(--innov-primary);
-    --innov-progressbar-secondary-color: var(--innov-secondary);
-    --innov-progressbar-success-color: var(--innov-success);
-    --innov-progressbar-info-color: var(--innov-info);
-    --innov-progressbar-warning-color: var(--innov-warning);
-    --innov-progressbar-danger-color: var(--innov-danger);
-    --innov-progressbar-light-color: var(--innov-base-100);
-    --innov-progressbar-dark-color: var(--innov-base-700);
+    --inn-progressbar-circular-background-color: var(--inn-base-100);
+    --inn-progressbar-primary-color: var(--inn-primary);
+    --inn-progressbar-secondary-color: var(--inn-secondary);
+    --inn-progressbar-success-color: var(--inn-success);
+    --inn-progressbar-info-color: var(--inn-info);
+    --inn-progressbar-warning-color: var(--inn-warning);
+    --inn-progressbar-danger-color: var(--inn-danger);
+    --inn-progressbar-light-color: var(--inn-base-100);
+    --inn-progressbar-dark-color: var(--inn-base-700);
 }
 
 /* Global variables & components */
 :root {
     /* Global variables */
-    --innov-font-family: 'Aptos', sans-serif;
+    --inn-font-family: 'Aptos', sans-serif;
 
-    --innov-icon-font-family: 'Material Symbols', sans-serif;
-    --innov-icon-font-size: 1.25rem;
+    --inn-icon-font-family: 'Material Symbols', sans-serif;
+    --inn-icon-font-size: 1.25rem;
 
-    --innov-h1-font-size: 1.75rem;
-    --innov-h2-font-size: 1.5rem;
-    --innov-h3-font-size: 1.25rem;
-    --innov-h4-font-size: 1.125rem;
-    --innov-h5-font-size: unset;
-    --innov-h6-font-size: unset;
+    --inn-h1-font-size: 1.75rem;
+    --inn-h2-font-size: 1.5rem;
+    --inn-h3-font-size: 1.25rem;
+    --inn-h4-font-size: 1.125rem;
+    --inn-h5-font-size: unset;
+    --inn-h6-font-size: unset;
 
-    --innov-shadow-0: none;
-    --innov-shadow-1: 0px 2px 3px rgba(87, 90, 103, .5);
-    --innov-shadow-2: 0px 3px 4px rgba(87, 90, 103, .5);
-    --innov-shadow-3: 0px 4px 5px rgba(87, 90, 103, .5);
-    --innov-shadow-4: none;
-    --innov-shadow-5: none;
-    --innov-shadow-6: none;
-    --innov-shadow-7: none;
-    --innov-shadow-8: none;
+    --inn-shadow-0: none;
+    --inn-shadow-1: 0px 2px 3px rgba(87, 90, 103, .5);
+    --inn-shadow-2: 0px 3px 4px rgba(87, 90, 103, .5);
+    --inn-shadow-3: 0px 4px 5px rgba(87, 90, 103, .5);
+    --inn-shadow-4: none;
+    --inn-shadow-5: none;
+    --inn-shadow-6: none;
+    --inn-shadow-7: none;
+    --inn-shadow-8: none;
 
-    --innov-border-radius: 4px;
+    --inn-border-radius: 4px;
 
-    --innov-border: 1px solid var(--innov-border-color-dark);
-    --innov-border-1-light: 1px solid var(--innov-border-color-light);
-    --innov-border-1-dark: 1px solid var(--innov-border-color-dark);
-    --innov-border-2-light: 2px solid var(--innov-border-color-light);
-    --innov-border-2-dark: 2px solid var(--innov-border-color-dark);
+    --inn-border: 1px solid var(--inn-border-color-dark);
+    --inn-border-1-light: 1px solid var(--inn-border-color-light);
+    --inn-border-1-dark: 1px solid var(--inn-border-color-dark);
+    --inn-border-2-light: 2px solid var(--inn-border-color-light);
+    --inn-border-2-dark: 2px solid var(--inn-border-color-dark);
 
     /* Components */
     /* Button */
-    --innov-button-padding: .5rem;
-    --innov-button-line-height: 1;
-    --innov-button-border-radius: var(--innov-border-radius);
-    --innov-button-width: 2.25rem;
-    --innov-button-height: 2.25rem;
-    --innov-button-icon-only-transition: color .3s;
+    --inn-button-padding: .5rem;
+    --inn-button-line-height: 1;
+    --inn-button-border-radius: var(--inn-border-radius);
+    --inn-button-width: 2.25rem;
+    --inn-button-height: 2.25rem;
+    --inn-button-icon-only-transition: color .3s;
 
     /* Alert */
-    --innov-alert-margin: 1rem 0;
-    --innov-alert-padding: 1rem;
-    --innov-alert-font-size: 1rem;
-    --innov-alert-border: none;
-    --innov-alert-border-radius: var(--innov-border-radius);
-    --innov-alert-shadow: 0px 2px 3px rgba(87, 90, 103, .5);
-    --innov-alert-close-padding: .5rem;
-    --innov-alert-line-height: normal;
-    --innov-alert-close-width: 2.25rem;
-    --innov-alert-close-height: 2.25rem;
-    --innov-alert-close-border: none;
-    --innov-alert-close-border-radius: var(--innov-button-border-radius);
-    --innov-alert-summary-font-size: 1.125rem;
-    --innov-alert-detail-font-size: 1rem;
+    --inn-alert-margin: 1rem 0;
+    --inn-alert-padding: 1rem;
+    --inn-alert-font-size: 1rem;
+    --inn-alert-border: none;
+    --inn-alert-border-radius: var(--inn-border-radius);
+    --inn-alert-shadow: 0px 2px 3px rgba(87, 90, 103, .5);
+    --inn-alert-close-padding: .5rem;
+    --inn-alert-line-height: normal;
+    --inn-alert-close-width: 2.25rem;
+    --inn-alert-close-height: 2.25rem;
+    --inn-alert-close-border: none;
+    --inn-alert-close-border-radius: var(--inn-button-border-radius);
+    --inn-alert-summary-font-size: 1.125rem;
+    --inn-alert-detail-font-size: 1rem;
 
     /* Label */
-    --innov-label-font-weight: 600;
-    --innov-label-font-size: 1rem;
+    --inn-label-font-weight: 600;
+    --inn-label-font-size: 1rem;
 
     /* Input */
-    --innov-input-font-size: 1rem;
-    --innov-input-line-height: normal;
-    --innov-input-transition: all .1s linear;
-    --innov-input-border: var(--innov-border-1-light);
-    --innov-input-border-block-end: var(--innov-border-1-dark);
-    --innov-input-border-radius: var(--innov-border-radius);
-    --innov-input-shadow: none;
-    --innov-input-hover-border: var(--innov-border-1-dark);
-    --innov-input-hover-border-block-end: var(--innov-border-1-dark);
-    --innov-input-hover-shadow: none;
-    --innov-input-focus-border: var(--innov-border);
-    --innov-input-focus-border-block-end: var(--innov-border-1-dark);
-    --innov-input-focus-border-radius: var(--innov-border-radius);
-    --innov-input-focus-outline: none;
-    --innov-input-focus-outline-offset: 0;
+    --inn-input-font-size: 1rem;
+    --inn-input-line-height: normal;
+    --inn-input-transition: all .1s linear;
+    --inn-input-border: var(--inn-border-1-light);
+    --inn-input-border-block-end: var(--inn-border-1-dark);
+    --inn-input-border-radius: var(--inn-border-radius);
+    --inn-input-shadow: none;
+    --inn-input-hover-border: var(--inn-border-1-dark);
+    --inn-input-hover-border-block-end: var(--inn-border-1-dark);
+    --inn-input-hover-shadow: none;
+    --inn-input-focus-border: var(--inn-border);
+    --inn-input-focus-border-block-end: var(--inn-border-1-dark);
+    --inn-input-focus-border-radius: var(--inn-border-radius);
+    --inn-input-focus-outline: none;
+    --inn-input-focus-outline-offset: 0;
 
-    --innov-checkbox-width: 1.125rem;
-    --innov-checkbox-height: 1.125rem;
-    --innov-input-checkbox-circle-hover-width: 2.5rem;
-    --innov-input-checkbox-circle-hover-height: 2.5rem;
+    --inn-checkbox-width: 1.125rem;
+    --inn-checkbox-height: 1.125rem;
+    --inn-input-checkbox-circle-hover-width: 2.5rem;
+    --inn-input-checkbox-circle-hover-height: 2.5rem;
 
-    --innov-dropdown-panel-border: var(--innov-border-1-dark);
-    --innov-dropdown-panel-shadow: none;
+    --inn-dropdown-panel-border: var(--inn-border-1-dark);
+    --inn-dropdown-panel-shadow: none;
 
     /* Datepicker */
-    --innov-datepicker-popup-width: 22rem;
-    --innov-datepicker-panel-margin: 0;
-    --innov-datepicker-panel-shadow: 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.14);
-    --innov-datepicker-panel-border: none;
-    --innov-datepicker-header-border: none;
-    --innov-datepicker-header-padding-block: .75rem;
-    --innov-datepicker-header-padding-inline: .75rem;
-    --innov-datepicker-calendar-padding-block: 0 .75rem;
-    --innov-datepicker-calendar-padding-inline: .75rem;
-    --innov-datepicker-calendar-border: none;
-    --innov-datepicker-calendar-item-padding: .625rem 0;
+    --inn-datepicker-popup-width: 22rem;
+    --inn-datepicker-panel-margin: 0;
+    --inn-datepicker-panel-shadow: 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.14);
+    --inn-datepicker-panel-border: none;
+    --inn-datepicker-header-border: none;
+    --inn-datepicker-header-padding-block: .75rem;
+    --inn-datepicker-header-padding-inline: .75rem;
+    --inn-datepicker-calendar-padding-block: 0 .75rem;
+    --inn-datepicker-calendar-padding-inline: .75rem;
+    --inn-datepicker-calendar-border: none;
+    --inn-datepicker-calendar-item-padding: .625rem 0;
 
 
     /* Html editor */
-    --innov-editor-button-padding: .5rem;
-    --innov-editor-border-radius: var(--innov-border-radius);
-    --innov-editor-border: var(--innov-border-1-light);
-    --innov-editor-focus-outline-offset: unset;
+    --inn-editor-button-padding: .5rem;
+    --inn-editor-border-radius: var(--inn-border-radius);
+    --inn-editor-border: var(--inn-border-1-light);
+    --inn-editor-focus-outline-offset: unset;
 
     /* Grid */
-    --innov-data-grid-border: none;
-    --innov-data-grid-border-radius: var(--innov-border-radius);
-    --innov-grid-header-first-cell-padding: .625rem 1rem;
-    --innov-grid-header-font-size: 1rem;
-    --innov-grid-header-line-height: auto;
-    --innov-grid-header-font-weight: 500;
-    --innov-grid-header-text-transform: unset;
-    --innov-grid-header-border-bottom: var(--innov-border-2-light);
-    --innov-grid-header-title-padding-inline: 1rem;
-    --innov-grid-filter-margin-inline: unset;
-    --innov-grid-first-cell-padding: .625rem 1rem .625rem 2rem;
-    --innov-grid-selected-font-weight: 600;;
-    --innov-grid-table-fixed-border: unset;
-    --innov-grid-table-fixed-shadow: 6px 0 10px -2px rgba(64, 63, 63, 0.1);
+    --inn-data-grid-border: none;
+    --inn-data-grid-border-radius: var(--inn-border-radius);
+    --inn-grid-header-first-cell-padding: .625rem 1rem;
+    --inn-grid-header-font-size: 1rem;
+    --inn-grid-header-line-height: auto;
+    --inn-grid-header-font-weight: 500;
+    --inn-grid-header-text-transform: unset;
+    --inn-grid-header-border-bottom: var(--inn-border-2-light);
+    --inn-grid-header-title-padding-inline: 1rem;
+    --inn-grid-filter-margin-inline: unset;
+    --inn-grid-first-cell-padding: .625rem 1rem .625rem 2rem;
+    --inn-grid-selected-font-weight: 600;;
+    --inn-grid-table-fixed-border: unset;
+    --inn-grid-table-fixed-shadow: 6px 0 10px -2px rgba(64, 63, 63, 0.1);
 
     /* Pager */
-    --innov-pager-padding: 1rem;
-    --innov-pager-numeric-button-selected-padding: .25rem;
+    --inn-pager-padding: 1rem;
+    --inn-pager-numeric-button-selected-padding: .25rem;
 
     /* Side panel */
-    --innov-side-panel-padding: 1rem 1rem .5rem 1rem;
+    --inn-side-panel-padding: 1rem 1rem .5rem 1rem;
 
     /*Progress bar circular*/
-    --innov-progressbar-circular-label-font-size: .875rem;
-    --innov-progressbar-circular-label-font-weight: 500;
-    --innov-progressbar-circular-xs-width: 2rem;
-    --innov-progressbar-circular-xs-height: 2rem;
-    --innov-progressbar-circular-xs-font-size: .65rem;
-    --innov-progressbar-circular-sm-width: 3rem;
-    --innov-progressbar-circular-sm-height: 3rem;
-    --innov-progressbar-circular-sm-font-size: .75rem;
-    --innov-progressbar-circular-md-width: 4rem;
-    --innov-progressbar-circular-md-height: 4rem;
-    --innov-progressbar-circular-md-font-size: 1rem;
-    --innov-progressbar-circular-lg-width: 6rem;
-    --innov-progressbar-circular-lg-height: 6rem;
-    --innov-progressbar-circular-lg-font-size: 1rem;
+    --inn-progressbar-circular-label-font-size: .875rem;
+    --inn-progressbar-circular-label-font-weight: 500;
+    --inn-progressbar-circular-xs-width: 2rem;
+    --inn-progressbar-circular-xs-height: 2rem;
+    --inn-progressbar-circular-xs-font-size: .65rem;
+    --inn-progressbar-circular-sm-width: 3rem;
+    --inn-progressbar-circular-sm-height: 3rem;
+    --inn-progressbar-circular-sm-font-size: .75rem;
+    --inn-progressbar-circular-md-width: 4rem;
+    --inn-progressbar-circular-md-height: 4rem;
+    --inn-progressbar-circular-md-font-size: 1rem;
+    --inn-progressbar-circular-lg-width: 6rem;
+    --inn-progressbar-circular-lg-height: 6rem;
+    --inn-progressbar-circular-lg-font-size: 1rem;
 }
 
 @font-face {
@@ -322,7 +322,7 @@
 }
 
 html, body {
-    font-family: var(--innov-font-family);
+    font-family: var(--inn-font-family);
 }
 
 h1:focus {
@@ -437,12 +437,12 @@ code {
 }
 
 .rz-datepicker-popup-container {
-    width: var(--innov-datepicker-popup-width) !important;
-    margin: var(--innov-datepicker-panel-margin) !important;
-    box-shadow: var(--innov-datepicker-panel-shadow) !important;
-    border: var(--innov-datepicker-panel-border) !important;
-    border-radius: var(--innov-border-radius) !important;
-    background-color: var(--innov-datepicker-panel-background-color) !important;
+    width: var(--inn-datepicker-popup-width) !important;
+    margin: var(--inn-datepicker-panel-margin) !important;
+    box-shadow: var(--inn-datepicker-panel-shadow) !important;
+    border: var(--inn-datepicker-panel-border) !important;
+    border-radius: var(--inn-border-radius) !important;
+    background-color: var(--inn-datepicker-panel-background-color) !important;
 }
 
 .rz-form-field:hover .rz-form-field-content,
@@ -457,10 +457,10 @@ code {
 .mask:not(:disabled):not(.rz-state-disabled):hover,
 .rz-textarea:not(:disabled):not(.rz-state-disabled):hover,
 .rz-textbox:not(:disabled):not(.rz-state-disabled):hover {
-    box-shadow: var(--innov-input-hover-shadow) !important;
-    background-color: var(--innov-input-hover-background-color) !important;
-    border: var(--innov-input-hover-border) !important;
-    border-block-end: var(--innov-input-hover-border-block-end) !important;
+    box-shadow: var(--inn-input-hover-shadow) !important;
+    background-color: var(--inn-input-hover-background-color) !important;
+    border: var(--inn-input-hover-border) !important;
+    border-block-end: var(--inn-input-hover-border-block-end) !important;
 }
 
 .rz-html-editor-dropdown-items,
@@ -468,49 +468,49 @@ code {
 .rz-autocomplete-panel,
 .rz-multiselect-panel,
 .rz-dropdown-panel {
-    background-color: var(--innov-dropdown-background-color) !important;
-    border-radius: var(--innov-border-radius) !important;
-    border: var(--innov-dropdown-panel-border) !important;
-    box-shadow: var(--innov-dropdown-panel-shadow) !important;
+    background-color: var(--inn-dropdown-background-color) !important;
+    border-radius: var(--inn-border-radius) !important;
+    border: var(--inn-dropdown-panel-border) !important;
+    box-shadow: var(--inn-dropdown-panel-shadow) !important;
 }
 
 .rz-button.rz-variant-text.rz-secondary.rz-shade-default {
-    color: var(--innov-button-variant-text-color);
+    color: var(--inn-button-variant-text-color);
 }
 
 .rz-button.rz-variant-text.rz-secondary:not(.rz-state-disabled):hover {
-    background-color: var(--innov-button-variant-text-hover-background-color) !important;
-    color: var(--innov-button-variant-text-hover-color) !important;
+    background-color: var(--inn-button-variant-text-hover-background-color) !important;
+    color: var(--inn-button-variant-text-hover-color) !important;
 }
 
 .rz-calendar-header {
-    background-color: var(--innov-datepicker-header-background-color) !important;
-    border-bottom: var(--innov-datepicker-header-border) !important;
-    color: var(--innov-datepicker-header-color) !important;
-    padding-block: var(--innov-datepicker-header-padding-block) !important;
-    padding-inline: var(--innov-datepicker-header-padding-inline) !important;
+    background-color: var(--inn-datepicker-header-background-color) !important;
+    border-bottom: var(--inn-datepicker-header-border) !important;
+    color: var(--inn-datepicker-header-color) !important;
+    padding-block: var(--inn-datepicker-header-padding-block) !important;
+    padding-inline: var(--inn-datepicker-header-padding-inline) !important;
 }
 
 .rz-calendar-view-container {
-    padding-block: var(--innov-datepicker-calendar-padding-block) !important;
-    padding-inline: var(--innov-datepicker-calendar-padding-inline) !important;
+    padding-block: var(--inn-datepicker-calendar-padding-block) !important;
+    padding-inline: var(--inn-datepicker-calendar-padding-inline) !important;
 }
 
 .rz-calendar-view td .rz-state-default.rz-state-focused,
 .rz-calendar-view td .rz-state-default:hover {
-    color: var(--innov-datepicker-calendar-hover-color) !important;
-    background-color: var(--innov-datepicker-calendar-hover-background-color) !important;
+    color: var(--inn-datepicker-calendar-hover-color) !important;
+    background-color: var(--inn-datepicker-calendar-hover-background-color) !important;
 }
 
 .rz-calendar-view td {
-    border-top: var(--innov-datepicker-calendar-border) !important;
+    border-top: var(--inn-datepicker-calendar-border) !important;
 }
 
 .rz-calendar-view td .rz-state-active,
 .rz-calendar-view td .rz-state-active.rz-calendar-today {
-    color: var(--innov-datepicker-calendar-selected-color) !important;
-    background-color: var(--innov-datepicker-calendar-selected-background-color) !important;
-    padding: var(--innov-datepicker-calendar-item-padding) !important;
+    color: var(--inn-datepicker-calendar-selected-color) !important;
+    background-color: var(--inn-datepicker-calendar-selected-background-color) !important;
+    padding: var(--inn-datepicker-calendar-item-padding) !important;
 }
 
 .rz-state-highlight.rz-menuitem:hover,
@@ -520,8 +520,8 @@ code {
 .rz-dropdown-items li.rz-state-highlight:hover,
 .rz-multiselect-items li.rz-state-highlight:hover,
 .rz-dropdown-item.rz-state-highlight:hover {
-    background-color: var(--innov-dropdown-item-selected-hover-background-color) !important;
-    color: var(--innov-dropdown-item-selected-hover-color) !important;
+    background-color: var(--inn-dropdown-item-selected-hover-background-color) !important;
+    color: var(--inn-dropdown-item-selected-hover-color) !important;
 }
 
 .rz-state-highlight.rz-menuitem,
@@ -531,6 +531,6 @@ code {
 .rz-dropdown-items li.rz-state-highlight,
 .rz-multiselect-items li.rz-state-highlight,
 .rz-dropdown-item.rz-state-highlight {
-    background-color: var(--innov-dropdown-item-selected-background-color) !important;
-    color: var(--innov-dropdown-item-selected-color) !important;
+    background-color: var(--inn-dropdown-item-selected-background-color) !important;
+    color: var(--inn-dropdown-item-selected-color) !important;
 }

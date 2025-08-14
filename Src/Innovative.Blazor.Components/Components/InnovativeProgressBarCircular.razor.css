@@ -13,7 +13,7 @@
 }
 
 .innovative-progressbar-circular-background {
-    stroke: var(--innov-progressbar-circular-background-color);
+    stroke: var(--inn-progressbar-circular-background-color);
     stroke-width: 4px;
 }
 
@@ -30,66 +30,66 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    font-size: var(--innov-progressbar-circular-label-font-size);
-    font-weight: var(--innov-progressbar-circular-label-font-weight);
+    font-size: var(--inn-progressbar-circular-label-font-size);
+    font-weight: var(--inn-progressbar-circular-label-font-weight);
 }
 
 /* Size variants */
 .innovative-progressbar-circular-xs {
-    width: var(--innov-progressbar-circular-xs-width);
-    height: var(--innov-progressbar-circular-xs-height);
-    font-size: var(--innov-progressbar-circular-xs-font-size);
+    width: var(--inn-progressbar-circular-xs-width);
+    height: var(--inn-progressbar-circular-xs-height);
+    font-size: var(--inn-progressbar-circular-xs-font-size);
 }
 
 .innovative-progressbar-circular-sm {
-    width: var(--innov-progressbar-circular-sm-width);
-    height: var(--innov-progressbar-circular-sm-height);
-    font-size: var(--innov-progressbar-circular-sm-font-size);
+    width: var(--inn-progressbar-circular-sm-width);
+    height: var(--inn-progressbar-circular-sm-height);
+    font-size: var(--inn-progressbar-circular-sm-font-size);
 }
 
 .innovative-progressbar-circular-md {
-    width: var(--innov-progressbar-circular-md-width);
-    height: var(--innov-progressbar-circular-md-height);
-    font-size: var(--innov-progressbar-circular-md-font-size);
+    width: var(--inn-progressbar-circular-md-width);
+    height: var(--inn-progressbar-circular-md-height);
+    font-size: var(--inn-progressbar-circular-md-font-size);
 }
 
 .innovative-progressbar-circular-lg {
-    width: var(--innov-progressbar-circular-lg-width);
-    height: var(--innov-progressbar-circular-lg-height);
-    font-size: var(--innov-progressbar-circular-lg-font-size);
+    width: var(--inn-progressbar-circular-lg-width);
+    height: var(--inn-progressbar-circular-lg-height);
+    font-size: var(--inn-progressbar-circular-lg-font-size);
 }
 
 /* Color styles */
 .innovative-progressbar-primary {
-    color: var(--innov-progressbar-primary-color)
+    color: var(--inn-progressbar-primary-color)
 }
 
 .innovative-progressbar-secondary {
-    color: var(--innov-progressbar-secondary-color);
+    color: var(--inn-progressbar-secondary-color);
 }
 
 .innovative-progressbar-success {
-    color: var(--innov-progressbar-success-color);
+    color: var(--inn-progressbar-success-color);
 }
 
 .innovative-progressbar-info {
-    color: var(--innov-progressbar-info-color);
+    color: var(--inn-progressbar-info-color);
 }
 
 .innovative-progressbar-warning {
-    color: var(--innov-progressbar-warning);
+    color: var(--inn-progressbar-warning-color);
 }
 
 .innovative-progressbar-danger {
-    color: var(--innov-progressbar-danger-color);
+    color: var(--inn-progressbar-danger-color);
 }
 
 .innovative-progressbar-light {
-    color: var(--innov-progressbar-light-color);
+    color: var(--inn-progressbar-light-color);
 }
 
 .innovative-progressbar-dark {
-    color: var(--innov-progressbar-dark-color);
+    color: var(--inn-progressbar-dark-color);
 }
 
 /* Indeterminate animation */
