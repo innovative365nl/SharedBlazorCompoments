@@ -21,10 +21,8 @@ public partial class AttributeTypePicker(IAttributeState state) : CustomComponen
     private void OnSelectedItemChanged(int? value)
     {
         var selectedType = _attributeTypes.SingleOrDefault(x => x.Id == value);
-        if (selectedType != null)
-        {
-            Value = selectedType;
-            OnValueChanged();
-        }
+        // Always update Value, even if null, to maintain consistency
+        Value = selectedType;
+        OnValueChanged();
     }
 }
