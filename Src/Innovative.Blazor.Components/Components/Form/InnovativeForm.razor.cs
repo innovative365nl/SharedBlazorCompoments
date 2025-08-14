@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.Localization;
 using Radzen.Blazor;
+using System.ComponentModel;
 
 namespace Innovative.Blazor.Components.Components;
 
@@ -93,13 +94,8 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     {
         foreach (var entry in formValues)
         {
-            var prop = typeof(TModel).GetProperty(name: entry.Key);
-            if (prop?.CanWrite ?? false)
-            {
-                prop.SetValue(obj: Model, value: entry.Value);
-            }
+            SetValue(entry.Key, entry.Value, shouldNotifyChange: false);
         }
-
         return Task.CompletedTask;
     }
 
@@ -417,7 +413,43 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                 try
                 {
                     // Handle nullable types (already unwrapped in targetType)
-                    convertedValue = Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture);
+                    // Prefer TypeConverter (covers Guid, enums, custom types), then enum-specific handling, then ChangeType.
+                    if (targetType.IsEnum)
+                    {
+                        if (value is string s)
+                        {
+                            convertedValue = Enum.Parse(targetType, s, ignoreCase: true);
+                        }
+                        else
+                        {
+                            var underlying = Enum.GetUnderlyingType(targetType);
+                            var numeric = Convert.ChangeType(value, underlying, CultureInfo.InvariantCulture);
+                            convertedValue = Enum.ToObject(targetType, numeric!);
+                        }
+                    }
+                    else
+                    {
+                        var converter = TypeDescriptor.GetConverter(targetType);
+                        if (converter != null)
+                        {
+                            if (value is string sv && converter.CanConvertFrom(typeof(string)))
+                            {
+                                convertedValue = converter.ConvertFrom(null, CultureInfo.InvariantCulture, sv);
+                            }
+                            else if (converter.CanConvertFrom(value.GetType()))
+                            {
+                                convertedValue = converter.ConvertFrom(null, CultureInfo.InvariantCulture, value);
+                            }
+                            else
+                            {
+                                convertedValue = Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture);
+                            }
+                        }
+                        else
+                        {
+                            convertedValue = Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture);
+                        }
+                    }
                 }
                 catch (Exception ex) when (ex is FormatException
                      or InvalidCastException
@@ -427,6 +459,8 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                 {
                     // Optionally log or handle conversion error
                     Debug.WriteLine($"Failed to convert value for property '{propertyName}': {ex.Message}");
+                    // Revert the form value to keep UI state consistent with the model
+                    formValues[propertyName] = prop.GetValue(Model);
                     return; // Skip setting the value if conversion fails
                 }
             }
