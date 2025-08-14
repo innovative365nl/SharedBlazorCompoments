@@ -10,7 +10,7 @@
     justify-content: space-between;
     align-items: center;
     padding: var(--inn-side-panel-padding);
-    border-bottom: #a0a0a0 solid .5px;
+    border-bottom: var(--inn-side-panel-border-bottom);
 }
 
 .sidepanel-title {
@@ -21,8 +21,8 @@
 
 .sidepanel-title h3 {
     margin: 0;
-    font-size: 1.5rem;
-    font-weight: 500;
+    font-size: var(--inn-sidepanel-title-font-size);
+    font-weight: var(--inn-sidepanel-title-font-weight);
 }
 
 .sidepanel-actions {
@@ -56,16 +56,45 @@
 }
 
 .sidepanel-icon-button:hover  .material-symbols-outlined {
-    color: var(--inn-gray-900, #0d0c0c);
+    color: var(--inn-gray-900);
 }
 
 .sidepanel-actions ::deep .sidepanel-icon-button .rz-button-box .material-symbols-outlined,
 .sidepanel-actions ::deep .sidepanel-icon-button:hover .rz-button-box .material-symbols-outlined {
-    color: var(--inn-gray-50, #fafafa);
+    color: var(--inn-gray-50);
+}
+
+::deep .rz-button.rz-primary.rz-shade-default {
+    background-color: var(--inn-primary);
+    color: var(--inn-text-color-on-primary);
+}
+
+::deep .rz-button.rz-secondary.rz-shade-default {
+    background-color: var(--inn-secondary);
+    color: var(--inn-text-color-on-secondary);
+}
+
+::deep .rz-button.rz-danger.rz-shade-default {
+    background-color: var(--inn-danger);
+    color: var(--inn-text-color-on-danger);
+}
+
+::deep .rz-pager-element,
+::deep .rz-button {
+    box-shadow: var(--inn-button-shadow);
 }
 
 .material-symbols-outlined {
     font-family: 'Material Symbols', sans-serif;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    ::deep .rz-pager-element:not(.rz-state-disabled):not(:active):hover,
+    ::deep .rz-button:not(.rz-state-disabled):not(:active):hover {
+        background-image: var(--inn-button-hover-gradient);
+        background-size: var(--inn-button-hover-background-size);
+        box-shadow: var(--inn-button-hover-shadow);
+    }
 }
 
 .sidepanel-content {

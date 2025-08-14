@@ -237,6 +237,21 @@
     border-radius: var(--inn-editor-border-radius);
 }
 
+::deep .rz-numeric input[type=number],
+::deep .rz-numeric input[type=text] {
+    line-height: var(--inn-numeric-line-height);
+    padding-block: var(--inn-numeric-input-padding-block);
+    padding-inline: var(--inn-numeric-input-padding-inline);
+}
+
+::deep .rz-numeric-up {
+    inset-block-start: var(--inn-numeric-button-offset);
+}
+
+::deep .rz-numeric-down {
+    inset-block-end: var(--inn-numeric-button-offset);
+}
+
 /* Small screens */
 @media (max-width: 1280px) {
     /* Every child goes full width */

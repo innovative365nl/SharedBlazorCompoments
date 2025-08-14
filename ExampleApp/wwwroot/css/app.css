@@ -181,9 +181,9 @@
     --inn-h6-font-size: unset;
 
     --inn-shadow-0: none;
-    --inn-shadow-1: 0px 2px 3px rgba(87, 90, 103, .5);
-    --inn-shadow-2: 0px 3px 4px rgba(87, 90, 103, .5);
-    --inn-shadow-3: 0px 4px 5px rgba(87, 90, 103, .5);
+    --inn-shadow-1: 0px 2px 6px color-mix(in srgb, var(--inn-gray-900) 25%, transparent);
+    --inn-shadow-2: 0px 3px 4px color-mix(in srgb, var(--inn-gray-900) 25%, transparent);
+    --inn-shadow-3: 0px 4px 5px color-mix(in srgb, var(--inn-gray-900) 50%, transparent);
     --inn-shadow-4: none;
     --inn-shadow-5: none;
     --inn-shadow-6: none;
@@ -205,8 +205,12 @@
     --inn-button-border-radius: var(--inn-border-radius);
     --inn-button-width: 2.25rem;
     --inn-button-height: 2.25rem;
+    --inn-button-shadow: var(--inn-shadow-1);
     --inn-button-icon-only-background: transparent;
     --inn-button-icon-only-transition: color .3s;
+    --inn-button-hover-gradient: none;
+    --inn-button-hover-background-size: auto;
+    --inn-button-hover-shadow: 0px 3px 4px rgba(0, 0, 0, 0.14), 0px 3px 3px rgba(0, 0, 0, 0.12), 0px 1px 8px rgba(0, 0, 0, 0.14);
 
     /* Alert */
     --inn-alert-margin: 1rem 0;
@@ -214,7 +218,7 @@
     --inn-alert-font-size: 1rem;
     --inn-alert-border: none;
     --inn-alert-border-radius: var(--inn-border-radius);
-    --inn-alert-shadow: 0px 2px 3px rgba(87, 90, 103, .5);
+    --inn-alert-shadow: var(--inn-shadow-1);
     --inn-alert-close-padding: .5rem;
     --inn-alert-line-height: normal;
     --inn-alert-close-width: 2.25rem;
@@ -244,6 +248,7 @@
     --inn-input-focus-border-radius: var(--inn-border-radius);
     --inn-input-focus-outline: none;
     --inn-input-focus-outline-offset: 0;
+    --inn-input-focus-shadow: none;
 
     --inn-checkbox-width: 1.125rem;
     --inn-checkbox-height: 1.125rem;
@@ -252,6 +257,11 @@
 
     --inn-dropdown-panel-border: var(--inn-border-1-dark);
     --inn-dropdown-panel-shadow: none;
+
+    --inn-numeric-line-height: 1.5;
+    --inn-numeric-input-padding-block: 0.4375rem;
+    --inn-numeric-input-padding-inline: 0.9375rem 1.25rem;
+    --inn-numeric-button-offset: 2px;
 
     /* Datepicker */
     --inn-datepicker-popup-width: 22rem;
@@ -295,8 +305,9 @@
 
     /* Side panel */
     --inn-side-panel-padding: 1rem 1rem .5rem 1rem;
-
-    --inn-dialog-background-color: var(--inn-gray-100);
+    --inn-side-panel-border-bottom: var(--inn-border-1-light);
+    --inn-sidepanel-title-font-size: 1.5rem;
+    --inn-sidepanel-title-font-weight: 500;
 
     /*Progress bar circular*/
     --inn-progressbar-circular-label-font-size: .875rem;
