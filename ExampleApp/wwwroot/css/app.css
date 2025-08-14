@@ -463,10 +463,10 @@ code {
 .mask:not(:disabled):not(.rz-state-disabled):hover,
 .rz-textarea:not(:disabled):not(.rz-state-disabled):hover,
 .rz-textbox:not(:disabled):not(.rz-state-disabled):hover {
-    box-shadow: var(--inn-input-hover-shadow) !important;
-    background-color: var(--inn-input-hover-background-color) !important;
-    border: var(--inn-input-hover-border) !important;
-    border-block-end: var(--inn-input-hover-border-block-end) !important;
+    box-shadow: var(--inn-input-hover-shadow);
+    background-color: var(--inn-input-hover-background-color);
+    border: var(--inn-input-hover-border);
+    border-block-end: var(--inn-input-hover-border-block-end);
 }
 
 .rz-html-editor-dropdown-items,
@@ -474,7 +474,7 @@ code {
 .rz-autocomplete-panel,
 .rz-multiselect-panel,
 .rz-dropdown-panel {
-    background-color: var(--inn-dropdown-background-color) !important;
+    background-color: var(--inn-dropdown-background-color);
     border-radius: var(--inn-border-radius) !important;
     border: var(--inn-dropdown-panel-border) !important;
     box-shadow: var(--inn-dropdown-panel-shadow) !important;
