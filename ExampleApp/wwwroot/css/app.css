@@ -1,6 +1,18 @@
 /* Colors */
 :root {
     /* Global Colors */
+    --inn-gray: #383838;
+    --inn-gray-50: #fafafa;
+    --inn-gray-100: #f3f2f2;
+    --inn-gray-200: #d7d4d4;
+    --inn-gray-300: #bcb6b6;
+    --inn-gray-400: #a09898;
+    --inn-gray-500: #857b7b;
+    --inn-gray-600: #675f5f;
+    --inn-gray-700: #494343;
+    --inn-gray-800: #2b2828;
+    --inn-gray-900: #0d0c0c;
+
     --inn-primary: #a43f13;
     --inn-primary-light: #db8d75;
     --inn-primary-lighter: #e6c2b7;
@@ -32,18 +44,6 @@
     --inn-danger-lighter: #ebe3B2;
     --inn-danger-dark: #ae0d0a;
     --inn-danger-darker: #6b0201;
-
-    --inn-gray: #383838;
-    --inn-gray-50: #fafafa;
-    --inn-gray-100: #f3f2f2;
-    --inn-gray-200: #d7d4d4;
-    --inn-gray-300: #bcb6b6;
-    --inn-gray-400: #a09898;
-    --inn-gray-500: #857b7b;
-    --inn-gray-600: #675f5f;
-    --inn-gray-700: #494343;
-    --inn-gray-800: #2b2828;
-    --inn-gray-900: #0d0c0c;
 
     --inn-border-color-light: var(--inn-gray-400);
     --inn-border-color-dark: var(--inn-gray-600);
@@ -85,6 +85,8 @@
     --inn-text-color-on-secondary-lighter: #000;
     --inn-text-color-on-secondary-dark: #fff;
     --inn-text-color-on-secondary-darker: #fff;
+
+    --inn-shadow-color: var(--inn-gray-900);
 
     /* Component Colors */
     /* Button */
@@ -181,9 +183,9 @@
     --inn-h6-font-size: unset;
 
     --inn-shadow-0: none;
-    --inn-shadow-1: 0px 2px 6px color-mix(in srgb, var(--inn-gray-900) 25%, transparent);
-    --inn-shadow-2: 0px 3px 4px color-mix(in srgb, var(--inn-gray-900) 25%, transparent);
-    --inn-shadow-3: 0px 4px 5px color-mix(in srgb, var(--inn-gray-900) 50%, transparent);
+    --inn-shadow-1: 0px 2px 6px color-mix(in srgb, var(--inn-shadow-color) 25%, transparent);
+    --inn-shadow-2: 0px 3px 4px color-mix(in srgb, var(--inn-shadow-color) 25%, transparent);
+    --inn-shadow-3: 0px 4px 5px color-mix(in srgb, var(--inn-shadow-color) 50%, transparent);
     --inn-shadow-4: none;
     --inn-shadow-5: none;
     --inn-shadow-6: none;
@@ -210,7 +212,7 @@
     --inn-button-icon-only-transition: color .3s;
     --inn-button-hover-gradient: none;
     --inn-button-hover-background-size: auto;
-    --inn-button-hover-shadow: 0px 3px 4px rgba(0, 0, 0, 0.14), 0px 3px 3px rgba(0, 0, 0, 0.12), 0px 1px 8px rgba(0, 0, 0, 0.14);
+    --inn-button-hover-shadow: var(--inn-shadow-3);
 
     /* Alert */
     --inn-alert-margin: 1rem 0;
@@ -266,7 +268,7 @@
     /* Datepicker */
     --inn-datepicker-popup-width: 22rem;
     --inn-datepicker-panel-margin: 0;
-    --inn-datepicker-panel-shadow: 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.14);
+    --inn-datepicker-panel-shadow: var(--inn-shadow-3);
     --inn-datepicker-panel-border: none;
     --inn-datepicker-header-border: none;
     --inn-datepicker-header-padding-block: .75rem;
@@ -297,7 +299,7 @@
     --inn-grid-first-cell-padding: .625rem 1rem .625rem 2rem;
     --inn-grid-selected-font-weight: 600;;
     --inn-grid-table-fixed-border: unset;
-    --inn-grid-table-fixed-shadow: 6px 0 10px -2px rgba(64, 63, 63, 0.1);
+    --inn-grid-table-fixed-shadow: 0px 2px 6px color-mix(in srgb, var(--inn-shadow-color) 15%, transparent);
 
     /* Pager */
     --inn-pager-padding: 1rem;
