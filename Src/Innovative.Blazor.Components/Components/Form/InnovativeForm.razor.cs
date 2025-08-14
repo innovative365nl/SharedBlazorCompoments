@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -7,7 +8,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.Localization;
 using Radzen.Blazor;
-using System.ComponentModel;
 
 namespace Innovative.Blazor.Components.Components;
 
@@ -457,8 +457,6 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                      or ArgumentException
                      or NotSupportedException)
                 {
-                    // Optionally log or handle conversion error
-                    Debug.WriteLine($"Failed to convert value for property '{propertyName}': {ex.Message}");
                     // Revert the form value to keep UI state consistent with the model
                     formValues[propertyName] = prop.GetValue(Model);
                     return; // Skip setting the value if conversion fails
@@ -471,6 +469,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                 convertedValue = Activator.CreateInstance(propertyType);
             }
 
+            formValues[propertyName] = convertedValue;
             prop.SetValue(obj: Model, value: convertedValue);
         }
         if (shouldNotifyChange)
