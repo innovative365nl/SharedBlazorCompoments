@@ -403,10 +403,29 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     private void SetValue(string propertyName, object? value, bool shouldNotifyChange = false)
     {
         formValues[key: propertyName] = value;
+
         var prop = typeof(TModel).GetProperty(propertyName);
+
         if (prop?.CanWrite ?? false)
         {
-            prop.SetValue(obj: Model, value: value);
+            var propertyType = prop.PropertyType;
+            object? convertedValue = value;
+            if (value != null && !propertyType.IsInstanceOfType(value))
+            {
+                try
+                {
+                    // Handle nullable types
+                    var targetType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+                    convertedValue = Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture);
+                }
+                catch (ArgumentException ex)
+                {
+                    // Optionally log or handle conversion error
+                    Debug.WriteLine($"Failed to convert value for property '{propertyName}': {ex.Message}");
+                    return; // Skip setting the value if conversion fails
+                }
+            }
+            prop.SetValue(obj: Model, value: convertedValue);
         }
         if (shouldNotifyChange)
         {

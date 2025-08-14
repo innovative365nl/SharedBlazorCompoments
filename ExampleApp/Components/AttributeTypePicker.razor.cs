@@ -18,10 +18,9 @@ public partial class AttributeTypePicker(IAttributeState state) : CustomComponen
         // No internal state needed; Value is always from parent
     }
 
-    private void OnSelectedItemChanged(object value)
+    private void OnSelectedItemChanged(int? value)
     {
-        var selectedId = value as int?;
-        var selectedType = _attributeTypes.SingleOrDefault(x => x.Id == selectedId);
+        var selectedType = _attributeTypes.SingleOrDefault(x => x.Id == value);
         if (selectedType != null)
         {
             Value = selectedType;
