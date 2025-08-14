@@ -140,8 +140,14 @@ public class PersonModel : FormModel
     [UIFormField(name : "Description", UseWysiwyg = true, ColumnGroup = "Description")]
     public string? Description { get; set; }
 
-    [UIFormField(name: "Complex Component", ColumnGroup = "Description", FormComponent = typeof(ComplexComponent),
-                 TextProperty = nameof(ComplexComponent.Description))]
+    [UIFormField(name: "Complex Component",
+                 ColumnGroup = "Description",
+                 FormComponent = typeof(ComplexEditComponent),
+                 FormParameters = ["DisplayLabel=false"], // There must be a parameter named DisplayLabel in the ComplexEditComponent
+                 DisplayComponent = typeof(ComplexDisplayComponent),
+                 DisplayParameters = ["DisplayLabel=false"], // There must be a parameter named DisplayLabel in the ComplexDisplayComponent
+                 TextProperty = nameof(ComplexComponent.Description)
+    )]
     public ComplexModel? ComplexComponent { get; set; } = new()
     {
         Name = "Complex Component",
