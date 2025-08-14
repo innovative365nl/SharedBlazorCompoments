@@ -9,7 +9,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--innov-side-panel-padding);
+    padding: var(--inn-side-panel-padding);
     border-bottom: #a0a0a0 solid .5px;
 }
 
@@ -33,16 +33,16 @@
 
 .sidepanel-icon-button,
 .sidepanel-actions ::deep .sidepanel-icon-button {
-    padding: var(--innov-button-padding);
-    line-height: var(--innov-button-line-height);
-    min-height: var(--innov-button-height);
-    min-width: var(--innov-button-width);
+    padding: var(--inn-button-padding);
+    line-height: var(--inn-button-line-height);
+    min-height: var(--inn-button-height);
+    min-width: var(--inn-button-width);
     display: grid;
     place-items: center;
-    background: var(--innov-button-icon-only-background, transparent);
+    background: var(--inn-button-icon-only-background);
     border: none;
     cursor: pointer;
-    border-radius: var(--innov-button-border-radius);
+    border-radius: var(--inn-button-border-radius);
     transition: background 0.2s;
 }
 
@@ -51,17 +51,17 @@
 }
 
 .sidepanel-icon-button .material-symbols-outlined {
-    color: var(--innov-base-600);
-    font-size: var(--innov-icon-font-size);
+    color: var(--inn-gray-600);
+    font-size: var(--inn-icon-font-size);
 }
 
 .sidepanel-icon-button:hover  .material-symbols-outlined {
-    color: var(--innov-base-900, #0d0c0c);
+    color: var(--inn-gray-900, #0d0c0c);
 }
 
 .sidepanel-actions ::deep .sidepanel-icon-button .rz-button-box .material-symbols-outlined,
 .sidepanel-actions ::deep .sidepanel-icon-button:hover .rz-button-box .material-symbols-outlined {
-    color: var(--innov-base-50, #fafafa);
+    color: var(--inn-gray-50, #fafafa);
 }
 
 .material-symbols-outlined {

@@ -33,30 +33,30 @@
     --inn-danger-dark: #ae0d0a;
     --inn-danger-darker: #6b0201;
 
-    --inn-base: #383838;
-    --inn-base-50: #fafafa;
-    --inn-base-100: #f3f2f2;
-    --inn-base-200: #d7d4d4;
-    --inn-base-300: #bcb6b6;
-    --inn-base-400: #a09898;
-    --inn-base-500: #857b7b;
-    --inn-base-600: #675f5f;
-    --inn-base-700: #494343;
-    --inn-base-800: #2b2828;
-    --inn-base-900: #0d0c0c;
+    --inn-gray: #383838;
+    --inn-gray-50: #fafafa;
+    --inn-gray-100: #f3f2f2;
+    --inn-gray-200: #d7d4d4;
+    --inn-gray-300: #bcb6b6;
+    --inn-gray-400: #a09898;
+    --inn-gray-500: #857b7b;
+    --inn-gray-600: #675f5f;
+    --inn-gray-700: #494343;
+    --inn-gray-800: #2b2828;
+    --inn-gray-900: #0d0c0c;
 
-    --inn-border-color-light: var(--inn-base-400);
-    --inn-border-color-dark: var(--inn-base-600);
+    --inn-border-color-light: var(--inn-gray-400);
+    --inn-border-color-dark: var(--inn-gray-600);
 
     /* Text colors */
-    --inn-text-color-text-color-on-info: #fff;
-    --inn-text-color-text-color-on-light: #000;
-    --inn-text-color-text-color-on-lighter: #000;
-    --inn-text-color-text-color-on-dark: #fff;
-    --inn-text-color-text-color-on-darker: #fff;
-    --inn-text-color-text-color-on-success: #000;
-    --inn-text-color-text-color-on-success-light: #000;
-    --inn-text-color-text-color-on-success-lighter: #000;
+    --inn-text-color-on-info: #fff;
+    --inn-text-color-on-info-light: #000;
+    --inn-text-color-on-info-lighter: #000;
+    --inn-text-color-on-dark: #fff;
+    --inn-text-color-on-darker: #fff;
+    --inn-text-color-on-success: #000;
+    --inn-text-color-on-success-light: #000;
+    --inn-text-color-on-success-lighter: #000;
     --inn-text-color-on-success-dark: #fff;
     --inn-text-color-on-success-darker: #fff;
     --inn-text-color-on-warning: #000;
@@ -71,10 +71,10 @@
     --inn-text-color-on-danger-darker: #fff;
 
     --inn-text-color-on-base: #000;
-    --inn-text-color-on-base-light: #000;
-    --inn-text-color-on-base-lighter: #000;
-    --inn-text-color-on-base-dark: #fff;
-    --inn-text-color-on-base-darker: #fff;
+    --inn-text-color-on-gray-light: #000;
+    --inn-text-color-on-gray-lighter: #000;
+    --inn-text-color-on-gray-dark: #fff;
+    --inn-text-color-on-gray-darker: #fff;
     --inn-text-color-on-primary: #fff;
     --inn-text-color-on-primary-light: #000;
     --inn-text-color-on-primary-lighter: #000;
@@ -88,31 +88,31 @@
 
     /* Component Colors */
     /* Button */
-    --inn-button-variant-text-color: var(--inn-base-500);
+    --inn-button-variant-text-color: var(--inn-gray-500);
     --inn-button-variant-text-hover-color: #000;
     --inn-button-variant-text-hover-background-color: rgba(0,0,0,.1);
 
     /* Input */
     --inn-input-value-color: #000;
     --inn-input-background-color: #fff;
-    --inn-input-disabled-background-color: var(--inn-base-300);
+    --inn-input-disabled-background-color: var(--inn-gray-300);
     --inn-input-hover-background-color: #fff;
     --inn-input-focus-background-color: #fff;
     --inn-input-focus-border-color: var(--inn-primary);
-    --inn-input-focus-shadow: inset 0 0 0 1px var(--inn-base-600);
-    --inn-input-checkbox-circle-hover-background-color: var(--inn-base-300);
+    --inn-input-focus-shadow: inset 0 0 0 1px var(--inn-gray-600);
+    --inn-input-checkbox-circle-hover-background-color: var(--inn-gray-300);
 
     /* Dropdown */
     --inn-dropdown-background-color: #fff;
-    --inn-dropdown-item-selected-hover-color: var(--inn-base-900);
-    --inn-dropdown-item-selected-hover-background-color: var(--inn-base-100);
+    --inn-dropdown-item-selected-hover-color: var(--inn-gray-900);
+    --inn-dropdown-item-selected-hover-background-color: var(--inn-gray-100);
     --inn-dropdown-item-selected-color: #000;
     --inn-dropdown-item-selected-background-color: var(--inn-primary-light);
 
     /* Datepicker */
     --inn-datepicker-panel-background-color: #fff;
     --inn-datepicker-header-background-color: #fff;
-    --inn-datepicker-header-color: var(--inn-base-500);
+    --inn-datepicker-header-color: var(--inn-gray-500);
     --inn-datepicker-calendar-selected-color: #fff;
     --inn-datepicker-calendar-selected-background-color: var(--inn-primary);
     --inn-datepicker-calendar-hover-color: #000;
@@ -123,13 +123,13 @@
     --inn-editor-border: var(--inn-border-1-dark);
     --inn-editor-content-background-color: #fff;
     --inn-editor-focus-outline: 2px solid var(--inn-primary);
-    --inn-editor-button-color: var(--inn-base-500);
+    --inn-editor-button-color: var(--inn-gray-500);
     --inn-editor-button-background-color: none;
-    --inn-editor-button-disabled-color: var(--inn-base-200);
+    --inn-editor-button-disabled-color: var(--inn-gray-200);
     --inn-editor-button-hover-color: #000;
     --inn-editor-button-hover-background-color: rgba(0,0,0,.1);
     --inn-editor-toolbar-background-color: #fff;
-    --inn-editor-separator-background-color: var(--inn-base-200);
+    --inn-editor-separator-background-color: var(--inn-gray-200);
     --inn-editor-button-selected-background-color: var(--inn-primary-light);
     --inn-editor-button-selected-color: #000;
 
@@ -137,29 +137,32 @@
     --inn-grid-header-color: #000;
     --inn-grid-background-color: #fff;
     --inn-grid-row-odd-background-color: #fff;
-    --inn-grid-row-even-background-color: var(--inn-base-50);
+    --inn-grid-row-even-background-color: var(--inn-gray-50);
     --inn-grid-selected-color: var(--inn-primary);
-    --inn-grid-filter-color: var(--inn-base-500);
-    --inn-grid-header-filter-icon-hover-color: var(--inn-base-600);
-    --inn-grid-sort-icon-color: var(--inn-base-500);
+    --inn-grid-filter-color: var(--inn-gray-500);
+    --inn-grid-header-filter-icon-hover-color: var(--inn-gray-600);
+    --inn-grid-sort-icon-color: var(--inn-gray-500);
+
+    /* Dialog */
+    --inn-dialog-background-color: var(--inn-gray-100);
 
     /* Side panel */
-    --inn-side-panel-background-color: var(--inn-base-100);
+    --inn-side-panel-background-color: var(--inn-gray-100);
 
     /* Alert */
     --inn-alert-close-background: none;
     --inn-alert-close-background-hover: rgba(0,0,0,.1);
 
     /* Progress bar circular */
-    --inn-progressbar-circular-background-color: var(--inn-base-100);
+    --inn-progressbar-circular-background-color: var(--inn-gray-100);
     --inn-progressbar-primary-color: var(--inn-primary);
     --inn-progressbar-secondary-color: var(--inn-secondary);
     --inn-progressbar-success-color: var(--inn-success);
     --inn-progressbar-info-color: var(--inn-info);
     --inn-progressbar-warning-color: var(--inn-warning);
     --inn-progressbar-danger-color: var(--inn-danger);
-    --inn-progressbar-light-color: var(--inn-base-100);
-    --inn-progressbar-dark-color: var(--inn-base-700);
+    --inn-progressbar-light-color: var(--inn-gray-100);
+    --inn-progressbar-dark-color: var(--inn-gray-700);
 }
 
 /* Global variables & components */
@@ -202,6 +205,7 @@
     --inn-button-border-radius: var(--inn-border-radius);
     --inn-button-width: 2.25rem;
     --inn-button-height: 2.25rem;
+    --inn-button-icon-only-background: transparent;
     --inn-button-icon-only-transition: color .3s;
 
     /* Alert */
@@ -291,6 +295,8 @@
 
     /* Side panel */
     --inn-side-panel-padding: 1rem 1rem .5rem 1rem;
+
+    --inn-dialog-background-color: var(--inn-gray-100);
 
     /*Progress bar circular*/
     --inn-progressbar-circular-label-font-size: .875rem;
