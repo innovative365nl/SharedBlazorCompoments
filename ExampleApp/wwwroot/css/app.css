@@ -101,7 +101,6 @@
     --inn-input-hover-background-color: #fff;
     --inn-input-focus-background-color: #fff;
     --inn-input-focus-border-color: var(--inn-primary);
-    --inn-input-focus-shadow: inset 0 0 0 1px var(--inn-gray-600);
     --inn-input-checkbox-circle-hover-background-color: var(--inn-gray-300);
 
     /* Dropdown */
