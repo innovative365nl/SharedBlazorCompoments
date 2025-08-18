@@ -6,7 +6,6 @@ namespace ExampleApp.Components;
 public partial class AttributeTypePicker(IAttributeState state) : CustomComponent<AttributeTypeModel>
 {
     private IEnumerable<AttributeTypeModel> _attributeTypes = [];
-    private int? _attributeTypeId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -14,24 +13,13 @@ public partial class AttributeTypePicker(IAttributeState state) : CustomComponen
         _attributeTypes = state.AttributeTypes;
     }
 
-    protected override void OnParametersSet()
+    private void OnSelectedItemChanged(int? value)
     {
-        _attributeTypeId = Value == null
-                               ? _attributeTypes.OrderBy(x => x.Value).FirstOrDefault()?.Id
-                               : _attributeTypes.SingleOrDefault(x => x.Id == Value.Id)?.Id;
-    }
-
-    private void OnSelectedItemChanged()
-    {
-        Value = _attributeTypeId == null
-                    ? _attributeTypes.OrderBy(x => x.Value).FirstOrDefault()
-                    : _attributeTypes.SingleOrDefault(x => x.Id == _attributeTypeId);
-
-        // Create a backup of the current binding value (_attributeTypeId)
-        var backup = _attributeTypeId;
-        // because after a
-        OnValueChanged();
-        // the Value and _attributeTypeId are reset to their original values
-        _attributeTypeId = backup;
+        var selectedType = _attributeTypes.SingleOrDefault(x => x.Id == value);
+        if (selectedType is not null)
+        {
+            Value = selectedType;
+            OnValueChanged();
+        }
     }
 }
