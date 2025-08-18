@@ -13,11 +13,6 @@ public partial class AttributeTypePicker(IAttributeState state) : CustomComponen
         _attributeTypes = state.AttributeTypes;
     }
 
-    protected override void OnParametersSet()
-    {
-        // No internal state needed; Value is always from parent
-    }
-
     private void OnSelectedItemChanged(int? value)
     {
         var selectedType = _attributeTypes.SingleOrDefault(x => x.Id == value);
