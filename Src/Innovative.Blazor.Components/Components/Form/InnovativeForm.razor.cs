@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -94,8 +93,13 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     {
         foreach (var entry in formValues)
         {
-            SetValue(entry.Key, entry.Value, shouldNotifyChange: false);
+            var prop = typeof(TModel).GetProperty(name: entry.Key);
+            if (prop?.CanWrite ?? false)
+            {
+                prop.SetValue(obj: Model, value: entry.Value);
+            }
         }
+
         return Task.CompletedTask;
     }
 
@@ -399,79 +403,6 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     private void SetValue(string propertyName, object? value, bool shouldNotifyChange = false)
     {
         formValues[key: propertyName] = value;
-
-        var prop = typeof(TModel).GetProperty(propertyName);
-
-        if (prop?.CanWrite ?? false)
-        {
-            var propertyType = prop.PropertyType;
-            object? convertedValue = value;
-            var targetType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
-
-            if (value != null && !targetType.IsInstanceOfType(value))
-            {
-                try
-                {
-                    // Handle nullable types (already unwrapped in targetType)
-                    // Prefer TypeConverter (covers Guid, enums, custom types), then enum-specific handling, then ChangeType.
-                    if (targetType.IsEnum)
-                    {
-                        if (value is string s)
-                        {
-                            convertedValue = Enum.Parse(targetType, s, ignoreCase: true);
-                        }
-                        else
-                        {
-                            var underlying = Enum.GetUnderlyingType(targetType);
-                            var numeric = Convert.ChangeType(value, underlying, CultureInfo.InvariantCulture);
-                            convertedValue = Enum.ToObject(targetType, numeric!);
-                        }
-                    }
-                    else
-                    {
-                        var converter = TypeDescriptor.GetConverter(targetType);
-                        if (converter != null)
-                        {
-                            if (value is string sv && converter.CanConvertFrom(typeof(string)))
-                            {
-                                convertedValue = converter.ConvertFrom(null, CultureInfo.InvariantCulture, sv);
-                            }
-                            else if (converter.CanConvertFrom(value.GetType()))
-                            {
-                                convertedValue = converter.ConvertFrom(null, CultureInfo.InvariantCulture, value);
-                            }
-                            else
-                            {
-                                convertedValue = Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture);
-                            }
-                        }
-                        else
-                        {
-                            convertedValue = Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture);
-                        }
-                    }
-                }
-                catch (Exception ex) when (ex is FormatException
-                     or InvalidCastException
-                     or OverflowException
-                     or ArgumentException
-                     or NotSupportedException)
-                {
-                    // Revert the form value to keep UI state consistent with the model
-                    formValues[propertyName] = prop.GetValue(Model);
-                    return; // Skip setting the value if conversion fails
-                }
-            }
-            // Prevent assigning null to non-nullable value types
-            if (convertedValue is null && propertyType.IsValueType && Nullable.GetUnderlyingType(propertyType) is null)
-            {
-                // Use default(T) as a safe fallback
-                convertedValue = Activator.CreateInstance(propertyType);
-            }
-
-            formValues[propertyName] = convertedValue;
-            prop.SetValue(obj: Model, value: convertedValue);
-        }
         if (shouldNotifyChange)
         {
             NotifyPropertyChanged(propertyName: propertyName, value: value);
