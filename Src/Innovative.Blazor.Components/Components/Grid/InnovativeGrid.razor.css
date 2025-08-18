@@ -63,7 +63,8 @@
     background-color: var(--inn-grid-row-even-background-color);
 }
 
-::deep .rz-datatable-data td:not(:last-child), .rz-grid-table td:not(:last-child) {
+::deep .rz-datatable-data td:not(:last-child),
+::deep .rz-grid-table td:not(:last-child) {
     border-inline-end: none;
 }
 
