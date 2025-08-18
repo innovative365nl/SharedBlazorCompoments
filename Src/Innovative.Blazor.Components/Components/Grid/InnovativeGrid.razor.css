@@ -69,7 +69,7 @@
 
 /* Selectable grid row */
 ::deep .rz-selectable .rz-data-row {
-    cursor: pointer
+    cursor: pointer;
 }
 
 ::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight .rz-cell-data {
