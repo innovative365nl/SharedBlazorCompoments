@@ -10,7 +10,7 @@ public partial class PasswordUpdateComponent : ComponentBase, IFormComponent
 
     [Parameter] public object? Model { get; set; }
 
-    [Parameter] public SidePanelComponent<PersonModel>? ParentDialog { get; set; }
+    [Parameter] public SidePanelComponent<PersonFormModel>? ParentDialog { get; set; }
 
     // if a parameter with name "ActionProperty" does not exist
     // the component crashes on render
@@ -26,7 +26,7 @@ public partial class PasswordUpdateComponent : ComponentBase, IFormComponent
 
     public Task OnFormSubmit()
     {
-        if (ParentDialog is not null && Model is PersonModel person)
+        if (ParentDialog is not null && Model is PersonFormModel person)
         {
             person.UpdatePasswordAction!.Invoke(obj: ++counter);
         }

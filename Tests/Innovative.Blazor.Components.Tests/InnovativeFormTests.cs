@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -30,7 +31,8 @@ public class InnovativeFormTests : LocalizedTestBase
             StringProperty = "Test",
             IntProperty = 42,
             BoolProperty = true,
-            DateProperty = new DateTime(2023, 1, 1)
+            DateProperty = new DateTime(2023, 1, 1),
+            CustomAction = (x) => Debug.WriteLine(x)
         };
 
         var component = new InnovativeForm<TestFormModel>(LocalizerFactoryMock.Object)
@@ -47,6 +49,7 @@ public class InnovativeFormTests : LocalizedTestBase
         Assert.Equal(model.IntProperty, component.GetFormValue("IntProperty"));
         Assert.Equal(model.BoolProperty, component.GetFormValue("BoolProperty"));
         Assert.Equal(model.DateProperty, component.GetFormValue("DateProperty"));
+        Assert.Single(component.GetActions());
     }
 
     [Fact]
@@ -94,7 +97,8 @@ public class InnovativeFormTests : LocalizedTestBase
                         StringProperty = "Test",
                         IntProperty = 42,
                         BoolProperty = true,
-                        DateProperty = new DateTime(2023, 1, 1)
+                        DateProperty = new DateTime(2023, 1, 1),
+                        CustomAction = (x) => Debug.WriteLine(x)
                     };
 
         var expected = new TestFormModel
@@ -102,8 +106,9 @@ public class InnovativeFormTests : LocalizedTestBase
                         StringProperty = actual.StringProperty,
                         IntProperty = actual.IntProperty,
                         BoolProperty = actual.BoolProperty,
-                        DateProperty = actual.DateProperty
-                    };
+                        DateProperty = actual.DateProperty,
+                        CustomAction = actual.CustomAction
+        };
 
         var component = new InnovativeForm<TestFormModel>(LocalizerFactoryMock.Object)
                         {
@@ -127,6 +132,7 @@ public class InnovativeFormTests : LocalizedTestBase
         Assert.Equal(expected.IntProperty, actual.IntProperty);
         Assert.Equal(expected.BoolProperty, actual.BoolProperty);
         Assert.Equal(expected.DateProperty, actual.DateProperty);
+        Assert.Equal(expected.CustomAction, actual.CustomAction);
     }
 
     [Fact]
@@ -213,6 +219,8 @@ public class TestFormModel
     [UIFormField(name: nameof(BoolProperty))] public bool BoolProperty { get; set; }
 
     [UIFormField(name: nameof(DateProperty))] public DateTime DateProperty { get; set; }
+
+    [UIFormViewAction(name: nameof(CustomAction))] public Action<int>? CustomAction { get; set; }
 }
 
 // Extension methods to access private methods/properties for testing
@@ -260,5 +268,15 @@ public static class DynamicFormViewTestExtensions
         var method = typeof(InnovativeForm<T>).GetMethod("GetColumnWidthClass",
                                                                     BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
         return (string)method!.Invoke(component, [columnGroup])!;
+    }
+
+    public static IReadOnlyCollection<PropertyInfo> GetActions<T>(this InnovativeForm<T> component)
+    {
+        var properties = component?.Model?.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance) ?? [];
+        var result = properties
+                .Where(x=> x.GetCustomAttribute<UIFormViewAction>() !=null)
+                .ToList()
+                .AsReadOnly();
+        return result;
     }
 }
