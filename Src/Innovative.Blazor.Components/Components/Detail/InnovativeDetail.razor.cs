@@ -325,17 +325,15 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 
     private List<PropertyInfo> GetActionProperties()
     {
-        List<PropertyInfo> result = typeof(TModel).GetProperties()
-                                                  .Where(predicate: x =>
-                                                                        x.GetCustomAttribute<UIFormViewAction>() != null
-                                                                     && (x.PropertyType == typeof(Action) ||
-                                                                         x.PropertyType.IsGenericType && x.PropertyType.GetGenericTypeDefinition() == typeof(Action<>))
-                                                                     && x.Name                              != nameof(FormModel.SaveFormAction)
-                                                                     && x.Name                              != nameof(FormModel.CancelFormAction)
-                                                                     && x.Name                              != nameof(FormModel.DeleteFormAction)
-                                                                     && x.GetValue(obj: Model, index: null) != null)
-                                                  .OrderBy(keySelector: p => p.GetCustomAttribute<UIFormViewAction>()!.Order)
-                                                  .ToList();
+        var result = typeof(TModel).GetProperties()
+                                   .Where(predicate: x => x.GetCustomAttribute<UIFormViewAction>() != null)
+                                   .Where(predicate: x => x.PropertyType == typeof(Action) || x.PropertyType.IsGenericType && x.PropertyType.GetGenericTypeDefinition() == typeof(Action<>))
+                                   .Where(predicate: x => x.Name                              != nameof(FormModel.SaveFormAction))
+                                   .Where(predicate: x => x.Name                              != nameof(FormModel.CancelFormAction))
+                                   .Where(predicate: x => x.Name                              != nameof(FormModel.DeleteFormAction))
+                                   .Where(predicate: x => x.GetValue(obj: Model, index: null) != null)  // The defined action cannot be null
+                                   .OrderBy(keySelector: x => x.GetCustomAttribute<UIFormViewAction>()!.Order)
+                                   .ToList();
 
         return result;
     }
