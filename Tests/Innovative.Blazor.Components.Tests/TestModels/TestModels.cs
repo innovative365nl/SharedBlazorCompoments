@@ -15,10 +15,10 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     /// </summary>
     public class TestModel
     {
-        [UIGridField(IsSortable = true)]
+        [UIGridField(Name = "Test", IsSortable = true)]
         public string? TestProperty { get; set; }
 
-        [UIGridField(CustomComponentType= typeof(TestCustomComponent), Parameters = ["CustomParam:test"])]
+        [UIGridField(Name = "Custom", CustomComponentType = typeof(TestCustomComponent), Parameters = ["CustomParam:test"])]
         public string? CustomProperty { get; set; }
     }
 
@@ -38,10 +38,11 @@ namespace Innovative.Blazor.Components.Tests.TestModels
     [UIGridClass(AllowSorting = false, DefaultSortField = "TestProperty", ResourceType = typeof(TestResources))]
     public class TestModelWithGridClass
     {
-        [UIGridField(IsSortable = true)]
+        [UIGridField(Name = "Test", IsSortable = true)]
         public string? TestProperty { get; set; }
 
-        [UIGridField] public string? AnotherProperty { get; set; }
+        [UIGridField(Name = "Another")]
+        public string? AnotherProperty { get; set; }
     }
 
     /// <summary>

@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
+using Innovative.Blazor.Components.Common;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
@@ -23,10 +24,11 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 
     private readonly bool allowSorting;
     private readonly string? defaultSortField;
+    private List<TItem> data = [];
+    private IList<TItem> selectedItems = [];
+    private FilterMode filterMode => FilterStyle == FilterStyle.Advanced ? FilterMode.Advanced : FilterMode.Simple;
+    private RadzenDataGrid<TItem>? dataGrid;
 
-#pragma warning disable CA1859
-    private IList<TItem> selectedItems = new List<TItem>();
-#pragma warning restore CA1859
 
     public InnovativeGrid(ILogger<InnovativeGrid<TItem>> logger, IInnovativeStringLocalizerFactory localizerFactory)
     {
@@ -40,40 +42,24 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 
     [Parameter] public string? DataTestId { get; set; }
 
-
-    private FilterMode filterMode => FilterStyle == FilterStyle.Advanced ? FilterMode.Advanced : FilterMode.Simple;
-
     /// <summary>
     ///     The data collection to be displayed in the grid. This serves as the source for all grid operations
     ///     including filtering, sorting, and pagination. The data must be of type TItem.
     /// </summary>
     [Parameter]
 #pragma warning disable BL0007
-    public IEnumerable<TItem>? Data
+    public IEnumerable<TItem> Data
 #pragma warning restore BL0007
     {
-        get
-        {
-            return _data;
-        }
+        get => data;
         set
         {
-            var currentSelection = this.SelectedItems.ToList();;
-            _data = value;
+            data = value.ToList();
+            var currentSelection = new List<TItem>(selectedItems);
             selectedItems.Clear();
-            if (currentSelection.Any())
-            {
-                foreach (TItem item in currentSelection.Where(item => _data?.Contains(item) == true))
-                {
-                    selectedItems.Add(item);
-                }
-            }
-
+            selectedItems.AddRange(currentSelection.Where(item => data.Contains(item)));
         }
     }
-
-    private IEnumerable<TItem>? _data { get; set; }
-
 
     /// <summary>
     ///     Determines the selection behavior of the grid. This can be set to Single for allowing only one item
@@ -81,7 +67,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     ///     This works in conjunction with EnableRowSelection to control the overall selection behavior.
     /// </summary>
     [Parameter]
-    public DataGridSelectionMode? SelectionMode { get; init; }
+    public DataGridSelectionMode SelectionMode { get; init; } = DataGridSelectionMode.Single;
 
     /// <summary>
     ///     Enables or disables row selection in the grid. When set to true, users will be able to select rows
@@ -90,7 +76,8 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     [Parameter]
     public bool EnableRowSelection { get; set; }
 
-    [Parameter] public GridHeight? MinHeightOption { get; set; } = GridHeight.Minimal;
+    [Parameter]
+    public GridHeight MinHeightOption { get; set; } = GridHeight.Minimal;
 
     /// <summary>
     ///     Controls the visibility of the loading indicator. When set to true, the grid displays a loading animation
@@ -100,7 +87,8 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     [Parameter]
     public bool IsLoading { get; set; }
 
-    [Parameter] public string? Title { get; set; }
+    [Parameter]
+    public string? Title { get; set; }
 
     /// <summary>
     ///     Event that fires when the selection in the grid changes. This provides a way for parent components
@@ -121,8 +109,6 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     [Parameter]
     public required FilterStyle FilterStyle { get; init; } = FilterStyle.Advanced;
 
-    private RadzenDataGrid<TItem>? dataGrid { get; set; }
-
     /// <summary>
     ///     Gets the collection of items currently selected in the grid. This property provides access to the
     ///     selected items without triggering selection events, making it useful for read-only operations.
@@ -135,9 +121,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     /// </summary>
     /// <param name="item">The item to be selected</param>
     public async Task SetSelectedItemsAsync(TItem item)
-    {
-        await OnSelectAsync(new List<TItem>() { item }).ConfigureAwait(false);
-    }
+        => await SetSelectedItemsAsync([item]).ConfigureAwait(false);
 
     /// <summary>
     ///     Sets multiple items as the selected items in the grid. This method clears any existing selections
@@ -147,7 +131,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     /// <param name="items">The collection of items to be selected</param>
     public async Task SetSelectedItemsAsync(IEnumerable<TItem> items)
     {
-        Debug.Assert(items != null, nameof(items) + " != null");
+        Debug.Assert(items != null, $"{nameof(items)} is null!");
         await OnSelectAsync(items: items).ConfigureAwait(false);
     }
 
@@ -277,18 +261,12 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     ///     without triggering the OnSelectionChanged event. Use this method when you need to reset the selection
     ///     state without notifying subscribers.
     /// </summary>
-    public void ClearSelection()
-    {
-        selectedItems.Clear();
-    }
+    public void ClearSelection() => selectedItems.Clear();
 
     private async Task OnSelectAsync(IEnumerable<TItem> items)
     {
         selectedItems.Clear();
-        foreach (var item in items)
-        {
-            selectedItems.Add(item);
-        }
+        selectedItems.AddRange(items);
 
         await OnSelectionChanged.InvokeAsync(arg: selectedItems).ConfigureAwait(false);
     }
@@ -380,9 +358,9 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 
                    int sequence = 0;
                    var decimalText = Convert.ToDecimal(value, CultureInfo.CurrentCulture).ToString(format, CultureInfo.CurrentCulture);;
-                   builder.OpenElement(sequence , "div");
+                   builder.OpenElement(sequence++, "div");
                    builder.AddAttribute(sequence++ , "data-text", decimalText);
-                   builder.AddContent(sequence++, (MarkupString)decimalText);
+                   builder.AddContent(sequence, (MarkupString)decimalText);
                    builder.CloseElement();
                };
     }
