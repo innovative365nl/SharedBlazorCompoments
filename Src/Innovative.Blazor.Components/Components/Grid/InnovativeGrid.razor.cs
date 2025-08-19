@@ -1,5 +1,3 @@
-#region
-
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -10,8 +8,6 @@ using Microsoft.Extensions.Logging;
 using Radzen;
 using Radzen.Blazor;
 
-#endregion
-
 namespace Innovative.Blazor.Components.Components;
 
 /// <summary>
@@ -21,26 +17,27 @@ namespace Innovative.Blazor.Components.Components;
 /// <typeparam name="TItem"></typeparam>
 public partial class InnovativeGrid<TItem> : ComponentBase
 {
+    private readonly ILogger<InnovativeGrid<TItem>> logger;
+    private readonly IInnovativeStringLocalizerFactory localizerFactory;
+    private IInnovativeStringLocalizer? localizer;
+
     private readonly bool allowSorting;
     private readonly string? defaultSortField;
-    private readonly IInnovativeStringLocalizer localizer;
-    private readonly ILogger<InnovativeGrid<TItem>> logger;
 
 #pragma warning disable CA1859
     private IList<TItem> selectedItems = new List<TItem>();
 #pragma warning restore CA1859
+
     public InnovativeGrid(ILogger<InnovativeGrid<TItem>> logger, IInnovativeStringLocalizerFactory localizerFactory)
     {
-        this.localizerFactory = localizerFactory;
         this.logger = logger;
+        this.localizerFactory = localizerFactory;
+
         var uiClassAttribute = typeof(TItem).GetCustomAttribute<UIGridClass>();
         allowSorting = uiClassAttribute?.AllowSorting ?? true;
         defaultSortField = uiClassAttribute?.DefaultSortField;
-        var resourceType = ResourceType ?? uiClassAttribute?.ResourceType ?? typeof(TItem);
-        localizer = this.localizerFactory.Create(resourceType);
     }
 
-    private IInnovativeStringLocalizerFactory localizerFactory { get; }
     [Parameter] public string? DataTestId { get; set; }
 
 
@@ -58,7 +55,6 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         get
         {
             return _data;
-
         }
         set
         {
@@ -167,8 +163,6 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         await OnSelectAsync(items: selectedItems).ConfigureAwait(false);
     }
 
-
-
     /// <summary>
     ///     Applies a filter to the grid based on the specified column, value, and filter operator. This method
     ///     programmatically sets filters without requiring user interaction. It finds the specified column and
@@ -208,6 +202,18 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         return Task.CompletedTask;
     }
 
+    protected IInnovativeStringLocalizer GetLocalizer()
+    {
+        if (localizer is null)
+        {
+            var uiClassAttribute = typeof(TItem).GetCustomAttribute<UIGridClass>();
+            var resourceType = ResourceType ?? uiClassAttribute?.ResourceType ?? typeof(TItem);
+            localizer = localizerFactory.Create(resourceType);
+        }
+
+        return localizer;
+    }
+
     private string GetColumnTitle(PropertyInfo property, UIGridField attribute)
     {
         if (string.IsNullOrEmpty(value: attribute.Name))
@@ -215,7 +221,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
             return property.Name;
         }
 
-        var localizedString = localizer[name: attribute.Name];
+        var localizedString = GetLocalizer()[name: attribute.Name];
         return localizedString.ResourceNotFound ? attribute.Name : localizedString.Value;
     }
 
