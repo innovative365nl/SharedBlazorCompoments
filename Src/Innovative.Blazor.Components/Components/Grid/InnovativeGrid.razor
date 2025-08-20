@@ -10,7 +10,7 @@
                             Data="@Data"
                             @bind-Value="selectedItems"
                             AllowRowSelectOnRowClick="EnableRowSelection"
-                            AllowPaging="@(Data.Count() > 20)"
+                            AllowPaging="@(Data.Count() > MaxPageSize)"
                             RowSelect="SetSelectedItemsAsync"
                             ShowPagingSummary="true"
                             PagingSummaryFormat="{2} items"
@@ -35,7 +35,7 @@
                             LessThanText="@Translations.lessThan"
                             LessThanOrEqualsText="@Translations.lessThanOrEqual"
                             FilterText="@Translations.filter"
-                            PageSize="20"
+                            PageSize="@MaxPageSize"
                             data-test-id="@DataTestId">
                 <EmptyTemplate>
                     <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">@Translations.emptyText.</p>

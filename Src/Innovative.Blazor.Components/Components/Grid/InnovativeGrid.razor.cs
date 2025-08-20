@@ -18,6 +18,8 @@ namespace Innovative.Blazor.Components.Components;
 /// <typeparam name="TItem"></typeparam>
 public partial class InnovativeGrid<TItem> : ComponentBase
 {
+    private const int MaxPageSize = 20;
+
     private readonly ILogger<InnovativeGrid<TItem>> logger;
     private readonly IInnovativeStringLocalizerFactory localizerFactory;
     private IInnovativeStringLocalizer? localizer;
@@ -28,7 +30,6 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     private IList<TItem> selectedItems = [];
     private FilterMode filterMode => FilterStyle == FilterStyle.Advanced ? FilterMode.Advanced : FilterMode.Simple;
     private RadzenDataGrid<TItem>? dataGrid;
-
 
     public InnovativeGrid(ILogger<InnovativeGrid<TItem>> logger, IInnovativeStringLocalizerFactory localizerFactory)
     {
@@ -58,6 +59,27 @@ public partial class InnovativeGrid<TItem> : ComponentBase
             var currentSelection = new List<TItem>(selectedItems);
             selectedItems.Clear();
             selectedItems.AddRange(currentSelection.Where(item => data.Contains(item)));
+        }
+    }
+
+    /// <summary>
+    /// Returns the current number of the page being displayed in the grid.
+    /// If no data is available it returns -1.
+    /// </summary>
+    public int CurrentPageNumber => dataGrid?.CurrentPage ?? -1;
+
+    /// <summary>
+    /// Jumps to a specified page <paramref name="number"/> in the grid if available
+    /// </summary>
+    /// <param name="number">The number of the page to go to.</param>
+    public void GoToPage(int number)
+    {
+        if (dataGrid is not null && data.Count > MaxPageSize)
+        {
+            if (data.Count / (double)MaxPageSize >= number)
+            {
+                dataGrid.GoToPage(number, true);
+            }
         }
     }
 
