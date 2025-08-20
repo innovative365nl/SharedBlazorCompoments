@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Security.Cryptography;
 using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Services;
@@ -8,66 +7,37 @@ namespace ExampleApp.Pages;
 
 public partial class ExampleComplexGrid5(IInnovativeSidePanelService sidePanelService)
 {
-    private readonly string[] firstNames = ["Jan", "Jaap", "Piet", "Kees", "Tom"];
-
-    private readonly string[] lastNames = ["Appelboom", "Perenboom", "Kersenboom", "Kerstboom", "Pruimenboom"];
-
     private readonly List<Person5GridModel> items = [];
 
     protected override void OnInitialized()
     {
-        var data = Enumerable.Range(start: 1, count: 10)
-                             .Select(selector: i => new Person5Model
-                                                    {
-                                                        Id = Guid.NewGuid(),
-                                                        FirstName = firstNames[RandomNumberGenerator.GetInt32(toExclusive: firstNames.Length)],
-                                                        LastName = lastNames[RandomNumberGenerator.GetInt32(toExclusive: lastNames.Length)],
-                                                        Income = (RandomNumberGenerator.GetInt32(toExclusive: 100000) + 10000) / 100.0m,
-                                                        DateOfBirth = new DateTime(year: (RandomNumberGenerator.GetInt32(toExclusive: 50)  + 1950),
-                                                                                   month: (RandomNumberGenerator.GetInt32(toExclusive: 11) + 1),
-                                                                                   day: (RandomNumberGenerator.GetInt32(toExclusive: 27)  + 1)
-                                                                                   )
-                                                    })
-                             .ToList();
-
-        items.AddRange(collection: data.Select(selector: Person5GridModel.ToGridModel));
+        ExampleDataSet.Instance.GenerateTestData(10);
+        items.AddRange(collection: ExampleDataSet.Instance.Data.Select(selector: Person5GridModel.ToGridModel));
     }
 
     private async Task OnRowSelected(IEnumerable<Person5GridModel> obj)
     {
         Person5GridModel? rowItem = obj.FirstOrDefault();
-        if (rowItem != null)
-        {
-            var model = Person5FormModel.ToFormModel(instance: Person5GridModel.ToModel(instance: rowItem));
-            model.SaveFormAction = () =>
-                                   {
-                                       Person5GridModel item = items.Single(predicate: x => x.Id == model.Id);
-                                       item.FirstName = model.FirstName;
-                                       item.LastName = model.LastName;
-                                       item.Income = model.Income;
-                                       item.DateOfBirth = model.DateOfBirth?.ToString(format: "yyyy-MM-dd", provider: CultureInfo.CurrentCulture);
-                                       return Task.CompletedTask;
-                                   };
+        if (rowItem is null)
+            return;
 
-            await sidePanelService
-                  .OpenInEditMode(model: model)
-                  .ConfigureAwait(continueOnCapturedContext: true);
-        }
+        var model = Person5FormModel.ToFormModel(instance: Person5GridModel.ToModel(instance: rowItem));
+        model.SaveFormAction = () =>
+                               {
+                                   Person5GridModel item = items.Single(predicate: x => x.Id == model.Id);
+                                   item.FirstName = model.FirstName;
+                                   item.LastName = model.LastName;
+                                   item.Income = model.Income;
+                                   item.DateOfBirth = model.DateOfBirth?.ToString(format: "yyyy-MM-dd", provider: CultureInfo.CurrentCulture);
+                                   return Task.CompletedTask;
+                               };
+
+        await sidePanelService
+              .OpenInEditMode(model: model)
+              .ConfigureAwait(continueOnCapturedContext: true);
     }
 }
 
-public class Person5Model
-{
-    public Guid Id { get; set; }
-
-    public string? FirstName { get; set; }
-
-    public string? LastName { get; set; }
-
-    public DateTime? DateOfBirth { get; set; }
-    public decimal? Income { get; set; }
-    public override string ToString() => $"{FirstName} {LastName}";
-}
 
 [UIGridClass(ResourceType = typeof(Example) , AllowSorting = true)]
 public sealed class Person5GridModel
@@ -82,33 +52,36 @@ public sealed class Person5GridModel
 
     [UIGridField(Name = "DateOfBirth")]
     public string? DateOfBirth { get; set; }
+
     [UIGridField(Name = "Income")]
     public decimal? Income { get; set; }
 
-    public static Person5GridModel ToGridModel(Person5Model instance)
+    public static Person5GridModel ToGridModel(PersonModel instance)
     {
+        ArgumentNullException.ThrowIfNull(instance);
+
         return new Person5GridModel
                {
-                   Id = instance?.Id ?? Guid.NewGuid(),
-                   FirstName = instance?.FirstName,
-                   LastName = instance?.LastName,
-                   Income = instance?.Income,
-                   DateOfBirth = instance?.DateOfBirth.HasValue ?? false
-                                     ? instance.DateOfBirth.Value.ToString(format: "yyyy-MM-dd", provider: CultureInfo.CurrentCulture)
-                                     : null
+                   Id = instance.Id,
+                   FirstName = instance.FirstName,
+                   LastName = instance.LastName,
+                   Income = instance.Income,
+                   DateOfBirth = instance?.DateOfBirth.ToString(format: "yyyy-MM-dd", provider: CultureInfo.CurrentCulture)
                };
     }
-    public static Person5Model ToModel(Person5GridModel instance)
+    public static PersonModel ToModel(Person5GridModel instance)
     {
-        return new Person5Model
+        ArgumentNullException.ThrowIfNull(instance);
+
+        return new PersonModel
                {
-                   Id = instance?.Id ?? Guid.NewGuid(),
-                   FirstName = instance?.FirstName,
-                   LastName = instance?.LastName,
-                   Income = instance?.Income,
-                   DateOfBirth = DateTime.TryParse(s: instance?.DateOfBirth, provider: CultureInfo.CurrentCulture, result: out DateTime result)
+                   Id = instance.Id,
+                   FirstName = instance.FirstName ?? string.Empty,
+                   LastName = instance.LastName ?? string.Empty,
+                   Income = instance.Income ?? Decimal.Zero,
+                   DateOfBirth = DateOnly.TryParse(s: instance?.DateOfBirth, provider: CultureInfo.CurrentCulture, result: out DateOnly result)
                                      ? result
-                                     : null
+                                     : DateOnly.MinValue
                };
     }
 }
@@ -118,13 +91,19 @@ public sealed class Person5FormModel : FormModel
 {
     private const string ColumnGroup1 = "PropertyColumn1";
     private const string ColumnGroup2 = "PropertyColumn2";
+    private const string ColumnGroup3 = "PropertyColumn3";
+    private const string ColumnGroup4 = "PropertyColumn4";
+    private const string ColumnGroup5 = "PropertyColumn5";
 
     public Person5FormModel()
     {
         AddViewColumn(name: ColumnGroup1, width: 12, order: 1, offset: 0);
         AddViewColumn(name: ColumnGroup2, width: 6, order: 1, offset: 0);
-
+        AddViewColumn(name: ColumnGroup3, width: 6, order: 1, offset: 0);
+        AddViewColumn(name: ColumnGroup4, width: 3, order: 1, offset: 0);
+        AddViewColumn(name: ColumnGroup5, width: 12, order: 1, offset: 0);
     }
+
     public Guid Id { get; set; }
 
     [UIFormField(name: "FirstName", ColumnGroup = ColumnGroup1)]
@@ -133,19 +112,19 @@ public sealed class Person5FormModel : FormModel
     [UIFormField(name: "LastName", ColumnGroup = ColumnGroup1)]
     public string? LastName { get; init; }
 
-    [UIFormField(name: "DateOfBirth", ColumnGroup = ColumnGroup1, FormParameters = ["DateFormat=yyyy-MM-dd"], DisplayParameters = ["Format={0:dddd d MMMM yyyy}"])]
+    [UIFormField(name: "DateOfBirth", ColumnGroup = ColumnGroup2, FormParameters = ["DateFormat=yyyy-MM-dd"], DisplayParameters = ["Format={0:dddd d MMMM yyyy}"])]
     public DateTime? DateOfBirth { get; set; }
 
-    [UIFormField(name: "Age", ColumnGroup = ColumnGroup2)]
+    [UIFormField(name: "Age", ColumnGroup = ColumnGroup3)]
     public int? Age => CalculateAge(dateOfBirth: DateOfBirth);
 
-    [UIFormField(name: "Nr", ColumnGroup = ColumnGroup2, FormParameters = ["Disabled=true"])]
-    public int? LotNummer { get; set; } = 90;
+    [UIFormField(name: "Disabled Number", ColumnGroup = ColumnGroup4, FormParameters = ["Disabled=true"])]
+    public int? Nummer { get; set; } = 90;
 
-    [UIFormField(name: "Summary", ColumnGroup = ColumnGroup2, DisplayParameters = ["DisplayLabel=false"], FormParameters = ["Disabled=true", "DisplayLabel=false"])]
-    public string? Summary => $"{FirstName} {LastName} ({Age}) was born on {DateOfBirth:dddd d MMMM yyyy}.";
+    [UIFormField(name: "Summary", ColumnGroup = ColumnGroup5, DisplayParameters = ["DisplayLabel=false"], FormParameters = ["Disabled=true", "DisplayLabel=false"], UseWysiwyg = true)]
+    public string? Summary => $"<h3>This is displayed without a label.</h3><p>{FirstName} {LastName} ({Age}) was born on {DateOfBirth:dddd d MMMM yyyy} and is {Age} years old with a yearly income of {Income:C0}.</p>";
 
-    [UIFormField(name: "Income", ColumnGroup = ColumnGroup2)]
+    [UIFormField(name: "Income", ColumnGroup = ColumnGroup2, FormParameters = ["Format=C0"], DisplayParameters = ["Format=C0"])]
     public decimal? Income { get; set; }
 
     public static int? CalculateAge(DateTime? dateOfBirth)
@@ -165,15 +144,17 @@ public sealed class Person5FormModel : FormModel
         return result;
     }
 
-    public static Person5FormModel ToFormModel(Person5Model instance)
+    public static Person5FormModel ToFormModel(PersonModel instance)
     {
+        ArgumentNullException.ThrowIfNull(instance);
+
         return new Person5FormModel
                {
-                   Id = instance?.Id ?? Guid.NewGuid(),
-                   FirstName = instance?.FirstName,
-                   LastName = instance?.LastName,
-                   Income = instance?.Income,
-                   DateOfBirth = instance?.DateOfBirth
+                   Id = instance.Id,
+                   FirstName = instance.FirstName,
+                   LastName = instance.LastName,
+                   Income = instance.Income,
+                   DateOfBirth = instance.DateOfBirth.ToDateTime(TimeOnly.MinValue)
                };
     }
 }

@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using Bogus;
 using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Services;
@@ -17,15 +16,8 @@ public partial class ExampleComplexGrid6(IInnovativeSidePanelService sidePanelSe
     {
         if (items.Count == 0)
         {
-            var faker = new Faker<Person6Model>();
-            faker.RuleFor(property: p => p.Id, setter: _ => Guid.NewGuid());
-            faker.RuleFor(property: p => p.FirstName, setter: f => f.Person.FirstName);
-            faker.RuleFor(property: p => p.LastName, setter: f => f.Person.LastName);
-            faker.RuleFor(property: p => p.DateOfBirth, setter: f => DateOnly.FromDateTime(dateTime: f.Person.DateOfBirth));
-            faker.RuleFor(property: p => p.Income, setter: f => f.Random.Decimal(min: 20000, max: 80000));
-
-            List<Person6Model> data = faker.Generate(count: 180);
-            items.AddRange(collection: data.Select(selector: Person6GridModel.ToGridModel));
+            ExampleDataSet.Instance.GenerateTestData(180);
+            items.AddRange(collection: ExampleDataSet.Instance.Data.Select(selector: Person6GridModel.ToGridModel));
         }
     }
 
@@ -45,28 +37,11 @@ public partial class ExampleComplexGrid6(IInnovativeSidePanelService sidePanelSe
                                        return Task.CompletedTask;
                                    };
 
-            var page = dataGrid?.CurrentPageNumber ?? 0;
-
             await sidePanelService
                   .OpenInEditMode(model: model)
                   .ConfigureAwait(continueOnCapturedContext: false);
-
-            if (dataGrid is not null)
-            {
-                dataGrid.GoToPage(page);
-            }
         }
     }
-}
-
-public sealed class Person6Model
-{
-    public Guid Id { get; set; }
-    public required string FirstName { get; set; } = string.Empty;
-    public required string LastName { get; set; } = string.Empty;
-    public required DateOnly DateOfBirth { get; set; } = DateOnly.MinValue;
-    public required decimal Income { get; set; } = decimal.Zero;
-    public override string ToString() => $"{FirstName} {LastName}";
 }
 
 [UIGridClass(ResourceType = typeof(Example), AllowSorting = true)]
@@ -86,7 +61,7 @@ public sealed class Person6GridModel
     [UIGridField(Name = "Income")]
     public required string Income { get; set; }
 
-    public static Person6GridModel ToGridModel([NotNull] Person6Model instance)
+    public static Person6GridModel ToGridModel([NotNull] PersonModel instance)
     {
         return new Person6GridModel
                {
@@ -98,7 +73,7 @@ public sealed class Person6GridModel
                };
     }
 
-    public static Person6Model ToModel([NotNull] Person6GridModel instance) => new Person6Model
+    public static PersonModel ToModel([NotNull] Person6GridModel instance) => new PersonModel
                                                                                {
                                                                                    Id = instance.Id
                                                                                  , FirstName = instance.FirstName
@@ -157,7 +132,7 @@ public sealed class Person6FormModel : FormModel
         return result;
     }
 
-    public static Person6FormModel ToFormModel([NotNull] Person6Model instance)
+    public static Person6FormModel ToFormModel([NotNull] PersonModel instance)
     {
         return new Person6FormModel
                {
