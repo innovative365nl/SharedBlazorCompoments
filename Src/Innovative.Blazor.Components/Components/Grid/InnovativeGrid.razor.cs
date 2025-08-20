@@ -62,25 +62,10 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         }
     }
 
-    /// <summary>
-    /// Returns the current number of the page being displayed in the grid.
-    /// If no data is available it returns -1.
-    /// </summary>
-    public int CurrentPageNumber => dataGrid?.CurrentPage ?? -1;
-
-    /// <summary>
-    /// Jumps to a specified page <paramref name="number"/> in the grid if available
-    /// </summary>
-    /// <param name="number">The number of the page to go to.</param>
-    public void GoToPage(int number)
+    private static void OnPageChanged(PagerEventArgs obj)
     {
-        if (dataGrid is not null && data.Count > MaxPageSize)
-        {
-            if (data.Count / (double)MaxPageSize >= number)
-            {
-                dataGrid.GoToPage(number, true);
-            }
-        }
+        // Do nothing! This prevents the default Radzen datagrid behaviour to go to the first page 
+        // after a Data { set; } is called.
     }
 
     /// <summary>

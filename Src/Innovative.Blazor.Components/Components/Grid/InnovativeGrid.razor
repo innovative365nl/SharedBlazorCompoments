@@ -2,6 +2,7 @@
 @using Innovative.Blazor.Components.Localizations
 @using InnovativeCard = Innovative.Blazor.Components.Components.InnovativeCard
 @typeparam TItem
+
 <div>
     <InnovativeCard IsLoading="IsLoading" Title="@Title">
         <RadzenStack Style="@GetGridStyle()">
@@ -36,6 +37,7 @@
                             LessThanOrEqualsText="@Translations.lessThanOrEqual"
                             FilterText="@Translations.filter"
                             PageSize="@MaxPageSize"
+                            Page="@OnPageChanged"
                             data-test-id="@DataTestId">
                 <EmptyTemplate>
                     <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">@Translations.emptyText.</p>
