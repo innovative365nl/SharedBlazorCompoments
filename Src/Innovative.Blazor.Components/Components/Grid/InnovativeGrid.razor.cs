@@ -56,7 +56,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         set
         {
             data = value.ToList();
-            var currentSelection = new List<TItem>(selectedItems);
+            var currentSelection = new HashSet<TItem>(selectedItems);
             selectedItems.Clear();
             selectedItems.AddRange(currentSelection.Where(item => data.Contains(item)));
         }
@@ -364,7 +364,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
                                     : formatString["Format=".Length..];
 
                    int sequence = 0;
-                   var decimalText = Convert.ToDecimal(value, CultureInfo.CurrentCulture).ToString(format, CultureInfo.CurrentCulture);;
+                   var decimalText = Convert.ToDecimal(value, CultureInfo.CurrentCulture).ToString(format, CultureInfo.CurrentCulture);
                    builder.OpenElement(sequence++, "div");
                    builder.AddAttribute(sequence++ , "data-text", decimalText);
                    builder.AddContent(sequence, (MarkupString)decimalText);

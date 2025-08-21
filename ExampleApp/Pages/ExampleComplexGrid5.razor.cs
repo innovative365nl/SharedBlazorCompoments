@@ -1,4 +1,3 @@
-using System.Globalization;
 using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Services;
@@ -28,7 +27,7 @@ public partial class ExampleComplexGrid5(IInnovativeSidePanelService sidePanelSe
                                    item.FirstName = model.FirstName;
                                    item.LastName = model.LastName;
                                    item.Income = model.Income;
-                                   item.DateOfBirth = model.DateOfBirth?.ToString(format: "yyyy-MM-dd", provider: CultureInfo.CurrentCulture);
+                                   item.DateOfBirth = model.DateOfBirth?.ToDateString();
                                    return Task.CompletedTask;
                                };
 
@@ -66,7 +65,7 @@ public sealed class Person5GridModel
                    FirstName = instance.FirstName,
                    LastName = instance.LastName,
                    Income = instance.Income,
-                   DateOfBirth = instance?.DateOfBirth.ToString(format: "yyyy-MM-dd", provider: CultureInfo.CurrentCulture)
+                   DateOfBirth = instance.DateOfBirth.ToDateString()
                };
     }
     public static PersonModel ToModel(Person5GridModel instance)
@@ -78,10 +77,8 @@ public sealed class Person5GridModel
                    Id = instance.Id,
                    FirstName = instance.FirstName ?? string.Empty,
                    LastName = instance.LastName ?? string.Empty,
-                   Income = instance.Income ?? Decimal.Zero,
-                   DateOfBirth = DateOnly.TryParse(s: instance?.DateOfBirth, provider: CultureInfo.CurrentCulture, result: out DateOnly result)
-                                     ? result
-                                     : DateOnly.MinValue
+                   Income = instance.Income ?? decimal.Zero,
+                   DateOfBirth =  (instance.DateOfBirth ?? string.Empty).ToDate()
                };
     }
 }
@@ -112,11 +109,11 @@ public sealed class Person5FormModel : FormModel
     [UIFormField(name: "LastName", ColumnGroup = ColumnGroup1)]
     public string? LastName { get; init; }
 
-    [UIFormField(name: "DateOfBirth", ColumnGroup = ColumnGroup2, FormParameters = ["DateFormat=yyyy-MM-dd"], DisplayParameters = ["Format={0:dddd d MMMM yyyy}"])]
+    [UIFormField(name: "DateOfBirth", ColumnGroup = ColumnGroup2, FormParameters = [$"DateFormat={Constants.DateFormat}"], DisplayParameters = ["Format={0:dddd d MMMM yyyy}"])]
     public DateTime? DateOfBirth { get; set; }
 
     [UIFormField(name: "Age", ColumnGroup = ColumnGroup3)]
-    public int? Age => CalculateAge(dateOfBirth: DateOfBirth);
+    public int? Age => DateOfBirth?.Age();
 
     [UIFormField(name: "Disabled Number", ColumnGroup = ColumnGroup4, FormParameters = ["Disabled=true"])]
     public int? Nummer { get; set; } = 90;
@@ -124,25 +121,9 @@ public sealed class Person5FormModel : FormModel
     [UIFormField(name: "Summary", ColumnGroup = ColumnGroup5, DisplayParameters = ["DisplayLabel=false"], FormParameters = ["Disabled=true", "DisplayLabel=false"], UseWysiwyg = true)]
     public string? Summary => $"<h3>This is displayed without a label.</h3><p>{FirstName} {LastName} ({Age}) was born on {DateOfBirth:dddd d MMMM yyyy} and is {Age} years old with a yearly income of {Income:C0}.</p>";
 
-    [UIFormField(name: "Income", ColumnGroup = ColumnGroup2, FormParameters = ["Format=C0"], DisplayParameters = ["Format=C0"])]
+    [UIFormField(name: "Income", ColumnGroup = ColumnGroup2, FormParameters = [$"Format={Constants.CurrencyFormat}"], DisplayParameters = [$"Format={Constants.CurrencyFormat}"])]
     public decimal? Income { get; set; }
 
-    public static int? CalculateAge(DateTime? dateOfBirth)
-    {
-        if (dateOfBirth is null)
-        {
-            return null;
-        }
-
-        DateTime today = DateTime.Today;
-        int result = today.Year - dateOfBirth.Value.Year;
-        if (dateOfBirth.Value.Date > today.AddYears(value: -result))
-        {
-            result--;
-        }
-
-        return result;
-    }
 
     public static Person5FormModel ToFormModel(PersonModel instance)
     {

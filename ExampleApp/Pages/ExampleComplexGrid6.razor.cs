@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Services;
@@ -8,8 +7,6 @@ namespace ExampleApp.Pages;
 
 public partial class ExampleComplexGrid6(IInnovativeSidePanelService sidePanelService)
 {
-    private InnovativeGrid<Person6GridModel>? dataGrid;
-
     private readonly List<Person6GridModel> items = [];
 
     protected override void OnInitialized()
@@ -32,8 +29,8 @@ public partial class ExampleComplexGrid6(IInnovativeSidePanelService sidePanelSe
                                        Person6GridModel item = items.Single(predicate: x => x.Id == model.Id);
                                        item.FirstName = model.FirstName;
                                        item.LastName = model.LastName;
-                                       item.Income = model.Income.ToString(format: "C0", provider: CultureInfo.CurrentCulture);
-                                       item.DateOfBirth = model.DateOfBirth.ToString(format: "yyyy-MM-dd", provider: CultureInfo.CurrentCulture);
+                                       item.Income = model.Income.ToCurrencyString();
+                                       item.DateOfBirth = model.DateOfBirth.ToDateString();
                                        return Task.CompletedTask;
                                    };
 
@@ -68,8 +65,8 @@ public sealed class Person6GridModel
                    Id = instance.Id
                  , FirstName = instance.FirstName
                  , LastName = instance.LastName
-                 , Income = instance.Income.ToString(format: "C0", provider: CultureInfo.CurrentCulture)
-                 , DateOfBirth = instance.DateOfBirth.ToString(format: "yyyy-MM-dd", provider: CultureInfo.CurrentCulture)
+                 , Income = instance.Income.ToCurrencyString()
+                 , DateOfBirth = instance.DateOfBirth.ToDateString()
                };
     }
 
@@ -78,12 +75,8 @@ public sealed class Person6GridModel
                                                                                    Id = instance.Id
                                                                                  , FirstName = instance.FirstName
                                                                                  , LastName = instance.LastName
-                                                                                 , Income = decimal.TryParse(s: instance.Income, style: NumberStyles.Currency, provider: CultureInfo.CurrentCulture, result: out decimal income)
-                                                                                                ? income
-                                                                                                : decimal.Zero
-                                                                                 , DateOfBirth = DateOnly.TryParse(s: instance.DateOfBirth, provider: CultureInfo.CurrentCulture, result: out DateOnly dateOfBirth)
-                                                                                                     ? dateOfBirth
-                                                                                                     : DateOnly.MinValue
+                                                                                 , Income = instance.Income.ToCurrency()
+                                                                                 , DateOfBirth = instance.DateOfBirth.ToDate()
                                                                                };
 }
 
@@ -111,26 +104,14 @@ public sealed class Person6FormModel : FormModel
     [UIFormField(name: "LastName", ColumnGroup = ColumnGroup1)]
     public required string LastName { get; set; }
 
-    [UIFormField(name: "DateOfBirth", ColumnGroup = ColumnGroup2, FormParameters = ["DateFormat=yyyy-MM-dd"], DisplayParameters = ["Format={0:dddd d MMMM yyyy}"])]
+    [UIFormField(name: "DateOfBirth", ColumnGroup = ColumnGroup2, FormParameters = [$"DateFormat={Constants.DateFormat}"], DisplayParameters = ["Format={0:dddd d MMMM yyyy}"])]
     public required DateTime DateOfBirth { get; set; }
 
     [UIFormField(name: "Age", ColumnGroup = ColumnGroup3)]
-    public int Age => CalculateAge(dateOfBirth: DateOfBirth);
+    public int Age => DateOfBirth.Age();
 
-    [UIFormField(name: "Income", ColumnGroup = ColumnGroup4, FormParameters = ["Format=C0"], DisplayParameters = ["Format=C0"])]
+    [UIFormField(name: "Income", ColumnGroup = ColumnGroup4, FormParameters = [$"Format={Constants.CurrencyFormat}"], DisplayParameters = [$"Format={Constants.CurrencyFormat}"])]
     public required decimal Income { get; set; }
-
-    public static int CalculateAge(DateTime dateOfBirth)
-    {
-        DateTime today = DateTime.Today;
-        int result = today.Year - dateOfBirth.Year;
-        if (dateOfBirth > today.AddYears(value: -result))
-        {
-            result--;
-        }
-
-        return result;
-    }
 
     public static Person6FormModel ToFormModel([NotNull] PersonModel instance)
     {
@@ -140,7 +121,7 @@ public sealed class Person6FormModel : FormModel
                  , FirstName = instance.FirstName
                  , LastName = instance.LastName
                  , Income = instance.Income
-                 , DateOfBirth = instance.DateOfBirth.ToDateTime(time: TimeOnly.MinValue)
+                 , DateOfBirth = instance.DateOfBirth.ToDateTime(TimeOnly.MinValue)
                };
     }
 }
