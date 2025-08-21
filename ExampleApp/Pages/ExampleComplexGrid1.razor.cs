@@ -14,23 +14,19 @@ public partial class ExampleComplexGrid1
 )
 {
     // This is the datasource for the grid
-    private IEnumerable<AttributesGridModel>? _attributesView;
-#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
-    private IEnumerable<AttributesGridModel>? attributeTypesEmpty;
-#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
+    private List<AttributesGridModel> attributesView = [];
 
     protected override async Task OnInitializedAsync() => await OnRefreshData().ConfigureAwait(true);
 
     // RadzenButton 🔄 Click
     internal protected async Task OnRefreshData()
     {
-        attributeTypesEmpty = new List<AttributesGridModel>();
-;            await state
-                .RefreshDataAsync()
-                .ConfigureAwait(true);
+        await state
+              .RefreshDataAsync()
+              .ConfigureAwait(continueOnCapturedContext: true);
 
-            _attributesView = state.Attributes.Select(selector: AttributesGridModel.ToGridModel).ToArray();
-            StateHasChanged();
+        attributesView = state.Attributes.Select(selector: AttributesGridModel.ToGridModel).ToList();
+        StateHasChanged();
     }
 
     // RadzenButton ➕ Click
