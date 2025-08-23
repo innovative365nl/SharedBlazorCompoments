@@ -1,0 +1,93 @@
+@page "/ExampleLocalTimezone"
+@using Innovative.Blazor.Components.Common
+@using Innovative.Blazor.Components.Components
+@using Innovative.Blazor.Components.Services
+@using Radzen
+
+<h3>Local Time zone.</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>UTC Time</td>
+        <td>@_dateTime</td>
+    </tr>
+    <tr>
+        <td>Local Time (Component, default format)</td>
+        <td>
+            <InnovativeLocalDateTime DateTime="_dateTime"  />
+        </td>
+    </tr>
+        <tr>
+            <td>Local Time (Component, custom format)</td>
+            <td>
+                <InnovativeLocalDateTime DateTime="_dateTime" Format="yyyy-MM-dd HH:mm:ss" />
+            </td>
+        </tr>
+        <tr>
+            <td>Local Time  as string (Provider, custom format)</td>
+            <td>@LocalProvider.ToLocalDateTimeString(_dateTime, LocalProvider.Format)</td>
+        </tr>
+        <tr>
+            <td>Local Time Zone</td>
+            <td>@LocalProvider.LocalTimeZone.Id</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="alert alert-info mt-4">
+    <h5>How to Use Automatic Time Zone Detection</h5>
+    <ol>
+        <li>
+            <b>Register the Time Zone Provider</b><br />
+            In your <code>Program.cs</code> or <code>Startup.cs</code>, add:<br />
+            <pre><code>builder.Services.RegisterInnovativeComponents("yyyy-MM-dd HH:mm:ss"); // Set your preferred format</code></pre>
+            This makes <code>ILocalTimeProvider</code> available everywhere in your app.
+        </li>
+        <li>
+            <b>Add the Detection Component to MainLayout</b><br />
+            In <code>MainLayout.razor</code>, add:<br />
+            <pre><code>&lt;DynamicComponent Type="@typeof(LocalTimeZoneService)" /&gt;</code></pre>
+            This will automatically detect and set the user's time zone on every page load.
+        </li>
+        <li>
+            <b>Use the Provider in Your Components</b><br />
+            Inject <code>ILocalTimeProvider</code>:<br />
+            <pre><code>[Inject] public ILocalTimeProvider LocalProvider { get; set; } = default!;</code></pre>
+            Use its methods to get the local time zone and format times:<br />
+            <pre><code>&lt;p&gt;Your local time zone: @LocalProvider.LocalTimeZone.Id&lt;/p&gt;
+&lt;p&gt;Current local time: @LocalProvider.ToLocalDateTimeString(DateTime.UtcNow, null)&lt;/p&gt;</code></pre>
+        </li>
+    </ol>
+    <hr />
+    <h5>Example: ComboBox with Local Time Formatting</h5>
+    <p>This example shows how to use <code>ILocalTimeProvider</code> to format date/time values in a ComboBox:</p></div>
+
+<RadzenDropDown TValue="DateTime" Data="_dates" @bind-Value="_selectedDateTime" Style="width: 300px;">
+    <Template Context="item">
+        @Innovative.Blazor.Components.Services.LocalTimeProviderExtensions.ToLocalDateTimeString(LocalProvider, item, null)
+    </Template>
+</RadzenDropDown>
+@if (_selectedDateTime != default)
+{
+    <p class="mt-2">Selected local time: <b>@Innovative.Blazor.Components.Services.LocalTimeProviderExtensions.ToLocalDateTimeString(LocalProvider, _selectedDateTime, null)</b></p>
+}
+
+@code {
+
+    [Inject] public ILocalTimeProvider LocalProvider { get; set; } = default!;
+    private List<DateTime> _dates = new()
+ {
+        DateTime.UtcNow,
+        DateTime.UtcNow.AddHours(1),
+        DateTime.UtcNow.AddHours(2)
+    };
+    private DateTime _dateTime = DateTime.UtcNow;
+    private DateTime _selectedDateTime = DateTime.UtcNow;
+}

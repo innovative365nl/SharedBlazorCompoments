@@ -1,5 +1,6 @@
 #region
 
+using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Localizer;
 using Innovative.Blazor.Components.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,13 +12,20 @@ namespace Innovative.Blazor.Components.Common.Composer;
 
 public static class RegisterDependencies
 {
-    public static IServiceCollection RegisterInnovativeComponents(this IServiceCollection services)
+    public static IServiceCollection RegisterInnovativeComponents(this IServiceCollection services, string? dateTimeFormat = "dd-MM-yyyy HH:mm:ss")
     {
         services.AddLocalization();
-    services.AddRadzenComponents();
+        services.AddRadzenComponents();
 
         services.AddScoped<IInnovativeSidePanelService, InnovativeSidePanelService>();
         services.AddScoped<ISidepanelService, SidepanelService>();
+        services.AddScoped<ILocalTimeProvider>(provider =>
+        {
+            var localTimeProvider = string.IsNullOrEmpty(dateTimeFormat)
+                                        ? new LocalTimeProvider()
+                                        : new LocalTimeProvider(dateTimeFormat);
+            return localTimeProvider;
+        });
         return services;
     }
 
