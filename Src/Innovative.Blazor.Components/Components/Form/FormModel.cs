@@ -94,7 +94,6 @@ public abstract class FormModel
                                 }
                             }
                         }
-
                         else
                         {
                             foreach (var kvp in additionalData)
@@ -116,7 +115,7 @@ public abstract class FormModel
 
             var serializedData =   await KiotaJsonSerializer.SerializeAsStringAsync(additionalData);
             var root = JsonNode.Parse(serializedData); // of JsonDocument, zie alternatief onderaan
-            
+
             if (root is JsonObject obj)
             {
                 foreach (var kvp in obj)
@@ -152,6 +151,6 @@ public abstract class FormModel
 
 public class ErrorResponseDetails
 {
-    public Dictionary<string, object>? AdditionalData { get;  } 
+    public Dictionary<string, object>? AdditionalData { get;  }
 }
 
