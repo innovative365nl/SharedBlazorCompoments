@@ -281,6 +281,15 @@ jobs:
           echo "NEWVERSION=$newVersion" >> $env:GITHUB_OUTPUT
           echo "NEWVERSIONFULL=$newVersionFull" >> $env:GITHUB_OUTPUT
 
+      - name: Commit and push version bump (main/release branches only)
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release')
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add Directory.Build.props
+          git commit -m "Auto-increment NuGet version [skip ci]"
+          git push
+
       - name: Display new NuGet version
         shell: pwsh
         run: |
