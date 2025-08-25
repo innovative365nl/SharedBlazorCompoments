@@ -1,6 +1,7 @@
 using ExampleApp.Components;
 using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components;
+using Innovative.Blazor.Components.Enumerators;
 using Innovative.Blazor.Components.Services;
 using PasswordUpdateComponent = ExampleApp.Components.PasswordUpdateComponent;
 
@@ -8,68 +9,63 @@ namespace ExampleApp.Pages;
 
 public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanelService)
 {
-    private PersonModel person = CreatePerson();
+    private PersonFormModel? person;
 
     private readonly List<string> actionLog = [];
 
-    protected override void OnInitialized()
+    protected override void OnInitialized() => person = CreatePerson();
+
+    private PersonFormModel CreatePerson()
     {
-        person.UpdatePasswordAction = count =>
-        {
-            var logEntry = $"Password updated:{count} times";
-            LogAction(logEntry);
-        };
+        var result = new PersonFormModel
+                     { FirstName = "John"
+                     , LastName = "Doe"
+                     , IsActive = true
+                     , BirthDate = new DateTime(year: 1993, month: 5, day: 12)
+                     , ComplexComponent = new ComplexModel
+                                          {
+                                              Name = "Complex Component"
+                                            , Description = "This is a complex component"
+                                          }
+                     , UpdatePasswordAction = count =>
+                                              {
+                                                  var logEntry = $"Password updated:{count} times";
+                                                  LogAction(message: logEntry);
+                                              }
+                     , PasswordCheckAction = isValid =>
+                                             {
+                                                 var logEntry = $"Password checked. Is valid: {isValid}";
+                                                 LogAction(message: logEntry);
+                                             }
+                     , SaveFormAction = () =>
+                                        {
+                                            var logEntry = "Model saved";
+                                            LogAction(logEntry);
+                                            return Task.CompletedTask;
+                                        }
+                     , DeleteFormAction = () =>
+                                          {
+                                              if(person is not null)
+                                              {
+                                                  person.FirstName = null;
+                                                  person.LastName = null;
+                                                  person.IsActive = true;
+                                                  person.BirthDate = null;
+                                              }
+                                              var logEntry = "Model deleted";
+                                              LogAction(message: logEntry);
+                                              return Task.CompletedTask;
+                                          }
+                     , CancelFormAction = () =>
+                                          {
+                                              person = CreatePerson();
+                                              var logEntry = "Model canceled";
+                                              LogAction(message: logEntry);
+                                              return Task.CompletedTask;
+                                          }
+                     };
 
-        person.PasswordCheckAction = isValid =>
-        {
-            var logEntry = $"Password checked. Is valid: {isValid}";
-            LogAction(logEntry);
-        };
-
-        person.SaveFormAction = () =>
-        {
-#pragma warning disable CA2201
-            throw new Exception("This is an exception");
-#pragma warning restore CA2201
-            // var logEntry = "Model saved";
-            // LogAction(logEntry);
-            // return Task.CompletedTask;
-        };
-        person.DeleteFormAction = () =>
-        {
-           person = new PersonModel { IsActive = true };
-           var logEntry = "Model deleted";
-           LogAction(logEntry);
-           return Task.CompletedTask;
-        };
-        person.CancelFormAction = () =>
-        {
-            person = CreatePerson();
-            var logEntry = "Model canceled";
-            LogAction(logEntry);
-            return Task.CompletedTask;
-        };
-
-        base.OnInitialized();
-    }
-
-    private static PersonModel CreatePerson()
-    {
-        var personmodel = new PersonModel
-               {
-                   FirstName = "John",
-                   LastName = "Doe",
-                   IsActive = true,
-                   BirthDate = new DateTime(1993, 5, 12),
-                   ComplexComponent = new()
-                                      {
-                                          Name = "Complex Component",
-                                          Description = "This is a complex component"
-                                      }
-               };
-
-
-        return personmodel;
+        return result;
     }
 
     private void LogAction(string message)
@@ -82,41 +78,86 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
 
     private async Task OpenPersonDialog()
     {
+        person ??= CreatePerson();
         await sidePanelService
-               .OpenInDisplayMode(person)
-               .ConfigureAwait(false);
+              .OpenInDisplayMode(person)
+              .ConfigureAwait(false);
     }
 
     private async Task OpenNewPersonDialog()
     {
-        person = new PersonModel { IsActive = true };
+        var newPerson = new PersonFormModel
+                        { IsActive = true
+                        , UpdatePasswordAction = count =>
+                                                 {
+                                                     var logEntry = $"Password updated:{count} times";
+                                                     LogAction(message: logEntry);
+                                                 }
+                        , PasswordCheckAction = isValid =>
+                                                {
+                                                    var logEntry = $"Password checked. Is valid: {isValid}";
+                                                    LogAction(message: logEntry);
+                                                }
+        };
 
         await sidePanelService
-                           .OpenInEditMode<PersonModel>(person)
+                           .OpenInEditMode(newPerson)
                            .ConfigureAwait(true);
+    }
+
+    private async Task OpenLargeWidthDialog()
+    {
+        person ??= CreatePerson();
+        await sidePanelService
+              .OpenInDisplayMode(person, width: SideDialogWidth.Large)
+              .ConfigureAwait(false);
+    }
+
+    private async Task OpenExtraLargeWidthDialog()
+    {
+        person ??= CreatePerson();
+        await sidePanelService
+              .OpenInDisplayMode(person, width: SideDialogWidth.ExtraLarge)
+              .ConfigureAwait(false);
     }
 }
 
 [UIFormClass(title: nameof(Example.DialogService_Person), ResourceType = typeof(Example))]
-public class PersonModel : FormModel
+public class PersonFormModel : FormModel
 {
+    private const string NameColumn = "Name";
+    private const string EmployeeInfoColumn = "EmployeeInfo";
+    private const string DescriptionColumn = "Description";
+
+    public PersonFormModel()
+    {
+        AddViewColumn(NameColumn, 1, 6, 0);;
+        AddViewColumn(EmployeeInfoColumn, 1, 6, 0);
+        AddViewColumn(DescriptionColumn, 1, 12, 0);;
+    }
     [UIFormField(name: "First Name", ColumnGroup = "Name")]
     public string? FirstName { get; set; }
 
     [UIFormField(name: "Last Name", ColumnGroup = "Name")]
     public string? LastName { get; set; }
 
+    [UIFormField(name: "Birth Date",  ColumnGroup = "EmployeeInfo", DisplayParameters = ["Format={0:dddd d MMMM yyyy}"], FormParameters = ["DateFormat=yyyy-MM-dd"])]
+    public DateTime? BirthDate { get; set; }
+
     [UIFormField(name: "Is Active", DisplayComponent = typeof(CustomBooleanStyle), FormComponent = typeof(CustomBooleanStyle), ColumnGroup = "EmployeeInfo")]
     public bool IsActive { get; set; }
-
-    [UIFormField(name: "Birth Date",  ColumnGroup = "EmployeeInfo")]
-    public DateTime? BirthDate { get; set; }
 
     [UIFormField(name : "Description", UseWysiwyg = true, ColumnGroup = "Description")]
     public string? Description { get; set; }
 
-    [UIFormField(name: "Complex Component", ColumnGroup = "Description", FormComponent = typeof(ComplexComponent),
-                 TextProperty = nameof(ComplexComponent.Description))]
+    [UIFormField(name: "Complex Component",
+                 ColumnGroup = "Description",
+                 FormComponent = typeof(ComplexEditComponent),
+                 FormParameters = ["DisplayLabel=false"], // There must be a parameter named DisplayLabel in the ComplexEditComponent
+                 DisplayComponent = typeof(ComplexDisplayComponent),
+                 DisplayParameters = ["DisplayLabel=false"], // There must be a parameter named DisplayLabel in the ComplexDisplayComponent
+                 TextProperty = nameof(ComplexComponent.Description)
+    )]
     public ComplexModel? ComplexComponent { get; set; } = new()
     {
         Name = "Complex Component",

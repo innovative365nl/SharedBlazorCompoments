@@ -426,7 +426,7 @@ public class GridTests : LocalizedTestBase
         LocalizerMock.Setup(l => l[testKey]).Returns(testValue);
 
         // Act
-        var cut = RenderGridComponent(testData);
+        _ = RenderGridComponent(testData);
 
         // Assert
         LocalizerFactoryMock.Verify(f => f.Create(It.IsAny<Type>()), Times.Once);
@@ -441,17 +441,18 @@ public class GridTests : LocalizedTestBase
     /// </summary>
     private static List<TestModel> GetTestData()
     {
-        return new List<TestModel>
-        {
-            new TestModel { TestProperty = "TestValue1" },
-            new TestModel { TestProperty = "TestValue2" }
-        };
+        return
+        [
+            new TestModel {TestProperty = "TestValue1"},
+            new TestModel {TestProperty = "TestValue2"}
+        ];
     }
 
     /// <summary>
     ///     Helper method to render a grid component with common parameters to reduce code duplication.
     /// </summary>
-    private IRenderedComponent<Components.InnovativeGrid<TestModel>> RenderGridComponent(
+    private IRenderedComponent<InnovativeGrid<TestModel>> RenderGridComponent
+    (
         IEnumerable<TestModel> data,
         string? title = null,
         bool isLoading = false,
@@ -460,26 +461,26 @@ public class GridTests : LocalizedTestBase
         Action<IEnumerable<TestModel>>? onSelectionChanged = null,
         GridHeight minHeightOption = GridHeight.Minimal)
     {
-        return RenderComponent<Components.InnovativeGrid<TestModel>>(parameters =>
-                                                                     {
-                                                                         parameters.Add(p => p.Data, data);
+        return RenderComponent<InnovativeGrid<TestModel>>(parameters =>
+                                                         {
+                                                             parameters.Add(p => p.Data, data);
 
-                                                                         if (title != null)
-                                                                             parameters.Add(p => p.Title, title);
+                                                             if (title != null)
+                                                                 parameters.Add(p => p.Title, title);
 
-                                                                         if (isLoading)
-                                                                             parameters.Add(p => p.IsLoading, true);
+                                                             if (isLoading)
+                                                                 parameters.Add(p => p.IsLoading, true);
 
-                                                                         if (enableRowSelection)
-                                                                             parameters.Add(p => p.EnableRowSelection, true);
+                                                             if (enableRowSelection)
+                                                                 parameters.Add(p => p.EnableRowSelection, true);
 
-                                                                         parameters.Add(p => p.SelectionMode, selectionMode);
+                                                             parameters.Add(p => p.SelectionMode, selectionMode);
 
-                                                                         if (onSelectionChanged != null)
-                                                                             parameters.Add<IEnumerable<TestModel>>(p => p.OnSelectionChanged, onSelectionChanged);
+                                                             if (onSelectionChanged != null)
+                                                                 parameters.Add<IEnumerable<TestModel>>(p => p.OnSelectionChanged, onSelectionChanged);
 
-                                                                         parameters.Add(p => p.MinHeightOption, minHeightOption);
-                                                                     });
+                                                             parameters.Add(p => p.MinHeightOption, minHeightOption);
+                                                         });
     }
 
     #endregion

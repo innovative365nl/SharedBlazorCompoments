@@ -56,7 +56,7 @@ jobs:
              exit 1
           }
           echo "Directory.Build.props file found"
-          
+
           # Extract target framework version
           $propsText = Get-Content -Path $PropsFilePath -raw
           $startPosition = $propsText.IndexOf("TargetFramework>net")
@@ -67,7 +67,7 @@ jobs:
           $netversiondotnet = $propsText.Substring($startPosition + 19,3)
           echo "TargetFramework exists >> $netversiondotnet.x"
           echo "NETVERSION=$netversiondotnet.x" >> $env:GITHUB_OUTPUT
-          
+
           # Set version suffix based on branch
           echo "Determining version suffix for: ${{ github.ref }}"
           if ("${{ github.ref }}" -eq "refs/heads/main") {
@@ -136,7 +136,7 @@ jobs:
           name: nuget-packages
           path: ${{ env.PACKAGE_PATH }}/**/*.nupkg
           retention-days: 7
-  
+
   # ============================================================
   # Job 3: Run unit and integration tests
   # ============================================================
@@ -195,7 +195,7 @@ jobs:
         with:
           recreate: true
           path: code-coverage-results.md
-  
+
   # ============================================================
   # Job 4: Publish NuGet packages to NuGet.org
   # ============================================================
@@ -221,3 +221,78 @@ jobs:
           --api-key ${{ secrets.NUGET_API_KEY }}
           --source ${{ env.PACKAGE_SOURCE_URL }}
           --skip-duplicate
+  # ============================================================
+  # Job 5: Auto-increment NuGet version and set preview suffix
+  # ============================================================
+  Versioning:
+    needs: GetVersions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Auto-increment NuGet version and set preview suffix
+        id: set_nuget_version
+        shell: pwsh
+        run: |
+          $propsFile = 'Directory.Build.props'
+          $propsText = Get-Content -Path $propsFile -Raw
+          $versionPattern = '<VersionPrefix>([0-9]+)\.([0-9]+)\.([0-9]+)<\/VersionPrefix>'
+          $matches = [regex]::Match($propsText, $versionPattern)
+          if (-not $matches.Success) {
+            echo '::error VersionPrefix not found in Directory.Build.props'
+            exit 1
+          }
+          $major = [int]$matches.Groups[1].Value
+          $minor = [int]$matches.Groups[2].Value
+          $patch = [int]$matches.Groups[3].Value
+
+          # Get PR title/description if available
+          $prTitle = if ($env:GITHUB_EVENT_NAME -eq 'pull_request') { $env:GITHUB_HEAD_REF } else { '' }
+          $prBody = if ($env:GITHUB_EVENT_NAME -eq 'pull_request') { $env:GITHUB_EVENT_PATH | Get-Content | ConvertFrom-Json | Select-Object -ExpandProperty pull_request | Select-Object -ExpandProperty body } else { '' }
+          $prText = "$prTitle $prBody"
+
+          if ($prText -match '(?i)major') {
+            $major++
+            $minor = 0
+            $patch = 0
+          } elseif ($prText -match '(?i)minor') {
+            $minor++
+            $patch = 0
+          } else {
+            $patch++
+          }
+
+          $newVersion = "$major.$minor.$patch"
+          # For PRs, add preview suffix with branch name
+          if ($env:GITHUB_EVENT_NAME -eq 'pull_request') {
+            $branch = $env:GITHUB_HEAD_REF.Replace('/', '-')
+            $suffix = "preview-$branch"
+            echo "VERSIONSUFFIX=$suffix" >> $env:GITHUB_OUTPUT
+            $newVersionFull = "$newVersion-$suffix"
+          } else {
+            $newVersionFull = $newVersion
+            echo "VERSIONSUFFIX=" >> $env:GITHUB_OUTPUT
+          }
+
+          # Update Directory.Build.props
+          $newPropsText = [regex]::Replace($propsText, $versionPattern, "<VersionPrefix>$newVersion</VersionPrefix>")
+          Set-Content -Path $propsFile -Value $newPropsText
+          echo "NEWVERSION=$newVersion" >> $env:GITHUB_OUTPUT
+          echo "NEWVERSIONFULL=$newVersionFull" >> $env:GITHUB_OUTPUT
+
+      - name: Commit and push version bump (main/release branches only)
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release')
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add Directory.Build.props
+          git commit -m "Auto-increment NuGet version [skip ci]"
+          git push
+
+      - name: Display new NuGet version
+        shell: pwsh
+        run: |
+          echo "NEWVERSION = ${{ steps.set_nuget_version.outputs.NEWVERSION }}"
+          echo "VERSIONSUFFIX = ${{ steps.set_nuget_version.outputs.VERSIONSUFFIX }}"
+          echo "NEWVERSIONFULL = ${{ steps.set_nuget_version.outputs.NEWVERSIONFULL }}"

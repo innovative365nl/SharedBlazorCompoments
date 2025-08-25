@@ -40,6 +40,11 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         }
     }
 
+    // TODO: Implement a col-12 class system (similar to Bootstrap).
+    // Example usage:
+    // - col-6: Two equally sized columns side by side (each taking 6 cols)
+    // - col-12: Full-width column (taking 12 cols)
+    // Note: A class named 'col' without a number is not used or supported in this system.
     private string GetColumnWidthClass(string columnGroup)
     {
         // First check if Model is DisplayFormModel and get column info from there
@@ -48,7 +53,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
             var column = formModel.Columns.FirstOrDefault(c => c.Name == columnGroup);
             if (column is { Width: > 0 })
             {
-                return $"column-span-{column.Width}";
+                return $"col-{column.Width}";
             }
         }
 
@@ -213,7 +218,9 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                            builder.OpenComponent(sequence: sequence++, componentType: attribute.DisplayComponent);
                        }
                        builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
-                       builder.AddAttribute(sequence: sequence++, "DataTestId", attribute.DataTestId);
+                       if (!string.IsNullOrEmpty(attribute.DataTestId))
+                           builder.AddAttribute(sequence: sequence++, nameof(attribute.DataTestId), attribute.DataTestId);
+
 
                        if (attribute.DisplayParameters?.Length > 0)
                        {
@@ -223,7 +230,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                                 if (equalIndex > 0 && equalIndex < parameter.Length - 1)
                                 {
                                     string paramName = parameter[..equalIndex];
-                                    string paramValue = parameter[(equalIndex + 1)..];
+                                    string paramValue = parameter[++equalIndex..];
                                     builder.AddAttribute(sequence: sequence++, name: paramName, value: paramValue);
                                 }
                             }
@@ -236,6 +243,22 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                        builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
                    }
                };
+    }
+
+    private static Dictionary<string, object> GetAttributesFromParameters(string[] parameters)
+    {
+        var result = new Dictionary<string, object>();
+        foreach (var parameter in parameters)
+        {
+            int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
+            if (equalIndex > 0 && equalIndex < parameter.Length - 1)
+            {
+                string paramName = parameter[..equalIndex];
+                string paramValue = parameter[++equalIndex..];
+                result.Add(key: paramName, value: paramValue);
+            }
+        }
+        return result;
     }
 
     internal ButtonDefinition? GetSplitButtonDefinition()
@@ -302,20 +325,22 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 
     private List<PropertyInfo> GetActionProperties()
     {
-        List<PropertyInfo> result = typeof(TModel).GetProperties()
-                                                  .Where(predicate: x =>
-                                                                        x.GetCustomAttribute<UIFormViewAction>() != null
-                                                                     && (x.PropertyType == typeof(Action) ||
-                                                                         x.PropertyType.IsGenericType && x.PropertyType.GetGenericTypeDefinition() == typeof(Action<>))
-                                                                     && x.Name                              != nameof(FormModel.SaveFormAction)
-                                                                     && x.Name                              != nameof(FormModel.CancelFormAction)
-                                                                     && x.Name                              != nameof(FormModel.DeleteFormAction)
-                                                                     && x.GetValue(obj: Model, index: null) != null)
-                                                  .OrderBy(keySelector: p => p.GetCustomAttribute<UIFormViewAction>()!.Order)
-                                                  .ToList();
+        var result = typeof(TModel).GetProperties()
+                                   .Where(predicate: x => x.GetCustomAttribute<UIFormViewAction>() != null)
+                                   .Where(predicate: x => x.PropertyType == typeof(Action) || x.PropertyType.IsGenericType && x.PropertyType.GetGenericTypeDefinition() == typeof(Action<>))
+                                   .Where(predicate: x => x.Name                              != nameof(FormModel.SaveFormAction))
+                                   .Where(predicate: x => x.Name                              != nameof(FormModel.CancelFormAction))
+                                   .Where(predicate: x => x.Name                              != nameof(FormModel.DeleteFormAction))
+                                   .Where(predicate: x => x.GetValue(obj: Model, index: null) != null)  // The defined action cannot be null
+                                   .OrderBy(keySelector: x => x.GetCustomAttribute<UIFormViewAction>()!.Order)
+                                   .ToList();
 
         return result;
     }
+
+    private static bool ShouldShowLabel(UIFormField? formField)
+        => formField?.DisplayParameters == null
+        || !formField.DisplayParameters.Contains("DisplayLabel=false", StringComparer.InvariantCultureIgnoreCase);
 }
 
 internal record ButtonDefinition

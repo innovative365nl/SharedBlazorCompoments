@@ -1,24 +1,33 @@
 @namespace Innovative.Blazor.Components.Components
 @if (visible)
 {
-    <div class="innovative-alert @GetSeverityClass()">
+    <article class="innovative-alert @GetSeverityClass()">
         @if (Closable)
         {
-            <button class="innovative-alert-close" @onclick="Close" aria-label="Close">&times;</button>
+            <button class="innovative-alert-close" @onclick="Close" aria-label="Close">
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+            </button>
         }
+        <span class="material-symbols-outlined" aria-hidden="true">
+            @GetIconName()
+        </span>
         @if (!string.IsNullOrEmpty(Summary))
         {
-            <div class="innovative-alert-summary">@Summary</div>
+            <h3 class="innovative-alert-summary">
+                @Summary
+            </h3>
         }
         @if (!string.IsNullOrEmpty(Detail))
         {
-            <div class="innovative-alert-detail">@Detail</div>
+            <p class="innovative-alert-detail">@Detail</p>
         }
         @if (ChildContent != null)
         {
             <div class="innovative-alert-content">@ChildContent</div>
         }
-    </div>
+    </article>
 }
 
 @code {
@@ -29,4 +38,14 @@
         AlertSeverity.Error => "innovative-alert-error",
         _ => "innovative-alert-info"
     };
+
+    @code {
+        private string GetIconName() => Severity switch
+        {
+            AlertSeverity.Success => "check_small",
+            AlertSeverity.Warning => "campaign",
+            AlertSeverity.Error => "dangerous",
+            _ => "info"
+        };
+    }
 }

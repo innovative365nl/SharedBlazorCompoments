@@ -3,10 +3,10 @@
 @typeparam TModel
 
 <RadzenTemplateForm TItem="TModel" Data="@Model" Submit="@OnFormSubmit">
-    <section class="rz-dialog-side-content-layout">
+    <section class="innovative-form-layout">
         @{
             var model = Model as FormModel;
-            System.Diagnostics.Debug.Assert(model != null, nameof(model) + " != null");
+            System.Diagnostics.Debug.Assert(model != null, $"{nameof(model)} is null!");
             foreach (var exception in model.Exceptions)
             {
                 <section class="rz-alert rz-background-color-danger-lighter gap-2 column-span-4">
@@ -17,7 +17,6 @@
                 </section>
             }
         }
-        <br/>
 
         @foreach (var group in OrderedColumnGroups)
         {
@@ -42,7 +41,16 @@
             <div class="form-ungrouped">
                 @foreach (var property in ungroupedProperties)
                 {
-                    @RenderPropertyField(property)
+                    var fieldAttribute = property.GetCustomAttribute<UIFormField>();
+
+                    if (fieldAttribute?.FormComponent != null)
+                    {
+                        @RenderFormComponent(value: property.GetValue(Model), attribute: fieldAttribute, property: property)
+                    }
+                    else
+                    {
+                        @RenderPropertyField(property)
+                    }
                 }
             </div>
         }

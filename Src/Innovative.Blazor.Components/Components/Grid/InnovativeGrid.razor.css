@@ -1,8 +1,6 @@
 ::deep .rz-data-grid {
-    --_rz-data-grid-border: var(--rz-data-grid-border, none);
-    --_rz-data-grid-border-radius: var(--rz-data-grid-border-radius, 4px);
-    border: var(--_rz-data-grid-border);
-    border-radius: var(--_rz-data-grid-border-radius);
+    border: var(--inn-data-grid-border);
+    border-radius: var(--inn-data-grid-border-radius);
 }
 
 ::deep .margin {
@@ -14,17 +12,70 @@
 }
 
 ::deep .rz-stack {
-    height: clamp(var(--min-height), 100vh, var(--max-height));
+    height: clamp(var(--min-height, 0px), 100vh, var(--max-height, 100vh));
 }
 
-::deep .rz-selectable tbody tr.rz-data-row td:first-child {
-    --_rz-grid-first-cell-padding: var(--rz-grid-first-cell-padding, 0.625rem 1rem 0.625rem 2rem);
-    padding: var(--_rz-grid-first-cell-padding);
+/* Table head */
+::deep .rz-grid-table thead th {
+    background: var(--inn-grid-background-color);
+    border-bottom: unset;
+}
+
+::deep .rz-grid-table thead tr th:first-child {
+    padding: var(--inn-grid-header-first-cell-padding);
+}
+
+::deep .rz-grid-table thead tr:first-child th {
+    border-bottom: var(--inn-grid-header-border-bottom);
+}
+
+::deep .rz-grid-table thead th:not(:last-child) {
+    border-inline-end: none;
+}
+
+::deep .rz-grid-table thead th .rz-column-title {
+    font-size: var(--inn-grid-header-font-size);
+    line-height: var(--inn-grid-header-line-height);
+    text-transform: var(--inn-grid-header-text-transform);
+    color: var(--inn-grid-header-color);
+    padding-inline: var(--inn-grid-header-title-padding-inline);
+    font-weight: var(--inn-grid-header-font-weight);
+}
+
+::deep .rz-grid-table thead th div {
+    background: var(--inn-grid-background-color);
+}
+
+::deep .rz-column-title-content {
+    font-weight: bold;
+}
+
+::deep .rz-sortable-column > div:hover .rzi-sort:not(.rzi-sort-asc):not(.rzi-sort-desc) {
+    color: var(--inn-grid-sort-icon-color);
+}
+
+/* Table body */
+::deep .rz-grid-table-striped tbody > tr:not(.rz-expanded-row-content):nth-child(2n+1) > td {
+    background-color: var(--inn-grid-row-odd-background-color);
+}
+
+::deep .rz-grid-table-striped tbody > tr:not(.rz-expanded-row-content):nth-child(2n) > td {
+    background-color: var(--inn-grid-row-even-background-color);
+}
+
+::deep .rz-datatable-data td:not(:last-child),
+::deep .rz-grid-table td:not(:last-child) {
+    border-inline-end: none;
 }
 
 /* Selectable grid row */
 ::deep .rz-selectable .rz-data-row {
-    cursor: pointer
+    cursor: pointer;
+}
+
+::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight .rz-cell-data {
+    color: var(--inn-grid-selected-color);
+    font-weight: var(--inn-grid-selected-font-weight);
 }
 
 ::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight div {
@@ -33,22 +84,33 @@
 
 ::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight div::before {
     content: attr(data-text);
-    font-weight: 600;
+    font-weight: var(--inn-grid-selected-font-weight);
     position: absolute;
     visibility: visible;
 }
 
+::deep .rz-selectable tbody tr.rz-data-row td:first-child {
+    padding: var(--inn-grid-first-cell-padding);
+}
+
 ::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight td:first-child:before {
-    --_rz-grid-selected-icon: var(--rz-grid-selected-icon, "arrow_forward_ios");
-    content: var(--_rz-grid-selected-icon);
+    content: "arrow_forward_ios";
     margin-left: -1.25rem;
-    font-family: var(--rz-icon-font-family);
-    color: var(--rz-grid-selected-color);
+    font-family: var(--inn-icon-font-family);
+    color: var(--inn-primary);
     align-content: center;
     position: absolute;
     background-color: unset;
 }
 
+::deep .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left:after,
+::deep .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left-inner:after,
+::deep .rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell-left:after,
+::deep .rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell-left-inner:after {
+    background: unset;
+}
+
+/* Frozen grid column */
 ::deep .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell:before,
 .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell:after,
 .rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell:before,
@@ -56,52 +118,25 @@
     inset: unset;
 }
 
-::deep .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left:after,
-.rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left-inner:after,
-.rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell-left:after,
-.rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell-left-inner:after {
-    background: unset;
-}
-
-/* Table head */
-::deep .rz-grid-table thead th div {
-    background: var(--rz-grid-header-stripe-background-color);
-}
-
-::deep .rz-grid-table thead th {
-    background: var(--rz-grid-header-stripe-background-color);
-}
-
-::deep .rz-grid-table thead tr th:first-child {
-    --_rz-grid-first-cell-padding: var(--rz-grid-first-cell-padding, 0.625rem 1rem 0.625rem 1rem);
-    padding: var(--_rz-grid-first-cell-padding);
-}
-
-::deep .rz-grid-table thead tr:first-child th {
-    --_rz-grid-header-border-bottom: var(--rz-grid-header-border-bottom, 2px solid #D0CECF);
-    border-bottom: var(--_rz-grid-header-border-bottom);
-}
-
-::deep .rz-grid-table thead tr th {
-    border-bottom: var(--rz-grid-header-cell-border-bottom);
-}
-
-::deep .rz-grid-table thead th {
-    border-bottom: unset;
-}
-
 ::deep .rz-grid-table-fixed .rz-frozen-cell-left.rz-frozen-cell-left-end {
-    --_rz-grid-table-fixed-shadow: var(--rz-grid-table-fixed-shadow,
-    6px 0 10px -2px rgba(64, 63, 63, 0.1));
-    --_rz-grid-table-fixed-border: var(--rz-grid-table-fixed-border, unset);
-    box-shadow: var(--_rz-grid-table-fixed-shadow);
-    border-inline-end: var(--_rz-grid-table-fixed-border) !important;
+    border-inline-end: var(--inn-grid-table-fixed-border) !important;
+    box-shadow: var(--inn-grid-table-fixed-shadow);
+}
+
+::deep .rz-grid-filter-icon {
+    color: var(--inn-grid-filter-color);
+    margin-inline: var(--inn-grid-filter-margin-inline);
+    font-size: var(--inn-icon-font-size);
+    transition: var(--inn-button-icon-only-transition);
+}
+
+::deep .rz-grid-filter-icon:hover {
+    color: var(--inn-grid-header-filter-icon-hover-color);
 }
 
 /* Pager */
 ::deep .rz-pager {
-    --rz-pager-padding: var(--rz-pager-padding, 1rem);
-    padding: var(--rz-pager-padding);
+    padding: var(--inn-pager-padding);
 }
 
 ::deep .rz-pager-page,
@@ -109,30 +144,26 @@
 ::deep .rz-pager-prev,
 ::deep .rz-pager-next,
 ::deep .rz-pager-last {
-    --_rz-pager-page-buttons-border-radius: var(--rz-pager-page-buttons-border-radius, 4px);
-    --_rz-pager-page-buttons-width: var(--rz-pager-page-buttons-width, 48px);
-    --_rz-pager-page-buttons-height: var(--rz-pager-page-buttons-height, 48px);
-    border-radius: var(--_rz-pager-page-buttons-border-radius);
-    min-width: var(--_rz-pager-page-buttons-width);
-    height: var(--_rz-pager-page-buttons-height);
+    border-radius: var(--inn-button-border-radius);
+    min-width: var(--inn-button-width);
+    height: var(--inn-button-height);
 }
 
 ::deep .rz-pager-element,
 ::deep .rz-button-lg {
-    min-width: var(--_rz-pager-page-buttons-width);
-    min-height: var(--_rz-pager-page-buttons-height);
+    min-width: var(--inn-button-width);
+    min-height: var(--inn-button-height);
 }
 
 ::deep .rz-pager-element,
 ::deep .rz-button-lg.rz-button-icon-only {
-    --_rz-pager-numeric-button-selected-padding: var(--rz-pager-numeric-button-selected-padding, .25rem);
-    padding: var(--_rz-pager-numeric-button-selected-padding);
+    padding: var(--inn-pager-numeric-button-selected-padding);
     align-content: center;
 }
 
-::deep .rz-pager-element, .rz-button-lg {
-    --_rz-pager-numeric-button-selected-padding: var(--rz-pager-numeric-button-selected-padding, .25rem);
-    padding: var(--_rz-pager-numeric-button-selected-padding);
-    min-width: var(--_rz-pager-page-buttons-width);
-    min-height: var(--_rz-pager-page-buttons-height);
+::deep .rz-pager-element,
+::deep .rz-button-lg {
+    padding: var(--inn-pager-numeric-button-selected-padding);
+    min-width: var(--inn-button-width);
+    min-height: var(--inn-button-height);
 }

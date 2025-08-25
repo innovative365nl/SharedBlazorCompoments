@@ -1,71 +1,265 @@
-﻿.rz-dialog-side-content-layout {
-    display: grid;
-    grid-template-columns: auto;
-    gap: 1rem;
+﻿.innovative-form-layout {
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.rz-dialog-side-content-layout ::deep .rz-label {
-    width: max-content;
+.innovative-form-layout > * {
+    padding: 0.5rem;
 }
 
-.rz-dialog-side-content-layout ::deep .rz-textbox {
-    width: 100%;
-}
-
-/* Second grid for labels and inputs */
-.form-column-group {
-    margin-bottom: 1rem;
-    display: grid;
-    gap: 1rem;
-}
-
-.form-ungrouped {
-    margin-top: 1rem;
+.innovative-form-layout .col-* > * {
+    margin-bottom: 0.25rem;
 }
 
 /* Column spanning classes */
-.column-span-1 {
-    grid-template-columns: 1fr 2fr;
-    align-items: center;
+.innovative-form-layout .col-1 {
+    width: 8.33%;
 }
 
-.column-span-2 {
-    grid-column: span 2;
+.innovative-form-layout .col-2 {
+    width: 16.66%;
 }
 
-.column-span-3 {
-    align-items: start;
-
-    grid-column: span 3;
+.innovative-form-layout .col-3 {
+    width: 25%;
 }
 
-.column-span-4 {
-    grid-column: span 4;
+.innovative-form-layout .col-4 {
+    width: 33.33%;
 }
 
-/* Full width column */
-.column-span-full {
-    grid-column: 1 / -1;
+.innovative-form-layout .col-5 {
+    width: 41.66%;
 }
 
-.material-symbols-outlined {
-    font-family: 'Material Symbols', sans-serif;
+.innovative-form-layout .col-6 {
+    width: 50%;
+}
+
+.innovative-form-layout .col-7 {
+    width: 58.33%;
+}
+
+.innovative-form-layout .col-8 {
+    width: 66.66%;
+}
+
+.innovative-form-layout .col-9 {
+    width: 75%;
+}
+
+.innovative-form-layout .col-10 {
+    width: 83.33%;
+}
+
+.innovative-form-layout .col-11 {
+    width: 91.66%;
+}
+
+.innovative-form-layout .col-12 {
+    width: 100%;
+}
+
+.form-column-group {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.form-ungrouped {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.form-column-group ::deep .rz-datepicker {
+    display: grid;
+}
+
+.form-column-group ::deep .rz-datepicker > .rz-inputtext {
+    width: unset;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+::deep .rz-label {
+    font-weight: var(--inn-label-font-weight);
+    font-size: var(--inn-label-font-size);
+    margin-block-start: unset;
+    margin-block-end: unset;
+    margin-bottom: 0;
+}
+
+::deep .rz-colorpicker,
+::deep .rz-lookup-search input,
+::deep .rz-spinner,
+::deep .rz-calendar .rz-inputtext,
+::deep .rz-multiselect,
+::deep .rz-dropdown,
+::deep .mask,
+::deep .rz-textarea,
+::deep .rz-textbox,
+::deep .rz-numeric,
+::deep .rz-chkbox-box {
+    color: var(--inn-input-value-color);
+    font-size: var(--inn-input-font-size);
+    line-height: var(--inn-input-line-height);
+    background-color: var(--inn-input-background-color);
+    border: var(--inn-input-border);
+    border-block-end: var(--inn-input-border-block-end);
+    border-radius: var(--inn-input-border-radius);
+    box-shadow: var(--inn-input-shadow);
+    transition: var(--inn-input-transition);
+}
+
+::deep .rz-form-field:hover .rz-form-field-content,
+::deep .rz-autocomplete:hover:not(.rz-state-disabled),
+::deep .rz-timespanpicker > .rz-inputtext:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-colorpicker:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-lookup-search input:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-numeric:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-datepicker > .rz-inputtext:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-multiselect:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-dropdown:not(:disabled):not(.rz-state-disabled):hover,
+::deep .mask:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-textarea:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-textbox:not(:disabled):not(.rz-state-disabled):hover,
+::deep .rz-chkbox-box:hover:not(.rz-state-disabled) {
+    background-color: var(--inn-input-hover-background-color);
+    border: var(--inn-input-hover-border);
+    border-block-end: var(--inn-input-hover-border-block-end);
+    box-shadow: var(--inn-input-hover-shadow);
+}
+
+::deep .rz-form-field.rz-state-focused .rz-form-field-content,
+::deep .rz-numeric:focus-within:not(.rz-state-disabled),
+::deep .rz-autocomplete:focus-within:not(.rz-state-disabled),
+::deep .rz-timespanpicker > .rz-inputtext:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-colorpicker:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-lookup-search input:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-numeric:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-datepicker > .rz-inputtext:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-multiselect:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-dropdown:not(:disabled):not(.rz-state-disabled):focus,
+::deep .mask:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-textarea:not(:disabled):not(.rz-state-disabled):focus,
+::deep .rz-textbox:not(:disabled):not(.rz-state-disabled):focus {
+    background-color: var(--inn-input-focus-background-color);
+    border: var(--inn-input-focus-border);
+    border-color: var(--inn-input-focus-border-color);
+    border-block-end: var(--inn-input-focus-border-block-end);
+    box-shadow: var(--inn-input-focus-shadow);
+    outline: var(--inn-input-focus-outline);
+    outline-offset: var(--inn-input-focus-outline-offset);
+}
+
+::deep .rz-state-highlight.rz-menuitem:hover,
+::deep .rz-state-highlight.rz-autocomplete-list-item:hover,
+::deep .rz-state-highlight.rz-multiselect-item:hover,
+::deep .rz-autocomplete-items li.rz-state-highlight:hover,
+::deep .rz-dropdown-items li.rz-state-highlight:hover,
+::deep .rz-multiselect-items li.rz-state-highlight:hover,
+::deep .rz-dropdown-item.rz-state-highlight:hover {
+    background-color: var(--inn-dropdown-item-selected-hover-background-color);
+    color: var(--inn-dropdown-item-selected-hover-color);
+}
+
+::deep .rz-state-highlight.rz-menuitem,
+::deep .rz-state-highlight.rz-autocomplete-list-item,
+::deep .rz-state-highlight.rz-multiselect-item,
+::deep .rz-autocomplete-items li.rz-state-highlight,
+::deep .rz-dropdown-items li.rz-state-highlight,
+::deep .rz-multiselect-items li.rz-state-highlight,
+::deep .rz-dropdown-item.rz-state-highlight {
+    background-color: var(--inn-dropdown-item-selected-background-color);
+    color: var(--inn-dropdown-item-selected-color);
+    box-shadow: none;
+}
+
+::deep .rz-chkbox {
+    width: var(--inn-checkbox-width);
+    height: var(--inn-checkbox-height);
+    min-width: unset;
+}
+
+::deep .rz-chkbox-box:hover:not(.rz-state-disabled):after {
+    width: var(--inn-input-checkbox-circle-hover-width);
+    height: var(--inn-input-checkbox-circle-hover-height);
+    background-color: var(--inn-input-checkbox-circle-hover-background-color);
+}
+
+::deep .rz-html-editor {
+    border-radius: var(--inn-editor-border-radius);
+    border: var(--inn-editor-border);
+}
+
+::deep .rz-html-editor-content {
+    background-color: var(--inn-editor-content-background-color);
+}
+
+::deep .rz-html-editor:focus-within {
+    outline: var(--inn-editor-focus-outline);
+    outline-offset: var(--inn-editor-focus-outline-offset);
+}
+
+::deep .rz-html-editor-toolbar {
+    border-bottom: var(--inn-editor-border);
+    background-color: var(--inn-editor-toolbar-background-color);
+}
+
+::deep .rz-html-editor-button {
+    color: var(--inn-editor-button-color);
+    background: var(--inn-editor-button-background-color);
+    padding: var(--inn-editor-button-padding);
+}
+
+::deep .rz-html-editor-button:disabled {
+    color: var(--inn-editor-button-disabled-color);
+}
+
+::deep .rz-html-editor-button:hover {
+    color: var(--inn-editor-button-hover-color);
+    background: var(--inn-editor-button-hover-background-color);
+}
+
+::deep .rz-html-editor-separator {
+    background-color: var(--inn-editor-separator-background-color);
+}
+
+::deep .rz-html-editor-button.rz-selected {
+    background-color: var(--inn-editor-button-selected-background-color);
+    color: var(--inn-editor-button-selected-color);
+    border-radius: var(--inn-editor-border-radius);
+}
+
+::deep .rz-numeric input[type=number],
+::deep .rz-numeric input[type=text] {
+    line-height: var(--inn-numeric-line-height);
+    padding-block: var(--inn-numeric-input-padding-block);
+    padding-inline: var(--inn-numeric-input-padding-inline);
+}
+
+::deep .rz-numeric-up {
+    inset-block-start: var(--inn-numeric-button-offset);
+}
+
+::deep .rz-numeric-down {
+    inset-block-end: var(--inn-numeric-button-offset);
 }
 
 /* Small screens */
 @media (max-width: 1280px) {
-    .column-span-2 {
-        grid-column: span 4;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
+    /* Every child goes full width */
+    .innovative-form-layout > * {
+        width: 100%;
     }
 
-    .column-span-3,
-    .column-span-4 {
-        grid-column: span 4;
-    }
-
-    .rz-dialog-side-content-layout ::deep .rz-label{
+    .rz-dialog-side-content-layout ::deep .rz-label {
         margin-bottom: -.75rem;
     }
 }

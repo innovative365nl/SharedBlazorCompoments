@@ -4,22 +4,25 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Microsoft Packages -->
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.8" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.8" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
-    <PackageVersion Include="Microsoft.Extensions.Localization" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.6" />
-    <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.6" />
+    <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.8" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="9.0.8" />
+    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.8" />
     <PackageVersion Include="Microsoft.Kiota.Abstractions" Version="1.19.0" />
+    <PackageVersion Include="Microsoft.NET.ILLink.Tasks" Version="9.0.8" />
+    <PackageVersion Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="9.0.8" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <!-- 3rd party Packages -->
+    <PackageVersion Include="Radzen.Blazor" Version="7.2.3" />
     <!-- Testing Packages -->
+    <PackageVersion Include="Bogus" Version="35.6.3" />
     <PackageVersion Include="bunit" Version="1.40.0" />
-    <PackageVersion Include="FluentAssertions" Version="8.3.0" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <PackageVersion Include="FluentAssertions" Version="8.6.0" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="xunit" Version="2.9.3" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.1" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
-    <!-- UI Components -->
-    <PackageVersion Include="Radzen.Blazor" Version="7.1.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.4" />
   </ItemGroup>
 </Project>
