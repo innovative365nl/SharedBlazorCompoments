@@ -20,16 +20,15 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 {
     private const int MaxPageSize = 20;
 
-    private readonly ILogger<InnovativeGrid<TItem>> logger;
-    private readonly IInnovativeStringLocalizerFactory localizerFactory;
-    private IInnovativeStringLocalizer? localizer;
-
     private readonly bool allowSorting;
     private readonly string? defaultSortField;
+    private readonly IInnovativeStringLocalizerFactory localizerFactory;
+
+    private readonly ILogger<InnovativeGrid<TItem>> logger;
     private List<TItem> data = [];
-    private IList<TItem> selectedItems = [];
-    private FilterMode filterMode => FilterStyle == FilterStyle.Advanced ? FilterMode.Advanced : FilterMode.Simple;
     private RadzenDataGrid<TItem>? dataGrid;
+    private IInnovativeStringLocalizer? localizer;
+    private IList<TItem> selectedItems = [];
 
     public InnovativeGrid(ILogger<InnovativeGrid<TItem>> logger, IInnovativeStringLocalizerFactory localizerFactory)
     {
@@ -40,8 +39,10 @@ public partial class InnovativeGrid<TItem> : ComponentBase
         allowSorting = uiClassAttribute?.AllowSorting ?? true;
         defaultSortField = uiClassAttribute?.DefaultSortField;
     }
+    private FilterMode filterMode => FilterStyle == FilterStyle.Advanced ? FilterMode.Advanced : FilterMode.Simple;
 
-    [Parameter] public string? DataTestId { get; set; }
+    [Parameter]
+    public string? DataTestId { get; set; }
 
     /// <summary>
     ///     The data collection to be displayed in the grid. This serves as the source for all grid operations
@@ -49,23 +50,21 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     /// </summary>
     [Parameter]
 #pragma warning disable BL0007
-    public IEnumerable<TItem> Data
+    public IEnumerable<TItem>? Data
 #pragma warning restore BL0007
     {
         get => data;
         set
         {
-            data = value.ToList();
-            var currentSelection = new HashSet<TItem>(selectedItems);
-            selectedItems.Clear();
-            selectedItems.AddRange(currentSelection.Where(item => data.Contains(item)));
-        }
-    }
+            if (value != null)
+            {
+                data = value.ToList();
+                var currentSelection = new HashSet<TItem>(selectedItems);
+                selectedItems.Clear();
+                selectedItems.AddRange(currentSelection.Where(item => data.Contains(item)));
+            }
 
-    private static void OnPageChanged(PagerEventArgs obj)
-    {
-        // Do nothing! This prevents the default Radzen datagrid behaviour to go to the first page 
-        // after a Data { set; } is called.
+        }
     }
 
     /// <summary>
@@ -122,6 +121,12 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     /// </summary>
     public IEnumerable<TItem> SelectedItems => selectedItems;
 
+    private static void OnPageChanged(PagerEventArgs obj)
+    {
+        // Do nothing! This prevents the default Radzen datagrid behaviour to go to the first page
+        // after a Data { set; } is called.
+    }
+
     /// <summary>
     ///     Sets a single item as the selected item in the grid. This method clears any existing selections
     ///     and selects only the specified item. It also triggers the OnSelectionChanged event.
@@ -165,7 +170,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     /// <param name="filterOperator">The operator to use for filtering (e.g., Equals, Contains)</param>
     public async Task ApplyFilter(string columnName, object value, FilterOperator filterOperator)
     {
-        if (dataGrid is { ColumnsCollection: not null })
+        if (dataGrid is {ColumnsCollection: not null})
         {
             var column = (dataGrid.ColumnsCollection).FirstOrDefault(c => c.Property == columnName);
             if (column != null)
@@ -222,7 +227,8 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     /// </summary>
     private bool IsSortableColumn(PropertyInfo property)
     {
-        if (allowSorting) return false;
+        if (allowSorting)
+            return false;
         var attribute = property.GetCustomAttribute<UIGridField>();
         return attribute?.IsSortable ?? true;
     }
@@ -281,69 +287,75 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     private static IEnumerable<PropertyWithAttribute> GetPropertiesWithAttributes()
     {
         return typeof(TItem).GetProperties()
-            .Select(selector: p => new { Property = p, Attribute = p.GetCustomAttribute<UIGridField>() })
-            .Where(predicate: x => x.Attribute != null) // Only include properties with the UiFieldGrid attribute
-            .Select(selector: x =>
-                new PropertyWithAttribute(PropertyInfo: x.Property, Name: x.Property.Name, GridField: x.Attribute!));
+                            .Select(selector: p => new
+                                                   {
+                                                       Property = p
+                                                     , Attribute = p.GetCustomAttribute<UIGridField>()
+                                                   })
+                            .Where(predicate: x => x.Attribute != null) // Only include properties with the UiFieldGrid attribute
+                            .Select(selector: x =>
+                                                  new PropertyWithAttribute(PropertyInfo: x.Property, Name: x.Property.Name, GridField: x.Attribute!));
     }
 
     private string GetGridStyle()
     {
         var minHeight = MinHeightOption == GridHeight.Max ? "1162px" : "";
         return string.IsNullOrEmpty(minHeight)
-            ? "--max-height: 1162px;"
-            : $"--max-height: 1162px; --min-height: {minHeight};";
+                   ? "--max-height: 1162px;"
+                   : $"--max-height: 1162px; --min-height: {minHeight};";
     }
 
     [ExcludeFromCodeCoverage]
     private static RenderFragment RenderCustomComponent(PropertyInfo property, object context, UIGridField gridField)
     {
         return builder =>
-        {
-            try
-            {
-                object? value = property.GetValue(obj: context);
-                if (value == null)
-                {
-                    builder.AddMarkupContent(sequence: 0, markupContent: "<span class=\"text-muted\">-</span>");
-                    return;
-                }
+               {
+                   try
+                   {
+                       object? value = property.GetValue(obj: context);
+                       if (value == null)
+                       {
+                           builder.AddMarkupContent(sequence: 0, markupContent: "<span class=\"text-muted\">-</span>");
+                           return;
+                       }
 
-                int sequence = 0;
-                if (gridField.CustomComponentType != null)
-                {
-                    builder.OpenComponent(sequence: sequence++, componentType: gridField.CustomComponentType);
-                }
-                if (IsList(value: value) && gridField.CustomComponentType == null)
-                {
-                    builder.AddContent(sequence: sequence++, textContent: string.Join(separator: ", ", values: AsList(value)));
-                }
-                else
-                {
-                    builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
-                }
+                       int sequence = 0;
+                       if (gridField.CustomComponentType != null)
+                       {
+                           builder.OpenComponent(sequence: sequence++, componentType: gridField.CustomComponentType);
+                       }
+                       if (IsList(value: value)
+                        && gridField.CustomComponentType == null)
+                       {
+                           builder.AddContent(sequence: sequence++, textContent: string.Join(separator: ", ", values: AsList(value)));
+                       }
+                       else
+                       {
+                           builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
+                       }
 
-                foreach (string parameter in gridField.Parameters ?? [])
-                {
-                    int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
-                    if (equalIndex > 0 && equalIndex < parameter.Length - 1)
-                    {
-                        string paramName = parameter[..equalIndex];
-                        string paramValue = parameter[(equalIndex + 1)..];
-                        builder.AddAttribute(sequence: sequence++, name: paramName, value: paramValue);
-                    }
-                }
+                       foreach (string parameter in gridField.Parameters ?? [])
+                       {
+                           int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
+                           if (equalIndex > 0
+                            && equalIndex < parameter.Length - 1)
+                           {
+                               string paramName = parameter[..equalIndex];
+                               string paramValue = parameter[(equalIndex + 1)..];
+                               builder.AddAttribute(sequence: sequence++, name: paramName, value: paramValue);
+                           }
+                       }
 
-                if (gridField.CustomComponentType != null)
-                {
-                    builder.CloseComponent();
-                }
-            }
-            catch (Exception ex) when (ex is ArgumentException or InvalidOperationException)
-            {
-                builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
-            }
-        };
+                       if (gridField.CustomComponentType != null)
+                       {
+                           builder.CloseComponent();
+                       }
+                   }
+                   catch (Exception ex) when (ex is ArgumentException or InvalidOperationException)
+                   {
+                       builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
+                   }
+               };
     }
 
     [ExcludeFromCodeCoverage]
@@ -366,7 +378,7 @@ public partial class InnovativeGrid<TItem> : ComponentBase
                    int sequence = 0;
                    var decimalText = Convert.ToDecimal(value, CultureInfo.CurrentCulture).ToString(format, CultureInfo.CurrentCulture);
                    builder.OpenElement(sequence++, "div");
-                   builder.AddAttribute(sequence++ , "data-text", decimalText);
+                   builder.AddAttribute(sequence++, "data-text", decimalText);
                    builder.AddContent(sequence, (MarkupString)decimalText);
                    builder.CloseElement();
                };
