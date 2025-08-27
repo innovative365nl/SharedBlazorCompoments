@@ -446,16 +446,29 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         if (property is null)
             return;
 
+        var hasValidators = property
+                            .GetCustomAttributes(inherit: true)
+                            .Any(attr => attr.GetType().IsSubclassOf(typeof(ValidationAttribute)));
+
+        if (!hasValidators)
+            return;
+
         model.RemoveException(propertyName);
 
-        var errorMessages = property
-                            .GetCustomAttributes(inherit: true)
-                            .Where(attr => attr.GetType().IsSubclassOf(typeof(ValidationAttribute)))
-                            .Cast<ValidationAttribute>()
-                            .Where(x => !x.IsValid(value))
-                            .Select(x => x.FormatErrorMessage(propertyName))
-                            .ToList();
+        var results = new List<ValidationResult>();
 
-        model.AddExceptions(propertyName, errorMessages);
+        LocalizedString displayName = localizer[name: property.GetCustomAttribute<UIFormField>()?.Name ?? propertyName];
+        var context = new ValidationContext(instance: model)
+                      { MemberName = propertyName
+                      , DisplayName = displayName
+                      };
+        _ = Validator.TryValidateProperty(value: value, validationContext: context, validationResults: results);
+
+        var messages = results
+                       .Where(predicate: x => !string.IsNullOrWhiteSpace(value: x.ErrorMessage))!
+                       .Select(selector: x => x.ErrorMessage!)
+                       .ToList();
+
+        model.AddExceptions(propertyName, messages);
     }
 }

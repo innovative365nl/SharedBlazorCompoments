@@ -53,7 +53,7 @@ public abstract class FormModel
 
     public async Task AddExceptionAsync(Exception exception)
     {
-        Debug.Assert(exception != null, $"Parameter {nameof(exception)} is null!");
+        ArgumentNullException.ThrowIfNull(exception);
 
         var exceptionName = exception.GetType().Name;
 
@@ -161,7 +161,7 @@ public abstract class FormModel
 
     public void RemoveException(Exception exception)
     {
-        Debug.Assert(exception != null, $"Parameter {nameof(exception)} is null!");
+        ArgumentNullException.ThrowIfNull(exception);
         _ = exceptions.Remove(exception.GetType().Name);
     }
     public void RemoveException(string key) => _ = exceptions.Remove(key);

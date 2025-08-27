@@ -30,8 +30,12 @@ public partial class ExampleComplexGrid6(IInnovativeSidePanelService sidePanelSe
                                        Person6GridModel item = items.Single(predicate: x => x.Id == model.Id);
                                        item.FirstName = model.FirstName;
                                        item.LastName = model.LastName;
-                                       item.Income = model.Income.ToCurrencyString();
-                                       item.DateOfBirth = model.DateOfBirth.ToDateString();
+                                       item.Income = model.Income is null
+                                                         ? string.Empty
+                                                         : model.Income.Value.ToCurrencyString();
+                                       item.DateOfBirth = model.DateOfBirth is null
+                                                              ? string.Empty
+                                                              : model.DateOfBirth.Value.ToDateString();
                                        return Task.CompletedTask;
                                    };
 
@@ -60,6 +64,7 @@ public sealed class Person6GridModel
     public required string Income { get; set; }
 
     public string? EmailAddress { get; set; }
+
     public string? Phone { get; set; }
 
     public static Person6GridModel ToGridModel([NotNull] PersonModel instance)
@@ -122,13 +127,13 @@ public sealed class Person6FormModel : FormModel
 
     [UIFormField(name: "DateOfBirth", ColumnGroup = ColumnGroup2, FormParameters = [$"DateFormat={Constants.DateFormat}"], DisplayParameters = ["Format={0:dddd d MMMM yyyy}"])]
     [Required]
-    public required DateTime DateOfBirth { get; set; }
+    public required DateTime? DateOfBirth { get; set; }
 
     [UIFormField(name: "Age", ColumnGroup = ColumnGroup3)]
-    public int Age => DateOfBirth.Age();
+    public int Age => DateOfBirth?.Age() ?? 0;
 
     [UIFormField(name: "Income", ColumnGroup = ColumnGroup4, FormParameters = [$"Format={Constants.CurrencyFormat}"], DisplayParameters = [$"Format={Constants.CurrencyFormat}"])]
-    public required decimal Income { get; set; }
+    public decimal? Income { get; set; }
 
     [UIFormField(name: "Email", ColumnGroup = ColumnGroup5)]
     [Required]
@@ -142,14 +147,13 @@ public sealed class Person6FormModel : FormModel
     public static Person6FormModel ToFormModel([NotNull] PersonModel instance)
     {
         return new Person6FormModel
-               {
-                   Id = instance.Id
-                 , FirstName = instance.FirstName
-                 , LastName = instance.LastName
-                 , Income = instance.Income
-                 , DateOfBirth = instance.DateOfBirth.ToDateTime(time: TimeOnly.MinValue),
-                  EmailAddress = instance.EmailAddress,
-                  Phone = instance.Phone
-        };
+               { Id = instance.Id
+               , FirstName = instance.FirstName
+               , LastName = instance.LastName
+               , Income = instance.Income
+               , DateOfBirth = instance.DateOfBirth.ToDateTime(time: TimeOnly.MinValue)
+               , EmailAddress = instance.EmailAddress
+               , Phone = instance.Phone
+               };
     }
 }
