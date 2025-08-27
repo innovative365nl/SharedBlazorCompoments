@@ -88,6 +88,15 @@ namespace ExampleApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The email adres provided doesn&apos;t look like a valid one.
+        /// </summary>
+        internal static string EmailAddressValidation {
+            get {
+                return ResourceManager.GetString("EmailAddressValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First name/Voornaam.
         /// </summary>
         internal static string FirstName {
@@ -111,6 +120,15 @@ namespace ExampleApp.Translations {
         internal static string Person {
             get {
                 return ResourceManager.GetString("Person", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The phone number provided doesn&apos;t look like a valid one.
+        /// </summary>
+        internal static string PhoneNumberValidation {
+            get {
+                return ResourceManager.GetString("PhoneNumberValidation", resourceCulture);
             }
         }
     }
