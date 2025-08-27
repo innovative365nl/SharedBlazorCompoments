@@ -135,7 +135,7 @@ public abstract class FormModel
     public void AddExceptions(string key, IEnumerable<string> messages)
     {
         var exceptionMessages = messages.Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-        if(exceptionMessages.Count == 0)
+        if (exceptionMessages.Count == 0)
             return;
 
         foreach (var message in exceptionMessages)
