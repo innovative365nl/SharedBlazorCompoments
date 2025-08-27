@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -403,6 +404,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     private void SetValue(string propertyName, object? value, bool shouldNotifyChange = false)
     {
         formValues[key: propertyName] = value;
+        AddValidationErrors(propertyName,value);
         if (shouldNotifyChange)
         {
             NotifyPropertyChanged(propertyName: propertyName, value: value);
@@ -435,4 +437,25 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         => formField?.FormParameters == null
         || !formField.FormParameters.Contains("DisplayLabel=false", StringComparer.InvariantCultureIgnoreCase);
 
+    private void AddValidationErrors(string propertyName, object? value)
+    {
+        if (Model is not FormModel model)
+            return;
+
+        var property = typeof(TModel).GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+        if (property is null)
+            return;
+
+        model.RemoveException(propertyName);
+
+        var errorMessages = property
+                            .GetCustomAttributes(inherit: true)
+                            .Where(attr => attr.GetType().IsSubclassOf(typeof(ValidationAttribute)))
+                            .Cast<ValidationAttribute>()
+                            .Where(x=> !x.IsValid(value))
+                            .Select(x=> x.FormatErrorMessage(propertyName))
+                            .ToList();
+
+        model.AddExceptions(propertyName, errorMessages);
+    }
 }
