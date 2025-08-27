@@ -8,10 +8,11 @@ namespace Innovative.Blazor.Components.Components;
 
 public abstract class FormModel
 {
-    private readonly List<string> exceptions = [];
+    private readonly Dictionary<string, HashSet<string>> exceptions = [];
+
     protected Collection<Column> ViewColumns { get; } = [];
 
-    public IEnumerable<string> Exceptions => exceptions;
+    public IEnumerable<string> Exceptions => exceptions.SelectMany(x=>x.Value);
 
     /// <summary>
     /// The name (used as caption or label) of the form component.
@@ -52,105 +53,117 @@ public abstract class FormModel
 
     public async Task AddExceptionAsync(Exception exception)
     {
-        Debug.Assert(exception != null, nameof(exception) + " != null");
+        Debug.Assert(exception != null, $"Parameter {nameof(exception)} is null!");
+
         var exceptionName = exception.GetType().Name;
 
-        if (exceptionName == "MicrosoftAspNetCoreMvcProblemDetails" || exceptionName.StartsWith("ProblemDetails",StringComparison.InvariantCulture ) )
+        if (IsProblemDetails(exceptionName))
         {
-            PropertyInfo? additionalDataProp = exception.GetType().GetProperty("AdditionalData");
-            //additionalData is a dictionary of string keys and object values
-            //this should be use the get the errors
-
-
-            if (additionalDataProp != null)
-            {
-                if (additionalDataProp.GetValue(exception) is IDictionary<string, object> additionalData)
-                {
-
-                    // Check if the additionalData contains an "errors" key and cast object as Erros class
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-                    if (additionalData.TryGetValue("errors", out dynamic errorsObj))
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-                    {
-                        var serializedData = await KiotaJsonSerializer.SerializeAsStringAsync(errorsObj);
-
-                        var root = JsonNode.Parse(serializedData); // of JsonDocument, zie alternatief onderaan
-
-                        if (root is JsonObject obj)
-                        {
-                            foreach (var kvp in obj)
-                            {
-                                if (kvp.Value is JsonArray arr)
-                                {
-                                    var errorString = string.Empty;
-                                    foreach (var item in arr)
-                                    {
-                                        if (item is JsonValue value)
-                                        {
-                                            errorString += value.ToString() + "<br/> ";
-                                        }
-                                    }
-                                    exceptions.Add(errorString);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            foreach (var kvp in additionalData)
-                            {
-                                exceptions.Add(kvp.Value.ToString()!);
-                            }
-                            // Check if the additionalData contains an "errors" key and cast object as Erros class
-                        }
-                    }
-                }
-            }
+            AddExceptions(exceptionName, await GetErrorMessagesFromAdditionalDataAsync(exception)
+                                             .ConfigureAwait(continueOnCapturedContext: false));
         }
-        else if (exceptionName.Equals("ErrorResponse", StringComparison.OrdinalIgnoreCase))
+        else if (IsErrorResponse(exceptionName))
         {
-            PropertyInfo? additionalDataProp = exception.GetType().GetProperty("Errors");
-            var values = additionalDataProp?.GetValue(exception) as dynamic;
-            //get the AdditionalData property from the values
-            var additionalData = values?.AdditionalData;
-
-            var serializedData =   await KiotaJsonSerializer.SerializeAsStringAsync(additionalData);
-            var root = JsonNode.Parse(serializedData); // of JsonDocument, zie alternatief onderaan
-
-            if (root is JsonObject obj)
-            {
-                foreach (var kvp in obj)
-                {
-                    if (kvp.Value is JsonArray arr)
-                    {
-                        var errorString = string.Empty;
-                        foreach (var item in arr)
-                        {
-                            if (item is JsonValue value)
-                            {
-                                errorString += value.ToString() + "<br/> ";
-                            }
-                        }
-                        exceptions.Add(errorString);
-                    }
-                }
-            }
-
+            AddExceptions(exceptionName, await GetErrorMessagesFromErrorResponseAsync(exception)
+                                             .ConfigureAwait(continueOnCapturedContext: false));
         }
         else
         {
-            exceptions.Add(exception.Message);
+            AddException(exceptionName, exception.Message);
         }
     }
-    public void AddException(string key, string message) => exceptions.Add(message);
 
-    public void ClearExceptions()
+    private static bool IsProblemDetails(string exceptionName) => exceptionName == "MicrosoftAspNetCoreMvcProblemDetails"
+                                                               || exceptionName.StartsWith(value: "ProblemDetails", comparisonType: StringComparison.InvariantCulture);
+
+    private static bool IsErrorResponse(string exceptionName) => exceptionName.Equals(value: "ErrorResponse", comparisonType: StringComparison.OrdinalIgnoreCase);
+
+    private static async Task<List<string>> GetErrorMessagesFromAdditionalDataAsync(Exception exception)
     {
-        exceptions.Clear();
+        // additionalData is a dictionary of string keys and object values
+        // this should be used to the get the errors
+        PropertyInfo? additionalDataProp = exception.GetType().GetProperty("AdditionalData");
+
+        if (additionalDataProp?.GetValue(exception) is not IDictionary<string, object> additionalData)
+        {
+            return [];
+        }
+
+        // Check if the additionalData contains an "errors" key and cast object as Errors class
+        return additionalData.TryGetValue("errors", out dynamic? errorsObj)
+                    ? await GetErrorMessagesAsync(errorsObj)
+                    : additionalData.Select(kvp => $"{kvp.Key} = {kvp.Value}")
+                                    .ToList();
     }
-}
 
-public class ErrorResponseDetails
-{
-    public Dictionary<string, object>? AdditionalData { get;  }
-}
+    private static async Task<List<string>> GetErrorMessagesFromErrorResponseAsync(Exception exception)
+    {
+        PropertyInfo? errorsProp = exception.GetType().GetProperty("Errors");
+        dynamic? values = errorsProp?.GetValue(exception);
+        var errorsObj = values?.AdditionalData;
 
+        return await GetErrorMessagesAsync(errorsObj);
+    }
+
+    private static async Task<List<string>> GetErrorMessagesAsync(dynamic? errorsObj)
+    {
+        if(errorsObj is null)
+            return [];
+
+        string serializedData = await KiotaJsonSerializer.SerializeAsStringAsync(errorsObj);
+        var root = JsonNode.Parse(serializedData);
+
+        if (root is not JsonObject jsonObject)
+            return [];
+
+        List<string> result = [];
+        foreach (KeyValuePair<string, JsonNode?> kvp in jsonObject)
+        {
+            if (kvp.Value is not JsonArray jsonArray)
+                continue;
+
+            foreach (var item in jsonArray)
+            {
+                if (item is JsonValue value)
+                    result.Add(value.ToString());
+            }
+        }
+
+        return result;
+    }
+
+    public void AddExceptions(string key, IEnumerable<string> messages)
+    {
+        var exceptionMessages = messages.Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+        if(exceptionMessages.Count == 0)
+            return;
+
+        foreach (var message in exceptionMessages)
+        {
+            AddException(key, message);
+        }
+    }
+
+    public void AddException(string key, string message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+            return;
+
+        if (exceptions.TryGetValue(key, out var value))
+        {
+            value.Add(message);
+            return;
+        }
+
+        exceptions[key] = new HashSet<string>();
+        exceptions[key].Add(message);
+    }
+
+    public void RemoveException(Exception exception)
+    {
+        Debug.Assert(exception != null, $"Parameter {nameof(exception)} is null!");
+        _ = exceptions.Remove(exception.GetType().Name);
+    }
+    public void RemoveException(string key) => _ = exceptions.Remove(key);
+    public void ClearExceptions() => exceptions.Clear();
+}
