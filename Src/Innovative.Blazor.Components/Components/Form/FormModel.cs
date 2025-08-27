@@ -107,7 +107,7 @@ public abstract class FormModel
 
     private static async Task<List<string>> GetErrorMessagesAsync(dynamic? errorsObj)
     {
-        if(errorsObj is null)
+        if (errorsObj is null)
             return [];
 
         string serializedData = await KiotaJsonSerializer.SerializeAsStringAsync(errorsObj);
