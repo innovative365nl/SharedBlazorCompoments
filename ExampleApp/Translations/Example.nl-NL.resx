@@ -139,6 +139,6 @@
     <value>Persoon</value>
   </data>
   <data name="PhoneNumberValidation" xml:space="preserve">
-    <value>Het opgegeven telefoonnummer lijkt niet vilide te zijn</value>
+    <value>Het opgegeven telefoonnummer lijkt niet valide te zijn</value>
   </data>
 </root>
