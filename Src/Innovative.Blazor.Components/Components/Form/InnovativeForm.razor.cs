@@ -452,7 +452,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
                             .GetCustomAttributes(inherit: true)
                             .Where(attr => attr.GetType().IsSubclassOf(typeof(ValidationAttribute)))
                             .Cast<ValidationAttribute>()
-                            .Where(x=> !x.IsValid(value))
+                            .Where(x => !x.IsValid(value))
                             .Select(x=> x.FormatErrorMessage(propertyName))
                             .ToList();
 
