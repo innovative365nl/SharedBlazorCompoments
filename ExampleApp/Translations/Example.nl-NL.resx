@@ -127,7 +127,7 @@
     <value>Persoon</value>
   </data>
   <data name="EmailAddressValidation" xml:space="preserve">
-    <value>Het opgegeven emailadres lijkt niet vilide te zijn</value>
+    <value>Het opgegeven emailadres lijkt niet valide te zijn</value>
   </data>
   <data name="FirstName" xml:space="preserve">
     <value>Voornaam</value>
