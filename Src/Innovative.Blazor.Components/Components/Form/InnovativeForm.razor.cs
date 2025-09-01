@@ -38,17 +38,20 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     protected override void OnParametersSet()
     {
-        if (ParentDialog != null && Model is FormModel)
+        if (ParentDialog != null && Model is FormModel model)
         {
             ParentDialog.SetFormComponent(this);
-        }
 
-        foreach (var prop in GetPropertiesWithUiFormField())
-        {
-            formValues[key: prop.Name] = prop.GetValue(obj: Model);
-        }
+            if (!model.Exceptions.Any())
+            {
+                foreach (var prop in GetPropertiesWithUiFormField())
+                {
+                    formValues[key: prop.Name] = prop.GetValue(obj: Model);
+                }
+            }
 
-        OrganizePropertiesByGroups();
+            OrganizePropertiesByGroups();
+        }
     }
 
     private void OrganizePropertiesByGroups()
@@ -92,6 +95,10 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     public Task OnFormSubmit()
     {
+        // Do not write the form values back to the model if the model has exceptions
+        if (Model is FormModel model && model.Exceptions.Any())
+            return Task.CompletedTask;
+
         foreach (var entry in formValues)
         {
             var prop = typeof(TModel).GetProperty(name: entry.Key);

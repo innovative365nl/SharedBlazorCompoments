@@ -1,6 +1,5 @@
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Reflection;
+  using System.Reflection;
 using System.Text.Json.Nodes;
 using Microsoft.Kiota.Abstractions.Serialization;
 
@@ -73,7 +72,7 @@ public abstract class FormModel
         }
     }
 
-    private static bool IsProblemDetails(string exceptionName) => exceptionName == "MicrosoftAspNetCoreMvcProblemDetails"
+    private static bool IsProblemDetails(string exceptionName) => exceptionName.Equals(value: "MicrosoftAspNetCoreMvcProblemDetails", comparisonType: StringComparison.Ordinal)
                                                                || exceptionName.StartsWith(value: "ProblemDetails", comparisonType: StringComparison.InvariantCulture);
 
     private static bool IsErrorResponse(string exceptionName) => exceptionName.Equals(value: "ErrorResponse", comparisonType: StringComparison.OrdinalIgnoreCase);
