@@ -36,6 +36,8 @@ public partial class ExampleComplexGrid6(IInnovativeSidePanelService sidePanelSe
                                        item.DateOfBirth = model.DateOfBirth is null
                                                               ? string.Empty
                                                               : model.DateOfBirth.Value.ToDateString();
+                                       item.EmailAddress = model.EmailAddress;
+                                       item.Phone = model.Phone;
                                        return Task.CompletedTask;
                                    };
 
