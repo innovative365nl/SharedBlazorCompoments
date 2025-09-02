@@ -126,6 +126,9 @@
   <data name="DialogService_Person" xml:space="preserve">
     <value>Persoon/Person</value>
   </data>
+  <data name="EmailAddressValidation" xml:space="preserve">
+    <value>The email address provided doesn't look like a valid one</value>
+  </data>
   <data name="FirstName" xml:space="preserve">
     <value>First name/Voornaam</value>
   </data>
@@ -134,5 +137,8 @@
   </data>
   <data name="Person" xml:space="preserve">
     <value>Persoon/Person</value>
+  </data>
+  <data name="PhoneNumberValidation" xml:space="preserve">
+    <value>The phone number provided doesn't look like a valid one</value>
   </data>
 </root>

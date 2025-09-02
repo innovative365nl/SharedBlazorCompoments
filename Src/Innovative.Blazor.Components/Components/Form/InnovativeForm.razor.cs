@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -37,17 +38,20 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     protected override void OnParametersSet()
     {
-        if (ParentDialog != null && Model is FormModel)
+        if (ParentDialog != null && Model is FormModel model)
         {
             ParentDialog.SetFormComponent(this);
-        }
 
-        foreach (var prop in GetPropertiesWithUiFormField())
-        {
-            formValues[key: prop.Name] = prop.GetValue(obj: Model);
-        }
+            if (!model.Exceptions.Any())
+            {
+                foreach (var prop in GetPropertiesWithUiFormField())
+                {
+                    formValues[key: prop.Name] = prop.GetValue(obj: Model);
+                }
+            }
 
-        OrganizePropertiesByGroups();
+            OrganizePropertiesByGroups();
+        }
     }
 
     private void OrganizePropertiesByGroups()
@@ -91,6 +95,10 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     public Task OnFormSubmit()
     {
+        // Do not write the form values back to the model if the model has exceptions
+        if (Model is FormModel model && model.Exceptions.Any())
+            return Task.CompletedTask;
+
         foreach (var entry in formValues)
         {
             var prop = typeof(TModel).GetProperty(name: entry.Key);
@@ -403,6 +411,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     private void SetValue(string propertyName, object? value, bool shouldNotifyChange = false)
     {
         formValues[key: propertyName] = value;
+        AddValidationErrors(propertyName, value);
         if (shouldNotifyChange)
         {
             NotifyPropertyChanged(propertyName: propertyName, value: value);
@@ -435,4 +444,38 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         => formField?.FormParameters == null
         || !formField.FormParameters.Contains("DisplayLabel=false", StringComparer.InvariantCultureIgnoreCase);
 
+    private void AddValidationErrors(string propertyName, object? value)
+    {
+        if (Model is not FormModel model)
+            return;
+
+        var property = typeof(TModel).GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+        if (property is null)
+            return;
+
+        var hasValidators = property
+                            .GetCustomAttributes(inherit: true)
+                            .Any(attr => attr.GetType().IsSubclassOf(typeof(ValidationAttribute)));
+
+        if (!hasValidators)
+            return;
+
+        model.RemoveException(propertyName);
+
+        var results = new List<ValidationResult>();
+
+        LocalizedString displayName = localizer[name: property.GetCustomAttribute<UIFormField>()?.Name ?? propertyName];
+        var context = new ValidationContext(instance: model)
+                      { MemberName = propertyName
+                      , DisplayName = displayName
+                      };
+        _ = Validator.TryValidateProperty(value: value, validationContext: context, validationResults: results);
+
+        var messages = results
+                       .Where(predicate: x => !string.IsNullOrWhiteSpace(value: x.ErrorMessage))!
+                       .Select(selector: x => x.ErrorMessage!)
+                       .ToList();
+
+        model.AddExceptions(propertyName, messages);
+    }
 }
