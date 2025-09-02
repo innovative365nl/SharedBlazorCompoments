@@ -55,7 +55,7 @@ public class InnovativeFormTests : LocalizedTestBase
         Assert.Equal(model.IntProperty, component.GetFormValue("IntProperty"));
         Assert.Equal(model.BoolProperty, component.GetFormValue("BoolProperty"));
         Assert.Equal(model.DateProperty, component.GetFormValue("DateProperty"));
-        Assert.Equal(allActions,  component.GetActions().Count);
+        Assert.Equal(allActions, component.GetActions().Count);
     }
 
     [Fact]
