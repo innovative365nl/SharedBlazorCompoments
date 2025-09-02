@@ -26,6 +26,12 @@ public class InnovativeFormTests : LocalizedTestBase
     public void When_OnParametersSet_ItShouldInitializeFormValues()
     {
         // Arrange
+        const int saveFormAction = 1;
+        const int cancelFormAction = 1;
+        const int deleteFormAction = 1;
+        const int customAction = 1;
+        const int allActions = saveFormAction + cancelFormAction + deleteFormAction + customAction;
+
         var model = new TestFormModel
         {
             StringProperty = "Test",
@@ -49,7 +55,7 @@ public class InnovativeFormTests : LocalizedTestBase
         Assert.Equal(model.IntProperty, component.GetFormValue("IntProperty"));
         Assert.Equal(model.BoolProperty, component.GetFormValue("BoolProperty"));
         Assert.Equal(model.DateProperty, component.GetFormValue("DateProperty"));
-        Assert.Single(component.GetActions());
+        Assert.Equal(allActions, component.GetActions().Count);
     }
 
     [Fact]
@@ -187,7 +193,7 @@ public class InnovativeFormTests : LocalizedTestBase
 
 // Test classes
 [UIFormClass("testFormGroupModel")]
-public class TestFormGroupModel
+public class TestFormGroupModel: FormModel
 {
     [UIFormField(name:nameof(GroupedProperty1), ColumnGroup = "Group1")] public string GroupedProperty1 { get; set; } = string.Empty;
 
@@ -210,7 +216,7 @@ public class TestFormColumnWidthModel: FormModel
     [UIFormField(name: nameof(Property2), ColumnGroup = "Col2")] public string Property2 { get; set; } = string.Empty;
 }
 
-public class TestFormModel
+public class TestFormModel: FormModel
 {
     [UIFormField(name: nameof(StringProperty))] public string StringProperty { get; set; } = string.Empty;
 
