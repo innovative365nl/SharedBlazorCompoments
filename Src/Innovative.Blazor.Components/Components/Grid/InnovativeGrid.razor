@@ -4,9 +4,39 @@
 @typeparam TItem
 
 <div>
-    <InnovativeCard IsLoading="IsLoading" Title="@Title">
+    <InnovativeCard Title="@Title">
         <RadzenStack Style="@GetGridStyle()">
-            @if (Data is not null)
+            @if (IsLoading)
+            {
+                <RadzenTable>
+                    <RadzenTableHeader>
+                        <RadzenTableHeaderRow>
+
+                            @foreach (var _ in GetPropertiesWithAttributes())
+                            {
+                                <RadzenTableHeaderCell>
+                                    <RadzenSkeleton Variant="SkeletonVariant.Text" Animation="SkeletonAnimation.None"
+                                                    Style="width:80%;height: 0.5rem; display:block;margin:0.5rem auto; background-color:lightgray;"/>
+                                </RadzenTableHeaderCell>
+                            }
+                        </RadzenTableHeaderRow>
+                    </RadzenTableHeader>
+                    <RadzenTableBody>
+                        @for (var i = 0; i < 10; i++)
+                        {
+                            <RadzenTableRow>
+                                @foreach (var _ in GetPropertiesWithAttributes())
+                                {
+                                    <RadzenTableCell>
+                                        <RadzenSkeleton Animation="SkeletonAnimation.Wave" Style="width: 100%;"/>
+                                    </RadzenTableCell>
+                                }
+                            </RadzenTableRow>
+                        }
+                    </RadzenTableBody>
+                </RadzenTable>
+            }
+            else if (Data is not null)
             {
                 <RadzenDataGrid @ref="@dataGrid"
                                 TItem="TItem"
