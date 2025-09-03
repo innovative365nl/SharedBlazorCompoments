@@ -26,9 +26,9 @@
     {
         if (firstRender)
         {
-            await Task.Delay(2000);
+            await Task.Delay(3000);
             Data = ExampleDataItem.GetExampleData().ToList();
-            //       IsLoading = false;
+            IsLoading = false;
             StateHasChanged();
         }
 
