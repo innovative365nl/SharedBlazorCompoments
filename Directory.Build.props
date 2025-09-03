@@ -21,8 +21,8 @@
     <Company>Innovative365</Company>
     <Copyright>Copyright © 2025, The Netherlands</Copyright>
     <Authors>Innovative 365</Authors>
-    <Description>The Blazor componenents of Innovative 365.</Description>
-    <Product>Innovative.Blazor.Compoments</Product>
+    <Description>The Blazor components of Innovative 365.</Description>
+    <Product>Innovative.Blazor.Components</Product>
   </PropertyGroup>
 
   <PropertyGroup>
