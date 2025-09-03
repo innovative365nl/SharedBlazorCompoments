@@ -1,5 +1,6 @@
 using Bogus;
 using Innovative.Blazor.Components.Common;
+using Innovative.Blazor.Components.Components;
 
 namespace ExampleApp;
 
@@ -38,4 +39,47 @@ public sealed record PersonModel
     public string? EmailAddress { get; init; }
     public string? Phone { get; init; }
     public override string ToString() => $"{FirstName} {LastName}";
+}
+
+public class ExampleDataItem
+{
+    [UIGridField]
+    public int Id { get; set; }
+
+    [UIGridField]
+    public string Name { get; set; } = string.Empty;
+
+    [UIGridField]
+    public decimal Value { get; set; }
+
+    [UIGridField]
+    public DateTime Date { get; set; }
+
+    public static IReadOnlyCollection<ExampleDataItem> GetExampleData()
+    {
+        return new List<ExampleDataItem>
+               {
+                   new ExampleDataItem
+                   {
+                       Id = 1
+                     , Name = "Alpha"
+                     , Value = 10.5m
+                     , Date = DateTime.Today
+                   }
+                 , new ExampleDataItem
+                   {
+                       Id = 2
+                     , Name = "Beta"
+                     , Value = 20.0m
+                     , Date = DateTime.Today.AddDays(-1)
+                   }
+                 , new ExampleDataItem
+                   {
+                       Id = 3
+                     , Name = "Gamma"
+                     , Value = 30.75m
+                     , Date = DateTime.Today.AddDays(-2)
+                   }
+               };
+    }
 }
