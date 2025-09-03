@@ -3,12 +3,11 @@
 
 <PageTitle>Sample Grid Loading</PageTitle>
 
-<h3>Sample Grid Loading (3s delay)</h3>
 
 <InnovativeGrid TItem="ExampleDataItem"
                 Data="@Data"
                 IsLoading="@IsLoading"
-                Title="Sample DataGrid"
+                Title="Sample Grid Loading (3s delay)"
                 EnableRowSelection="true"
                 SelectionMode="DataGridSelectionMode.Single"
                 FilterStyle="FilterStyle.Advanced"/>
@@ -25,9 +24,14 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await Task.Delay(10000);
-        Data = ExampleDataItem.GetExampleData().ToList();
-        IsLoading = false;
+        if (firstRender)
+        {
+            await Task.Delay(3000);
+            Data = ExampleDataItem.GetExampleData().ToList();
+            //       IsLoading = false;
+            StateHasChanged();
+        }
+
         await base.OnAfterRenderAsync(firstRender);
     }
 
