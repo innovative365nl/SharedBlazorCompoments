@@ -11,6 +11,7 @@
                 EnableRowSelection="true"
                 SelectionMode="DataGridSelectionMode.Single"
                 FilterStyle="FilterStyle.Advanced"/>
+<RadzenButton ButtonStyle="ButtonStyle.Primary " Click="RestartLoading">Restart Loading</RadzenButton>
 
 @code {
     private List<ExampleDataItem>? Data;
@@ -26,14 +27,24 @@
     {
         if (firstRender)
         {
-            await Task.Delay(2000);
-            Data = ExampleDataItem.GetExampleData().ToList();
-            //       IsLoading = false;
-            StateHasChanged();
+            await StartLoadingDelay();
         }
-
         await base.OnAfterRenderAsync(firstRender);
     }
 
-}
+    private async Task StartLoadingDelay()
+    {
+        IsLoading = true;
+        Data = null;
+        StateHasChanged();
+        await Task.Delay(3000);
+        Data = ExampleDataItem.GetExampleData().ToList();
+        IsLoading = false;
+        StateHasChanged();
+    }
 
+    private async Task RestartLoading()
+    {
+        await StartLoadingDelay();
+    }
+}
