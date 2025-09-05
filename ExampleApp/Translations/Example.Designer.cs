@@ -88,7 +88,16 @@ namespace ExampleApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The email adres provided doesn&apos;t look like a valid one.
+        ///   Looks up a localized string similar to Email/E-mail.
+        /// </summary>
+        internal static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The email address provided doesn&apos;t look like a valid one.
         /// </summary>
         internal static string EmailAddressValidation {
             get {
@@ -102,6 +111,33 @@ namespace ExampleApp.Translations {
         internal static string FirstName {
             get {
                 return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full name/Volledige naam.
+        /// </summary>
+        internal static string FullName {
+            get {
+                return ResourceManager.GetString("FullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home page.
+        /// </summary>
+        internal static string HomePage {
+            get {
+                return ResourceManager.GetString("HomePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Income/Inkomen.
+        /// </summary>
+        internal static string Income {
+            get {
+                return ResourceManager.GetString("Income", resourceCulture);
             }
         }
         
@@ -124,11 +160,29 @@ namespace ExampleApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Phone/Telefoon.
+        /// </summary>
+        internal static string Phone {
+            get {
+                return ResourceManager.GetString("Phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The phone number provided doesn&apos;t look like a valid one.
         /// </summary>
         internal static string PhoneNumberValidation {
             get {
                 return ResourceManager.GetString("PhoneNumberValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The url provided must be complete and safe (https).
+        /// </summary>
+        internal static string UrlValidation {
+            get {
+                return ResourceManager.GetString("UrlValidation", resourceCulture);
             }
         }
     }

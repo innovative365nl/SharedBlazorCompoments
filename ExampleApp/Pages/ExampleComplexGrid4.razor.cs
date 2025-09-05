@@ -11,7 +11,7 @@ public partial class ExampleComplexGrid4(IInnovativeSidePanelService sidePanelSe
 
     protected override void OnInitialized()
     {
-        ExampleDataSet.Instance.GenerateTestData(10);
+        ExampleDataSet.Instance.GenerateTestData(amount: 10);
         items.AddRange(collection: ExampleDataSet.Instance.Data.Select(selector: Person4GridModel.ToGridModel));
     }
 
@@ -19,7 +19,9 @@ public partial class ExampleComplexGrid4(IInnovativeSidePanelService sidePanelSe
     {
         Person4GridModel? rowItem = obj.FirstOrDefault();
         if (rowItem is null)
+        {
             return;
+        }
 
         var model = Person4FormModel.ToFormModel(instance: Person4GridModel.ToModel(instance: rowItem));
         model.SaveFormAction = () =>
@@ -60,37 +62,35 @@ public record Person4Model : INotifyFormValueChanged
     public override string ToString() => $"{FirstName} {LastName}";
 }
 
-[UIGridClass(AllowSorting = true)]
+[UIGridClass(ResourceType = typeof(Example), AllowSorting = true)]
 public sealed class Person4GridModel
 {
     public Guid Id { get; set; }
 
-    [UIGridField(Name = "Voornaam")]
+    [UIGridField(Name = nameof(Example.FirstName))]
     public string? FirstName { get; set; }
 
-    [UIGridField(Name = "Achternaam")]
+    [UIGridField(Name = nameof(Example.LastName))]
     public string? LastName { get; set; }
 
     public static Person4GridModel ToGridModel(PersonModel instance)
     {
-        ArgumentNullException.ThrowIfNull(instance);
+        ArgumentNullException.ThrowIfNull(argument: instance);
 
         return new Person4GridModel
-               {
-                   Id = instance.Id,
-                   FirstName = instance.FirstName,
-                   LastName = instance.LastName
+               { Id = instance.Id
+               , FirstName = instance.FirstName
+               , LastName = instance.LastName
                };
     }
     public static Person4Model ToModel(Person4GridModel instance)
     {
-        ArgumentNullException.ThrowIfNull(instance);
+        ArgumentNullException.ThrowIfNull(argument: instance);
 
         return new Person4Model
-               {
-                   Id = instance?.Id ?? Guid.NewGuid(),
-                   FirstName = instance?.FirstName,
-                   LastName = instance?.LastName
+               { Id = instance?.Id ?? Guid.NewGuid()
+               , FirstName = instance?.FirstName
+               , LastName = instance?.LastName
                };
     }
 }
@@ -104,25 +104,25 @@ public sealed class Person4FormModel : FormModel
 
     public Guid Id { get; set; }
 
-    [UIFormField(name: "Voornaam", ShouldNotifyChanges = true, ColumnGroup = ColumnGroup1)]
+    [UIFormField(name: nameof(Example.FirstName), ShouldNotifyChanges = true, ColumnGroup = ColumnGroup1)]
     public string? FirstName { get; init; }
 
-    [UIFormField(name: "Achternaam", ShouldNotifyChanges = true, ColumnGroup = ColumnGroup1)]
+    [UIFormField(name: nameof(Example.LastName), ShouldNotifyChanges = true, ColumnGroup = ColumnGroup1)]
     public string? LastName { get; init; }
 
-    [UIFormField(name: "Naam", FormComponent = typeof(FullNamePreviewComponent), FormParameters = ["DisplayLabel=false"], ColumnGroup = ColumnGroup1)]
+    [UIFormField(name:nameof(Example.FirstName), FormComponent = typeof(FullNamePreviewComponent), FormParameters = ["DisplayLabel=false"], ColumnGroup = ColumnGroup1)]
     public Person4Model? FullName { get; init; }
 
     public static Person4FormModel ToFormModel(Person4Model instance)
     {
-        ArgumentNullException.ThrowIfNull(instance);
+        ArgumentNullException.ThrowIfNull(argument: instance);
 
         return new Person4FormModel
                {
-                   Id = instance?.Id ?? Guid.NewGuid(),
-                   FirstName = instance?.FirstName,
-                   LastName = instance?.LastName,
-                   FullName = instance
+                   Id = instance?.Id ?? Guid.NewGuid()
+                 , FirstName = instance?.FirstName
+                 , LastName = instance?.LastName
+                 , FullName = instance
                };
     }
 }

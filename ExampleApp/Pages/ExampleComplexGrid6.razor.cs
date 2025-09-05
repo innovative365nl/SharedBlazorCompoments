@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using ExampleApp.Attributes;
 using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Services;
@@ -69,29 +70,31 @@ public sealed class Person6GridModel
 
     public string? Phone { get; set; }
 
+    public string? HomePage { get; set; }
+
     public static Person6GridModel ToGridModel([NotNull] PersonModel instance)
     {
         return new Person6GridModel
-               {
-                   Id = instance.Id
-                 , FirstName = instance.FirstName
-                 , LastName = instance.LastName
-                 , Income = instance.Income.ToCurrencyString()
-                 , DateOfBirth = instance.DateOfBirth.ToDateString()
-                 , EmailAddress = instance.EmailAddress
-                 , Phone = instance.Phone
+               { Id = instance.Id
+               , FirstName = instance.FirstName
+               , LastName = instance.LastName
+               , Income = instance.Income.ToCurrencyString()
+               , DateOfBirth = instance.DateOfBirth.ToDateString()
+               , EmailAddress = instance.EmailAddress
+               , Phone = instance.Phone
+               , HomePage = instance.HomePage
                };
     }
 
     public static PersonModel ToModel([NotNull] Person6GridModel instance) => new PersonModel
-                                                                              {
-                                                                                  Id = instance.Id
-                                                                                , FirstName = instance.FirstName
-                                                                                , LastName = instance.LastName
-                                                                                , Income = instance.Income.ToCurrency()
-                                                                                , DateOfBirth = instance.DateOfBirth.ToDate()
-                                                                                , EmailAddress = instance.EmailAddress
-                                                                                , Phone = instance.Phone
+                                                                              { Id = instance.Id
+                                                                              , FirstName = instance.FirstName
+                                                                              , LastName = instance.LastName
+                                                                              , Income = instance.Income.ToCurrency()
+                                                                              , DateOfBirth = instance.DateOfBirth.ToDate()
+                                                                              , EmailAddress = instance.EmailAddress
+                                                                              , Phone = instance.Phone
+                                                                              , HomePage = instance.HomePage
                                                                               };
 }
 
@@ -145,7 +148,11 @@ public sealed class Person6FormModel : FormModel
     [UIFormField(name: "Phone", ColumnGroup = ColumnGroup5)]
     [Phone(ErrorMessageResourceType = typeof(Example), ErrorMessageResourceName = "PhoneNumberValidation")]
     public string? Phone { get; set; }
-    
+
+    [UIFormField(name: "HomePage", ColumnGroup = ColumnGroup5)]
+    [AbsoluteUri(ErrorMessageResourceType = typeof(Example), ErrorMessageResourceName = nameof(Example.UrlValidation))]
+    public string? HomePage { get; set; }
+
     public static Person6FormModel ToFormModel([NotNull] PersonModel instance)
     {
         return new Person6FormModel
@@ -156,6 +163,7 @@ public sealed class Person6FormModel : FormModel
                , DateOfBirth = instance.DateOfBirth.ToDateTime(time: TimeOnly.MinValue)
                , EmailAddress = instance.EmailAddress
                , Phone = instance.Phone
+               , HomePage = instance.HomePage
                };
     }
 }
