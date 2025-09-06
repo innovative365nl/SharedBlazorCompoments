@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using Innovative.Blazor.Components.Attributes;
 
 namespace Innovative.Blazor.Components.Components;
@@ -8,27 +7,20 @@ namespace Innovative.Blazor.Components.Components;
 [AttributeUsage(validOn: AttributeTargets.Property)]
 public sealed class UIFormField(string name) : UIField(name)
 {
+
+    private Type? _displayComponent;
+
+    private Type? _formComponent;
     public string? ColumnGroup { get; set; }
     public bool UseWysiwyg { get; set; }
 
-    internal static bool InheritsFromGenericCustomComponent(Type? type)
-    {
-        while (type != null && type != typeof(object))
-        {
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(CustomComponent<>))
-                return true;
-            type = type.BaseType;
-        }
-        return false;
-    }
-
-    private Type? _displayComponent;
     public Type? DisplayComponent
     {
         get => _displayComponent;
         set
         {
-            if (value != null && !InheritsFromGenericCustomComponent(value))
+            if (value != null
+             && !InheritsFromGenericCustomComponent(value))
             {
                 throw new ArgumentException($"DisplayComponent must inherit from CustomComponent<T>, but got {value.FullName}");
             }
@@ -36,13 +28,13 @@ public sealed class UIFormField(string name) : UIField(name)
         }
     }
 
-    private Type? _formComponent;
     public Type? FormComponent
     {
         get => _formComponent;
         set
         {
-            if (value != null && !InheritsFromGenericCustomComponent(value))
+            if (value != null
+             && !InheritsFromGenericCustomComponent(value))
             {
                 throw new ArgumentException($"FormComponent must inherit from CustomComponent<T>, but got {value.FullName}");
             }
@@ -54,5 +46,22 @@ public sealed class UIFormField(string name) : UIField(name)
     public string[]? FormParameters { get; set; }
     public string? TextProperty { get; set; }
     public string DataTestId { get; set; } = string.Empty;
+
     public bool ShouldNotifyChanges { get; set; }
+
+    // If true, the field is displayed as read-only in the form.
+    public bool ReadOnly { get; set; }
+
+    internal static bool InheritsFromGenericCustomComponent(Type? type)
+    {
+        while (type != null
+            && type != typeof(object))
+        {
+            if (type.IsGenericType
+             && type.GetGenericTypeDefinition() == typeof(CustomComponent<>))
+                return true;
+            type = type.BaseType;
+        }
+        return false;
+    }
 }
