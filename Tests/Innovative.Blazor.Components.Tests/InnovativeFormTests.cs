@@ -120,7 +120,6 @@ public class InnovativeFormTests : LocalizedTestBase
                         {
                             Model = actual
                           , ParentDialog = dialogMock.Object
-                           ,
                         };
 
         component.CallOnParametersSet();
