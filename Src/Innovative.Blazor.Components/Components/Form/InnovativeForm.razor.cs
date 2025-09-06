@@ -391,7 +391,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         // Init-only setters have a metadata token with IsInitOnly flag
         // Reflection does not expose this directly, so we check for 'init' via metadata
         // This works in .NET 5+ (C# 9+)
-        if (setMethod.ReturnParameter.GetRequiredCustomModifiers().Any(m => m.Name == "IsExternalInit"))
+        if (setMethod.ReturnParameter.GetRequiredCustomModifiers().Any(m => m.FullName == "System.Runtime.CompilerServices.IsExternalInit"))
             return true;
 
         return false;
