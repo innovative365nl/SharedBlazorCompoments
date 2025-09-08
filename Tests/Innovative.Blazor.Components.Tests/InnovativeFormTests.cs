@@ -33,19 +33,19 @@ public class InnovativeFormTests : LocalizedTestBase
         const int allActions = saveFormAction + cancelFormAction + deleteFormAction + customAction;
 
         var model = new TestFormModel
-        {
-            StringProperty = "Test",
-            IntProperty = 42,
-            BoolProperty = true,
-            DateProperty = new DateTime(2023, 1, 1),
-            CustomAction = (x) => Debug.WriteLine(x)
-        };
+                    {
+                        StringProperty = "Test"
+                      , IntProperty = 42
+                      , BoolProperty = true
+                      , DateProperty = new DateTime(2023, 1, 1)
+                      , CustomAction = (x) => Debug.WriteLine(x)
+                    };
 
         var component = new InnovativeForm<TestFormModel>(LocalizerFactoryMock.Object)
-        {
-            Model = model,
-            ParentDialog = dialogMock.Object
-        };
+                        {
+                            Model = model
+                          , ParentDialog = dialogMock.Object
+                        };
 
         // Act
         component.CallOnParametersSet();
@@ -64,17 +64,17 @@ public class InnovativeFormTests : LocalizedTestBase
         // Arrange
         var model = new TestFormModel
                     {
-                        StringProperty = "Test",
-                        IntProperty = 42,
-                        BoolProperty = true,
-                        DateProperty = new DateTime(2023, 1, 1)
+                        StringProperty = "Test"
+                      , IntProperty = 42
+                      , BoolProperty = true
+                      , DateProperty = new DateTime(2023, 1, 1)
                     };
 
         var component = new InnovativeForm<TestFormModel>(LocalizerFactoryMock.Object)
-        {
-            Model = model,
-            ParentDialog = dialogMock.Object,
-        };
+                        {
+                            Model = model
+                          , ParentDialog = dialogMock.Object
+                        };
 
         component.CallOnParametersSet();
         component.SetFormValue(nameof(model.StringProperty), "Updated");
@@ -99,27 +99,27 @@ public class InnovativeFormTests : LocalizedTestBase
     {
         // Arrange
         var actual = new TestFormModel
-                    {
-                        StringProperty = "Test",
-                        IntProperty = 42,
-                        BoolProperty = true,
-                        DateProperty = new DateTime(2023, 1, 1),
-                        CustomAction = (x) => Debug.WriteLine(x)
-                    };
+                     {
+                         StringProperty = "Test"
+                       , IntProperty = 42
+                       , BoolProperty = true
+                       , DateProperty = new DateTime(2023, 1, 1)
+                       , CustomAction = (x) => Debug.WriteLine(x)
+                     };
 
         var expected = new TestFormModel
-                    {
-                        StringProperty = actual.StringProperty,
-                        IntProperty = actual.IntProperty,
-                        BoolProperty = actual.BoolProperty,
-                        DateProperty = actual.DateProperty,
-                        CustomAction = actual.CustomAction
-        };
+                       {
+                           StringProperty = actual.StringProperty
+                         , IntProperty = actual.IntProperty
+                         , BoolProperty = actual.BoolProperty
+                         , DateProperty = actual.DateProperty
+                         , CustomAction = actual.CustomAction
+                       };
 
         var component = new InnovativeForm<TestFormModel>(LocalizerFactoryMock.Object)
                         {
-                            Model = actual,
-                            ParentDialog = dialogMock.Object,
+                            Model = actual
+                          , ParentDialog = dialogMock.Object
                         };
 
         component.CallOnParametersSet();
@@ -146,10 +146,10 @@ public class InnovativeFormTests : LocalizedTestBase
     {
         // Arrange
         var component = new InnovativeForm<TestFormGroupModel>(LocalizerFactoryMock.Object)
-        {
-            Model = new TestFormGroupModel(),
-            ParentDialog = new Mock<SidePanelComponent<TestFormGroupModel>>(customDialogServiceMock.Object).Object
-        };
+                        {
+                            Model = new TestFormGroupModel()
+                          , ParentDialog = new Mock<SidePanelComponent<TestFormGroupModel>>(customDialogServiceMock.Object).Object
+                        };
 
         // Act
         component.CallOnParametersSet();
@@ -174,10 +174,10 @@ public class InnovativeFormTests : LocalizedTestBase
     {
         // Arrange
         var component = new InnovativeForm<TestFormColumnWidthModel>(LocalizerFactoryMock.Object)
-        {
-            Model = new TestFormColumnWidthModel(),
-            ParentDialog = new Mock<SidePanelComponent<TestFormColumnWidthModel>>(customDialogServiceMock.Object).Object
-        };
+                        {
+                            Model = new TestFormColumnWidthModel()
+                          , ParentDialog = new Mock<SidePanelComponent<TestFormColumnWidthModel>>(customDialogServiceMock.Object).Object
+                        };
 
         // Act
         var width1 = component.CallGetColumnWidthClass("Col1");
@@ -189,21 +189,77 @@ public class InnovativeFormTests : LocalizedTestBase
         Assert.Equal("", width2); // 0 width should return empty string
         Assert.Equal("", widthNonExistent);
     }
+
+    [Fact]
+    public void When_UIFormFieldReadOnly_ItShouldBeReadOnlyInForm()
+    {
+        // Arrange
+        var model = new TestFormReadOnlyModel
+                    {
+                        ReadOnlyString = "abc"
+                      , NormalString = "def"
+                    };
+        var component = new InnovativeForm<TestFormReadOnlyModel>(LocalizerFactoryMock.Object)
+                        {
+                            Model = model
+                          , ParentDialog = new Mock<SidePanelComponent<TestFormReadOnlyModel>>(customDialogServiceMock.Object).Object
+                        };
+        component.CallOnParametersSet();
+
+        // Use reflection to get IsReadOnly method
+        var isReadOnlyMethod = typeof(InnovativeForm<TestFormReadOnlyModel>)
+            .GetMethod("IsReadOnly", BindingFlags.NonPublic | BindingFlags.Static);
+        var property = typeof(TestFormReadOnlyModel).GetProperty(nameof(TestFormReadOnlyModel.ReadOnlyString));
+        var attr = property!.GetCustomAttribute<UIFormField>();
+        var result = (bool)isReadOnlyMethod!.Invoke(null
+                                                  , new object[]
+                                                    {
+                                                        property!, attr!
+                                                    })!;
+
+        // Assert
+        Assert.True(result);
+
+        // Also check that a normal property is not read-only
+        var normalProperty = typeof(TestFormReadOnlyModel).GetProperty(nameof(TestFormReadOnlyModel.NormalString));
+        var normalAttr = normalProperty!.GetCustomAttribute<UIFormField>();
+        var normalResult = (bool)isReadOnlyMethod.Invoke(null
+                                                       , new object[]
+                                                         {
+                                                             normalProperty!, normalAttr!
+                                                         })!;
+        Assert.False(normalResult);
+    }
+
+    [UIFormClass("TestFormReadOnlyModel")]
+#pragma warning disable CA1034
+    public class TestFormReadOnlyModel : FormModel
+#pragma warning restore CA1034
+    {
+        [UIFormField(name: nameof(ReadOnlyString), ReadOnly = true)]
+        public string ReadOnlyString { get; set; } = string.Empty;
+
+        [UIFormField(name: nameof(NormalString))]
+        public string NormalString { get; set; } = string.Empty;
+    }
 }
 
 // Test classes
 [UIFormClass("testFormGroupModel")]
-public class TestFormGroupModel: FormModel
+public class TestFormGroupModel : FormModel
 {
-    [UIFormField(name:nameof(GroupedProperty1), ColumnGroup = "Group1")] public string GroupedProperty1 { get; set; } = string.Empty;
+    [UIFormField(name: nameof(GroupedProperty1), ColumnGroup = "Group1")]
+    public string GroupedProperty1 { get; set; } = string.Empty;
 
-    [UIFormField(name:nameof(GroupedProperty2), ColumnGroup = "Group2")] public string GroupedProperty2 { get; set; } = string.Empty;
+    [UIFormField(name: nameof(GroupedProperty2), ColumnGroup = "Group2")]
+    public string GroupedProperty2 { get; set; } = string.Empty;
 
-    [UIFormField(name: nameof(UngroupedProperty))] public string UngroupedProperty { get; set; } = string.Empty;
+    [UIFormField(name: nameof(UngroupedProperty))]
+    public string UngroupedProperty { get; set; } = string.Empty;
 }
 
 [UIFormClass("TestFormColumnWidthModel")]
-public class TestFormColumnWidthModel: FormModel
+public class TestFormColumnWidthModel : FormModel
 {
     public TestFormColumnWidthModel()
     {
@@ -211,22 +267,29 @@ public class TestFormColumnWidthModel: FormModel
         AddViewColumn("Col2", 0, 0, 0);
     }
 
-    [UIFormField(name:nameof(Property1), ColumnGroup = "Col1")] public string Property1 { get; set; } = string.Empty;
+    [UIFormField(name: nameof(Property1), ColumnGroup = "Col1")]
+    public string Property1 { get; set; } = string.Empty;
 
-    [UIFormField(name: nameof(Property2), ColumnGroup = "Col2")] public string Property2 { get; set; } = string.Empty;
+    [UIFormField(name: nameof(Property2), ColumnGroup = "Col2")]
+    public string Property2 { get; set; } = string.Empty;
 }
 
-public class TestFormModel: FormModel
+public class TestFormModel : FormModel
 {
-    [UIFormField(name: nameof(StringProperty))] public string StringProperty { get; set; } = string.Empty;
+    [UIFormField(name: nameof(StringProperty))]
+    public string StringProperty { get; set; } = string.Empty;
 
-    [UIFormField(name: nameof(IntProperty))] public int IntProperty { get; set; }
+    [UIFormField(name: nameof(IntProperty))]
+    public int IntProperty { get; set; }
 
-    [UIFormField(name: nameof(BoolProperty))] public bool BoolProperty { get; set; }
+    [UIFormField(name: nameof(BoolProperty))]
+    public bool BoolProperty { get; set; }
 
-    [UIFormField(name: nameof(DateProperty))] public DateTime DateProperty { get; set; }
+    [UIFormField(name: nameof(DateProperty))]
+    public DateTime DateProperty { get; set; }
 
-    [UIFormViewAction(name: nameof(CustomAction))] public Action<int>? CustomAction { get; set; }
+    [UIFormViewAction(name: nameof(CustomAction))]
+    public Action<int>? CustomAction { get; set; }
 }
 
 // Extension methods to access private methods/properties for testing
@@ -234,45 +297,51 @@ public static class DynamicFormViewTestExtensions
 {
     public static void CallOnParametersSet<T>(this InnovativeForm<T> component)
     {
-        var method = typeof(InnovativeForm<T>).GetMethod("OnParametersSet",
-                                                                    BindingFlags.NonPublic | BindingFlags.Instance);
+        var method = typeof(InnovativeForm<T>).GetMethod("OnParametersSet", BindingFlags.NonPublic | BindingFlags.Instance);
         method?.Invoke(component, null);
     }
 
     public static object? GetFormValue<T>(this InnovativeForm<T> component, string propertyName)
     {
-        var formValuesField = typeof(InnovativeForm<T>).GetField("formValues",
-                                                                            BindingFlags.NonPublic | BindingFlags.Instance);
+        var formValuesField = typeof(InnovativeForm<T>).GetField("formValues", BindingFlags.NonPublic | BindingFlags.Instance);
         var formValues = (Dictionary<string, object>)formValuesField?.GetValue(component)!;
         return formValues?.TryGetValue(propertyName, out var value) == true ? value : null;
     }
 
-    public static void SetFormValue<T>(this InnovativeForm<T> component, string propertyName, object value, bool shouldNotifyChange = false)
+    public static void SetFormValue<T>
+    (
+        this InnovativeForm<T> component
+      , string propertyName
+      , object value
+      , bool shouldNotifyChange = false
+    )
     {
-        var setValueMethod = typeof(InnovativeForm<T>).GetMethod("SetValue",
-                                                                            BindingFlags.NonPublic | BindingFlags.Instance);
-        setValueMethod?.Invoke(component, new[] { propertyName, value, shouldNotifyChange });
+        var setValueMethod = typeof(InnovativeForm<T>).GetMethod("SetValue", BindingFlags.NonPublic | BindingFlags.Instance);
+        setValueMethod?.Invoke(component
+                             , new[]
+                               {
+                                   propertyName, value, shouldNotifyChange
+                               });
     }
 
     public static IReadOnlyCollection<PropertyInfo>? GetUngroupedProperties<T>(this InnovativeForm<T> component)
     {
-        var property = typeof(InnovativeForm<T>).GetProperty("ungroupedProperties",
-                                                                        BindingFlags.NonPublic | BindingFlags.Instance);
+        var property = typeof(InnovativeForm<T>).GetProperty("ungroupedProperties", BindingFlags.NonPublic | BindingFlags.Instance);
         return (IReadOnlyCollection<PropertyInfo>)property?.GetValue(component)!;
     }
 
-    public static IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>>? GetOrderedColumnGroups<T>(
-        this InnovativeForm<T> component)
+    public static IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>>? GetOrderedColumnGroups<T>
+    (
+        this InnovativeForm<T> component
+    )
     {
-        var property = typeof(InnovativeForm<T>).GetProperty("OrderedColumnGroups",
-                                                                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        var property = typeof(InnovativeForm<T>).GetProperty("OrderedColumnGroups", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         return (IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>>)property?.GetValue(component)!;
     }
 
     public static string CallGetColumnWidthClass<T>(this InnovativeForm<T> component, string columnGroup)
     {
-        var method = typeof(InnovativeForm<T>).GetMethod("GetColumnWidthClass",
-                                                                    BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+        var method = typeof(InnovativeForm<T>).GetMethod("GetColumnWidthClass", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
         return (string)method!.Invoke(component, [columnGroup])!;
     }
 
@@ -280,9 +349,9 @@ public static class DynamicFormViewTestExtensions
     {
         var properties = component?.Model?.GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance) ?? [];
         var result = properties
-                .Where(x=> x.GetCustomAttribute<UIFormViewAction>() !=null)
-                .ToList()
-                .AsReadOnly();
+                     .Where(x => x.GetCustomAttribute<UIFormViewAction>() != null)
+                     .ToList()
+                     .AsReadOnly();
         return result;
     }
 }
