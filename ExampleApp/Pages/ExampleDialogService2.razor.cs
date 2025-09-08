@@ -122,7 +122,7 @@ public partial class ExampleDialogService2(IInnovativeSidePanelService sidePanel
     }
 }
 
-[UIFormClass(title: nameof(Example.DialogService_Person), ResourceType = typeof(Example))]
+[UIFormClass(title: nameof(Example.Person), ResourceType = typeof(Example))]
 public class PersonFormModel : FormModel
 {
     private const string NameColumn = "Name";

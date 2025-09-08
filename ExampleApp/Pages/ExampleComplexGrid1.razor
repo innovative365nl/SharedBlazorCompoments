@@ -1,7 +1,10 @@
 @page "/grid/complex/1"
 @using Innovative.Blazor.Components.Components
+@using ExampleApp.Components
+
 <h3>Complex Grid Example (1)</h3>
 <p>This grid is an example with a custom component (dropdown) that is displayed in a form inside the side panel.</p>
+<CultureSelector />
 <RadzenNotification />
 <div style="float: right;">
     <RadzenButton Click="@(() => OnCreateAttribute())">➕</RadzenButton>
