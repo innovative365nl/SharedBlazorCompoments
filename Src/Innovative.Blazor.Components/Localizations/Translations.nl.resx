@@ -133,7 +133,7 @@
     <value>Bevat</value>
   </data>
   <data name="startsWith" xml:space="preserve">
-    <value>Start met</value>
+    <value>Begint met</value>
   </data>
   <data name="endsWith" xml:space="preserve">
     <value>Eindigt met</value>
@@ -142,13 +142,13 @@
     <value>Groter dan</value>
   </data>
   <data name="greaterThanOrEqual" xml:space="preserve">
-    <value>Groter of gelijk aan</value>
+    <value>Groter dan of gelijk aan</value>
   </data>
   <data name="lessThan" xml:space="preserve">
     <value>Minder dan</value>
   </data>
   <data name="lessThanOrEqual" xml:space="preserve">
-    <value>Minder of gelijk aan</value>
+    <value>Minder dan of gelijk aan</value>
   </data>
   <data name="filter" xml:space="preserve">
     <value>Filter</value>
@@ -160,6 +160,6 @@
     <value>Filter toepassen</value>
   </data>
   <data name="emptyText" xml:space="preserve">
-    <value>Geen data gevonden.</value>
+    <value>Geen data gevonden</value>
   </data>
 </root>

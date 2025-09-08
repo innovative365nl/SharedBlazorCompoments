@@ -106,7 +106,7 @@ namespace Innovative.Blazor.Components.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ends With.
+        ///   Looks up a localized string similar to Ends with.
         /// </summary>
         internal static string endsWith {
             get {
@@ -133,7 +133,7 @@ namespace Innovative.Blazor.Components.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Greater then.
+        ///   Looks up a localized string similar to Greater than.
         /// </summary>
         internal static string greaterThan {
             get {
@@ -142,7 +142,7 @@ namespace Innovative.Blazor.Components.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Greater than or equal.
+        ///   Looks up a localized string similar to Greater than or equal to.
         /// </summary>
         internal static string greaterThanOrEqual {
             get {
@@ -160,7 +160,7 @@ namespace Innovative.Blazor.Components.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Less than or equal.
+        ///   Looks up a localized string similar to Less than or equal to.
         /// </summary>
         internal static string lessThanOrEqual {
             get {
