@@ -19,9 +19,7 @@ public partial class ExampleComplexGrid4(IInnovativeSidePanelService sidePanelSe
     {
         Person4GridModel? rowItem = obj.FirstOrDefault();
         if (rowItem is null)
-        {
             return;
-        }
 
         var model = Person4FormModel.ToFormModel(instance: Person4GridModel.ToModel(instance: rowItem));
         model.SaveFormAction = () =>
@@ -95,7 +93,7 @@ public sealed class Person4GridModel
     }
 }
 
-[UIFormClass(title: "Person", ResourceType = typeof(Example))]
+[UIFormClass(title: nameof(Example.Person), ResourceType = typeof(Example))]
 public sealed class Person4FormModel : FormModel
 {
     private const string ColumnGroup1 = "PropertyColumn1";
@@ -110,7 +108,7 @@ public sealed class Person4FormModel : FormModel
     [UIFormField(name: nameof(Example.LastName), ShouldNotifyChanges = true, ColumnGroup = ColumnGroup1)]
     public string? LastName { get; init; }
 
-    [UIFormField(name:nameof(Example.FirstName), FormComponent = typeof(FullNamePreviewComponent), FormParameters = ["DisplayLabel=false"], ColumnGroup = ColumnGroup1)]
+    [UIFormField(name: nameof(Example.FullName), FormComponent = typeof(FullNamePreviewComponent), FormParameters = ["DisplayLabel=false"], ColumnGroup = ColumnGroup1)]
     public Person4Model? FullName { get; init; }
 
     public static Person4FormModel ToFormModel(Person4Model instance)
