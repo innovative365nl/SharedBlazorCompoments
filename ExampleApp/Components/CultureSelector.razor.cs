@@ -22,7 +22,7 @@ public partial class CultureSelector(NavigationManager navManager, IJSRuntime js
                 return;
 
             var js = (IJSInProcessRuntime)jsRuntime;
-            js.InvokeVoid("blazorCulture.set", value.Name);
+            js.InvokeVoid("exampleAppCulture.set", value.Name);
             navManager.NavigateTo(navManager.Uri, true);
         }
     }
