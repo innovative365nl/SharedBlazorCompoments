@@ -123,9 +123,6 @@
   <data name="DateOfBirth" xml:space="preserve">
     <value>Geboortedatum</value>
   </data>
-  <data name="DialogService_Person" xml:space="preserve">
-    <value>Persoon</value>
-  </data>
   <data name="Email" xml:space="preserve">
     <value>E-mail</value>
   </data>

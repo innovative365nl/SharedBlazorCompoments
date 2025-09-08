@@ -117,49 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="and" xml:space="preserve">
-    <value>En</value>
+  <data name="Age" xml:space="preserve">
+    <value>Alter</value>
   </data>
-  <data name="or" xml:space="preserve">
-    <value>Of</value>
+  <data name="DateOfBirth" xml:space="preserve">
+    <value>Geburtsdatum</value>
   </data>
-  <data name="equal" xml:space="preserve">
-    <value>Gelijk aan</value>
+  <data name="Email" xml:space="preserve">
+    <value>E-Mail</value>
   </data>
-  <data name="notEqual" xml:space="preserve">
-    <value>Niet gelijk aan</value>
+  <data name="EmailAddressValidation" xml:space="preserve">
+    <value>Die angegebene E-Mail-Adresse scheint ungültig zu sein.</value>
   </data>
-  <data name="contains" xml:space="preserve">
-    <value>Bevat</value>
+  <data name="FirstName" xml:space="preserve">
+    <value>Vorname</value>
   </data>
-  <data name="startsWith" xml:space="preserve">
-    <value>Start met</value>
+  <data name="FullName" xml:space="preserve">
+    <value>Vollständiger Name</value>
   </data>
-  <data name="endsWith" xml:space="preserve">
-    <value>Eindigt met</value>
+  <data name="HomePage" xml:space="preserve">
+    <value>Homepage</value>
   </data>
-  <data name="greaterThan" xml:space="preserve">
-    <value>Groter dan</value>
+  <data name="Income" xml:space="preserve">
+    <value>Einkommen</value>
   </data>
-  <data name="greaterThanOrEqual" xml:space="preserve">
-    <value>Groter of gelijk aan</value>
+  <data name="LastName" xml:space="preserve">
+    <value>Nachname</value>
   </data>
-  <data name="lessThan" xml:space="preserve">
-    <value>Minder dan</value>
+  <data name="Person" xml:space="preserve">
+    <value>Person</value>
   </data>
-  <data name="lessThanOrEqual" xml:space="preserve">
-    <value>Minder of gelijk aan</value>
+  <data name="Phone" xml:space="preserve">
+    <value>Telefon</value>
   </data>
-  <data name="filter" xml:space="preserve">
-    <value>Filter</value>
+  <data name="PhoneNumberValidation" xml:space="preserve">
+    <value>Die angegebene Telefonnummer scheint ungültig zu sein.</value>
   </data>
-  <data name="clearFilter" xml:space="preserve">
-    <value>Wis filter</value>
-  </data>
-  <data name="applyFilter" xml:space="preserve">
-    <value>Filter toepassen</value>
-  </data>
-  <data name="emptyText" xml:space="preserve">
-    <value>Geen data gevonden.</value>
+  <data name="UrlValidation" xml:space="preserve">
+    <value>Die angegebene URL muss vollständig und sicher sein (https).</value>
   </data>
 </root>

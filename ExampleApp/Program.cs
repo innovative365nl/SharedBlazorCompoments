@@ -1,6 +1,9 @@
-using System.Globalization;
+#pragma warning disable CA2007
+
 using ExampleApp;
+using ExampleApp.Extensions;
 using ExampleApp.Pages;
+using ExampleApp.Translations;
 using Innovative.Blazor.Components.Common.Composer;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -12,17 +15,15 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-builder.Services.RegisterInnovativeComponents()
-       .AddCustomLocalizer<AppDomain>()
+builder.Services
+       .RegisterInnovativeComponents()
+       .AddLocalization()
+       .AddCustomLocalizer<Example>()
        .AddLogging()
        .AddScoped<IAttributeState, AttributeState>()
        .AddScoped<DialogService>()
        ;
 
-var culture = new CultureInfo("nl-NL");
-Thread.CurrentThread.CurrentCulture = culture;
-Thread.CurrentThread.CurrentUICulture = culture;
-
-await builder.Build()
-             .RunAsync()
-             .ConfigureAwait(false);
+var app = builder.Build();
+await app.SetDefaultCultureAsync();
+await app.RunAsync();
