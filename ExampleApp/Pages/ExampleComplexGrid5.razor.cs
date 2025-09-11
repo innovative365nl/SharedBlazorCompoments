@@ -83,7 +83,7 @@ public sealed class Person5GridModel
     }
 }
 
-[UIFormClass(title:"Person", ResourceType = typeof(Example))]
+[UIFormClass(title: nameof(Example.Person), ResourceType = typeof(Example))]
 public sealed class Person5FormModel : FormModel
 {
     private const string ColumnGroup1 = "PropertyColumn1";

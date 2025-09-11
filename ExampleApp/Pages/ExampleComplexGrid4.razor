@@ -1,9 +1,10 @@
 @page "/grid/complex/4"
 @using Innovative.Blazor.Components.Components
+@using ExampleApp.Components
 
 <h3> Grid Example 4</h3>
 <p>Shows a grid with a preview control in the side panel.</p>
-
+<CultureSelector />
 <InnovativeGrid TItem="Person4GridModel"
                 MinHeightOption="GridHeight.Max"
                 Data="@items"

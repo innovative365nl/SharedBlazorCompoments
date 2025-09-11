@@ -1,0 +1,13 @@
+@using System.Globalization
+<div>
+    <fieldset>
+        <label for="LanguageSelector" class="rz-label">Culture:</label>
+        <select id="LanguageSelector" class="rz-dropdown" @bind="Culture" style="width:300px; margin-left:10px;">
+            @foreach (var culture in cultures)
+            {
+                <option value="@culture">@culture.DisplayName</option>
+            }
+        </select>
+    </fieldset>
+    <p>The current language is: @CultureInfo.CurrentCulture.Name a.k.a @CultureInfo.CurrentCulture.DisplayName / @CultureInfo.CurrentCulture.EnglishName.</p>
+</div>

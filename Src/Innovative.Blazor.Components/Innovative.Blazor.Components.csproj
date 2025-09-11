@@ -32,9 +32,6 @@
       <EmbeddedResource Update="Localizations\Translations.nl.resx">
         <DependentUpon>Translations.resx</DependentUpon>
       </EmbeddedResource>
-      <EmbeddedResource Update="Localizations\Translations.nl-nl.resx">
-        <DependentUpon>Translations.resx</DependentUpon>
-      </EmbeddedResource>
       <Compile Update="Localizations\Translations.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>

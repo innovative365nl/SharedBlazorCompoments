@@ -202,8 +202,8 @@ public partial class InnovativeGrid<TItem> : ComponentBase
     {
         if (localizer is null)
         {
-            var uiClassAttribute = typeof(TItem).GetCustomAttribute<UIGridClass>();
-            var resourceType = ResourceType ?? uiClassAttribute?.ResourceType ?? typeof(TItem);
+            var attribute = typeof(TItem).GetCustomAttribute<UIGridClass>();
+            var resourceType = ResourceType ?? attribute?.ResourceType ?? typeof(TItem);
             localizer = localizerFactory.Create(resourceType);
         }
 
@@ -217,7 +217,8 @@ public partial class InnovativeGrid<TItem> : ComponentBase
             return property.Name;
         }
 
-        var localizedString = GetLocalizer()[name: attribute.Name];
+        var loc = GetLocalizer();
+        var localizedString = loc[name: attribute.Name];
         return localizedString.ResourceNotFound ? attribute.Name : localizedString.Value;
     }
 
