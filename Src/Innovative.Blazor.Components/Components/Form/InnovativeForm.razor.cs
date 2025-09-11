@@ -383,16 +383,16 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
             return true;
 
         // If property has no setter, treat as read-only
-        // var setMethod = property.SetMethod;
-        // if (setMethod == null)
-        //     return true;
-        //
-        // // If setter is init-only (C# 9+), treat as read-only
-        // // Init-only setters have a metadata token with IsInitOnly flag
-        // // Reflection does not expose this directly, so we check for 'init' via metadata
-        // // This works in .NET 5+ (C# 9+)
-        // if (setMethod.ReturnParameter.GetRequiredCustomModifiers().Any(m => m.FullName == "System.Runtime.CompilerServices.IsExternalInit"))
-        //     return true;
+        var setMethod = property.SetMethod;
+        if (setMethod == null)
+            return true;
+
+        // If setter is init-only (C# 9+), treat as read-only
+        // Init-only setters have a metadata token with IsInitOnly flag
+        // Reflection does not expose this directly, so we check for 'init' via metadata
+        // This works in .NET 5+ (C# 9+)
+        if (setMethod.ReturnParameter.GetRequiredCustomModifiers().Any(m => m.FullName == "System.Runtime.CompilerServices.IsExternalInit"))
+            return true;
 
         return false;
     }
