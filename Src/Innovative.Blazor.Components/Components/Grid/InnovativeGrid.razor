@@ -1,10 +1,8 @@
 @namespace Innovative.Blazor.Components.Components
 @using Innovative.Blazor.Components.Localizations
-@using InnovativeCard = InnovativeCard
 @typeparam TItem
 
 <div>
-    <InnovativeCard Title="@Title">
         <RadzenStack Style="@GetGridStyle()">
             @if (IsLoading)
             {
@@ -147,5 +145,4 @@
                 <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">@Translations.emptyText.</p>
             }
         </RadzenStack>
-    </InnovativeCard>
 </div>
