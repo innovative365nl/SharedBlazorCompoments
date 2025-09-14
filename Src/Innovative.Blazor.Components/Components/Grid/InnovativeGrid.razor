@@ -4,6 +4,10 @@
 
 <div>
         <RadzenStack Style="@GetGridStyle()">
+            @if (!string.IsNullOrEmpty(Title))
+            {
+                <RadzenText TextStyle="Radzen.Blazor.TextStyle.H4" Style="margin-bottom: 1rem;">@Title</RadzenText>
+            }
             @if (IsLoading)
             {
                 <RadzenTable>
