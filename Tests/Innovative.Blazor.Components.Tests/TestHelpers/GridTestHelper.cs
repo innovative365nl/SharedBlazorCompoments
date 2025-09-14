@@ -19,7 +19,7 @@ namespace Innovative.Blazor.Components.Tests.TestHelpers
         ///     Helper method to render a grid component with common parameters to reduce code duplication.
         /// </summary>
         public static IRenderedComponent<Components.InnovativeGrid<T>> RenderGridComponent<T>(
-            this TestContext? testContext,
+            this TestContext testContext,
             IEnumerable<T> data,
             string? title = null,
             bool isLoading = false,
@@ -28,28 +28,28 @@ namespace Innovative.Blazor.Components.Tests.TestHelpers
             Action<IEnumerable<T>>? onSelectionChanged = null,
             GridHeight minHeightOption = GridHeight.Minimal) where T : class
         {
-            if (testContext != null)
-                return testContext.RenderComponent<Components.InnovativeGrid<T>>(parameters =>
-                                                                                 {
-                                                                                     parameters.Add(p => p.Data, data);
+            ArgumentNullException.ThrowIfNull(testContext);
+            
+            return testContext.RenderComponent<Components.InnovativeGrid<T>>(parameters =>
+                                                                             {
+                                                                                 parameters.Add(p => p.Data, data);
 
-                                                                                     if (title != null)
-                                                                                         parameters.Add(p => p.Title, title);
+                                                                                 if (title != null)
+                                                                                     parameters.Add(p => p.Title, title);
 
-                                                                                     if (isLoading)
-                                                                                         parameters.Add(p => p.IsLoading, true);
+                                                                                 if (isLoading)
+                                                                                     parameters.Add(p => p.IsLoading, true);
 
-                                                                                     if (enableRowSelection)
-                                                                                         parameters.Add(p => p.EnableRowSelection, true);
+                                                                                 if (enableRowSelection)
+                                                                                     parameters.Add(p => p.EnableRowSelection, true);
 
-                                                                                     parameters.Add(p => p.SelectionMode, selectionMode);
+                                                                                 parameters.Add(p => p.SelectionMode, selectionMode);
 
-                                                                                     if (onSelectionChanged != null)
-                                                                                         parameters.Add<IEnumerable<T>>(p => p.OnSelectionChanged, onSelectionChanged);
+                                                                                 if (onSelectionChanged != null)
+                                                                                     parameters.Add<IEnumerable<T>>(p => p.OnSelectionChanged, onSelectionChanged);
 
-                                                                                     parameters.Add(p => p.MinHeightOption, minHeightOption);
-                                                                                 });
-            return null!;
+                                                                                 parameters.Add(p => p.MinHeightOption, minHeightOption);
+                                                                             });
         }
     }
 }
