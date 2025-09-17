@@ -4,6 +4,8 @@ namespace Innovative.Blazor.Components.Services;
 
 public class SidepanelService : ISidepanelService
 {
+
+    private TaskCompletionSource<object?>? _tcs;
     public bool IsVisible { get; private set; }
     public Action<bool>? VisibleChanged { get; set; }
     public Type? CurrentComponentType { get; private set; }
@@ -11,7 +13,9 @@ public class SidepanelService : ISidepanelService
     public SidepanelOptions? CurrentOptions { get; private set; }
     public event Action? OnStateChanged;
 
-    private TaskCompletionSource<object?>? _tcs;
+    // Delegate invoked by host before closing due to overlay (outside) click.
+    // Should return true to proceed with closing, false to cancel.
+    public Func<Task<bool>>? BeforeOverlayCloseAsync { get; set; }
 
     public Task<object?> OpenSidepanelAsync<T>(Dictionary<string, object> parameters, SidepanelOptions options) where T : IComponent
     {
