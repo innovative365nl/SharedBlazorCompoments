@@ -12,21 +12,50 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
     private bool isCustomDialog;
     private string? modelError;
 
-    [Parameter] public bool IsEditing { get; set; }
-    [Parameter] public bool ShowClose { get; set; } = true;
-    [Parameter] public bool ShowEdit { get; set; } = true;
-    [Parameter] public bool ShowDelete { get; set; } = false;
-    [Parameter] public SideDialogOptions? Options { get; set; }
-    [Parameter] public RenderFragment? TitleBarContent { get; set; }
-    [Parameter] public RenderFragment? BottomBarContent { get; set; }
-    [Parameter] public RenderFragment? ViewChildContent { get; set; }
-    [Parameter] public RenderFragment? ActionChildContent { get; set; }
-    [Parameter] public RenderFragment? EditChildContent { get; set; }
-    [Parameter] public TModel? Model { get; set; }
-    [Parameter] public string? DataTestId { get; set; }
-    [Parameter] public string? Title { get; set; }
-    [Parameter] public bool CloseOnSaveForm { get; set; } = false;
-    [Parameter] public bool IsNewModel { get; set; } = false;
+    [Parameter]
+    public bool IsEditing { get; set; }
+
+    [Parameter]
+    public bool ShowClose { get; set; } = true;
+
+    [Parameter]
+    public bool ShowEdit { get; set; } = true;
+
+    [Parameter]
+    public bool ShowDelete { get; set; } = false;
+
+    [Parameter]
+    public SideDialogOptions? Options { get; set; }
+
+    [Parameter]
+    public RenderFragment? TitleBarContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? BottomBarContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? ViewChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? ActionChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? EditChildContent { get; set; }
+
+    [Parameter]
+    public TModel? Model { get; set; }
+
+    [Parameter]
+    public string? DataTestId { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public bool CloseOnSaveForm { get; set; } = false;
+
+    [Parameter]
+    public bool IsNewModel { get; set; } = false;
 
     public object? ComponentInstance { get; private set; }
 
@@ -43,7 +72,8 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
     public void OpenCustomDialog()
     {
         isCustomDialog = true;
-        if (ViewChildContent == null && EditChildContent == null)
+        if (ViewChildContent == null
+         && EditChildContent == null)
         {
             return;
         }
@@ -53,12 +83,15 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
     public void CloseCustomDialog()
     {
         isCustomDialog = false;
-        if (ViewChildContent == null && EditChildContent == null)
+        if (ViewChildContent == null
+         && EditChildContent == null)
         {
             return;
         }
         StateHasChanged();
     }
+
+    public void CloseSidepanel() => sidePanelService.CloseSidepanel();
 
     protected override void OnParametersSet()
     {
@@ -86,7 +119,8 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
             {
                 if (model.SaveFormAction is not null)
                 {
-                    await model.SaveFormAction.Invoke()
+                    await model.SaveFormAction
+                               .Invoke()
                                .ConfigureAwait(continueOnCapturedContext: true);
                     IsNewModel = false;
                 }
@@ -113,7 +147,8 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
             try
             {
                 if (model.DeleteFormAction is not null)
-                    await model.DeleteFormAction.Invoke()
+                    await model.DeleteFormAction
+                               .Invoke()
                                .ConfigureAwait(continueOnCapturedContext: true);
 
                 isCustomDialog = false;
@@ -140,8 +175,9 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
         {
             try
             {
-                if(model.CancelFormAction is not null)
-                    await model.CancelFormAction.Invoke()
+                if (model.CancelFormAction is not null)
+                    await model.CancelFormAction
+                               .Invoke()
                                .ConfigureAwait(continueOnCapturedContext: true);
 
                 model.ClearExceptions();
