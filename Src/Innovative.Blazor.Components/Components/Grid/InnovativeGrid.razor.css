@@ -12,7 +12,7 @@
 }
 
 ::deep .rz-stack {
-    height: clamp(var(--min-height, 0px), 100vh, var(--max-height, 100vh));
+    height: clamp(var(--min-height, 0px), 100vh, var(--max-height, 110vh));
 }
 
 /* Table head */
