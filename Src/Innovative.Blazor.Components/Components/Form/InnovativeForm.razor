@@ -8,6 +8,16 @@
         @{
             var model = Model as FormModel;
             Debug.Assert(model != null, $"{nameof(model)} is null!");
+
+            // Render custom alerts first
+            foreach (var alert in model.Alerts)
+            {
+                var capturedId = alert.Id;
+                <InnovativeAlert Severity="@alert.Severity" Summary="@alert.Summary" Detail="@alert.Detail"
+                                 Closable="@alert.Closable" OnClose="@(() => model.RemoveAlert(capturedId))"/>
+            }
+
+            // Render exceptions as error banners
             foreach (var exception in model.Exceptions)
             {
                 <section class="rz-alert rz-background-color-danger-lighter gap-2 column-span-4">
