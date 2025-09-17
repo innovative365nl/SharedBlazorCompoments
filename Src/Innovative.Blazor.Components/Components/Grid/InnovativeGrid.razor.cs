@@ -300,10 +300,10 @@ public partial class InnovativeGrid<TItem> : ComponentBase
 
     private string GetGridStyle()
     {
-        var minHeight = MinHeightOption == GridHeight.Max ? "1162px" : "";
+        var minHeight = MinHeightOption == GridHeight.Max ? "1262px" : "";
         return string.IsNullOrEmpty(minHeight)
-                   ? "--max-height: 1162px;"
-                   : $"--max-height: 1162px; --min-height: {minHeight};";
+                   ? "--max-height: 1262px;"
+                   : $"--max-height: 1262px; --min-height: {minHeight};";
     }
 
     [ExcludeFromCodeCoverage]
