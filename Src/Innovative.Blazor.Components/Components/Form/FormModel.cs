@@ -5,7 +5,7 @@ using Microsoft.Kiota.Abstractions.Serialization;
 
 namespace Innovative.Blazor.Components.Components;
 
-public sealed record FormAlert(Guid Id, AlertSeverity Severity, string Summary, string? Detail, bool Closable);
+public sealed record FormAlert(Guid Id, AlertSeverity Severity, string Summary, string? Detail, bool Closable, bool ShowInForm, bool ShowInDetail);
 
 public abstract class FormModel
 {
@@ -49,12 +49,14 @@ public abstract class FormModel
       , string message
       , bool closable = true
       , string? detail = null
+      , bool inForm = true
+      , bool inDetail = true
     )
     {
         if (string.IsNullOrWhiteSpace(message))
             throw new ArgumentException("Message cannot be null or whitespace.", nameof(message));
         var id = Guid.NewGuid();
-        alerts.Add(new FormAlert(id, severity, message, detail, closable));
+        alerts.Add(new FormAlert(id, severity, message, detail, closable, inForm, inDetail));
         return id;
     }
 

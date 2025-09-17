@@ -9,8 +9,8 @@
             var model = Model as FormModel;
             Debug.Assert(model != null, $"{nameof(model)} is null!");
 
-            // Render custom alerts first
-            foreach (var alert in model.Alerts)
+            // Render custom alerts first (only those marked for Form)
+            foreach (var alert in model.Alerts.Where(a => a.ShowInForm))
             {
                 var capturedId = alert.Id;
                 <InnovativeAlert Severity="@alert.Severity" Summary="@alert.Summary" Detail="@alert.Detail"

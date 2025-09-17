@@ -33,6 +33,16 @@
         }
     </RadzenStack>
 
+    @if (Model is FormModel model)
+    {
+        foreach (var alert in model.Alerts.Where(a => a.ShowInDetail))
+        {
+            var capturedId = alert.Id;
+            <InnovativeAlert Severity="@alert.Severity" Summary="@alert.Summary" Detail="@alert.Detail"
+                             Closable="@alert.Closable" OnClose="@(() => model.RemoveAlert(capturedId))"/>
+        }
+    }
+
     <section class="innovative-detail-layout">
         @foreach (var group in orderedColumnGroups)
         {
