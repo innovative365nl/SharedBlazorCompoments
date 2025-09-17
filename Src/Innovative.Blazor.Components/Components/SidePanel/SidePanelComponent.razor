@@ -23,7 +23,7 @@
                     <span class="material-symbols-outlined">edit</span>
                 </RadzenButton>
             }
-            else if (ShowEdit && (IsEditing || isCustomDialog))
+            else if ((ShowEdit && IsEditing) || isCustomDialog)
             {
                 <RadzenButton class="sidepanel-icon-button"
                     Click="@HandleSaveClick">
