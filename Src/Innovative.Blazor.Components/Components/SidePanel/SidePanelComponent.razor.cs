@@ -92,6 +92,7 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
     }
 
     public void CloseSidepanel() => sidePanelService.CloseSidepanel();
+    public void CloseSidepanel(object? result) => sidePanelService.CloseSidepanel(result);
 
     protected override void OnParametersSet()
     {
