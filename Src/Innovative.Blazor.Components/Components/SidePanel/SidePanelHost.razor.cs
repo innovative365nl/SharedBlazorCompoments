@@ -5,12 +5,12 @@ namespace Innovative.Blazor.Components.Components;
 
 public sealed partial class SidePanelHost(ISidepanelService sidePanelService)
 {
+    private bool IsVisable = true;
     protected override void OnInitialized()
     {
         sidePanelService.OnStateChanged += StateHasChanged;
         sidePanelService.VisibleChanged += VisibleChanged;
     }
-    private bool IsVisable = true;
     private void VisibleChanged(bool obj)
     {
         //todo: check for fix to solve in the dom
@@ -50,5 +50,17 @@ public sealed partial class SidePanelHost(ISidepanelService sidePanelService)
 
     private void Close() => sidePanelService.CloseSidepanel();
 
-    private void OnOverlayClick(MouseEventArgs e) => sidePanelService.CloseSidepanel();
+    private async void OnOverlayClick(MouseEventArgs e)
+    {
+        if (sidePanelService.BeforeOverlayCloseAsync is null)
+        {
+            sidePanelService.CloseSidepanel();
+            return;
+        }
+        var canClose = await sidePanelService.BeforeOverlayCloseAsync.Invoke().ConfigureAwait(false);
+        if (canClose)
+        {
+            sidePanelService.CloseSidepanel();
+        }
+    }
 }

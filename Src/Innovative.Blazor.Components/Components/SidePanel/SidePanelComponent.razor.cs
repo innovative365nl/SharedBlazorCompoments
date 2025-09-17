@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Innovative.Blazor.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Radzen;
@@ -6,11 +7,16 @@ using Radzen;
 namespace Innovative.Blazor.Components.Components;
 
 [SuppressMessage("Design", "CA1031:Do not catch general exception types")]
-public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelService) : ComponentBase
+public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelService) : ComponentBase, IDisposable
 {
+
+    private bool _disposed;
     private IFormComponent? formComponent;
     private bool isCustomDialog;
     private string? modelError;
+
+    [Inject]
+    private DialogService DialogService { get; set; } = default!;
 
     [Parameter]
     public bool IsEditing { get; set; }
@@ -59,6 +65,12 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
     public object? ComponentInstance { get; private set; }
 
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
     public void SetFormComponent(IFormComponent? component)
     {
         formComponent = component;
@@ -93,6 +105,54 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
     public void CloseSidepanel() => sidePanelService.CloseSidepanel();
     public void CloseSidepanel(object? result) => sidePanelService.CloseSidepanel(result);
+
+    protected override void OnInitialized()
+    {
+        // Assign confirmation delegate for overlay clicks
+        sidePanelService.BeforeOverlayCloseAsync = ConfirmLeaveIfNeededAsync;
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed)
+            return;
+        if (disposing)
+        {
+            // Clear delegate when component is disposed to avoid dangling references
+            if (sidePanelService.BeforeOverlayCloseAsync == ConfirmLeaveIfNeededAsync)
+            {
+                sidePanelService.BeforeOverlayCloseAsync = null;
+            }
+        }
+        _disposed = true;
+    }
+
+    private async Task<bool> ConfirmLeaveIfNeededAsync()
+    {
+        // Only confirm when user clicks outside (overlay handled by host)
+        if (isCustomDialog || IsEditing)
+        {
+            var isDutch = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("nl", StringComparison.OrdinalIgnoreCase);
+            var title = isDutch ? "Bevestigen" : "Confirm";
+            var message = isDutch
+                              ? "Weet je zeker dat je dit paneel wilt verlaten? Niet-opgeslagen wijzigingen gaan verloren."
+                              : "Are you sure you want to leave this panel? Unsaved changes will be lost.";
+            var okText = isDutch ? "Ja, verlaten" : "Yes, leave";
+            var cancelText = isDutch ? "Nee, annuleren" : "No, cancel";
+
+            var result = await DialogService.Confirm(message
+                                                   , title
+                                                   , new ConfirmOptions
+                                                     {
+                                                         OkButtonText = okText
+                                                       , CancelButtonText = cancelText
+                                                     })
+                                            .ConfigureAwait(false);
+
+            return result == true;
+        }
+        return true;
+    }
 
     protected override void OnParametersSet()
     {
