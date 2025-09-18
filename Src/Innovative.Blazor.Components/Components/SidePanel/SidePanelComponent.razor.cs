@@ -147,7 +147,7 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
                                                          OkButtonText = okText
                                                        , CancelButtonText = cancelText
                                                      })
-                                            .ConfigureAwait(false);
+                                            .ConfigureAwait(continueOnCapturedContext: true);
 
             return result == true;
         }
