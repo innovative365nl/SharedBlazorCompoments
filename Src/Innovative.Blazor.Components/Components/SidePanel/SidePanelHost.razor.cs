@@ -57,7 +57,7 @@ public sealed partial class SidePanelHost(ISidepanelService sidePanelService)
             sidePanelService.CloseSidepanel();
             return;
         }
-        var canClose = await sidePanelService.BeforeOverlayCloseAsync.Invoke().ConfigureAwait(false);
+        var canClose = await sidePanelService.BeforeOverlayCloseAsync.Invoke().ConfigureAwait(continueOnCapturedContext: true);
         if (canClose)
         {
             sidePanelService.CloseSidepanel();
