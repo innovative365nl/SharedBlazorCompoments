@@ -1,0 +1,94 @@
+@page "/form/conditional-fields"
+@using Innovative.Blazor.Components.Components
+@using Innovative.Blazor.Components.Services
+@inject IInnovativeSidePanelService SidePanelService
+
+<h3>Conditional UIFormField Visibility</h3>
+<p>
+    This page demonstrates that a field annotated with UIFormField can be hidden based on another property on the model
+    using VisibleWhenProperty / VisibleWhenEquals. The forms are opened in a side panel (as per project convention).
+</p>
+
+<h4>Example A: Boolean-controlled visibility</h4>
+<p>
+    The field "Secret text" is only rendered when "Show secret field?" is true.
+</p>
+<div class="row g-4">
+    <div class="col-6">
+        <h5>Hidden (ShowSecret = false)</h5>
+        <button class="btn btn-primary" @onclick="OpenBooleanHidden">Open form (hidden)</button>
+    </div>
+    <div class="col-6">
+        <h5>Visible (ShowSecret = true)</h5>
+        <button class="btn btn-secondary" @onclick="OpenBooleanVisible">Open form (visible)</button>
+    </div>
+</div>
+
+<hr/>
+
+<h4>Example B: Equality-based visibility</h4>
+<p>
+    The field "Reason (only when Status = 'Active')" is only rendered when Status equals "Active" (case-insensitive).
+</p>
+<div class="row g-4">
+    <div class="col-6">
+        <h5>Hidden (Status = "Draft")</h5>
+        <button class="btn btn-primary" @onclick="OpenEqualsHidden">Open form (hidden)</button>
+    </div>
+    <div class="col-6">
+        <h5>Visible (Status = "Active")</h5>
+        <button class="btn btn-secondary" @onclick="OpenEqualsVisible">Open form (visible)</button>
+    </div>
+</div>
+
+@code {
+
+    // Example A models
+    private ConditionalFieldsModel modelHidden = new() { ShowSecret = false };
+    private ConditionalFieldsModel modelVisible = new() { ShowSecret = true };
+
+    // Example B models
+    private EqualsVisibilityModel equalsHidden = new() { Status = "Draft" };
+    private EqualsVisibilityModel equalsVisible = new() { Status = "Active" };
+
+    private async Task OpenBooleanHidden() => await SidePanelService.OpenInEditMode(modelHidden);
+    private async Task OpenBooleanVisible() => await SidePanelService.OpenInEditMode(modelVisible);
+
+    private async Task OpenEqualsHidden() => await SidePanelService.OpenInEditMode(equalsHidden);
+    private async Task OpenEqualsVisible() => await SidePanelService.OpenInEditMode(equalsVisible);
+
+    [UIFormClass(title: "Conditional Fields (Boolean)")]
+    public class ConditionalFieldsModel : FormModel
+    {
+        private const string Column1 = "Main";
+
+        public ConditionalFieldsModel()
+        {
+            AddViewColumn(Column1, order: 1, width: 12, offset: 0);
+        }
+
+        [UIFormField(name: "Show secret field?", ColumnGroup = Column1)]
+        public bool ShowSecret { get; set; }
+
+        [UIFormField(name: "Secret text", ColumnGroup = Column1, VisibleWhenProperty = nameof(ShowSecret))]
+        public string? Secret { get; set; }
+    }
+
+    [UIFormClass(title: "Conditional Fields (Equals)")]
+    public class EqualsVisibilityModel : FormModel
+    {
+        private const string Column1 = "Main";
+
+        public EqualsVisibilityModel()
+        {
+            AddViewColumn(Column1, order: 1, width: 12, offset: 0);
+        }
+
+        [UIFormField(name: "Status", ColumnGroup = Column1)]
+        public string? Status { get; set; }
+
+        [UIFormField(name: "Reason (only when Status = 'Active')", ColumnGroup = Column1, VisibleWhenProperty = nameof(Status), VisibleWhenEquals = "Active")]
+        public string? Reason { get; set; }
+    }
+
+}

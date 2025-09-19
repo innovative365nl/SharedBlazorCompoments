@@ -201,10 +201,67 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         return (actionAttribute.CustomComponent, parameters, actionAttribute.Name)!;
     }
 
-    private static PropertyInfo[] GetPropertiesWithUiFormField()
+    private bool IsFieldVisible(PropertyInfo property)
+    {
+        var attr = property.GetCustomAttribute<UIFormField>();
+        if (attr == null)
+        {
+            return true;
+        }
+
+        // If no condition is set, show by default
+        if (string.IsNullOrWhiteSpace(attr.VisibleWhenProperty))
+        {
+            return true;
+        }
+
+        if (Model is null)
+        {
+            return true;
+        }
+
+        var conditionProp = typeof(TModel).GetProperty(attr.VisibleWhenProperty);
+        if (conditionProp == null)
+        {
+            // If specified property doesn't exist, default to show to avoid breaking existing UIs
+            return true;
+        }
+
+        var value = conditionProp.GetValue(Model);
+        bool result;
+
+        if (attr.VisibleWhenEquals is null)
+        {
+            // No explicit comparison value; if bool, require true, otherwise require non-null
+            if (value is bool b)
+            {
+                result = b;
+            }
+            else
+            {
+                result = value != null;
+            }
+        }
+        else
+        {
+            var target = attr.VisibleWhenEquals;
+            var valueString = value?.ToString() ?? "null";
+            result = string.Equals(valueString, target, StringComparison.OrdinalIgnoreCase);
+        }
+
+        if (attr.InvertCondition)
+        {
+            result = !result;
+        }
+
+        return result;
+    }
+
+    private PropertyInfo[] GetPropertiesWithUiFormField()
     {
         return typeof(TModel).GetProperties()
                              .Where(predicate: p => p.GetCustomAttribute<UIFormField>() != null)
+                             .Where(IsFieldVisible)
                              .ToArray();
     }
 
