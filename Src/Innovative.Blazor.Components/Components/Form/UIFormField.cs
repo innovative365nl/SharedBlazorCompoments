@@ -87,6 +87,16 @@ public sealed class UIFormField(string name) : UIField(name)
     /// </summary>
     public bool ReadOnly { get; set; }
 
+    // Conditional visibility support (similar to UIFormViewAction)
+    // When set, the field is only visible if the specified property on the model meets the condition.
+    // - If VisibleWhenEquals is null: the property must be a boolean and equal to true, otherwise require non-null.
+    // - If VisibleWhenEquals is set: the property's value (converted to string) must equal this value (case-insensitive).
+    //   Works for string, enum, and numeric types (comparison uses ToString of the property value).
+    // You can invert the result by setting InvertCondition=true.
+    public string? VisibleWhenProperty { get; init; }
+    public string? VisibleWhenEquals { get; init; }
+    public bool InvertCondition { get; init; }
+
     /// <summary>
     /// Checks if a type inherits from CustomComponent&lt;T&gt; (generic base class).
     /// </summary>
