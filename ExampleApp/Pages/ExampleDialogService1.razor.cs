@@ -10,11 +10,20 @@ public partial class ExampleDialogService1(IInnovativeSidePanelService sidePanel
 
     protected override void OnInitialized()
     {
-        person.SaveFormAction = () =>
+        person.SaveFormAction = async () =>
                                 {
-                                    var logEntry = "Model saved";
-                                    LogAction(message: logEntry);
-                                    return Task.CompletedTask;
+                                    LogAction("Saving started");
+                                    person.ReportProgress("Connecting to server...");
+                                    await Task.Delay(500).ConfigureAwait(true);
+                                    person.ReportProgress("Uploading data...");
+                                    await Task.Delay(1000).ConfigureAwait(true);
+                                    person.ReportProgress("Processing on server (step 1/3)...");
+                                    await Task.Delay(800).ConfigureAwait(true);
+                                    person.ReportProgress("Processing on server (step 2/3)...");
+                                    await Task.Delay(800).ConfigureAwait(true);
+                                    person.ReportProgress("Finalizing...");
+                                    await Task.Delay(600).ConfigureAwait(true);
+                                    LogAction("Model saved");
                                 };
         person.DeleteFormAction = () =>
                                   {
@@ -56,8 +65,8 @@ public partial class ExampleDialogService1(IInnovativeSidePanelService sidePanel
     private async Task OpenPersonDialog()
     {
         await sidePanelService
-                 .OpenInDisplayMode(model: person, showDelete:true, dataTestId:"12345678900987654321")    // person is passed by reference so after save
-                 .ConfigureAwait(continueOnCapturedContext: true);     // you'll have the updated model
+              .OpenInDisplayMode(model: person, showDelete: true, dataTestId: "12345678900987654321") // person is passed by reference so after save
+              .ConfigureAwait(continueOnCapturedContext: true);                                       // you'll have the updated model
 
         StateHasChanged();
     }
