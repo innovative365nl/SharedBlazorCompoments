@@ -1,4 +1,5 @@
 using Innovative.Blazor.Components.Services;
+using Microsoft.Kiota.Abstractions;
 
 namespace ExampleApp.Pages;
 
@@ -23,7 +24,8 @@ public partial class ExampleDialogService1(IInnovativeSidePanelService sidePanel
                                     await Task.Delay(800).ConfigureAwait(true);
                                     person.ReportProgress("Finalizing...");
                                     await Task.Delay(600).ConfigureAwait(true);
-                                    LogAction("Model saved");
+                                    throw new ApiException("test");
+                                    //    LogAction("Model saved");
                                 };
         person.DeleteFormAction = () =>
                                   {

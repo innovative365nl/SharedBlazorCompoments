@@ -171,8 +171,9 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
         if (Model is FormModel model)
         {
-            if (model.Exceptions.Any())
-                return;
+            // Allow retry even if there are existing exceptions from previous attempts.
+            // Clear previous exceptions so the user sees only the latest outcome.
+            model.ClearExceptions();
 
             if (formComponent is not null)
                 await formComponent
@@ -218,12 +219,12 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
             catch (ApiException ex)
             {
                 await model.AddExceptionAsync(exception: ex).ConfigureAwait(false);
-                model.AddAlert(AlertSeverity.Error, "Action error", detail: ex.Message, inForm: true, inDetail: true);
+                //  model.AddAlert(AlertSeverity.Error, "Action error", detail: ex.Message, inForm: true, inDetail: true);
             }
             catch (InvalidOperationException ex)
             {
                 await model.AddExceptionAsync(exception: ex).ConfigureAwait(false);
-                model.AddAlert(AlertSeverity.Error, "Action error", detail: ex.Message, inForm: true, inDetail: true);
+                //  model.AddAlert(AlertSeverity.Error, "Action error", detail: ex.Message, inForm: true, inDetail: true);
             }
             finally
             {
