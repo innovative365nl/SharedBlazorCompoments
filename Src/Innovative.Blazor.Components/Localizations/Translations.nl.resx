@@ -162,4 +162,7 @@
   <data name="emptyText" xml:space="preserve">
     <value>Geen data gevonden</value>
   </data>
+  <data name="Saving" xml:space="preserve">
+    <value>Oplsaan...</value>
+  </data>
 </root>
