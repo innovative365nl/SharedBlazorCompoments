@@ -4,6 +4,7 @@ using System.Reflection;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
+using Microsoft.Kiota.Abstractions;
 
 namespace Innovative.Blazor.Components.Components;
 
@@ -11,6 +12,8 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 {
     private const int MaxNumberOfButtonsBesideEachOther = 2;
     private readonly IInnovativeStringLocalizer localizer;
+    private readonly List<string> progressLog = new();
+    private bool isBusy;
 
     public InnovativeDetail(IInnovativeStringLocalizerFactory localizerFactory)
     {
@@ -118,9 +121,8 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         }
     }
 
-    private void HandleActionProperty(PropertyInfo property, UIFormViewAction actionAttribute)
+    private async Task HandleActionProperty(PropertyInfo property, UIFormViewAction actionAttribute)
     {
-
         var action = property.GetValue(obj: Model) as Delegate;
         if (action == null)
         {
@@ -151,20 +153,72 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         }
         else
         {
-            var parameters = action.Method.GetParameters();
-
-            if (parameters.Length == 0)
+            EventHandler<ProgressEventArgs>? progressHandler = null;
+            if (Model is FormModel fm)
             {
-                action.DynamicInvoke();
-            }
-            else
-            {
-                var paramType = parameters[0].ParameterType;
-                var defaultValue = paramType.IsValueType ? Activator.CreateInstance(type: paramType) : null;
-                action.DynamicInvoke(defaultValue);
+                progressLog.Clear();
+                progressHandler = (_, e) =>
+                                  {
+                                      progressLog.Add(e.Message);
+                                      InvokeAsync(StateHasChanged);
+                                  };
+                fm.OnProgress += progressHandler;
             }
 
-            OnActionExecuted.InvokeAsync(arg: property.Name);
+            try
+            {
+                isBusy = true;
+                await InvokeAsync(StateHasChanged).ConfigureAwait(false);
+                await Task.Yield(); // ensure UI renders spinner before starting long-running work
+
+                var result = action.DynamicInvoke(action.Method.GetParameters().Length == 0
+                                                      ? null
+                                                      : action.Method.GetParameters()[0].ParameterType.IsValueType
+                                                          ? Activator.CreateInstance(action.Method.GetParameters()[0].ParameterType)
+                                                          : null);
+
+                if (result is Task task)
+                {
+                    await task.ConfigureAwait(false);
+                }
+            }
+            catch (ApiException ex)
+            {
+                if (Model is FormModel fm2)
+                {
+                    await fm2.AddExceptionAsync(ex).ConfigureAwait(false);
+                    fm2.AddAlert(AlertSeverity.Error, "Action error", detail: ex.Message, inForm: true, inDetail: true);
+                }
+            }
+            catch (TargetInvocationException ex)
+            {
+                var actual = ex.InnerException ?? ex;
+                if (Model is FormModel fm2)
+                {
+                    await fm2.AddExceptionAsync(actual).ConfigureAwait(false);
+                    fm2.AddAlert(AlertSeverity.Error, "Action error", detail: actual.Message, inForm: true, inDetail: true);
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                if (Model is FormModel fm2)
+                {
+                    await fm2.AddExceptionAsync(ex).ConfigureAwait(false);
+                    fm2.AddAlert(AlertSeverity.Error, "Action error", detail: ex.Message, inForm: true, inDetail: true);
+                }
+            }
+            finally
+            {
+                isBusy = false;
+                if (Model is FormModel fm3
+                 && progressHandler != null)
+                {
+                    fm3.OnProgress -= progressHandler;
+                }
+                await InvokeAsync(StateHasChanged).ConfigureAwait(false);
+            }
+
+            await OnActionExecuted.InvokeAsync(arg: property.Name).ConfigureAwait(false);
         }
     }
 

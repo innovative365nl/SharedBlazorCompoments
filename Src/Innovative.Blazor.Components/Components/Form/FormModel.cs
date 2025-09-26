@@ -43,6 +43,18 @@ public abstract class FormModel
 
     public IEnumerable<Column> Columns => ViewColumns.OrderBy(c => c.Order);
 
+    // Progress streaming support for long-running actions (e.g., Save)
+    // Components can subscribe to display progress messages (like SSE output)
+    public event EventHandler<ProgressEventArgs>? OnProgress;
+
+    public void ReportProgress(string message)
+    {
+        if (!string.IsNullOrWhiteSpace(message))
+        {
+            OnProgress?.Invoke(this, new ProgressEventArgs(message));
+        }
+    }
+
     public Guid AddAlert
     (
         AlertSeverity severity

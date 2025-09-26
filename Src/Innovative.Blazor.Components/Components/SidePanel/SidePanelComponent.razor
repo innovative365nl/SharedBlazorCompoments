@@ -19,6 +19,7 @@
             @if (ShowEdit && !IsEditing && !isCustomDialog)
             {
                 <RadzenButton class="sidepanel-icon-button" id="sidePanelEditButton"
+                              Disabled="@isBusy"
                         Click="@(args => IsEditing = !IsEditing)">
                     <span class="material-symbols-outlined">edit</span>
                 </RadzenButton>
@@ -26,6 +27,7 @@
             else if ((ShowEdit && IsEditing) || isCustomDialog)
             {
                 <RadzenButton class="sidepanel-icon-button"
+                              Disabled="@isBusy"
                     Click="@HandleSaveClick">
                     <span class="material-symbols-outlined">save</span>
                 </RadzenButton>
@@ -50,6 +52,22 @@
         @if (modelError != null)
         {
             <div class="alert alert-danger">@modelError</div>
+        }
+        else if (isBusy)
+        {
+            <div class="innovative-detail-busy">
+                <span class="spinner-border" role="status" aria-hidden="true"></span>
+                <span> Saving...</span>
+            </div>
+            @if (progressLog?.Any() == true)
+            {
+                <div class="innovative-detail-progress">
+                    @foreach (var line in progressLog)
+                    {
+                        <div>@line</div>
+                    }
+                </div>
+            }
         }
         else
         {
