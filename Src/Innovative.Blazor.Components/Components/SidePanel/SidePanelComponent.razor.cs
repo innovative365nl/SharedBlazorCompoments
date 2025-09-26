@@ -200,16 +200,20 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
                     await model.SaveFormAction
                                .Invoke()
                                .ConfigureAwait(continueOnCapturedContext: false);
-                    IsNewModel = false;
                 }
 
-                if (CloseOnSaveForm)
-                {
-                    sidePanelService.CloseSidepanel();
-                }
+                await InvokeAsync(() =>
+                                  {
+                                      IsNewModel = false;
+                                      if (CloseOnSaveForm)
+                                      {
+                                          sidePanelService.CloseSidepanel();
+                                      }
 
-                isCustomDialog = false;
-                IsEditing = false;
+                                      isCustomDialog = false;
+                                      IsEditing = false;
+                                  })
+                    .ConfigureAwait(false);
             }
             catch (ApiException ex)
             {
@@ -227,8 +231,12 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
                 {
                     model.OnProgress -= progressHandler;
                 }
-                isBusy = false;
-                await InvokeAsync(StateHasChanged).ConfigureAwait(false);
+                await InvokeAsync(() =>
+                                  {
+                                      isBusy = false;
+                                      StateHasChanged();
+                                  })
+                    .ConfigureAwait(false);
             }
         }
     }
