@@ -15,23 +15,42 @@
                 foreach (var button in GetButtonDefinitions())
                 {
                     <RadzenButton Text="@button.ActionName"
-                                  Click="@(() => HandleActionProperty(property: button.Property, actionAttribute: button.ActionAttribute))"
+                                  Disabled="@isBusy"
+                                  Click="@((async () => await HandleActionProperty(property: button.Property, actionAttribute: button.ActionAttribute)))"
                                   ButtonStyle="ButtonStyle.Primary"/>
                 }
             } else
             {
                 <RadzenSplitButton Text="@splitButton.ActionName"
-                                   Click="@(() => HandleActionProperty(property: splitButton.Property, actionAttribute: splitButton.ActionAttribute))"
+                                   Disabled="@isBusy"
+                                   Click="@((async () => await HandleActionProperty(property: splitButton.Property, actionAttribute: splitButton.ActionAttribute)))"
                                    ButtonStyle="ButtonStyle.Primary">
                     @foreach (var item in GetSplitButtonDefinitionItems())
                     {
                         <RadzenSplitButtonItem Text="@item.ActionName"
-                                               Click="@(() => HandleActionProperty(property: item.Property, actionAttribute: item.ActionAttribute))"/>
+                                               Click="@((async () => await HandleActionProperty(property: item.Property, actionAttribute: item.ActionAttribute)))"/>
                     }
                 </RadzenSplitButton>
             }
         }
     </RadzenStack>
+
+    @if (isBusy)
+    {
+        <div class="innovative-detail-busy">
+            <span class="spinner-border" role="status" aria-hidden="true"></span>
+            <span> Saving...</span>
+        </div>
+        @if (progressLog?.Any() == true)
+        {
+            <div class="innovative-detail-progress">
+                @foreach (var line in progressLog)
+                {
+                    <div>@line</div>
+                }
+            </div>
+        }
+    }
 
     @if (Model is FormModel model)
     {

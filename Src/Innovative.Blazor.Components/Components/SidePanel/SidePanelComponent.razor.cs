@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Innovative.Blazor.Components.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Kiota.Abstractions;
 using Radzen;
 
 namespace Innovative.Blazor.Components.Components;
@@ -9,9 +10,11 @@ namespace Innovative.Blazor.Components.Components;
 [SuppressMessage("Design", "CA1031:Do not catch general exception types")]
 public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelService) : ComponentBase, IDisposable
 {
+    private readonly List<string> progressLog = new();
 
     private bool _disposed;
     private IFormComponent? formComponent;
+    private bool isBusy;
     private bool isCustomDialog;
     private string? modelError;
 
@@ -176,28 +179,57 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
                       .OnFormSubmit()
                       .ConfigureAwait(continueOnCapturedContext: true);
 
+            EventHandler<ProgressEventArgs>? progressHandler = null;
             try
             {
+                // subscribe to progress
+                progressLog.Clear();
+                progressHandler = (_, e) =>
+                                  {
+                                      progressLog.Add(e.Message);
+                                      _ = InvokeAsync(StateHasChanged);
+                                  };
+                model.OnProgress += progressHandler;
+
+                isBusy = true;
+                await InvokeAsync(StateHasChanged).ConfigureAwait(false);
+                await Task.Yield();
+
                 if (model.SaveFormAction is not null)
                 {
                     await model.SaveFormAction
                                .Invoke()
-                               .ConfigureAwait(continueOnCapturedContext: true);
+                               .ConfigureAwait(continueOnCapturedContext: false);
                     IsNewModel = false;
                 }
+
                 if (CloseOnSaveForm)
                 {
                     sidePanelService.CloseSidepanel();
                 }
+
                 isCustomDialog = false;
                 IsEditing = false;
             }
-            catch (Exception e)
+            catch (ApiException ex)
             {
-                await model.AddExceptionAsync(exception: e)
-                           .ConfigureAwait(continueOnCapturedContext: false);
+                await model.AddExceptionAsync(exception: ex).ConfigureAwait(false);
+                model.AddAlert(AlertSeverity.Error, "Action error", detail: ex.Message, inForm: true, inDetail: true);
             }
-            StateHasChanged();
+            catch (InvalidOperationException ex)
+            {
+                await model.AddExceptionAsync(exception: ex).ConfigureAwait(false);
+                model.AddAlert(AlertSeverity.Error, "Action error", detail: ex.Message, inForm: true, inDetail: true);
+            }
+            finally
+            {
+                if (progressHandler != null)
+                {
+                    model.OnProgress -= progressHandler;
+                }
+                isBusy = false;
+                await InvokeAsync(StateHasChanged).ConfigureAwait(false);
+            }
         }
     }
 
@@ -216,10 +248,15 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
                 IsEditing = false;
                 sidePanelService.CloseSidepanel();
             }
-            catch (Exception e)
+            catch (ApiException ex)
             {
-                await model.AddExceptionAsync(exception: e)
-                           .ConfigureAwait(continueOnCapturedContext: false);
+                await model.AddExceptionAsync(exception: ex).ConfigureAwait(false);
+                model.AddAlert(AlertSeverity.Error, "Action error", detail: ex.Message, inForm: true, inDetail: true);
+            }
+            catch (InvalidOperationException ex)
+            {
+                await model.AddExceptionAsync(exception: ex).ConfigureAwait(false);
+                model.AddAlert(AlertSeverity.Error, "Action error", detail: ex.Message, inForm: true, inDetail: true);
             }
         }
     }
@@ -247,10 +284,15 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
                 isCustomDialog = false;
                 ActionChildContent = null;
             }
-            catch (Exception e)
+            catch (ApiException ex)
             {
-                await model.AddExceptionAsync(exception: e)
-                           .ConfigureAwait(continueOnCapturedContext: false);
+                await model.AddExceptionAsync(exception: ex).ConfigureAwait(false);
+                model.AddAlert(AlertSeverity.Error, "Action error", detail: ex.Message, inForm: true, inDetail: true);
+            }
+            catch (InvalidOperationException ex)
+            {
+                await model.AddExceptionAsync(exception: ex).ConfigureAwait(false);
+                model.AddAlert(AlertSeverity.Error, "Action error", detail: ex.Message, inForm: true, inDetail: true);
             }
         }
     }
