@@ -171,8 +171,9 @@ public partial class SidePanelComponent<TModel>(ISidepanelService sidePanelServi
 
         if (Model is FormModel model)
         {
-            if (model.Exceptions.Any())
-                return;
+            // Allow retry even if there are existing exceptions from previous attempts.
+            // Clear previous exceptions so the user sees only the latest outcome.
+            model.ClearExceptions();
 
             if (formComponent is not null)
                 await formComponent
