@@ -68,6 +68,34 @@
     gap: 0.5rem;
 }
 
+/* Optional bordered block styling for column groups */
+.form-column-group.has-border {
+    margin-top: 1rem;
+    border: 1px solid var(--inn-gray-200);
+    border-radius: 4px;
+    display: grid;
+    row-gap: .5rem;
+    column-gap: .5rem;
+    background: var(--inn-gray-100);
+}
+
+.form-column-title {
+    margin: 0;
+    font-weight: 600;
+    font-size: .875rem;
+    padding: 0.125rem 0.25rem;
+    position: relative;
+}
+
+.form-column-title::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--inn-gray-200);
+    border-radius: 4px;
+    clip-path: inset(0.8rem 0 0 0);
+}
+
 .form-ungrouped {
     display: flex;
     flex-direction: column;

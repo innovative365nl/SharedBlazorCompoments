@@ -66,6 +66,15 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         return string.Empty;
     }
 
+    private Column? GetColumn(string columnGroup)
+    {
+        if (Model is FormModel formModel)
+        {
+            return formModel.Columns.FirstOrDefault(c => c.Name == columnGroup);
+        }
+        return null;
+    }
+
     private void OrganizePropertiesByGroups()
     {
         var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();

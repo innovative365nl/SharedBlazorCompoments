@@ -85,6 +85,8 @@ public abstract class FormModel
       , int order
       , int width
       , int offset
+      , bool showOuterBorder = false
+      , bool showTitle = false
     )
     {
         ViewColumns.Add(new Column
@@ -93,6 +95,8 @@ public abstract class FormModel
                           , Order = order
                           , Width = width
                           , Offset = offset
+                          , ShowOuterBorder = showOuterBorder
+                          , ShowTitle = showTitle
                         });
     }
 
