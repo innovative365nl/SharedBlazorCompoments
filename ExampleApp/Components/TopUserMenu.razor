@@ -1,0 +1,89 @@
+<div class="top-user-menu">
+    <button class="user-btn" @onclick="ToggleMenu">
+        <img class="avatar" src="@AvatarUrl" alt="avatar" onerror="this.style.display='none'"/>
+        <span class="user-name">@UserName</span>
+        <span class="chevron">@(isOpen ? "▴" : "▾")</span>
+    </button>
+
+    @if (isOpen)
+    {
+        <div class="dropdown" @onfocusout="OnFocusOut" tabindex="0">
+            <div class="dropdown-header">@UserName</div>
+            <div class="dropdown-section">
+                <div class="section-title">Stijl</div>
+                <select class="select" value="@ThemeModeLocal" @onchange="OnThemeChangedInternal">
+                    <option value="auto">Automatisch</option>
+                    <option value="light">Licht</option>
+                    <option value="dark">Donker</option>
+                </select>
+            </div>
+            <div class="dropdown-section">
+                <div class="section-title">Taal</div>
+                <select class="select" value="@LanguageLocal" @onchange="OnLanguageChangedInternal">
+                    <option value="nl">Nederlands</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+
+            @if (ShowRadzenToggle)
+            {
+                <div class="dropdown-section">
+                    <div class="section-title">Radzen</div>
+                    <button class="toggle" @onclick="ToggleRadzen">@(RadzenEnabled ? "Aan" : "Uit")</button>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string UserName { get; set; } = "Daphne Zwuup";
+    [Parameter] public string? AvatarUrl { get; set; }
+    [Parameter] public string ThemeMode { get; set; } = "auto"; // auto|light|dark
+    [Parameter] public EventCallback<string> ThemeModeChanged { get; set; }
+    [Parameter] public string Language { get; set; } = "nl"; // nl|en
+    [Parameter] public EventCallback<string> LanguageChanged { get; set; }
+    [Parameter] public bool ShowRadzenToggle { get; set; } = true;
+    [Parameter] public bool RadzenEnabled { get; set; } = true;
+    [Parameter] public EventCallback<bool> RadzenEnabledChanged { get; set; }
+
+    private bool isOpen;
+    private string ThemeModeLocal { get; set; } = "auto";
+    private string LanguageLocal { get; set; } = "nl";
+
+    protected override void OnParametersSet()
+    {
+        ThemeModeLocal = ThemeMode;
+        LanguageLocal = Language;
+    }
+
+    private void ToggleMenu() => isOpen = !isOpen;
+
+    private async Task OnThemeChangedInternal(ChangeEventArgs _)
+    {
+        if (ThemeModeLocal != ThemeMode)
+        {
+            await ThemeModeChanged.InvokeAsync(ThemeModeLocal);
+        }
+    }
+
+    private async Task OnLanguageChangedInternal(ChangeEventArgs _)
+    {
+        if (LanguageLocal != Language)
+        {
+            await LanguageChanged.InvokeAsync(LanguageLocal);
+        }
+    }
+
+    private async Task ToggleRadzen()
+    {
+        await RadzenEnabledChanged.InvokeAsync(!RadzenEnabled);
+    }
+
+    private void OnFocusOut(FocusEventArgs _)
+    {
+        // simple close when focus leaves the dropdown
+        isOpen = false;
+    }
+
+}
