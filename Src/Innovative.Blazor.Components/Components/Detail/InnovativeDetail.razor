@@ -65,7 +65,13 @@
     <section class="innovative-detail-layout">
         @foreach (var group in orderedColumnGroups)
         {
-            <div class="form-column-group @GetColumnWidthClass(group.Key)">
+            var col = GetColumn(group.Key);
+            <fieldset
+                class="form-column-group @GetColumnWidthClass(group.Key) @(col?.ShowOuterBorder == true ? "has-border" : string.Empty)">
+                @if (col?.ShowTitle == true && !string.IsNullOrWhiteSpace(col.Name))
+                {
+                    <legend class="form-column-title">@col.Name</legend>
+                }
                 @foreach (var property in group.Value)
                 {
                     var fieldAttribute = property.GetCustomAttribute<UIFormField>();
@@ -116,7 +122,7 @@
                         }
                     }
                 }
-            </div>
+            </fieldset>
         }
 
         @if (ungroupedProperties.Any())
