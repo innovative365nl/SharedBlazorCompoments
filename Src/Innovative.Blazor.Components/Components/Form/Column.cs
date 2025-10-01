@@ -6,8 +6,16 @@ public class Column
     /// The name of the column.
     /// </summary>
     public string? Name { get; set; }
-    
+
+    /// <summary>
+    /// When true, render a subtle outer border/background around this column block in views.
+    /// </summary>
     public bool ShowOuterBorder { get; set; }
+
+    /// <summary>
+    /// When true, render the column name as a small header inside the block.
+    /// </summary>
+    public bool ShowTitle { get; set; }
 
     /// <summary>
     /// The order of the column.
@@ -19,7 +27,7 @@ public class Column
     /// The column width as a percentage or CSS value (e.g. "50%", "300px").
     /// </summary>
     public int Width { get; set; } = 1;
-    
+
     /// <summary>
     /// The offset of the column to add space before it.
     /// </summary>

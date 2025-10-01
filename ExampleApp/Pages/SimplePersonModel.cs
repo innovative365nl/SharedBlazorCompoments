@@ -12,9 +12,10 @@ public class SimplePersonModel : FormModel
 
     public SimplePersonModel()
     {
-        AddViewColumn(name: NameColumn, order: 1, width: 6, offset: 0);
+        // Show a titled bordered block for the first column as an example.
+        AddViewColumn(name: NameColumn, order: 1, width: 6, offset: 0, showOuterBorder: true, showTitle: true);
         AddViewColumn(name: DataColumn, order: 2, width: 6, offset: 0);
-        AddViewColumn(name: InfoColumn, order: 3, width: 12, offset: 0);
+        AddViewColumn(name: InfoColumn, order: 3, width: 12, offset: 0, showOuterBorder: true, showTitle: true);
     }
 
     [UIFormField(name: "First name", ColumnGroup = NameColumn)]
