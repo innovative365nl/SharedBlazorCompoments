@@ -12,6 +12,10 @@
     margin-bottom: 0.25rem;
 }
 
+fieldset {
+    border: 0;
+}
+
 /* Column spanning classes */
 .innovative-detail-layout .col-1 {
     width: 8.33%;
