@@ -11,6 +11,12 @@ public abstract class FormModel
 {
     private readonly List<FormAlert> alerts = [];
     private readonly Dictionary<string, HashSet<string>> exceptions = [];
+
+    /// <summary>
+    /// Backing field for the optional override title.
+    /// </summary>
+    private string? overrideTitle;
+
     public IReadOnlyList<FormAlert> Alerts => alerts;
 
     protected Collection<Column> ViewColumns { get; } = [];
@@ -42,6 +48,21 @@ public abstract class FormModel
     public Func<Task>? DeleteFormAction { get; set; }
 
     public IEnumerable<Column> Columns => ViewColumns.OrderBy(c => c.Order);
+
+    /// <summary>
+    /// Sets an optional override for the form title. Call this from your model's constructor
+    /// when you want to override the UIFormClass attribute title at runtime.
+    /// Pass null or whitespace to clear the override.
+    /// </summary>
+    public void OverrideTitle(string? title)
+    {
+        overrideTitle = title;
+    }
+
+    /// <summary>
+    /// Returns the current override title if any; otherwise null.
+    /// </summary>
+    public string? GetOverrideTitle() => string.IsNullOrWhiteSpace(overrideTitle) ? null : overrideTitle;
 
     // Progress streaming support for long-running actions (e.g., Save)
     // Components can subscribe to display progress messages (like SSE output)
