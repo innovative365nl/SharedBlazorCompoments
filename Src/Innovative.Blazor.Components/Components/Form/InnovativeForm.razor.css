@@ -187,7 +187,7 @@
     min-width: unset;
 }
 
-.rz-chkbox-box:after {
+::deep .rz-chkbox-box:after {
     content: "";
     position: absolute;
     width: 1rem;
@@ -210,7 +210,7 @@
 
 ::deep .rz-chkbox-box.rz-state-active:hover:not(.rz-state-disabled) {
     background-color: var(--inn-gray-200);
-    border: var(--inn-gray-900);
+    border: 1px solid var(--inn-gray-900);
 }
 
 ::deep .rz-chkbox-box.rz-state-active:hover:not(.rz-state-disabled):after {
