@@ -187,10 +187,50 @@
     min-width: unset;
 }
 
+.rz-chkbox-box:after {
+    content: "";
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    opacity: 0;
+    transition: unset;
+}
+
 ::deep .rz-chkbox-box:hover:not(.rz-state-disabled):after {
     width: var(--inn-input-checkbox-circle-hover-width);
     height: var(--inn-input-checkbox-circle-hover-height);
     background-color: var(--inn-input-checkbox-circle-hover-background-color);
+}
+
+::deep .rz-chkbox-box.rz-state-active {
+    background-color: var(--inn-primary-lighter);
+    border: 1px solid var(--inn-primary);
+}
+
+::deep .rz-chkbox-box.rz-state-active:hover:not(.rz-state-disabled) {
+    background-color: var(--inn-gray-200);
+    border: var(--inn-gray-900);
+}
+
+::deep .rz-chkbox-box.rz-state-active:hover:not(.rz-state-disabled):after {
+    background-color: var(--inn-gray-800);
+    opacity: 0.08;
+}
+
+::deep .rz-chkbox-box .rzi {
+    width: 1rem;
+    height: 1rem;
+    font-size: 1rem;
+    color: var(--inn-gray-900);
+    vertical-align: middle;
+    background-color: unset;
+    border-radius: unset;
+}
+
+::deep .rz-chkbox-box .rzi-check:before {
+    font-family: var(--inn-icon-font-family);
+    content: "check";
 }
 
 ::deep .rz-html-editor {
