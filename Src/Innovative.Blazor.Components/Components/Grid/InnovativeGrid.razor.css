@@ -157,13 +157,20 @@
 
 ::deep .rz-pager-element,
 ::deep .rz-button-lg.rz-button-icon-only {
-    padding: var(--inn-pager-numeric-button-selected-padding);
+    padding: .25rem;
     align-content: center;
 }
 
 ::deep .rz-pager-element,
 ::deep .rz-button-lg {
-    padding: var(--inn-pager-numeric-button-selected-padding);
+    padding: .25rem;
     min-width: var(--inn-button-width);
     min-height: var(--inn-button-height);
+}
+
+::deep .rz-pager-page.rz-state-active {
+    color: var(--inn-pager-numeric-button-selected-color);
+    background-color: var(--inn-pager-numeric-button-background-color, --inn-primary-lighter);
+    border: var(--inn-pager-numeric-button-selected-border);
+    padding: .25rem;
 }
