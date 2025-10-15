@@ -16,8 +16,10 @@
 }
 
 /* Table head */
+::deep .rz-data-grid .rz-grid-table thead th,
 ::deep .rz-grid-table thead th {
-    background: var(--inn-grid-background-color);
+    color: var(--inn-grid-header-color);
+    background: var(--inn-grid-header-background-color, #fff);
     border-bottom: unset;
 }
 
