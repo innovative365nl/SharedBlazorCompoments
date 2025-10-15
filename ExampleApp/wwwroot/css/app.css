@@ -136,7 +136,7 @@
 
     /* Grid */
     --inn-grid-header-color: #000;
-    --inn-grid-background-color: #fff;
+    --inn-grid-header-background-color: var(--inn-secondary-lighter);
     --inn-grid-row-odd-background-color: #fff;
     --inn-grid-row-even-background-color: var(--inn-gray-50);
     --inn-grid-selected-color: var(--inn-primary);
@@ -297,7 +297,7 @@
     --inn-grid-header-line-height: auto;
     --inn-grid-header-font-weight: 500;
     --inn-grid-header-text-transform: unset;
-    --inn-grid-header-border-bottom: var(--inn-border-2-light);
+    --inn-grid-header-border-bottom: var(--inn-border-1-light);
     --inn-grid-header-title-padding-inline: 1rem;
     --inn-grid-filter-margin-inline: unset;
     --inn-grid-first-cell-padding: .625rem 1rem .625rem 2rem;
