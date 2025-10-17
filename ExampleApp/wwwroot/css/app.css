@@ -49,6 +49,7 @@
     --inn-border-color-dark: var(--inn-gray-600);
 
     /* Text colors */
+    --inn-text-color-on-disabled: var(--inn-gray-300);
     --inn-text-color-on-info: #fff;
     --inn-text-color-on-info-light: #000;
     --inn-text-color-on-info-lighter: #000;
@@ -144,6 +145,15 @@
     --inn-grid-header-filter-icon-hover-color: var(--inn-gray-600);
     --inn-grid-sort-icon-color: var(--inn-gray-500);
 
+    /* Pager */
+    --inn-pager-numeric-button-selected-color: var(--inn-primary);
+    --inn-pager-numeric-button-selected-background-color: var(--inn-primary-lighter);
+    --inn-pager-numeric-button-selected-border: 1px solid var(--inn-primary);
+    --inn-pager-numeric-button-hover-color: var(--inn-gray-900);
+    --inn-pager-numeric-button-hover-background-color: var(--inn-gray-200);
+    --inn-pager-numeric-button-selected-hover-color: var(--inn-gray-900);
+    --inn-pager-numeric-button-selected-hover-background-color: var(--inn-gray-200);
+
     /* Dialog */
     --inn-dialog-background-color: var(--inn-gray-100);
 
@@ -204,8 +214,8 @@
     --inn-button-padding: .5rem;
     --inn-button-line-height: 1;
     --inn-button-border-radius: var(--inn-border-radius);
-    --inn-button-width: 2.25rem;
-    --inn-button-height: 2.25rem;
+    --inn-button-width: 2.5rem;
+    --inn-button-height: 2.5rem;
     --inn-button-shadow: var(--inn-shadow-1);
     --inn-button-icon-only-background: transparent;
     --inn-button-icon-only-transition: color .3s;
@@ -302,7 +312,7 @@
 
     /* Pager */
     --inn-pager-padding: 1rem;
-    --inn-pager-numeric-button-selected-padding: .25rem;
+    --inn-pager-numeric-button-padding: .25rem;
 
     /* Side panel */
     --inn-side-panel-padding: 1rem 1rem .5rem 1rem;
