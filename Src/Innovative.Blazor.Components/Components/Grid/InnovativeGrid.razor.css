@@ -105,6 +105,10 @@
     background-color: unset;
 }
 
+::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight > td.rz-frozen-cell.rz-frozen-cell-left:before, .rz-selectable tbody tr.rz-data-row.rz-state-highlight > td.rz-frozen-cell.rz-frozen-cell-left-inner:before {
+    background-color: unset;
+}
+
 ::deep .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left:after,
 ::deep .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left-inner:after,
 ::deep .rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell-left:after,
@@ -145,34 +149,38 @@
 ::deep .rz-pager-first,
 ::deep .rz-pager-prev,
 ::deep .rz-pager-next,
-::deep .rz-pager-last {
+::deep .rz-pager-last,
+::deep .rz-pager-element,
+::deep .rz-button-lg {
+    padding: .6rem;
     border-radius: var(--inn-button-border-radius);
     min-width: var(--inn-button-width);
     height: var(--inn-button-height);
-}
-
-::deep .rz-pager-element,
-::deep .rz-button-lg {
-    min-width: var(--inn-button-width);
-    min-height: var(--inn-button-height);
-}
-
-::deep .rz-pager-element,
-::deep .rz-button-lg.rz-button-icon-only {
-    padding: .25rem;
+    line-height: 1;
     align-content: center;
 }
 
-::deep .rz-pager-element,
-::deep .rz-button-lg {
-    padding: .25rem;
-    min-width: var(--inn-button-width);
-    min-height: var(--inn-button-height);
+::deep .rz-pager-element:hover, .rz-pager-page:hover {
+    background-color: var(--inn-pager-numeric-button-hover-background-color);
+    color: var(--inn-pager-numeric-button-hover-color);
 }
 
 ::deep .rz-pager-page.rz-state-active {
     color: var(--inn-pager-numeric-button-selected-color);
-    background-color: var(--inn-pager-numeric-button-background-color, --inn-primary-lighter);
+    background-color: var(--inn-pager-numeric-button-selected-background-color);
     border: var(--inn-pager-numeric-button-selected-border);
-    padding: .25rem;
+    padding: .6rem;
 }
+
+::deep .rz-pager-page.rz-state-active:hover {
+    color: var(--inn-pager-numeric-button-selected-hover-color);
+    background-color: var(--inn-pager-numeric-button-selected-hover-background-color);
+}
+
+::deep .rz-state-disabled.rz-pager-element:hover,
+::deep .rz-button.rz-state-disabled:hover {
+    color: inherit;
+    background: none;
+}
+
+

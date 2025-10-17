@@ -49,6 +49,7 @@
     --inn-border-color-dark: var(--inn-gray-600);
 
     /* Text colors */
+    --inn-text-color-on-disabled: var(--inn-gray-300);
     --inn-text-color-on-info: #fff;
     --inn-text-color-on-info-light: #000;
     --inn-text-color-on-info-lighter: #000;
@@ -146,8 +147,12 @@
 
     /* Pager */
     --inn-pager-numeric-button-selected-color: var(--inn-primary);
-    --inn-pager-numeric-button-background-color: var(--inn-primary-lighter);
+    --inn-pager-numeric-button-selected-background-color: var(--inn-primary-lighter);
     --inn-pager-numeric-button-selected-border: 1px solid var(--inn-primary);
+    --inn-pager-numeric-button-hover-color: var(--inn-gray-900);
+    --inn-pager-numeric-button-hover-background-color: var(--inn-gray-200);
+    --inn-pager-numeric-button-selected-hover-color: var(--inn-gray-900);
+    --inn-pager-numeric-button-selected-hover-background-color: var(--inn-gray-200);
 
     /* Dialog */
     --inn-dialog-background-color: var(--inn-gray-100);
