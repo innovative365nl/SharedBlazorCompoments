@@ -73,7 +73,6 @@ fieldset {
 }
 
 /* Optional bordered block styling for column groups */
-/*noinspection CssUnresolvedCustomProperty*/
 .form-column-group.has-border {
     margin-top: 1rem;
     border: 1px solid var(--inn-form-group-border, var(--inn-gray-200));
@@ -95,7 +94,6 @@ fieldset {
     width: unset;
 }
 
-/*noinspection CssUnresolvedCustomProperty*/
 .form-column-title::before {
     content: "";
     position: absolute;

@@ -22,7 +22,6 @@
     display: none;
 }
 
-/*noinspection CssUnresolvedCustomProperty*/
 .sidepanel-container {
     z-index: 1001;
     background: var(--inn-side-panel-background-color, var(--inn-gray-50));
