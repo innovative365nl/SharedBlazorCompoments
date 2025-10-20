@@ -134,6 +134,13 @@
     --inn-editor-separator-background-color: var(--inn-gray-200);
     --inn-editor-button-selected-background-color: var(--inn-primary-light);
     --inn-editor-button-selected-color: #000;
+    
+    /* Form group / Fieldset */
+    --inn-form-group-background-color: var(--inn-gray-100);
+    --inn-form-group-border: var(--inn-gray-200);
+    
+    /* Side panel */
+    --inn-side-panel-background-color: var(--inn-gray-50);
 
     /* Grid */
     --inn-grid-header-color: #000;
@@ -156,9 +163,6 @@
 
     /* Dialog */
     --inn-dialog-background-color: var(--inn-gray-100);
-
-    /* Side panel */
-    --inn-side-panel-background-color: var(--inn-gray-100);
 
     /* Alert */
     --inn-alert-close-background: none;
