@@ -16,7 +16,7 @@
     --inn-primary: #a43f13;
     --inn-primary-light: #db8d75;
     --inn-primary-lighter: #f3e3dd;
-    --inn-primary-dark: #a43f13;
+    --inn-primary-dark: #651c06;
     --inn-primary-darker: unset;
     --inn-secondary: #406e77;
     --inn-secondary-light: #8ebac2;
@@ -91,9 +91,22 @@
 
     /* Component Colors */
     /* Button */
-    --inn-button-variant-text-color: var(--inn-gray-500);
-    --inn-button-variant-text-hover-color: #000;
-    --inn-button-variant-text-hover-background-color: rgba(0,0,0,.1);
+    --inn-button-base-text-color: var(--inn-gray-900);
+    --inn-button-base-background-color: var(--inn-gray-100);
+    --inn-button-base-hover-color: var(--inn-gray-900);
+    --inn-button-base-hover-background-color: var(--inn-gray-200);
+    --inn-button-primary-text-color: var(--inn-gray-50);
+    --inn-button-primary-background-color: var(--inn-primary);
+    --inn-button-primary-hover-text-color: var(--inn-gray-50);
+    --inn-button-primary-hover-background-color: var(--inn-primary-dark);
+    --inn-button-secondary-text-color: var(--inn-gray-50);
+    --inn-button-secondary-background-color: var(--inn-secondary);
+    --inn-button-secondary-hover-text-color: var(--inn-gray-50);
+    --inn-button-secondary-hover-background-color: var(--inn-secondary-dark);
+    --inn-button-danger-text-color: var(--inn-danger-darker);
+    --inn-button-danger-background-color: var(--inn-danger-lighter);
+    --inn-button-danger-hover-text-color: var(--inn-danger-darker);
+    --inn-button-danger-hover-background-color: var(--inn-danger-light);
 
     /* Input */
     --inn-input-value-color: #000;
@@ -199,8 +212,8 @@
     --inn-shadow-1: 0px 2px 6px color-mix(in srgb, var(--inn-shadow-color) 25%, transparent);
     --inn-shadow-2: 0px 3px 8px color-mix(in srgb, var(--inn-shadow-color) 25%, transparent);
     --inn-shadow-3: 0px 4px 10px color-mix(in srgb, var(--inn-shadow-color) 25%, transparent);
-    --inn-shadow-4: none;
-    --inn-shadow-5: none;
+    --inn-shadow-4: 0 10px 10px -10px color-mix(in srgb, var(--inn-shadow-color) 20%, transparent);
+    --inn-shadow-5: 2px 4px 20px color-mix(in srgb, var(--inn-shadow-color) 50%, transparent);
     --inn-shadow-6: none;
     --inn-shadow-7: none;
     --inn-shadow-8: none;
