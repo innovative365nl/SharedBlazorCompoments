@@ -243,8 +243,13 @@
 }
 
 ::deep .rz-html-editor:focus-within {
-    outline: var(--inn-editor-focus-outline);
-    outline-offset: var(--inn-editor-focus-outline-offset);
+    background-color: var(--inn-input-focus-background-color);
+    border: var(--inn-input-focus-border);
+    border-color: var(--inn-input-focus-border-color);
+    border-block-end: var(--inn-input-focus-border-block-end);
+    box-shadow: var(--inn-input-focus-shadow);
+    outline: var(--inn-input-focus-outline);
+    outline-offset: var(--inn-input-focus-outline-offset);
 }
 
 ::deep .rz-html-editor-toolbar {

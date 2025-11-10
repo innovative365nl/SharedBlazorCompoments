@@ -114,7 +114,8 @@
     --inn-input-disabled-background-color: var(--inn-gray-300);
     --inn-input-hover-background-color: #fff;
     --inn-input-focus-background-color: #fff;
-    --inn-input-focus-border-color: var(--inn-primary);
+    --inn-input-focus-border-color: var(--inn-gray-900);
+    --inn-input-focus-shadow-color: var(--inn-gray-900);
     --inn-input-checkbox-circle-hover-background-color: var(--inn-gray-300);
 
     /* Dropdown */
@@ -147,11 +148,11 @@
     --inn-editor-separator-background-color: var(--inn-gray-200);
     --inn-editor-button-selected-background-color: var(--inn-primary-light);
     --inn-editor-button-selected-color: #000;
-    
+
     /* Form group / Fieldset */
     --inn-form-group-background-color: var(--inn-gray-100);
     --inn-form-group-border: var(--inn-gray-200);
-    
+
     /* Side panel */
     --inn-side-panel-background-color: var(--inn-gray-50);
 
@@ -220,7 +221,6 @@
 
     --inn-border-radius: 4px;
 
-    --inn-border: 1px solid var(--inn-border-color-dark);
     --inn-border-1-light: 1px solid var(--inn-border-color-light);
     --inn-border-1-dark: 1px solid var(--inn-border-color-dark);
     --inn-border-2-light: 2px solid var(--inn-border-color-light);
@@ -271,12 +271,12 @@
     --inn-input-hover-border: var(--inn-border-1-dark);
     --inn-input-hover-border-block-end: var(--inn-border-1-dark);
     --inn-input-hover-shadow: none;
-    --inn-input-focus-border: var(--inn-border);
+    --inn-input-focus-border: 1px solid var(--inn-input-focus-border-color);
     --inn-input-focus-border-block-end: var(--inn-border-1-dark);
     --inn-input-focus-border-radius: var(--inn-border-radius);
     --inn-input-focus-outline: none;
     --inn-input-focus-outline-offset: 0;
-    --inn-input-focus-shadow: none;
+    --inn-input-focus-shadow: 0 0 0 1px var(--inn-input-focus-shadow-color);
 
     --inn-checkbox-width: 1.125rem;
     --inn-checkbox-height: 1.125rem;
