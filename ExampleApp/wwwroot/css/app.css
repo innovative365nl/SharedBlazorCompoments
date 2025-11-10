@@ -116,7 +116,7 @@
     --inn-input-checkbox-circle-hover-background-color: var(--inn-gray-300);
 
     /* Focus */
-    --inn-focus-background-color: #fff;
+    --inn-focus-background-color: unset;
     --inn-focus-border-color: var(--inn-gray-900);
     --inn-focus-shadow-color: var(--inn-gray-900);
 
