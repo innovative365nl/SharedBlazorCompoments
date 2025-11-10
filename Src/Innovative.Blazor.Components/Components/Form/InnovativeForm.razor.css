@@ -149,13 +149,13 @@
 ::deep .mask:not(:disabled):not(.rz-state-disabled):focus,
 ::deep .rz-textarea:not(:disabled):not(.rz-state-disabled):focus,
 ::deep .rz-textbox:not(:disabled):not(.rz-state-disabled):focus {
-    background-color: var(--inn-input-focus-background-color);
-    border: var(--inn-input-focus-border);
-    border-color: var(--inn-input-focus-border-color);
-    border-block-end: var(--inn-input-focus-border-block-end);
-    box-shadow: var(--inn-input-focus-shadow);
-    outline: var(--inn-input-focus-outline);
-    outline-offset: var(--inn-input-focus-outline-offset);
+    background-color: var(--inn-focus-background-color);
+    border: var(--inn-focus-border);
+    border-color: var(--inn-focus-border-color);
+    border-block-end: var(--inn-focus-border-block-end);
+    box-shadow: var(--inn-focus-shadow);
+    outline: var(--inn-focus-outline);
+    outline-offset: var(--inn-focus-outline-offset);
 }
 
 ::deep .rz-state-highlight.rz-menuitem:hover,
@@ -244,12 +244,12 @@
 
 ::deep .rz-html-editor:focus-within {
     background-color: var(--inn-focus-background-color);
-    border: var(--inn-input-focus-border);
-    border-color: var(--inn-input-focus-border-color);
-    border-block-end: var(--inn-input-focus-border-block-end);
-    box-shadow: var(--inn-input-focus-shadow);
-    outline: var(--inn-input-focus-outline);
-    outline-offset: var(--inn-input-focus-outline-offset);
+    border: var(--inn-focus-border);
+    border-color: var(--inn-focus-border-color);
+    border-block-end: var(--inn-focus-border-block-end);
+    box-shadow: var(--inn-focus-shadow);
+    outline: var(--inn-focus-outline);
+    outline-offset: var(--inn-focus-outline-offset);
 }
 
 ::deep .rz-html-editor-toolbar {

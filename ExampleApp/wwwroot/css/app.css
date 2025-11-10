@@ -114,6 +114,8 @@
     --inn-input-disabled-background-color: var(--inn-gray-300);
     --inn-input-hover-background-color: #fff;
     --inn-input-checkbox-circle-hover-background-color: var(--inn-gray-300);
+
+    /* Focus */
     --inn-focus-background-color: #fff;
     --inn-focus-border-color: var(--inn-gray-900);
     --inn-focus-shadow-color: var(--inn-gray-900);
@@ -271,12 +273,6 @@
     --inn-input-hover-border: var(--inn-border-1-dark);
     --inn-input-hover-border-block-end: var(--inn-border-1-dark);
     --inn-input-hover-shadow: none;
-    --inn-focus-border: 1px solid var(--inn-focus-border-color);
-    --inn-focus-border-block-end: var(--inn-border-1-dark);
-    --inn-focus-border-radius: var(--inn-border-radius);
-    --inn-focus-outline: none;
-    --inn-focus-outline-offset: 0;
-    --inn-focus-shadow: 0 0 0 1px var(--inn-focus-shadow-color);
 
     --inn-checkbox-width: 1.125rem;
     --inn-checkbox-height: 1.125rem;
@@ -290,6 +286,14 @@
     --inn-numeric-input-padding-block: 0.4375rem;
     --inn-numeric-input-padding-inline: 0.9375rem 1.25rem;
     --inn-numeric-button-offset: 2px;
+
+    /* Focus */
+    --inn-focus-border: 1px solid var(--inn-focus-border-color);
+    --inn-focus-border-block-end: var(--inn-border-1-dark);
+    --inn-focus-border-radius: var(--inn-border-radius);
+    --inn-focus-outline: none;
+    --inn-focus-outline-offset: 0;
+    --inn-focus-shadow: 0 0 0 1px var(--inn-focus-shadow-color);
 
     /* Datepicker */
     --inn-datepicker-popup-width: 22rem;
