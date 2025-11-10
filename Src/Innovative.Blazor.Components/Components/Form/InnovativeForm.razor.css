@@ -243,7 +243,7 @@
 }
 
 ::deep .rz-html-editor:focus-within {
-    background-color: var(--inn-input-focus-background-color);
+    background-color: var(--inn-focus-background-color);
     border: var(--inn-input-focus-border);
     border-color: var(--inn-input-focus-border-color);
     border-block-end: var(--inn-input-focus-border-block-end);
