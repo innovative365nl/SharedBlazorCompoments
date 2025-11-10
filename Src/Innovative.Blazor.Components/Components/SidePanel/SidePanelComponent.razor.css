@@ -53,7 +53,6 @@
 }
 
 .sidepanel-icon-button:focus {
-    background-color: var(--inn-focus-background-color);
     border: var(--inn-focus-border);
     border-color: var(--inn-focus-border-color);
     border-block-end: var(--inn-focus-border-block-end);
@@ -87,7 +86,6 @@
     box-shadow: var(--inn-button-hover-shadow);
 }
 ::deep .rz-button.rz-primary.rz-shade-default:focus {
-    background-color: var(--inn-focus-background-color);
     border: var(--inn-focus-border);
     border-color: var(--inn-focus-border-color);
     border-block-end: var(--inn-focus-border-block-end);
@@ -114,7 +112,6 @@
     box-shadow: var(--inn-button-hover-shadow);
 }
 ::deep .rz-button.rz-secondary.rz-shade-default:focus {
-    background-color: var(--inn-focus-background-color);
     border: var(--inn-focus-border);
     border-color: var(--inn-focus-border-color);
     border-block-end: var(--inn-focus-border-block-end);

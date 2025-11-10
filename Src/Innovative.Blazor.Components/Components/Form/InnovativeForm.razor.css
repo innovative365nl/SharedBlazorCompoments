@@ -149,7 +149,6 @@
 ::deep .mask:not(:disabled):not(.rz-state-disabled):focus,
 ::deep .rz-textarea:not(:disabled):not(.rz-state-disabled):focus,
 ::deep .rz-textbox:not(:disabled):not(.rz-state-disabled):focus {
-    background-color: var(--inn-focus-background-color);
     border: var(--inn-focus-border);
     border-color: var(--inn-focus-border-color);
     border-block-end: var(--inn-focus-border-block-end);
@@ -243,7 +242,6 @@
 }
 
 ::deep .rz-html-editor:focus-within {
-    background-color: var(--inn-focus-background-color);
     border: var(--inn-focus-border);
     border-color: var(--inn-focus-border-color);
     border-block-end: var(--inn-focus-border-block-end);
