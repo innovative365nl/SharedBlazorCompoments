@@ -87,7 +87,7 @@
     --inn-text-color-on-secondary-dark: #fff;
     --inn-text-color-on-secondary-darker: #fff;
 
-    --inn-shadow-color: var(--inn-gray-900);
+    --inn-shadow-color: var(--inn-secondary);
 
     /* Component Colors */
     /* Button */
