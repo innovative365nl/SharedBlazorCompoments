@@ -18,7 +18,7 @@
     <!-- 3rd party Packages -->
     <PackageVersion Include="Radzen.Blazor" Version="7.4.3"/>
     <!-- Testing Packages -->
-    <PackageVersion Include="Bogus" Version="35.6.4" />
+    <PackageVersion Include="Bogus" Version="35.6.5" />
     <PackageVersion Include="bunit" Version="1.40.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="FluentAssertions" Version="8.8.0" />
