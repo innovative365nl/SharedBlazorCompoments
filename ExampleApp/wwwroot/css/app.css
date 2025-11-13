@@ -2,47 +2,47 @@
 :root {
     /* Global Colors */
     --inn-gray-50: #f2f2f2;
-    --inn-gray-100: #ebeaea;
-    --inn-gray-200: #d7d4d4;
-    --inn-gray-300: #bcb6b6;
+    --inn-gray-100: #e6e5e5;
+    --inn-gray-200: #cecaca;
+    --inn-gray-300: #b6afaf;
     --inn-gray-400: #a09898;
-    --inn-gray-500: #857b7b;
-    --inn-gray-600: #675f5f;
-    --inn-gray-700: #494343;
-    --inn-gray-800: #2b2828;
+    --inn-gray-500: #6a6262;
+    --inn-gray-600: #504949;
+    --inn-gray-700: #353131;
+    --inn-gray-800: #1b1818;
     --inn-gray-900: #0d0c0c;
     --inn-base: var(--inn-gray-50);
 
+    --inn-primary-lighter: #fbf2ef;
+    --inn-primary-light: #e4906c;
     --inn-primary: #a43f13;
-    --inn-primary-light: #db8d75;
-    --inn-primary-lighter: #f3e3dd;
-    --inn-primary-dark: #651c06;
-    --inn-primary-darker: unset;
+    --inn-primary-dark: #7d2b07;
+    --inn-primary-darker: #511900;
+    --inn-secondary-lighter: #f4f5f6;
+    --inn-secondary-light: #97b4ba;
     --inn-secondary: #406e77;
-    --inn-secondary-light: #8ebac2;
-    --inn-secondary-lighter: #f2f7f8;
-    --inn-secondary-dark: #2e5056;
-    --inn-secondary-darker: unset;
+    --inn-secondary-dark: #28555d;
+    --inn-secondary-darker: #28555d;
 
-    --inn-danger: #e52421;
-    --inn-danger-light: #e46e6c;
     --inn-danger-lighter: #f6dbda;
-    --inn-danger-dark: #950b09;
+    --inn-danger-light: #f4c3c3;
+    --inn-danger: #e5231f;
+    --inn-danger-dark: #7d0907;
     --inn-danger-darker: #6a0301;
-    --inn-success: #61e51f;
-    --inn-success-light: #94e46c;
     --inn-success-lighter: #e4f6db;
-    --inn-success-dark: #41ae0a;
-    --inn-success-darker: #246b01;
+    --inn-success-light: #d3f4c3;
+    --inn-success: #61e51f;
+    --inn-success-dark: #2f7d07;
+    --inn-success-darker: #246a01;
+    --inn-warning-lighter: #f6eadb;
+    --inn-warning-light: #f4dfc3;
     --inn-warning: #e5931f;
-    --inn-warning-light: #e4b26c;
-    --inn-warning-lighter: #f6e9db;
-    --inn-warning-dark: #ae690a;
+    --inn-warning-dark: #7d4c07;
     --inn-warning-darker: #6a3e01;
-    --inn-info: #1fa3e5;
-    --inn-info-light: #daedf6;
     --inn-info-lighter: #dbedf6;
-    --inn-info-dark: #0a77ae;
+    --inn-info-light: #c3e4f4;
+    --inn-info: #1fa3e5;
+    --inn-info-dark: #07567d;
     --inn-info-darker: #01476a;
 
     --inn-border-color-light: var(--inn-gray-400);
@@ -87,7 +87,7 @@
     --inn-text-color-on-secondary-dark: #fff;
     --inn-text-color-on-secondary-darker: #fff;
 
-    --inn-shadow-color: var(--inn-gray-900);
+    --inn-shadow-color: var(--inn-secondary);
 
     /* Component Colors */
     /* Button */
@@ -180,8 +180,30 @@
     --inn-dialog-background-color: var(--inn-gray-100);
 
     /* Alert */
-    --inn-alert-close-background: none;
-    --inn-alert-close-background-hover: rgba(0,0,0,.1);
+    --inn-alert-danger-icon-color: var(--inn-danger);
+    --inn-alert-danger-text-color: var(--inn-gray-900);
+    --inn-alert-danger-background-color: var(--inn-danger-lighter);
+    --inn-alert-danger-close-text-color: var(--inn-gray-900);
+    --inn-alert-danger-close-background-color: var(--inn-danger-light);
+    --inn-alert-danger-close-hover-background-color: var(--inn-gray-200);
+    --inn-alert-success-icon-color: var(--inn-success);
+    --inn-alert-success-text-color: var(--inn-gray-900);
+    --inn-alert-success-background-color: var(--inn-success-lighter);
+    --inn-alert-success-close-text-color: var(--inn-gray-900);
+    --inn-alert-success-close-background-color: var(--inn-success-light);
+    --inn-alert-success-close-hover-background-color: var(--inn-gray-200);
+    --inn-alert-warning-icon-color: var(--inn-warning);
+    --inn-alert-warning-text-color: var(--inn-gray-900);
+    --inn-alert-warning-background-color: var(--inn-warning-lighter);
+    --inn-alert-warning-close-text-color: var(--inn-gray-900);
+    --inn-alert-warning-close-background-color: var(--inn-warning-light);
+    --inn-alert-warning-close-hover-background-color: var(--inn-gray-200);
+    --inn-alert-info-icon-color: var(--inn-info);
+    --inn-alert-info-text-color: var(--inn-gray-900);
+    --inn-alert-info-background-color: var(--inn-info-lighter);
+    --inn-alert-info-close-text-color: var(--inn-gray-900);
+    --inn-alert-info-close-background-color: var(--inn-info-light);
+    --inn-alert-info-close-hover-background-color: var(--inn-gray-200);
 
     /* Progress bar circular */
     --inn-progressbar-circular-background-color: var(--inn-gray-100);
