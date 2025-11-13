@@ -52,6 +52,15 @@
     box-shadow: var(--inn-button-hover-shadow);
 }
 
+.sidepanel-icon-button:focus {
+    border: var(--inn-focus-border);
+    border-color: var(--inn-focus-border-color);
+    border-block-end: var(--inn-focus-border-block-end);
+    box-shadow: var(--inn-focus-shadow);
+    outline: var(--inn-focus-outline);
+    outline-offset: var(--inn-focus-outline-offset);
+}
+
 .sidepanel-icon-button .material-symbols-outlined {
     color: var(--inn-button-base-text-color);
     font-size: var(--inn-icon-font-size);
@@ -76,6 +85,14 @@
     background-color: var(--inn-button-primary-hover-background-color, var(--inn-primary-dark));
     box-shadow: var(--inn-button-hover-shadow);
 }
+::deep .rz-button.rz-primary.rz-shade-default:focus {
+    border: var(--inn-focus-border);
+    border-color: var(--inn-focus-border-color);
+    border-block-end: var(--inn-focus-border-block-end);
+    box-shadow: var(--inn-focus-shadow);
+    outline: var(--inn-focus-outline);
+    outline-offset: var(--inn-focus-outline-offset);
+}
 ::deep .rz-button.rz-primary.rz-shade-default .material-symbols-outlined {
     color: var(--inn-button-primary-text-color, var(--inn-gray-50));
     font-size: var(--inn-icon-font-size);
@@ -94,6 +111,14 @@
     background-color: var(--inn-button-secondary-hover-background-color, var(--inn-secondary-dark));
     box-shadow: var(--inn-button-hover-shadow);
 }
+::deep .rz-button.rz-secondary.rz-shade-default:focus {
+    border: var(--inn-focus-border);
+    border-color: var(--inn-focus-border-color);
+    border-block-end: var(--inn-focus-border-block-end);
+    box-shadow: var(--inn-focus-shadow);
+    outline: var(--inn-focus-outline);
+    outline-offset: var(--inn-focus-outline-offset);
+}
 ::deep .rz-button.rz-secondary.rz-shade-default .material-symbols-outlined {
     color: var(--inn-button-secondary-text-color, var(--inn-gray-50));
     font-size: var(--inn-icon-font-size);
@@ -111,6 +136,15 @@
 ::deep .rz-button.rz-danger.rz-shade-default:hover {
     background-color: var(--inn-button-danger-hover-background-color, var(--inn-danger-dark));
     box-shadow: var(--inn-button-hover-shadow);
+}
+::deep .rz-button.rz-danger.rz-shade-default:focus {
+    background-color: var(--inn-focus-background-color);
+    border: var(--inn-focus-border);
+    border-color: var(--inn-focus-border-color);
+    border-block-end: var(--inn-focus-border-block-end);
+    box-shadow: var(--inn-focus-shadow);
+    outline: var(--inn-focus-outline);
+    outline-offset: var(--inn-focus-outline-offset);
 }
 ::deep .rz-button.rz-danger.rz-shade-default .material-symbols-outlined {
     color: var(--inn-button-danger-text-color, var(--inn-danger-darker));
