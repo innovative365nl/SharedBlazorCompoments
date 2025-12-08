@@ -4,19 +4,18 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Microsoft Packages -->
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.10" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0"/>
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0"/>
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
-
-    <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.9" />
-    <PackageVersion Include="Microsoft.Extensions.Localization" Version="9.0.9" />
-    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.0"/>
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.0"/>
+    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.0"/>
     <PackageVersion Include="Microsoft.Kiota.Abstractions" Version="1.20.1"/>
-    <PackageVersion Include="Microsoft.NET.ILLink.Tasks" Version="9.0.9" />
-    <PackageVersion Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.NET.ILLink.Tasks" Version="10.0.0"/>
+    <PackageVersion Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="10.0.0"/>
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
     <!-- 3rd party Packages -->
-    <PackageVersion Include="Radzen.Blazor" Version="7.4.3"/>
+    <PackageVersion Include="Radzen.Blazor" Version="8.3.8"/>
     <!-- Testing Packages -->
     <PackageVersion Include="Bogus" Version="35.6.5" />
     <PackageVersion Include="bunit" Version="1.40.0" />
