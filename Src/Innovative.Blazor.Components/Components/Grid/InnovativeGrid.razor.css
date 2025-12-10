@@ -44,8 +44,8 @@
     font-weight: var(--inn-grid-header-font-weight);
 }
 
-::deep .rz-grid-table thead th div {
-    background: var(--inn-grid-background-color);
+::deep .rz-grid-table thead th > div {
+    background: var(--inn-grid-header-background-color, #fff);
 }
 
 ::deep .rz-column-title-content {
@@ -57,11 +57,11 @@
 }
 
 /* Table body */
-::deep .rz-grid-table-striped tbody > tr:not(.rz-expanded-row-content):nth-child(2n+1) > td {
+::deep .rz-grid-table tbody > tr:nth-child(2n+1) > td {
     background-color: var(--inn-grid-row-odd-background-color);
 }
 
-::deep .rz-grid-table-striped tbody > tr:not(.rz-expanded-row-content):nth-child(2n) > td {
+::deep .rz-grid-table tbody > tr:nth-child(2n) > td {
     background-color: var(--inn-grid-row-even-background-color);
 }
 
@@ -75,9 +75,18 @@
     cursor: pointer;
 }
 
-::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight .rz-cell-data {
+::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight .rz-cell-data,
+::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight > td {
     color: var(--inn-grid-selected-color);
     font-weight: var(--inn-grid-selected-font-weight);
+    background: var(--inn-grid-selected-background-color);
+}
+
+::deep .rz-selectable tbody tr.rz-data-row.rz-state-focused > td {
+    background-color: var(--inn-grid-row-focus-background-color);
+    color: var(--inn-grid-row-focus-color);
+    border-top: 1px solid var(--inn-grid-row-focus-border-color);
+    border-bottom: 1px solid var(--inn-grid-row-focus-border-color);
 }
 
 ::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight div {
@@ -117,6 +126,14 @@
 }
 
 /* Frozen grid column */
+.rz-grid-table-striped tbody > tr:nth-child(odd) > td.rz-frozen-cell {
+    background-color: var(--inn-grid-row-odd-background-color);
+}
+
+.rz-grid-table-striped tbody > tr:nth-child(even) > td.rz-frozen-cell {
+    background-color: var(--inn-grid-row-even-background-color);
+}
+
 ::deep .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell:before,
 .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell:after,
 .rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell:before,
