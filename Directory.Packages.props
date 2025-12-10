@@ -13,7 +13,7 @@
     <PackageVersion Include="Microsoft.Kiota.Abstractions" Version="1.20.1"/>
     <PackageVersion Include="Microsoft.NET.ILLink.Tasks" Version="10.0.0"/>
     <PackageVersion Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="10.0.0"/>
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <!-- 3rd party Packages -->
     <PackageVersion Include="Radzen.Blazor" Version="8.3.8"/>
     <!-- Testing Packages -->
