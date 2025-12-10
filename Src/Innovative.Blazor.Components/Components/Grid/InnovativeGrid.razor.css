@@ -57,11 +57,11 @@
 }
 
 /* Table body */
-::deep .rz-grid-table tbody > tr:nth-child(2n+1) > td {
+::deep .rz-grid-table tbody > tr:not(.rz-expanded-row-content):nth-child(2n+1) > td {
     background-color: var(--inn-grid-row-odd-background-color);
 }
 
-::deep .rz-grid-table tbody > tr:nth-child(2n) > td {
+::deep .rz-grid-table tbody > tr:not(.rz-expanded-row-content):nth-child(2n) > td {
     background-color: var(--inn-grid-row-even-background-color);
 }
 
