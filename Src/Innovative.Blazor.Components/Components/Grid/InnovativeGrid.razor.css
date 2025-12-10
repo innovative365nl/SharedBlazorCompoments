@@ -128,10 +128,12 @@
 }
 
 /* Frozen grid column */
+.rz-grid-table tbody > tr:nth-child(odd) > td.rz-frozen-cell,
 .rz-grid-table-striped tbody > tr:nth-child(odd) > td.rz-frozen-cell {
     background-color: var(--inn-grid-row-odd-background-color);
 }
 
+.rz-grid-table tbody > tr:nth-child(even) > td.rz-frozen-cell,
 .rz-grid-table-striped tbody > tr:nth-child(even) > td.rz-frozen-cell {
     background-color: var(--inn-grid-row-even-background-color);
 }
