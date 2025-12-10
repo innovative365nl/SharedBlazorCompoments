@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Microsoft Packages -->
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0"/>
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.1"/>
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0"/>
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.0"/>
