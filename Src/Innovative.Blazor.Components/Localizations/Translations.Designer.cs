@@ -11,7 +11,7 @@ namespace Innovative.Blazor.Components.Localizations {
     using System;
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Translations {
@@ -132,6 +132,12 @@ namespace Innovative.Blazor.Components.Localizations {
         internal static string emptyText {
             get {
                 return ResourceManager.GetString("emptyText", resourceCulture);
+            }
+        }
+        
+        internal static string Saving {
+            get {
+                return ResourceManager.GetString("Saving", resourceCulture);
             }
         }
     }

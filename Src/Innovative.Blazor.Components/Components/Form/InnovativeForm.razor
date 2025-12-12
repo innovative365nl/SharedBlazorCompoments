@@ -1,22 +1,43 @@
 @namespace Innovative.Blazor.Components.Components
+@using System.Diagnostics
 @using System.Reflection
 @typeparam TModel
 
 <RadzenTemplateForm TItem="TModel" Data="@Model" Submit="@OnFormSubmit">
-    <section class="innovative-form-layout">
-        @{
-            var model = Model as FormModel;
-            System.Diagnostics.Debug.Assert(model != null, $"{nameof(model)} is null!");
-            foreach (var exception in model.Exceptions)
+    @{
+        var model = Model as FormModel;
+        Debug.Assert(model != null, $"{nameof(model)} is null!");
+
+        // Render custom alerts first (only those marked for Form)
+        foreach (var alert in model.Alerts.Where(a => a.ShowInForm))
+        {
+            var capturedId = alert.Id;
+            <RadzenRow>
+                <InnovativeAlert Severity="@alert.Severity" Summary="@alert.Summary" Detail="@alert.Detail"
+                                 Closable="@alert.Closable" OnClose="@(() => model.RemoveAlert(capturedId))"/>
+            </RadzenRow>
+            <br/>
+        }
+
+        // Render exceptions as error banners
+        foreach (var exception in model.Exceptions)
+        {
+            //check if the exception is already rendered in a custom alert
+            if (!model.Alerts.Any(a => a.Detail == exception && a.Severity == AlertSeverity.Error))
             {
-                <section class="rz-alert rz-background-color-danger-lighter gap-2 column-span-4">
-                    <span class="material-symbols-outlined rz-color-danger-darker">
-                        error
-                    </span>
-                    <span class="rz-color-danger-darker">@((MarkupString)exception)</span>
-                </section>
+                var capturedId = exception;
+                <RadzenRow>
+
+                    <InnovativeAlert Severity="AlertSeverity.Error" Detail="@exception"
+                                     Closable="true" OnClose="@(() => model.RemoveException(capturedId))"/>
+                </RadzenRow>
+                <br/>
             }
         }
+    }
+
+    <section class="innovative-form-layout">
+
 
         @foreach (var group in OrderedColumnGroups)
         {

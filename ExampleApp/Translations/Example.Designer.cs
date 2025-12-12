@@ -61,7 +61,7 @@ namespace ExampleApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Leeftijd/Age.
+        ///   Looks up a localized string similar to Age.
         /// </summary>
         internal static string Age {
             get {
@@ -70,7 +70,7 @@ namespace ExampleApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Geboortedatum/Date of birth.
+        ///   Looks up a localized string similar to Date of birth.
         /// </summary>
         internal static string DateOfBirth {
             get {
@@ -79,16 +79,25 @@ namespace ExampleApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Persoon/Person.
+        ///   Looks up a localized string similar to Email.
         /// </summary>
-        internal static string DialogService_Person {
+        internal static string Email {
             get {
-                return ResourceManager.GetString("DialogService_Person", resourceCulture);
+                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to First name/Voornaam.
+        ///   Looks up a localized string similar to The email address provided doesn&apos;t look like a valid one.
+        /// </summary>
+        internal static string EmailAddressValidation {
+            get {
+                return ResourceManager.GetString("EmailAddressValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First name.
         /// </summary>
         internal static string FirstName {
             get {
@@ -97,7 +106,34 @@ namespace ExampleApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last name/Achternaam.
+        ///   Looks up a localized string similar to Full name.
+        /// </summary>
+        internal static string FullName {
+            get {
+                return ResourceManager.GetString("FullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home page.
+        /// </summary>
+        internal static string HomePage {
+            get {
+                return ResourceManager.GetString("HomePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Income.
+        /// </summary>
+        internal static string Income {
+            get {
+                return ResourceManager.GetString("Income", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last name.
         /// </summary>
         internal static string LastName {
             get {
@@ -106,11 +142,38 @@ namespace ExampleApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Persoon/Person.
+        ///   Looks up a localized string similar to Person.
         /// </summary>
         internal static string Person {
             get {
                 return ResourceManager.GetString("Person", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone.
+        /// </summary>
+        internal static string Phone {
+            get {
+                return ResourceManager.GetString("Phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The phone number provided doesn&apos;t look like a valid one.
+        /// </summary>
+        internal static string PhoneNumberValidation {
+            get {
+                return ResourceManager.GetString("PhoneNumberValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The url provided must be complete and safe (https).
+        /// </summary>
+        internal static string UrlValidation {
+            get {
+                return ResourceManager.GetString("UrlValidation", resourceCulture);
             }
         }
     }

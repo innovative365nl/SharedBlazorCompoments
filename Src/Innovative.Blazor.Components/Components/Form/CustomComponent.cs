@@ -13,5 +13,8 @@ public abstract class CustomComponent<T> : ComponentBase
     [Parameter]
     public EventCallback ValueChanged { get; set; }
 
+    [Parameter]
+    public bool Disabled { get; set; }
+
     protected void OnValueChanged() => ValueChanged.InvokeAsync(arg: Value);
 }

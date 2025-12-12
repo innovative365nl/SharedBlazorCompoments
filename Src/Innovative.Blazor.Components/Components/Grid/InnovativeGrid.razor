@@ -1,114 +1,152 @@
 @namespace Innovative.Blazor.Components.Components
 @using Innovative.Blazor.Components.Localizations
-@using InnovativeCard = Innovative.Blazor.Components.Components.InnovativeCard
 @typeparam TItem
 
 <div>
-    <InnovativeCard IsLoading="IsLoading" Title="@Title">
         <RadzenStack Style="@GetGridStyle()">
-            <RadzenDataGrid @ref="@dataGrid"
-                            TItem="TItem"
-                            Data="@Data"
-                            @bind-Value="selectedItems"
-                            AllowRowSelectOnRowClick="EnableRowSelection"
-                            AllowPaging="@(Data.Count() > MaxPageSize)"
-                            RowSelect="SetSelectedItemsAsync"
-                            ShowPagingSummary="true"
-                            PagingSummaryFormat="{2} items"
-                            PagerHorizontalAlign="HorizontalAlign.Right"
-                            AllowSorting="@allowSorting"
-                            AllowMultiColumnSorting="true"
-                            ShowMultiColumnSortingIndex="true"
-                            AllowFiltering="true"
-                            FilterMode="filterMode"
-                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                            AndOperatorText="@Translations.and"
-                            OrOperatorText="@Translations.or"
-                            ClearFilterText="@Translations.clearFilter"
-                            ApplyFilterText="@Translations.applyFilter"
-                            EqualsText="@Translations.equal"
-                            NotEqualsText="@Translations.notEqual"
-                            ContainsText="@Translations.contains"
-                            StartsWithText="@Translations.startsWith"
-                            EndsWithText="@Translations.endsWith"
-                            GreaterThanText="@Translations.greaterThan"
-                            GreaterThanOrEqualsText="@Translations.greaterThanOrEqual"
-                            LessThanText="@Translations.lessThan"
-                            LessThanOrEqualsText="@Translations.lessThanOrEqual"
-                            FilterText="@Translations.filter"
-                            PageSize="@MaxPageSize"
-                            Page="@OnPageChanged"
-                            data-test-id="@DataTestId">
-                <EmptyTemplate>
-                    <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">@Translations.emptyText.</p>
-                </EmptyTemplate>
-                <Columns>
-                    @foreach (var property in GetPropertiesWithAttributes())
-                    {
-                        //check if property has default sort field
-                        @if (defaultSortField is not null && allowSorting)
+            @if (!string.IsNullOrEmpty(Title))
+            {
+                <RadzenText TextStyle="Radzen.Blazor.TextStyle.H4" Style="margin-bottom: 1rem;">@Title</RadzenText>
+            }
+            @if (IsLoading)
+            {
+                <RadzenTable>
+                    <RadzenTableHeader>
+                        <RadzenTableHeaderRow>
+
+                            @foreach (var _ in GetPropertiesWithAttributes())
+                            {
+                                <RadzenTableHeaderCell>
+                                    <RadzenSkeleton Variant="SkeletonVariant.Text" Animation="SkeletonAnimation.None"
+                                                    Style="width:80%;height: 0.5rem; display:block;margin:0.5rem auto; background-color:lightgray;"/>
+                                </RadzenTableHeaderCell>
+                            }
+                        </RadzenTableHeaderRow>
+                    </RadzenTableHeader>
+                    <RadzenTableBody>
+                        @for (var i = 0; i < 10; i++)
                         {
-                            <RadzenDataGridColumn TItem="TItem"
-                                                  Property="@property.Name"
-                                                  Title="@GetColumnTitle(property: property.PropertyInfo, attribute: property.GridField)"
-                                                  Frozen="IsFrozenColumn(property: property.PropertyInfo)"
-                                                  Sortable="@IsSortableColumn(property: property.PropertyInfo)"
-                                                  SortOrder="@(property.Name == defaultSortField ? SortOrder.Ascending : null)"
-                                                  Visible="@IsVisibleColumn(property: property.PropertyInfo)"
-                                                  Filterable="true" >
-                                <Template>
-                                    @if (HasCustomComponent(property: property.PropertyInfo))
-                                    {
-                                        @RenderCustomComponent(property: property.PropertyInfo, context: context!, gridField: property.GridField)
-                                    }
-                                    else
-                                    {
-                                        if (property.PropertyInfo.GetValue(context) is decimal)
+                            <RadzenTableRow>
+                                @foreach (var _ in GetPropertiesWithAttributes())
+                                {
+                                    <RadzenTableCell>
+                                        <RadzenSkeleton Animation="SkeletonAnimation.Wave" Style="width: 100%;"/>
+                                    </RadzenTableCell>
+                                }
+                            </RadzenTableRow>
+                        }
+                    </RadzenTableBody>
+                </RadzenTable>
+            }
+            else if (Data is not null)
+            {
+                <RadzenDataGrid @ref="@dataGrid"
+                                TItem="TItem"
+                                Data="@Data"
+                                @bind-Value="selectedItems"
+                                AllowRowSelectOnRowClick="EnableRowSelection"
+                                AllowPaging="@(Data?.Count() > MaxPageSize)"
+                                RowSelect="SetSelectedItemsAsync"
+                                ShowPagingSummary="true"
+                                PagingSummaryFormat="{2} items"
+                                PagerHorizontalAlign="HorizontalAlign.Right"
+                                AllowSorting="@allowSorting"
+                                AllowMultiColumnSorting="true"
+                                ShowMultiColumnSortingIndex="true"
+                                AllowFiltering="true"
+                                FilterMode="filterMode"
+                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                AndOperatorText="@Translations.and"
+                                OrOperatorText="@Translations.or"
+                                ClearFilterText="@Translations.clearFilter"
+                                ApplyFilterText="@Translations.applyFilter"
+                                EqualsText="@Translations.equal"
+                                NotEqualsText="@Translations.notEqual"
+                                ContainsText="@Translations.contains"
+                                StartsWithText="@Translations.startsWith"
+                                EndsWithText="@Translations.endsWith"
+                                GreaterThanText="@Translations.greaterThan"
+                                GreaterThanOrEqualsText="@Translations.greaterThanOrEqual"
+                                LessThanText="@Translations.lessThan"
+                                LessThanOrEqualsText="@Translations.lessThanOrEqual"
+                                FilterText="@Translations.filter"
+                                PageSize="@MaxPageSize"
+                                Page="@OnPageChanged"
+                                data-test-id="@DataTestId">
+                    <EmptyTemplate>
+                        <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">@Translations.emptyText.</p>
+                    </EmptyTemplate>
+                    <Columns>
+                        @foreach (var property in GetPropertiesWithAttributes())
+                        {
+                            //check if property has default sort field
+                            @if (defaultSortField is not null && allowSorting)
+                            {
+                                <RadzenDataGridColumn TItem="TItem"
+                                                      Property="@property.Name"
+                                                      Title="@GetColumnTitle(property: property.PropertyInfo, attribute: property.GridField)"
+                                                      Frozen="IsFrozenColumn(property: property.PropertyInfo)"
+                                                      Sortable="@IsSortableColumn(property: property.PropertyInfo)"
+                                                      SortOrder="@(property.Name == defaultSortField ? SortOrder.Ascending : null)"
+                                                      Visible="@IsVisibleColumn(property: property.PropertyInfo)"
+                                                      Filterable="true">
+                                    <Template>
+                                        @if (HasCustomComponent(property: property.PropertyInfo))
                                         {
-                                            @RenderDecimalComponent(property, context!)
+                                            @RenderCustomComponent(property: property.PropertyInfo, context: context!, gridField: property.GridField)
                                         }
                                         else
                                         {
-                                            <div data-text="@property.PropertyInfo.GetValue(obj: context)">
-                                                @property.PropertyInfo.GetValue(obj: context)
-                                            </div>
+                                            if (property.PropertyInfo.GetValue(context) is decimal)
+                                            {
+                                                @RenderDecimalComponent(property, context!)
+                                            }
+                                            else
+                                            {
+                                                <div data-text="@property.PropertyInfo.GetValue(obj: context)">
+                                                    @property.PropertyInfo.GetValue(obj: context)
+                                                </div>
+                                            }
                                         }
-                                    }
-                                </Template>
-                            </RadzenDataGridColumn>
-                        }
-                        else
-                        {
-                            <RadzenDataGridColumn TItem="TItem"
-                                                  Property="@property.Name"
-                                                  Title="@GetColumnTitle(property: property.PropertyInfo, attribute: property.GridField)"
-                                                  Frozen="IsFrozenColumn(property: property.PropertyInfo)"
-                                                  Visible="@IsVisibleColumn(property: property.PropertyInfo)"
-                                                  Filterable="true">
-                                <Template>
-                                    @if (HasCustomComponent(property: property.PropertyInfo))
-                                    {
-                                        @RenderCustomComponent(property: property.PropertyInfo, context: context!, gridField: property.GridField)
-                                    }
-                                    else
-                                    {
-                                        if (property.PropertyInfo.GetValue(context) is decimal)
+                                    </Template>
+                                </RadzenDataGridColumn>
+                            }
+                            else
+                            {
+                                <RadzenDataGridColumn TItem="TItem"
+                                                      Property="@property.Name"
+                                                      Title="@GetColumnTitle(property: property.PropertyInfo, attribute: property.GridField)"
+                                                      Frozen="IsFrozenColumn(property: property.PropertyInfo)"
+                                                      Visible="@IsVisibleColumn(property: property.PropertyInfo)"
+                                                      Filterable="true">
+                                    <Template>
+                                        @if (HasCustomComponent(property: property.PropertyInfo))
                                         {
-                                            @RenderDecimalComponent(property, context!)
+                                            @RenderCustomComponent(property: property.PropertyInfo, context: context!, gridField: property.GridField)
                                         }
                                         else
                                         {
-                                            <div data-text="@property.PropertyInfo.GetValue(obj: context)">
-                                                @property.PropertyInfo.GetValue(obj: context)
-                                            </div>
+                                            if (property.PropertyInfo.GetValue(context) is decimal)
+                                            {
+                                                @RenderDecimalComponent(property, context!)
+                                            }
+                                            else
+                                            {
+                                                <div data-text="@property.PropertyInfo.GetValue(obj: context)">
+                                                    @property.PropertyInfo.GetValue(obj: context)
+                                                </div>
+                                            }
                                         }
-                                    }
-                                </Template>
-                            </RadzenDataGridColumn>
+                                    </Template>
+                                </RadzenDataGridColumn>
+                            }
                         }
-                    }
-                </Columns>
-            </RadzenDataGrid>
+                    </Columns>
+                </RadzenDataGrid>
+            }
+            else
+            {
+                <p style="color: lightgrey; font-size: 24px; text-align: center; margin: 2rem;">@Translations.emptyText.</p>
+            }
         </RadzenStack>
-    </InnovativeCard>
 </div>

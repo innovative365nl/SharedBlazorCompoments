@@ -14,7 +14,9 @@ on:
       - develop
       - 'release*'
     paths:
+      - 'ExampleApp/**'
       - 'Src/Innovative.Blazor.Components/**'
+      - 'Tests/Innovative.Blazor.Components.Tests/**'
   workflow_dispatch:  # Allow manual triggering
 
 # Permissions

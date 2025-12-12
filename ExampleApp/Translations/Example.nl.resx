@@ -118,21 +118,42 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Age" xml:space="preserve">
-    <value>Age</value>
+    <value>Leeftijd</value>
   </data>
   <data name="DateOfBirth" xml:space="preserve">
-    <value>Date of birth</value>
+    <value>Geboortedatum</value>
   </data>
-  <data name="DialogService_Person" xml:space="preserve">
-    <value>Person</value>
+  <data name="Email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="EmailAddressValidation" xml:space="preserve">
+    <value>Het opgegeven emailadres lijkt niet valide te zijn</value>
   </data>
   <data name="FirstName" xml:space="preserve">
-    <value>First name</value>
+    <value>Voornaam</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Volledige naam</value>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>Home page</value>
+  </data>
+  <data name="Income" xml:space="preserve">
+    <value>Inkomen</value>
   </data>
   <data name="LastName" xml:space="preserve">
-    <value>Last name</value>
+    <value>Achternaam</value>
   </data>
   <data name="Person" xml:space="preserve">
-    <value>Person</value>
+    <value>Persoon</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Telefoon</value>
+  </data>
+  <data name="PhoneNumberValidation" xml:space="preserve">
+    <value>Het opgegeven telefoonnummer lijkt niet valide te zijn</value>
+  </data>
+  <data name="UrlValidation" xml:space="preserve">
+    <value>De opgegeven url moet veilig (https) en volledig zijn</value>
   </data>
 </root>

@@ -4,13 +4,16 @@ using System.Reflection;
 using Innovative.Blazor.Components.Localizer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
+using Microsoft.Kiota.Abstractions;
 
 namespace Innovative.Blazor.Components.Components;
 
 public partial class InnovativeDetail<TModel> : ComponentBase
 {
-    private readonly IInnovativeStringLocalizer localizer;
     private const int MaxNumberOfButtonsBesideEachOther = 2;
+    private readonly IInnovativeStringLocalizer localizer;
+    private readonly List<string> progressLog = new();
+    private bool isBusy;
 
     public InnovativeDetail(IInnovativeStringLocalizerFactory localizerFactory)
     {
@@ -21,11 +24,14 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         localizer = localizerFactory.Create(resourceType);
     }
 
-    [Parameter] public TModel? Model { get; set; }
+    [Parameter]
+    public TModel? Model { get; set; }
 
-    [Parameter] public EventCallback<string> OnActionExecuted { get; set; }
+    [Parameter]
+    public EventCallback<string> OnActionExecuted { get; set; }
 
-    [CascadingParameter] private SidePanelComponent<TModel>? parentDialog { get; set; }
+    [CascadingParameter]
+    private SidePanelComponent<TModel>? parentDialog { get; set; }
 
     private IReadOnlyCollection<PropertyInfo> ungroupedProperties { get; set; } = new List<PropertyInfo>();
 
@@ -51,7 +57,7 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         if (Model is FormModel formModel)
         {
             var column = formModel.Columns.FirstOrDefault(c => c.Name == columnGroup);
-            if (column is { Width: > 0 })
+            if (column is {Width: > 0})
             {
                 return $"col-{column.Width}";
             }
@@ -60,28 +66,37 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         return string.Empty;
     }
 
+    private Column? GetColumn(string columnGroup)
+    {
+        if (Model is FormModel formModel)
+        {
+            return formModel.Columns.FirstOrDefault(c => c.Name == columnGroup);
+        }
+        return null;
+    }
+
     private void OrganizePropertiesByGroups()
     {
         var propertiesWithAttributes = GetPropertiesWithUiFormField().ToList();
 
         // Get column order from DisplayFormModel or attribute
         string[] columnOrder = Model is FormModel formModel
-                                    ? formModel.Columns
-                                               .Where(col=> !string.IsNullOrEmpty(col.Name))
-                                               .OrderBy(col => col.Order)
-                                               .Select(col => col.Name!)
-                                               .ToArray()
-                                    : [];
+                                   ? formModel.Columns
+                                              .Where(col => !string.IsNullOrEmpty(col.Name))
+                                              .OrderBy(col => col.Order)
+                                              .Select(col => col.Name!)
+                                              .ToArray()
+                                   : [];
 
         // Group properties by column group
         var groupedProperties = propertiesWithAttributes
-            .Where(p => !string.IsNullOrEmpty(p.GetCustomAttribute<UIFormField>()?.ColumnGroup))
-            .GroupBy(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup!)
-            .ToDictionary(g => g.Key!, g => g.ToList());
+                                .Where(p => !string.IsNullOrEmpty(p.GetCustomAttribute<UIFormField>()?.ColumnGroup))
+                                .GroupBy(p => p.GetCustomAttribute<UIFormField>()?.ColumnGroup!)
+                                .ToDictionary(g => g.Key!, g => g.ToList());
 
         ungroupedProperties = propertiesWithAttributes
-                                .Where(p => string.IsNullOrEmpty(p.GetCustomAttribute<UIFormField>()?.ColumnGroup))
-                                .ToList();
+                              .Where(p => string.IsNullOrEmpty(p.GetCustomAttribute<UIFormField>()?.ColumnGroup))
+                              .ToList();
 
         // Order the groups based on ColumnOrder if available
         if (columnOrder.Any())
@@ -115,9 +130,8 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         }
     }
 
-    private void HandleActionProperty(PropertyInfo property, UIFormViewAction actionAttribute)
+    private async Task HandleActionProperty(PropertyInfo property, UIFormViewAction actionAttribute)
     {
-
         var action = property.GetValue(obj: Model) as Delegate;
         if (action == null)
         {
@@ -131,37 +145,89 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 #pragma warning disable BL0005
                 parentDialog.ActionChildContent = builder =>
 #pragma warning restore BL0005
-                {
-                    var (component, parameters, title) = GetActionDetails(propertyName: property.Name);
-                    var i = 0;
-                    builder.OpenComponent(sequence: i++, componentType: component);
-                    foreach (var param in parameters)
-                    {
-                        builder.AddAttribute(sequence: i++, name: param.Key, value: param.Value);
-                    }
-                    builder.AddAttribute(sequence: i, name: "ParentDialog", value: parentDialog);
-                    builder.CloseComponent();
-                };
+                                                  {
+                                                      var (component, parameters, title) = GetActionDetails(propertyName: property.Name);
+                                                      var i = 0;
+                                                      builder.OpenComponent(sequence: i++, componentType: component);
+                                                      foreach (var param in parameters)
+                                                      {
+                                                          builder.AddAttribute(sequence: i++, name: param.Key, value: param.Value);
+                                                      }
+                                                      builder.AddAttribute(sequence: i, name: "ParentDialog", value: parentDialog);
+                                                      builder.CloseComponent();
+                                                  };
 
                 parentDialog.OpenCustomDialog();
             }
         }
         else
         {
-            var parameters = action.Method.GetParameters();
-
-            if (parameters.Length == 0)
+            EventHandler<ProgressEventArgs>? progressHandler = null;
+            if (Model is FormModel fm)
             {
-                action.DynamicInvoke();
-            }
-            else
-            {
-                var paramType = parameters[0].ParameterType;
-                var defaultValue = paramType.IsValueType ? Activator.CreateInstance(type: paramType) : null;
-                action.DynamicInvoke(defaultValue);
+                progressLog.Clear();
+                progressHandler = (_, e) =>
+                                  {
+                                      progressLog.Add(e.Message);
+                                      InvokeAsync(StateHasChanged);
+                                  };
+                fm.OnProgress += progressHandler;
             }
 
-            OnActionExecuted.InvokeAsync(arg: property.Name);
+            try
+            {
+                isBusy = true;
+                await InvokeAsync(StateHasChanged).ConfigureAwait(false);
+                await Task.Yield(); // ensure UI renders spinner before starting long-running work
+
+                var result = action.DynamicInvoke(action.Method.GetParameters().Length == 0
+                                                      ? null
+                                                      : action.Method.GetParameters()[0].ParameterType.IsValueType
+                                                          ? Activator.CreateInstance(action.Method.GetParameters()[0].ParameterType)
+                                                          : null);
+
+                if (result is Task task)
+                {
+                    await task.ConfigureAwait(false);
+                }
+            }
+            catch (ApiException ex)
+            {
+                if (Model is FormModel fm2)
+                {
+                    await fm2.AddExceptionAsync(ex).ConfigureAwait(false);
+                    fm2.AddAlert(AlertSeverity.Error, "Action error", detail: ex.Message, inForm: true, inDetail: true);
+                }
+            }
+            catch (TargetInvocationException ex)
+            {
+                var actual = ex.InnerException ?? ex;
+                if (Model is FormModel fm2)
+                {
+                    await fm2.AddExceptionAsync(actual).ConfigureAwait(false);
+                    fm2.AddAlert(AlertSeverity.Error, "Action error", detail: actual.Message, inForm: true, inDetail: true);
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                if (Model is FormModel fm2)
+                {
+                    await fm2.AddExceptionAsync(ex).ConfigureAwait(false);
+                    fm2.AddAlert(AlertSeverity.Error, "Action error", detail: ex.Message, inForm: true, inDetail: true);
+                }
+            }
+            finally
+            {
+                isBusy = false;
+                if (Model is FormModel fm3
+                 && progressHandler != null)
+                {
+                    fm3.OnProgress -= progressHandler;
+                }
+                await InvokeAsync(StateHasChanged).ConfigureAwait(false);
+            }
+
+            await OnActionExecuted.InvokeAsync(arg: property.Name).ConfigureAwait(false);
         }
     }
 
@@ -186,17 +252,79 @@ public partial class InnovativeDetail<TModel> : ComponentBase
 
         var parameters = new Dictionary<string, object?>
                          {
-                            { "Model", Model },
-                            { "ActionProperty", property.Name }
+                             {
+                                 "Model", Model
+                             }
+                            ,
+                             {
+                                 "ActionProperty", property.Name
+                             }
                          };
 
         return (actionAttribute.CustomComponent, parameters, actionAttribute.Name)!;
     }
 
-    private static PropertyInfo[] GetPropertiesWithUiFormField()
+    private bool IsFieldVisible(PropertyInfo property)
+    {
+        var attr = property.GetCustomAttribute<UIFormField>();
+        if (attr == null)
+        {
+            return true;
+        }
+
+        // If no condition is set, show by default
+        if (string.IsNullOrWhiteSpace(attr.VisibleWhenProperty))
+        {
+            return true;
+        }
+
+        if (Model is null)
+        {
+            return true;
+        }
+
+        var conditionProp = typeof(TModel).GetProperty(attr.VisibleWhenProperty);
+        if (conditionProp == null)
+        {
+            // If specified property doesn't exist, default to show to avoid breaking existing UIs
+            return true;
+        }
+
+        var value = conditionProp.GetValue(Model);
+        bool result;
+
+        if (attr.VisibleWhenEquals is null)
+        {
+            // No explicit comparison value; if bool, require true, otherwise require non-null
+            if (value is bool b)
+            {
+                result = b;
+            }
+            else
+            {
+                result = value != null;
+            }
+        }
+        else
+        {
+            var target = attr.VisibleWhenEquals;
+            var valueString = value?.ToString() ?? "null";
+            result = string.Equals(valueString, target, StringComparison.OrdinalIgnoreCase);
+        }
+
+        if (attr.InvertCondition)
+        {
+            result = !result;
+        }
+
+        return result;
+    }
+
+    private PropertyInfo[] GetPropertiesWithUiFormField()
     {
         return typeof(TModel).GetProperties()
                              .Where(predicate: p => p.GetCustomAttribute<UIFormField>() != null)
+                             .Where(IsFieldVisible)
                              .ToArray();
     }
 
@@ -221,19 +349,19 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                        if (!string.IsNullOrEmpty(attribute.DataTestId))
                            builder.AddAttribute(sequence: sequence++, nameof(attribute.DataTestId), attribute.DataTestId);
 
-
                        if (attribute.DisplayParameters?.Length > 0)
                        {
-                            foreach (var parameter in attribute.DisplayParameters)
-                            {
-                                int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
-                                if (equalIndex > 0 && equalIndex < parameter.Length - 1)
-                                {
-                                    string paramName = parameter[..equalIndex];
-                                    string paramValue = parameter[++equalIndex..];
-                                    builder.AddAttribute(sequence: sequence++, name: paramName, value: paramValue);
-                                }
-                            }
+                           foreach (var parameter in attribute.DisplayParameters)
+                           {
+                               int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
+                               if (equalIndex > 0
+                                && equalIndex < parameter.Length - 1)
+                               {
+                                   string paramName = parameter[..equalIndex];
+                                   string paramValue = parameter[++equalIndex..];
+                                   builder.AddAttribute(sequence: sequence++, name: paramName, value: paramValue);
+                               }
+                           }
                        }
 
                        builder.CloseComponent();
@@ -251,7 +379,8 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         foreach (var parameter in parameters)
         {
             int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
-            if (equalIndex > 0 && equalIndex < parameter.Length - 1)
+            if (equalIndex > 0
+             && equalIndex < parameter.Length - 1)
             {
                 string paramName = parameter[..equalIndex];
                 string paramValue = parameter[++equalIndex..];
@@ -275,7 +404,12 @@ public partial class InnovativeDetail<TModel> : ComponentBase
         var name = attribute?.Name ?? property.Name;
         var actionName = localizer.GetString(name);
 
-        return new ButtonDefinition { ActionName = actionName, Property = property, ActionAttribute = attribute! };
+        return new ButtonDefinition
+               {
+                   ActionName = actionName
+                 , Property = property
+                 , ActionAttribute = attribute!
+               };
     }
 
     internal ButtonDefinition[] GetSplitButtonDefinitionItems()
@@ -295,7 +429,12 @@ public partial class InnovativeDetail<TModel> : ComponentBase
             var actionName = actionAttribute?.Name ?? property.Name;
             var translatedActionName = localizer.GetString(actionName);
 
-            result.Add(new ButtonDefinition { ActionName = translatedActionName, Property = property, ActionAttribute = actionAttribute! });
+            result.Add(new ButtonDefinition
+                       {
+                           ActionName = translatedActionName
+                         , Property = property
+                         , ActionAttribute = actionAttribute!
+                       });
         }
 
         return result.ToArray();
@@ -313,10 +452,15 @@ public partial class InnovativeDetail<TModel> : ComponentBase
             {
                 var prop = property;
                 var actionAttribute = prop.GetCustomAttribute<UIFormViewAction>();
-                if(actionAttribute != null)
+                if (actionAttribute != null)
                 {
                     var actionName = localizer.GetString(actionAttribute.Name);
-                    result.Add(new ButtonDefinition { ActionName = actionName, Property = prop, ActionAttribute = actionAttribute });
+                    result.Add(new ButtonDefinition
+                               {
+                                   ActionName = actionName
+                                 , Property = prop
+                                 , ActionAttribute = actionAttribute
+                               });
                 }
             }
         }
@@ -331,9 +475,66 @@ public partial class InnovativeDetail<TModel> : ComponentBase
                                    .Where(predicate: x => x.Name                              != nameof(FormModel.SaveFormAction))
                                    .Where(predicate: x => x.Name                              != nameof(FormModel.CancelFormAction))
                                    .Where(predicate: x => x.Name                              != nameof(FormModel.DeleteFormAction))
-                                   .Where(predicate: x => x.GetValue(obj: Model, index: null) != null)  // The defined action cannot be null
+                                   .Where(predicate: x => x.GetValue(obj: Model, index: null) != null) // The defined action cannot be null
+                                   .Where(predicate: x => IsActionVisible(x))
                                    .OrderBy(keySelector: x => x.GetCustomAttribute<UIFormViewAction>()!.Order)
                                    .ToList();
+
+        return result;
+    }
+
+    private bool IsActionVisible(PropertyInfo property)
+    {
+        var attr = property.GetCustomAttribute<UIFormViewAction>();
+        if (attr == null)
+        {
+            return true;
+        }
+
+        // If no condition is set, show by default
+        if (string.IsNullOrWhiteSpace(attr.VisibleWhenProperty))
+        {
+            return true;
+        }
+
+        if (Model is null)
+        {
+            return true;
+        }
+
+        var conditionProp = typeof(TModel).GetProperty(attr.VisibleWhenProperty);
+        if (conditionProp == null)
+        {
+            // If specified property doesn't exist, default to show to avoid breaking existing UIs
+            return true;
+        }
+
+        var value = conditionProp.GetValue(Model);
+        bool result;
+
+        if (attr.VisibleWhenEquals is null)
+        {
+            // No explicit comparison value; if bool, require true, otherwise require non-null
+            if (value is bool b)
+            {
+                result = b;
+            }
+            else
+            {
+                result = value != null;
+            }
+        }
+        else
+        {
+            var target = attr.VisibleWhenEquals;
+            var valueString = value?.ToString() ?? "null";
+            result = string.Equals(valueString, target, StringComparison.OrdinalIgnoreCase);
+        }
+
+        if (attr.InvertCondition)
+        {
+            result = !result;
+        }
 
         return result;
     }

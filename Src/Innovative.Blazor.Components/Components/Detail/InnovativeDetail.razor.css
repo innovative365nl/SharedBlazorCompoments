@@ -12,6 +12,10 @@
     margin-bottom: 0.25rem;
 }
 
+fieldset {
+    border: 0;
+}
+
 /* Column spanning classes */
 .innovative-detail-layout .col-1 {
     width: 8.33%;
@@ -68,6 +72,37 @@
     gap: 0.5rem;
 }
 
+/* Optional bordered block styling for column groups */
+.form-column-group.has-border {
+    margin-top: 1rem;
+    border: 1px solid var(--inn-form-group-border, var(--inn-gray-200));
+    border-radius: 4px;
+    display: grid;
+    row-gap: .5rem;
+    column-gap: .5rem;
+    background: var(--inn-form-group-background-color, var(--inn-gray-100));
+}
+
+.form-column-title {
+    margin: 0;
+    font-weight: 600;
+    font-size: .875rem;
+    padding: 0.125rem 0.25rem;
+    line-height: 1.25;
+    position: relative;
+    float: unset;
+    width: unset;
+}
+
+.form-column-title::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--inn-form-group-border, var(--inn-gray-200));
+    border-radius: 4px;
+    clip-path: inset(0.8rem 0 0 0);
+}
+
 .form-ungrouped {
     display: flex;
     flex-direction: column;
@@ -93,5 +128,70 @@
 
     .rz-dialog-side-content-layout ::deep .rz-label{
         margin-bottom: -.75rem;
+    }
+}
+
+/* Busy state and progress list styling */
+.innovative-detail-busy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    color: var(--inn-secondary);
+    margin: 1.25rem 0 .75rem 0;
+    text-align: center;
+}
+
+/* Place spinner below the text without changing markup */
+.innovative-detail-busy span {
+    order: 1;
+}
+
+.innovative-detail-busy .spinner-border {
+    order: 2;
+}
+
+.innovative-detail-busy .spinner-border {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-width: .2rem;
+    color: var(--inn-secondary);
+}
+
+.innovative-detail-progress {
+    margin-top: .5rem;
+    padding: .5rem .75rem;
+    background: var(--inn-gray-50);
+    border: 1px solid var(--inn-gray-200);
+    border-radius: .5rem;
+    font-size: .875rem;
+    line-height: 1.4;
+    color: var(--inn-gray-800);
+    max-height: calc(1.4em * 15 + 1rem); /* ~15 lines then scroll */
+    overflow: auto;
+    box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.02);
+    animation: innFadeIn .2s ease-out;
+}
+
+.innovative-detail-progress > div {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.innovative-detail-progress > div::before {
+    content: "• ";
+    color: var(--inn-gray-500);
+}
+
+@keyframes innFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

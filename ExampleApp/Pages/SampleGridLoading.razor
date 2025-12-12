@@ -1,0 +1,50 @@
+@page "/sample-grid-loading"
+@using Innovative.Blazor.Components.Components
+
+<PageTitle>Sample Grid Loading</PageTitle>
+
+
+<InnovativeGrid TItem="ExampleDataItem"
+                Data="@Data"
+                IsLoading="@IsLoading"
+                Title="Sample Grid Loading (3s delay)"
+                EnableRowSelection="true"
+                SelectionMode="DataGridSelectionMode.Single"
+                FilterStyle="FilterStyle.Advanced"/>
+<RadzenButton ButtonStyle="ButtonStyle.Primary " Click="RestartLoading">Restart Loading</RadzenButton>
+
+@code {
+    private List<ExampleDataItem>? Data;
+    private bool IsLoading = true;
+
+    protected override Task OnInitializedAsync()
+    {
+        IsLoading = true;
+        return base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await StartLoadingDelay();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task StartLoadingDelay()
+    {
+        IsLoading = true;
+        Data = null;
+        StateHasChanged();
+        await Task.Delay(3000);
+        Data = ExampleDataItem.GetExampleData().ToList();
+        IsLoading = false;
+        StateHasChanged();
+    }
+
+    private async Task RestartLoading()
+    {
+        await StartLoadingDelay();
+    }
+}

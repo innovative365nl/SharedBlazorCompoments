@@ -2,6 +2,8 @@
 
 <h3>Dialog Example 1</h3>
 
+
+
 <RadzenButton Text="Open Dialog" Click="@OpenPersonDialog" ButtonStyle="ButtonStyle.Primary" />
 
 <div class="mt-4">
@@ -12,4 +14,71 @@
             <li class="list-group-item">@logEntry</li>
         }
     </ul>
+</div>
+
+@* --- Example Explanation --- *@
+<div class="alert alert-info">
+    <strong>Example: Dialog Service with InnovativeForm</strong><br/>
+    This page demonstrates how to use the <code>InnovativeForm</code> component with the dialog service.<br/>
+    <ul>
+        <li>Click <b>Open Dialog</b> to launch a dialog containing a form generated from a model with <code>[UIFormField]</code>
+            attributes.
+        </li>
+        <li>Fields marked with <code>ReadOnly = true</code> in <code>[UIFormField]</code> will appear as read-only in
+            the form, regardless of property setters.
+        </li>
+        <li>Other <code>UIFormField</code> options (such as <code>UseWysiwyg</code>, <code>FormComponent</code>, <code>ColumnGroup</code>,
+            etc.) can be demonstrated by modifying the model.
+        </li>
+        <li>Actions taken in the dialog (e.g., Save, Cancel) are logged below.</li>
+    </ul>
+    <small>See the source code for more details on <code>UIFormField</code> behavior and customization.</small>
+</div>
+
+@* --- UIFormField and FormModel Usage Explanation --- *@
+<div class="alert alert-secondary mt-3">
+    <strong>About <code>[UIFormField]</code> and <code>FormModel</code> Usage</strong>
+    <p>
+        <code>[UIFormField]</code> is an attribute you place on model properties to control how they are rendered in <b>InnovativeForm</b>.<br/>
+        <b>Key properties include:</b>
+    </p>
+    <ul>
+        <li><b>ReadOnly</b>: If <code>true</code>, the field is always rendered as read-only, regardless of property
+            setters.
+        </li>
+        <li><b>UseWysiwyg</b>: If <code>true</code> and the property is a string, renders a WYSIWYG HTML editor.</li>
+        <li><b>FormComponent</b>: Specify a custom component for editing this field (must inherit <code>CustomComponent&lt;T&gt;</code>).
+        </li>
+        <li><b>DisplayComponent</b>: Specify a custom component for displaying this field in read-only mode.</li>
+        <li><b>ColumnGroup</b>: Group fields together for layout purposes.</li>
+        <li><b>FormParameters</b> / <b>DisplayParameters</b>: Pass extra parameters to the form or display component.
+        </li>
+        <li><b>TextProperty</b>: For complex types, which property to use as display text.</li>
+        <li><b>DataTestId</b>: Adds a <code>data-test-id</code> attribute for testing.</li>
+        <li><b>ShouldNotifyChanges</b>: If <code>true</code>, notifies the model of value changes (for advanced
+            scenarios).
+        </li>
+    </ul>
+    <p>
+        <code>FormModel</code> is a base class for your form models. It provides:
+    </p>
+    <ul>
+        <li>Exception handling and validation support (see <code>Exceptions</code> property).</li>
+        <li>Column layout support via <code>AddViewColumn</code> and <code>Columns</code>.</li>
+        <li>Integration with <code>InnovativeForm</code> for advanced scenarios (e.g., custom actions, change tracking).
+        </li>
+    </ul>
+    <p>
+        <b>Custom Components:</b> To use a custom component for a field, set <code>FormComponent</code> or <code>DisplayComponent</code>
+        to your component type. Your component should inherit from <code>CustomComponent&lt;T&gt;</code> and will
+        receive the value and change events automatically.
+    </p>
+    <p>
+        <b>Example usage:</b>
+    <pre><code>[UIFormField("Full Name", ReadOnly = true, FormComponent = typeof(FullNamePreviewComponent))]
+public string FullName { get; set; }</code></pre>
+    </p>
+    <p>
+        For more, see the <code>UIFormField</code> source code and the documentation.
+    </p>
 </div>

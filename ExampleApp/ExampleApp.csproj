@@ -1,15 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Bogus" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.NET.ILLink.Tasks" />
+    <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,23 +23,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.ILLink.Tasks" />
-    <PackageReference Include="Microsoft.NET.Sdk.WebAssembly.Pack" />
-    <EmbeddedResource Update="Translations\Example.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Example.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Translations\Example.en-US.resx">
-      <DependentUpon>Example.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Translations\Example.nl-NL.resx">
-      <DependentUpon>Example.resx</DependentUpon>
-    </EmbeddedResource>
     <Compile Update="Translations\Example.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Example.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Update="Translations\Example.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Example.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Translations\Example.de.resx">
+      <DependentUpon>Example.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Translations\Example.nl.resx">
+      <DependentUpon>Example.resx</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

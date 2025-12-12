@@ -1,54 +1,55 @@
 /* Colors */
 :root {
     /* Global Colors */
-    --inn-gray: #383838;
-    --inn-gray-50: #fafafa;
-    --inn-gray-100: #f3f2f2;
-    --inn-gray-200: #d7d4d4;
-    --inn-gray-300: #bcb6b6;
+    --inn-gray-50: #f2f2f2;
+    --inn-gray-100: #e6e5e5;
+    --inn-gray-200: #cecaca;
+    --inn-gray-300: #b6afaf;
     --inn-gray-400: #a09898;
-    --inn-gray-500: #857b7b;
-    --inn-gray-600: #675f5f;
-    --inn-gray-700: #494343;
-    --inn-gray-800: #2b2828;
+    --inn-gray-500: #6a6262;
+    --inn-gray-600: #504949;
+    --inn-gray-700: #353131;
+    --inn-gray-800: #1b1818;
     --inn-gray-900: #0d0c0c;
+    --inn-base: var(--inn-gray-50);
 
+    --inn-primary-lighter: #fbf2ef;
+    --inn-primary-light: #e4906c;
     --inn-primary: #a43f13;
-    --inn-primary-light: #db8d75;
-    --inn-primary-lighter: #e6c2b7;
-    --inn-primary-dark: #651c06;
-    --inn-primary-darker: #1f0700;
-    --inn-secondary: #654176;
-    --inn-secondary-light: #b28fc1;
-    --inn-secondary-lighter: #d2c5d8;
-    --inn-secondary-dark: #3e214a;
-    --inn-secondary-darker: #120817;
+    --inn-primary-dark: #7d2b07;
+    --inn-primary-darker: #511900;
+    --inn-secondary-lighter: #f4f5f6;
+    --inn-secondary-light: #97b4ba;
+    --inn-secondary: #406e77;
+    --inn-secondary-dark: #28555d;
+    --inn-secondary-darker: #28555d;
 
-    --inn-info: #1f82e5;
-    --inn-info-light: #6ca8e4;
-    --inn-info-lighter: #b2cfeB;
-    --inn-info-dark: #0a5Cae;
-    --inn-info-darker: #01366b;
-    --inn-success: #a1dc41;
-    --inn-success-light: #c6e46c;
-    --inn-success-lighter: #ddebb2;
-    --inn-success-dark: #607d07;
-    --inn-success-darker: #2a3800;
+    --inn-danger-lighter: #f6dbda;
+    --inn-danger-light: #f4c3c3;
+    --inn-danger: #e5231f;
+    --inn-danger-dark: #7d0907;
+    --inn-danger-darker: #6a0301;
+    --inn-success-lighter: #e4f6db;
+    --inn-success-light: #d3f4c3;
+    --inn-success: #61e51f;
+    --inn-success-dark: #2f7d07;
+    --inn-success-darker: #246a01;
+    --inn-warning-lighter: #f6eadb;
+    --inn-warning-light: #f4dfc3;
     --inn-warning: #e5931f;
-    --inn-warning-light: #e4b26c;
-    --inn-warning-lighter: #ebd3b2;
-    --inn-warning-dark: #ae690a;
+    --inn-warning-dark: #7d4c07;
     --inn-warning-darker: #6a3e01;
-    --inn-danger: #e52421;
-    --inn-danger-light: #e46e6C;
-    --inn-danger-lighter: #ebe3B2;
-    --inn-danger-dark: #ae0d0a;
-    --inn-danger-darker: #6b0201;
+    --inn-info-lighter: #dbedf6;
+    --inn-info-light: #c3e4f4;
+    --inn-info: #1fa3e5;
+    --inn-info-dark: #07567d;
+    --inn-info-darker: #01476a;
 
     --inn-border-color-light: var(--inn-gray-400);
     --inn-border-color-dark: var(--inn-gray-600);
 
     /* Text colors */
+    --inn-text-color-on-disabled: var(--inn-gray-300);
     --inn-text-color-on-info: #fff;
     --inn-text-color-on-info-light: #000;
     --inn-text-color-on-info-lighter: #000;
@@ -86,22 +87,37 @@
     --inn-text-color-on-secondary-dark: #fff;
     --inn-text-color-on-secondary-darker: #fff;
 
-    --inn-shadow-color: var(--inn-gray-900);
+    --inn-shadow-color: var(--inn-secondary);
 
     /* Component Colors */
     /* Button */
-    --inn-button-variant-text-color: var(--inn-gray-500);
-    --inn-button-variant-text-hover-color: #000;
-    --inn-button-variant-text-hover-background-color: rgba(0,0,0,.1);
+    --inn-button-base-text-color: var(--inn-gray-900);
+    --inn-button-base-background-color: var(--inn-gray-100);
+    --inn-button-base-hover-color: var(--inn-gray-900);
+    --inn-button-base-hover-background-color: var(--inn-gray-200);
+    --inn-button-primary-text-color: var(--inn-gray-50);
+    --inn-button-primary-background-color: var(--inn-primary);
+    --inn-button-primary-hover-text-color: var(--inn-gray-50);
+    --inn-button-primary-hover-background-color: var(--inn-primary-dark);
+    --inn-button-secondary-text-color: var(--inn-gray-50);
+    --inn-button-secondary-background-color: var(--inn-secondary);
+    --inn-button-secondary-hover-text-color: var(--inn-gray-50);
+    --inn-button-secondary-hover-background-color: var(--inn-secondary-dark);
+    --inn-button-danger-text-color: var(--inn-danger-darker);
+    --inn-button-danger-background-color: var(--inn-danger-lighter);
+    --inn-button-danger-hover-text-color: var(--inn-danger-darker);
+    --inn-button-danger-hover-background-color: var(--inn-danger-light);
 
     /* Input */
     --inn-input-value-color: #000;
     --inn-input-background-color: #fff;
     --inn-input-disabled-background-color: var(--inn-gray-300);
     --inn-input-hover-background-color: #fff;
-    --inn-input-focus-background-color: #fff;
-    --inn-input-focus-border-color: var(--inn-primary);
     --inn-input-checkbox-circle-hover-background-color: var(--inn-gray-300);
+
+    /* Focus */
+    --inn-focus-border-color: var(--inn-gray-900);
+    --inn-focus-shadow-color: var(--inn-gray-900);
 
     /* Dropdown */
     --inn-dropdown-background-color: #fff;
@@ -134,25 +150,64 @@
     --inn-editor-button-selected-background-color: var(--inn-primary-light);
     --inn-editor-button-selected-color: #000;
 
+    /* Form group / Fieldset */
+    --inn-form-group-background-color: var(--inn-gray-100);
+    --inn-form-group-border: var(--inn-gray-200);
+
+    /* Side panel */
+    --inn-side-panel-background-color: var(--inn-gray-50);
+
     /* Grid */
     --inn-grid-header-color: #000;
-    --inn-grid-background-color: #fff;
+    --inn-grid-header-background-color: var(--inn-secondary-lighter);
     --inn-grid-row-odd-background-color: #fff;
     --inn-grid-row-even-background-color: var(--inn-gray-50);
     --inn-grid-selected-color: var(--inn-primary);
+    --inn-grid-selected-background-color: unset;
     --inn-grid-filter-color: var(--inn-gray-500);
+    --inn-grid-row-focus-background-color: unset;
+    --inn-grid-row-focus-color: var(--inn-gray-900);
+    --inn-grid-row-focus-border-color: var(--inn-gray-900);
     --inn-grid-header-filter-icon-hover-color: var(--inn-gray-600);
     --inn-grid-sort-icon-color: var(--inn-gray-500);
+
+    /* Pager */
+    --inn-pager-numeric-button-selected-color: var(--inn-primary);
+    --inn-pager-numeric-button-selected-background-color: var(--inn-primary-lighter);
+    --inn-pager-numeric-button-selected-border: 1px solid var(--inn-primary);
+    --inn-pager-numeric-button-hover-color: var(--inn-gray-900);
+    --inn-pager-numeric-button-hover-background-color: var(--inn-gray-200);
+    --inn-pager-numeric-button-selected-hover-color: var(--inn-gray-900);
+    --inn-pager-numeric-button-selected-hover-background-color: var(--inn-gray-200);
 
     /* Dialog */
     --inn-dialog-background-color: var(--inn-gray-100);
 
-    /* Side panel */
-    --inn-side-panel-background-color: var(--inn-gray-100);
-
     /* Alert */
-    --inn-alert-close-background: none;
-    --inn-alert-close-background-hover: rgba(0,0,0,.1);
+    --inn-alert-danger-icon-color: var(--inn-danger);
+    --inn-alert-danger-text-color: var(--inn-gray-900);
+    --inn-alert-danger-background-color: var(--inn-danger-lighter);
+    --inn-alert-danger-close-text-color: var(--inn-gray-900);
+    --inn-alert-danger-close-background-color: var(--inn-danger-light);
+    --inn-alert-danger-close-hover-background-color: var(--inn-gray-200);
+    --inn-alert-success-icon-color: var(--inn-success);
+    --inn-alert-success-text-color: var(--inn-gray-900);
+    --inn-alert-success-background-color: var(--inn-success-lighter);
+    --inn-alert-success-close-text-color: var(--inn-gray-900);
+    --inn-alert-success-close-background-color: var(--inn-success-light);
+    --inn-alert-success-close-hover-background-color: var(--inn-gray-200);
+    --inn-alert-warning-icon-color: var(--inn-warning);
+    --inn-alert-warning-text-color: var(--inn-gray-900);
+    --inn-alert-warning-background-color: var(--inn-warning-lighter);
+    --inn-alert-warning-close-text-color: var(--inn-gray-900);
+    --inn-alert-warning-close-background-color: var(--inn-warning-light);
+    --inn-alert-warning-close-hover-background-color: var(--inn-gray-200);
+    --inn-alert-info-icon-color: var(--inn-info);
+    --inn-alert-info-text-color: var(--inn-gray-900);
+    --inn-alert-info-background-color: var(--inn-info-lighter);
+    --inn-alert-info-close-text-color: var(--inn-gray-900);
+    --inn-alert-info-close-background-color: var(--inn-info-light);
+    --inn-alert-info-close-hover-background-color: var(--inn-gray-200);
 
     /* Progress bar circular */
     --inn-progressbar-circular-background-color: var(--inn-gray-100);
@@ -185,15 +240,14 @@
     --inn-shadow-1: 0px 2px 6px color-mix(in srgb, var(--inn-shadow-color) 25%, transparent);
     --inn-shadow-2: 0px 3px 8px color-mix(in srgb, var(--inn-shadow-color) 25%, transparent);
     --inn-shadow-3: 0px 4px 10px color-mix(in srgb, var(--inn-shadow-color) 25%, transparent);
-    --inn-shadow-4: none;
-    --inn-shadow-5: none;
+    --inn-shadow-4: 0 10px 10px -10px color-mix(in srgb, var(--inn-shadow-color) 20%, transparent);
+    --inn-shadow-5: 2px 4px 20px color-mix(in srgb, var(--inn-shadow-color) 50%, transparent);
     --inn-shadow-6: none;
     --inn-shadow-7: none;
     --inn-shadow-8: none;
 
     --inn-border-radius: 4px;
 
-    --inn-border: 1px solid var(--inn-border-color-dark);
     --inn-border-1-light: 1px solid var(--inn-border-color-light);
     --inn-border-1-dark: 1px solid var(--inn-border-color-dark);
     --inn-border-2-light: 2px solid var(--inn-border-color-light);
@@ -204,8 +258,8 @@
     --inn-button-padding: .5rem;
     --inn-button-line-height: 1;
     --inn-button-border-radius: var(--inn-border-radius);
-    --inn-button-width: 2.25rem;
-    --inn-button-height: 2.25rem;
+    --inn-button-width: 2.5rem;
+    --inn-button-height: 2.5rem;
     --inn-button-shadow: var(--inn-shadow-1);
     --inn-button-icon-only-background: transparent;
     --inn-button-icon-only-transition: color .3s;
@@ -244,12 +298,6 @@
     --inn-input-hover-border: var(--inn-border-1-dark);
     --inn-input-hover-border-block-end: var(--inn-border-1-dark);
     --inn-input-hover-shadow: none;
-    --inn-input-focus-border: var(--inn-border);
-    --inn-input-focus-border-block-end: var(--inn-border-1-dark);
-    --inn-input-focus-border-radius: var(--inn-border-radius);
-    --inn-input-focus-outline: none;
-    --inn-input-focus-outline-offset: 0;
-    --inn-input-focus-shadow: none;
 
     --inn-checkbox-width: 1.125rem;
     --inn-checkbox-height: 1.125rem;
@@ -263,6 +311,14 @@
     --inn-numeric-input-padding-block: 0.4375rem;
     --inn-numeric-input-padding-inline: 0.9375rem 1.25rem;
     --inn-numeric-button-offset: 2px;
+
+    /* Focus */
+    --inn-focus-border: 1px solid var(--inn-focus-border-color);
+    --inn-focus-border-block-end: var(--inn-border-1-dark);
+    --inn-focus-border-radius: var(--inn-border-radius);
+    --inn-focus-outline: none;
+    --inn-focus-outline-offset: 0;
+    --inn-focus-shadow: 0 0 0 1px var(--inn-focus-shadow-color);
 
     /* Datepicker */
     --inn-datepicker-popup-width: 22rem;
@@ -292,7 +348,7 @@
     --inn-grid-header-line-height: auto;
     --inn-grid-header-font-weight: 500;
     --inn-grid-header-text-transform: unset;
-    --inn-grid-header-border-bottom: var(--inn-border-2-light);
+    --inn-grid-header-border-bottom: var(--inn-border-1-light);
     --inn-grid-header-title-padding-inline: 1rem;
     --inn-grid-filter-margin-inline: unset;
     --inn-grid-first-cell-padding: .625rem 1rem .625rem 2rem;
@@ -302,7 +358,7 @@
 
     /* Pager */
     --inn-pager-padding: 1rem;
-    --inn-pager-numeric-button-selected-padding: .25rem;
+    --inn-pager-numeric-button-padding: .25rem;
 
     /* Side panel */
     --inn-side-panel-padding: 1rem 1rem .5rem 1rem;

@@ -1,4 +1,6 @@
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using ExampleApp.Attributes;
 using ExampleApp.Translations;
 using Innovative.Blazor.Components.Components;
 using Innovative.Blazor.Components.Services;
@@ -13,7 +15,7 @@ public partial class ExampleComplexGrid6(IInnovativeSidePanelService sidePanelSe
     {
         if (items.Count == 0)
         {
-            ExampleDataSet.Instance.GenerateTestData(180);
+            ExampleDataSet.Instance.GenerateTestData(amount: 180);
             items.AddRange(collection: ExampleDataSet.Instance.Data.Select(selector: Person6GridModel.ToGridModel));
         }
     }
@@ -29,8 +31,14 @@ public partial class ExampleComplexGrid6(IInnovativeSidePanelService sidePanelSe
                                        Person6GridModel item = items.Single(predicate: x => x.Id == model.Id);
                                        item.FirstName = model.FirstName;
                                        item.LastName = model.LastName;
-                                       item.Income = model.Income.ToCurrencyString();
-                                       item.DateOfBirth = model.DateOfBirth.ToDateString();
+                                       item.Income = model.Income is null
+                                                         ? string.Empty
+                                                         : model.Income.Value.ToCurrencyString();
+                                       item.DateOfBirth = model.DateOfBirth is null
+                                                              ? string.Empty
+                                                              : model.DateOfBirth.Value.ToDateString();
+                                       item.EmailAddress = model.EmailAddress;
+                                       item.Phone = model.Phone;
                                        return Task.CompletedTask;
                                    };
 
@@ -50,7 +58,7 @@ public sealed class Person6GridModel
     public required string FirstName { get; set; }
 
     [UIGridField(Name = "LastName")]
-    public required string LastName { get; set; }
+    public required string LastName { get; set; }  
 
     [UIGridField(Name = "DateOfBirth")]
     public required string DateOfBirth { get; set; }
@@ -58,35 +66,46 @@ public sealed class Person6GridModel
     [UIGridField(Name = "Income")]
     public required string Income { get; set; }
 
+    public string? EmailAddress { get; set; }
+
+    public string? Phone { get; set; }
+
+    public string? HomePage { get; set; }
+
     public static Person6GridModel ToGridModel([NotNull] PersonModel instance)
     {
         return new Person6GridModel
-               {
-                   Id = instance.Id
-                 , FirstName = instance.FirstName
-                 , LastName = instance.LastName
-                 , Income = instance.Income.ToCurrencyString()
-                 , DateOfBirth = instance.DateOfBirth.ToDateString()
+               { Id = instance.Id
+               , FirstName = instance.FirstName
+               , LastName = instance.LastName
+               , Income = instance.Income.ToCurrencyString()
+               , DateOfBirth = instance.DateOfBirth.ToDateString()
+               , EmailAddress = instance.EmailAddress
+               , Phone = instance.Phone
+               , HomePage = instance.HomePage
                };
     }
 
     public static PersonModel ToModel([NotNull] Person6GridModel instance) => new PersonModel
-                                                                               {
-                                                                                   Id = instance.Id
-                                                                                 , FirstName = instance.FirstName
-                                                                                 , LastName = instance.LastName
-                                                                                 , Income = instance.Income.ToCurrency()
-                                                                                 , DateOfBirth = instance.DateOfBirth.ToDate()
-                                                                               };
+                                                                              { Id = instance.Id
+                                                                              , FirstName = instance.FirstName
+                                                                              , LastName = instance.LastName
+                                                                              , Income = instance.Income.ToCurrency()
+                                                                              , DateOfBirth = instance.DateOfBirth.ToDate()
+                                                                              , EmailAddress = instance.EmailAddress
+                                                                              , Phone = instance.Phone
+                                                                              , HomePage = instance.HomePage
+                                                                              };
 }
 
-[UIFormClass(title: "Person", ResourceType = typeof(Example))]
+[UIFormClass(title: nameof(Example.Person), ResourceType = typeof(Example))]
 public sealed class Person6FormModel : FormModel
 {
     private const string ColumnGroup1 = "PropertyColumn1";
     private const string ColumnGroup2 = "PropertyColumn2";
     private const string ColumnGroup3 = "PropertyColumn3";
     private const string ColumnGroup4 = "PropertyColumn4";
+    private const string ColumnGroup5 = "PropertyColumn5";
 
     public Person6FormModel()
     {
@@ -94,34 +113,57 @@ public sealed class Person6FormModel : FormModel
         AddViewColumn(name: ColumnGroup2, width: 6, order: 1, offset: 0);
         AddViewColumn(name: ColumnGroup3, width: 6, order: 1, offset: 0);
         AddViewColumn(name: ColumnGroup4, width: 6, order: 1, offset: 0);
+        AddViewColumn(name: ColumnGroup5, width: 12, order: 1, offset: 0);
     }
 
     public Guid Id { get; set; }
 
     [UIFormField(name: "FirstName", ColumnGroup = ColumnGroup1)]
+    [Required]
+    [MinLength(2)]
+    [MaxLength(24)]
     public required string FirstName { get; set; }
 
     [UIFormField(name: "LastName", ColumnGroup = ColumnGroup1)]
+    [Required]
+    [MinLength(2)]
+    [MaxLength(48)]
     public required string LastName { get; set; }
 
     [UIFormField(name: "DateOfBirth", ColumnGroup = ColumnGroup2, FormParameters = [$"DateFormat={Constants.DateFormat}"], DisplayParameters = ["Format={0:dddd d MMMM yyyy}"])]
-    public required DateTime DateOfBirth { get; set; }
+    [Required]
+    public required DateTime? DateOfBirth { get; set; }
 
     [UIFormField(name: "Age", ColumnGroup = ColumnGroup3)]
-    public int Age => DateOfBirth.Age();
+    public int Age => DateOfBirth?.Age() ?? 0;
 
     [UIFormField(name: "Income", ColumnGroup = ColumnGroup4, FormParameters = [$"Format={Constants.CurrencyFormat}"], DisplayParameters = [$"Format={Constants.CurrencyFormat}"])]
-    public required decimal Income { get; set; }
+    public decimal? Income { get; set; }
+
+    [UIFormField(name: "Email", ColumnGroup = ColumnGroup5)]
+    [Required]
+    [EmailAddress(ErrorMessageResourceType = typeof(Example), ErrorMessageResourceName = "EmailAddressValidation")]
+    public string? EmailAddress { get; set; }
+
+    [UIFormField(name: "Phone", ColumnGroup = ColumnGroup5)]
+    [Phone(ErrorMessageResourceType = typeof(Example), ErrorMessageResourceName = "PhoneNumberValidation")]
+    public string? Phone { get; set; }
+
+    [UIFormField(name: "HomePage", ColumnGroup = ColumnGroup5)]
+    [AbsoluteUri(ErrorMessageResourceType = typeof(Example), ErrorMessageResourceName = nameof(Example.UrlValidation))]
+    public string? HomePage { get; set; }
 
     public static Person6FormModel ToFormModel([NotNull] PersonModel instance)
     {
         return new Person6FormModel
-               {
-                   Id = instance.Id
-                 , FirstName = instance.FirstName
-                 , LastName = instance.LastName
-                 , Income = instance.Income
-                 , DateOfBirth = instance.DateOfBirth.ToDateTime(TimeOnly.MinValue)
+               { Id = instance.Id
+               , FirstName = instance.FirstName
+               , LastName = instance.LastName
+               , Income = instance.Income
+               , DateOfBirth = instance.DateOfBirth.ToDateTime(time: TimeOnly.MinValue)
+               , EmailAddress = instance.EmailAddress
+               , Phone = instance.Phone
+               , HomePage = instance.HomePage
                };
     }
 }

@@ -15,86 +15,114 @@
                 foreach (var button in GetButtonDefinitions())
                 {
                     <RadzenButton Text="@button.ActionName"
-                                  Click="@(() => HandleActionProperty(property: button.Property, actionAttribute: button.ActionAttribute))"
+                                  Disabled="@isBusy"
+                                  Click="@((async () => await HandleActionProperty(property: button.Property, actionAttribute: button.ActionAttribute)))"
                                   ButtonStyle="ButtonStyle.Primary"/>
                 }
-            }
-            else
+            } else
             {
                 <RadzenSplitButton Text="@splitButton.ActionName"
-                                   Click="@(() => HandleActionProperty(property: splitButton.Property, actionAttribute: splitButton.ActionAttribute))"
+                                   Disabled="@isBusy"
+                                   Click="@((async () => await HandleActionProperty(property: splitButton.Property, actionAttribute: splitButton.ActionAttribute)))"
                                    ButtonStyle="ButtonStyle.Primary">
                     @foreach (var item in GetSplitButtonDefinitionItems())
                     {
                         <RadzenSplitButtonItem Text="@item.ActionName"
-                                               Click="@(() => HandleActionProperty(property: item.Property, actionAttribute: item.ActionAttribute))"/>
+                                               Click="@((async () => await HandleActionProperty(property: item.Property, actionAttribute: item.ActionAttribute)))"/>
                     }
                 </RadzenSplitButton>
             }
         }
     </RadzenStack>
 
+    @if (isBusy)
+    {
+        <div class="innovative-detail-busy">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span>Saving...</span>
+        </div>
+        @if (progressLog?.Any() == true)
+        {
+            <div class="innovative-detail-progress">
+                @foreach (var line in progressLog)
+                {
+                    <div>@line</div>
+                }
+            </div>
+        }
+    }
+
+    @if (Model is FormModel model)
+    {
+        foreach (var alert in model.Alerts.Where(a => a.ShowInDetail))
+        {
+            var capturedId = alert.Id;
+            <InnovativeAlert Severity="@alert.Severity" Summary="@alert.Summary" Detail="@alert.Detail"
+                             Closable="@alert.Closable" OnClose="@(() => model.RemoveAlert(capturedId))"/>
+        }
+    }
+
     <section class="innovative-detail-layout">
         @foreach (var group in orderedColumnGroups)
         {
-            <div class="form-column-group @GetColumnWidthClass(group.Key)">
+            var col = GetColumn(group.Key);
+            <fieldset
+                class="form-column-group @GetColumnWidthClass(group.Key) @(col?.ShowOuterBorder == true ? "has-border" : string.Empty)">
+                @if (col?.ShowTitle == true && !string.IsNullOrWhiteSpace(col.Name))
+                {
+                    <legend class="form-column-title">@col.Name</legend>
+                }
                 @foreach (var property in group.Value)
                 {
                     var fieldAttribute = property.GetCustomAttribute<UIFormField>();
                     var value = property.GetValue(obj: Model);
-                    <div>
-                        @if (ShouldShowLabel(fieldAttribute))
+                    @if (ShouldShowLabel(fieldAttribute))
+                    {
+                        <RadzenLabel Style="font-weight: bold">@localizer.GetString(fieldAttribute!.Name!):
+                        </RadzenLabel>
+                    }
+                    @if (fieldAttribute?.DisplayComponent != null)
+                    {
+                        @RenderViewComponent(value: value, attribute: fieldAttribute)
+                    } else if (fieldAttribute!.UseWysiwyg && property.PropertyType == typeof(string) && value != null)
+                    {
+                        <div class="html-content">@((MarkupString) (value.ToString() ?? string.Empty))</div>
+                    } else
+                    {
+                        var format = fieldAttribute.DisplayParameters?.FirstOrDefault(x => x.StartsWith("Format=", StringComparison.InvariantCultureIgnoreCase));
+                        if (!string.IsNullOrEmpty(format))
                         {
-                            <RadzenLabel Style="font-weight: bold">@localizer.GetString(fieldAttribute!.Name!):</RadzenLabel>
-                        }
-                    </div>
-                    <div>
-                        @if (fieldAttribute?.DisplayComponent != null)
+                            format = format["Format=".Length..];
+                            var content = value is decimal decimalValue
+                                ? (MarkupString) (decimalValue.ToString(format, CultureInfo.CurrentCulture))
+                                : (MarkupString) (string.Format(CultureInfo.CurrentCulture, format, value));
+                            <div class="html-content">@content</div>
+                        } else
                         {
-                            @RenderViewComponent(value: value, attribute: fieldAttribute)
-                        }
-                        else if (fieldAttribute!.UseWysiwyg && property.PropertyType == typeof(string) && value != null)
-                        {
-                            <div class="html-content">@((MarkupString)(value.ToString() ?? string.Empty))</div>
-                        }
-                        else
-                        {
-                            var format = fieldAttribute.DisplayParameters?.FirstOrDefault(x => x.StartsWith("Format=", StringComparison.InvariantCultureIgnoreCase));
-                            if (!string.IsNullOrEmpty(format))
+                            var displayValue = value;
+                            if (value != null && !string.IsNullOrEmpty(fieldAttribute?.TextProperty) && value.GetType().IsClass && value.GetType() != typeof(string))
                             {
-                                format = format["Format=".Length..];
-                                var content = value is decimal decimalValue
-                                    ? (MarkupString)(decimalValue.ToString(format, CultureInfo.CurrentCulture))
-                                    : (MarkupString)(string.Format(CultureInfo.CurrentCulture, format, value));
-                                <div class="html-content">@content</div>
-                            }
-                            else
-                            {
-                                var displayValue = value;
-                                if (value != null && !string.IsNullOrEmpty(fieldAttribute?.TextProperty) && value.GetType().IsClass && value.GetType() != typeof(string))
+                                try
                                 {
-                                    try
+                                    var textPropertyInfo = value.GetType().GetProperty(fieldAttribute.TextProperty);
+                                    if (textPropertyInfo != null)
                                     {
-                                        var textPropertyInfo = value.GetType().GetProperty(fieldAttribute.TextProperty);
-                                        if (textPropertyInfo != null)
-                                        {
-                                            displayValue = textPropertyInfo.GetValue(value);
-                                        }
-                                    }
-                                    catch (Exception ex) when (ex is AmbiguousMatchException or TargetException)
-                                    {
-                                        // Fallback to ToString() if property access fails
-                                        Debug.WriteLine($"Error accessing TextProperty '{fieldAttribute.TextProperty}' on type '{value.GetType().Name}': {ex.Message}");
+                                        displayValue = textPropertyInfo.GetValue(value);
                                     }
                                 }
-
-                                <InnovativeText TextStyle="TextStyle.Body1"
-                                                Attributes="@GetAttributesFromParameters(fieldAttribute?.DisplayParameters ?? [])">@(displayValue?.ToString() ?? "-")</InnovativeText>
+                                catch (Exception ex) when (ex is AmbiguousMatchException or TargetException)
+                                {
+                                    // Fallback to ToString() if property access fails
+                                    Debug.WriteLine($"Error accessing TextProperty '{fieldAttribute.TextProperty}' on type '{value.GetType().Name}': {ex.Message}");
+                                }
                             }
+
+                            <InnovativeText TextStyle="TextStyle.Body1"
+                                            Attributes="@GetAttributesFromParameters(fieldAttribute?.DisplayParameters ?? [ ])">@(displayValue?.ToString() ?? "-")</InnovativeText>
                         }
-                    </div>
+                    }
                 }
-            </div>
+            </fieldset>
         }
 
         @if (ungroupedProperties.Any())
@@ -108,30 +136,28 @@
                     <div>
                         @if (ShouldShowLabel(fieldAttribute))
                         {
-                            <RadzenLabel Style="font-weight: bold">@localizer.GetString(fieldAttribute!.Name!):</RadzenLabel>
+                            <RadzenLabel Style="font-weight: bold">@localizer.GetString(fieldAttribute!.Name!):
+                            </RadzenLabel>
                         }
                     </div>
                     <div>
                         @if (fieldAttribute?.DisplayComponent != null)
                         {
                             @RenderViewComponent(value: value, attribute: fieldAttribute)
-                        }
-                        else if (fieldAttribute!.UseWysiwyg && property.PropertyType == typeof(string) && value != null)
+                        } else if (fieldAttribute!.UseWysiwyg && property.PropertyType == typeof(string) && value != null)
                         {
-                            <div class="html-content">@((MarkupString)(value.ToString() ?? string.Empty))</div>
-                        }
-                        else
+                            <div class="html-content">@((MarkupString) (value.ToString() ?? string.Empty))</div>
+                        } else
                         {
                             var format = fieldAttribute.DisplayParameters?.FirstOrDefault(x => x.StartsWith("Format=", StringComparison.InvariantCultureIgnoreCase));
                             if (!string.IsNullOrEmpty(format))
                             {
                                 format = format["Format=".Length..];
                                 var content = value is decimal decimalValue
-                                    ? (MarkupString)(decimalValue.ToString(format, CultureInfo.CurrentCulture))
-                                    : (MarkupString)(string.Format(CultureInfo.CurrentCulture, format, value));
+                                    ? (MarkupString) (decimalValue.ToString(format, CultureInfo.CurrentCulture))
+                                    : (MarkupString) (string.Format(CultureInfo.CurrentCulture, format, value));
                                 <div class="html-content">@content</div>
-                            }
-                            else
+                            } else
                             {
                                 var displayValue = value;
                                 if (value != null && !string.IsNullOrEmpty(fieldAttribute?.TextProperty) && value.GetType().IsClass && value.GetType() != typeof(string))
@@ -150,7 +176,8 @@
                                         Debug.WriteLine($"Error accessing TextProperty '{fieldAttribute.TextProperty}' on type '{value.GetType().Name}': {ex.Message}");
                                     }
                                 }
-                                <InnovativeText TextStyle="TextStyle.Body1" class="truncated-text">@(displayValue?.ToString() ?? "-")</InnovativeText>
+                                <InnovativeText TextStyle="TextStyle.Body1"
+                                                class="truncated-text">@(displayValue?.ToString() ?? "-")</InnovativeText>
                             }
                         }
                     </div>

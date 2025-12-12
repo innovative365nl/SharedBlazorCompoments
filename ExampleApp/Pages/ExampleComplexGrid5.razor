@@ -1,13 +1,10 @@
 @page "/grid/complex/5"
-@using System.Globalization
 @using Innovative.Blazor.Components.Components
+@using ExampleApp.Components
 
 <h3> Grid Example 5</h3>
 <p>Shows a grid with a several display options in the side panel.</p>
-<p>
-    Current locale: @CultureInfo.CurrentCulture.Name (@CultureInfo.CurrentCulture.TwoLetterISOLanguageName / @CultureInfo.CurrentCulture.ThreeLetterISOLanguageName)
-</p>
-
+<CultureSelector />
 <InnovativeGrid TItem="Person5GridModel"
                 MinHeightOption="GridHeight.Minimal"
                 Data="@items"

@@ -1,9 +1,13 @@
+@using ExampleApp.Components
 <div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
         <a class="navbar-brand" href="">ExampleApp</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <div class="d-flex align-items-center gap-2">
+            <button title="Navigation menu" class="navbar-toggler me-2" @onclick="ToggleNavMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <TopUserMenu UserName="Daphne Zwuup"/>
+        </div>
     </div>
 </div>
 
@@ -52,6 +56,12 @@
                 </NavLink>
                 <NavLink class="nav-link" href="grid/complex/5">
                     <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Complex Grid 5
+                </NavLink>
+                <NavLink class="nav-link" href="grid/complex/6">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Complex Grid 6
+                </NavLink>
+                <NavLink class="nav-link" href="sample-grid-loading">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Sample Grid Loading
                 </NavLink>
             </div>
         </div>

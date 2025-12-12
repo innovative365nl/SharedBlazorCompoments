@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -17,15 +18,6 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     private readonly Dictionary<string, object?> formValues = new Dictionary<string, object?>();
     private readonly IInnovativeStringLocalizer localizer;
 
-    [Parameter] public required TModel Model { get; set; }
-
-    [CascadingParameter] public required SidePanelComponent<TModel>? ParentDialog { get; set; }
-
-    private IReadOnlyCollection<PropertyInfo> ungroupedProperties { get; set; } = new List<PropertyInfo>();
-
-    private IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; set; } =
-        new List<KeyValuePair<string, List<PropertyInfo>>>();
-
     public InnovativeForm(IInnovativeStringLocalizerFactory localizerFactory)
     {
         Debug.Assert(localizerFactory != null, $"{nameof(localizerFactory)} is null!");
@@ -35,19 +27,60 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         localizer = localizerFactory.Create(resourceType);
     }
 
+    [Parameter]
+    public required TModel Model { get; set; }
+
+    [CascadingParameter]
+    public required SidePanelComponent<TModel>? ParentDialog { get; set; }
+
+    private IReadOnlyCollection<PropertyInfo> ungroupedProperties { get; set; } = new List<PropertyInfo>();
+
+    private IReadOnlyCollection<KeyValuePair<string, List<PropertyInfo>>> OrderedColumnGroups { get; set; } =
+        new List<KeyValuePair<string, List<PropertyInfo>>>();
+
+    public Task OnFormSubmit()
+    {
+        // Do not write the form values back to the model if the model has exceptions
+        if (Model is FormModel model
+         && model.Exceptions.Any())
+            return Task.CompletedTask;
+
+        foreach (var entry in formValues)
+        {
+            var prop = typeof(TModel).GetProperty(name: entry.Key);
+            if (prop?.CanWrite ?? false)
+            {
+                prop.SetValue(obj: Model, value: entry.Value);
+            }
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public Task OnFormReset()
+    {
+        ResetToOriginalValues();
+        ParentDialog?.CloseCustomDialog();
+        return Task.CompletedTask;
+    }
+
     protected override void OnParametersSet()
     {
-        if (ParentDialog != null && Model is FormModel)
+        if (ParentDialog != null
+         && Model is FormModel model)
         {
             ParentDialog.SetFormComponent(this);
-        }
 
-        foreach (var prop in GetPropertiesWithUiFormField())
-        {
-            formValues[key: prop.Name] = prop.GetValue(obj: Model);
-        }
+            if (!model.Exceptions.Any())
+            {
+                foreach (var prop in GetPropertiesWithUiFormField())
+                {
+                    formValues[key: prop.Name] = prop.GetValue(obj: Model);
+                }
+            }
 
-        OrganizePropertiesByGroups();
+            OrganizePropertiesByGroups();
+        }
     }
 
     private void OrganizePropertiesByGroups()
@@ -75,9 +108,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         {
             OrderedColumnGroups = columnOrder
                                   .Where(columnGroup => groupedProperties.ContainsKey(columnGroup))
-                                  .Select(columnGroup => new KeyValuePair<string, List<PropertyInfo>>(
-                                                                                                      columnGroup,
-                                                                                                      groupedProperties[columnGroup]))
+                                  .Select(columnGroup => new KeyValuePair<string, List<PropertyInfo>>(columnGroup, groupedProperties[columnGroup]))
                                   .Concat(groupedProperties
                                           .Where(g => !columnOrder.Contains(g.Key))
                                           .Select(g => g)!)
@@ -87,27 +118,6 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         {
             OrderedColumnGroups = groupedProperties.ToList()!;
         }
-    }
-
-    public Task OnFormSubmit()
-    {
-        foreach (var entry in formValues)
-        {
-            var prop = typeof(TModel).GetProperty(name: entry.Key);
-            if (prop?.CanWrite ?? false)
-            {
-                prop.SetValue(obj: Model, value: entry.Value);
-            }
-        }
-
-        return Task.CompletedTask;
-    }
-
-    public Task OnFormReset()
-    {
-        ResetToOriginalValues();
-        ParentDialog?.CloseCustomDialog();
-        return Task.CompletedTask;
     }
 
     private void ResetToOriginalValues()
@@ -141,147 +151,157 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     [ExcludeFromCodeCoverage]
     protected RenderFragment RenderPropertyField(PropertyInfo property) => builder =>
-    {
-        var fieldAttribute = property.GetCustomAttribute<UIFormField>();
-        bool notifyChanges = fieldAttribute?.ShouldNotifyChanges ?? false;
-        var propName = property.Name;
-        var isReadOnly = !property.CanWrite;
-        int sequence = 0;
+                                                                           {
+                                                                               var fieldAttribute = property.GetCustomAttribute<UIFormField>();
+                                                                               bool notifyChanges = fieldAttribute?.ShouldNotifyChanges ?? false;
+                                                                               var propName = property.Name;
+                                                                               var isReadOnly = IsReadOnly(property, fieldAttribute);
+                                                                               int sequence = 0;
 
-        if (ShouldShowLabel(fieldAttribute))
-        {
-            builder.OpenComponent<RadzenLabel>(sequence++);
-            builder.AddAttribute(sequence++, "Component", propName);
-            if (fieldAttribute?.Name != null)
-            {
-                builder.AddAttribute(sequence++, "Text", localizer.GetString(fieldAttribute.Name));
-            }
-            builder.CloseComponent();
-        }
+                                                                               if (ShouldShowLabel(fieldAttribute))
+                                                                               {
+                                                                                   builder.OpenComponent<RadzenLabel>(sequence++);
+                                                                                   builder.AddAttribute(sequence++, "Component", propName);
+                                                                                   if (fieldAttribute?.Name != null)
+                                                                                   {
+                                                                                       builder.AddAttribute(sequence++, "Text", localizer.GetString(fieldAttribute.Name));
+                                                                                   }
+                                                                                   builder.CloseComponent();
+                                                                               }
 
-        if (property.PropertyType == typeof(string))
-        {
-            var value = GetStringValue(propertyName: propName);
+                                                                               if (property.PropertyType == typeof(string))
+                                                                               {
+                                                                                   var value = GetStringValue(propertyName: propName);
 
-            if (fieldAttribute is { UseWysiwyg: true })
-            {
-                builder.OpenComponent<RadzenHtmlEditor>(sequence++);
-                builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.Name), propName);
-                builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.Value), value);
-                builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.ValueChanged),
-                                     EventCallback.Factory.Create<string>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
-                builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.Style), "height: max-content; min-height: 250px; max-height: 400px;");
+                                                                                   if (fieldAttribute is {UseWysiwyg: true})
+                                                                                   {
+                                                                                       builder.OpenComponent<RadzenHtmlEditor>(sequence++);
+                                                                                       builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.Name), propName);
+                                                                                       builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.Value), value);
+                                                                                       builder.AddAttribute(sequence++
+                                                                                                          , nameof(RadzenHtmlEditor.ValueChanged)
+                                                                                                          , EventCallback.Factory.Create<string>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
+                                                                                       builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.Style), "height: max-content; min-height: 250px; max-height: 400px;");
 
-                if (isReadOnly)
-                    builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.Disabled), true);
-                if (!string.IsNullOrEmpty(fieldAttribute.DataTestId))
-                    builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
+                                                                                       if (isReadOnly)
+                                                                                           builder.AddAttribute(sequence++, nameof(RadzenHtmlEditor.Disabled), true);
+                                                                                       if (!string.IsNullOrEmpty(fieldAttribute.DataTestId))
+                                                                                           builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
 
-                AppendFormParameters(builder, fieldAttribute.FormParameters, ref sequence);
-                builder.CloseComponent();
-            }
-            else
-            {
-                builder.OpenComponent<RadzenTextBox>(sequence++);
-                builder.AddAttribute(sequence++, "class", "w-100");
-                builder.AddComponentParameter(sequence++, nameof(RadzenTextBox.Name), propName);
-                builder.AddAttribute(sequence++, nameof(RadzenTextBox.Value), value);
-                builder.AddAttribute(sequence++, nameof(RadzenTextBox.ValueChanged),
-                                     EventCallback.Factory.Create<string>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
+                                                                                       AppendFormParameters(builder, fieldAttribute.FormParameters, ref sequence);
+                                                                                       builder.CloseComponent();
+                                                                                   }
+                                                                                   else
+                                                                                   {
+                                                                                       builder.OpenComponent<RadzenTextBox>(sequence++);
+                                                                                       builder.AddAttribute(sequence++, "class", "w-100");
+                                                                                       builder.AddComponentParameter(sequence++, nameof(RadzenTextBox.Name), propName);
+                                                                                       builder.AddAttribute(sequence++, nameof(RadzenTextBox.Value), value);
+                                                                                       builder.AddAttribute(sequence++
+                                                                                                          , nameof(RadzenTextBox.ValueChanged)
+                                                                                                          , EventCallback.Factory.Create<string>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
 
-                if (isReadOnly)
-                    builder.AddAttribute(sequence++, nameof(RadzenTextBox.Disabled), true);
-                if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
-                    builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
+                                                                                       if (isReadOnly)
+                                                                                           builder.AddAttribute(sequence++, nameof(RadzenTextBox.Disabled), true);
+                                                                                       if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
+                                                                                           builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
 
-                AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
-                builder.CloseComponent();
-            }
-        }
-        else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(int?))
-        {
-            var value = GetIntValue(propertyName: propName);
+                                                                                       AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
+                                                                                       builder.CloseComponent();
+                                                                                   }
+                                                                               }
+                                                                               else if (property.PropertyType == typeof(int)
+                                                                                     || property.PropertyType == typeof(int?))
+                                                                               {
+                                                                                   var value = GetIntValue(propertyName: propName);
 
-            builder.OpenComponent(sequence++, typeof(RadzenNumeric<int?>));
-            builder.AddAttribute(sequence++, "class", "w-100");
-            builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Name), propName);
-            builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Value), value);
-            builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.ValueChanged),
-                                 EventCallback.Factory.Create<int?>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
+                                                                                   builder.OpenComponent(sequence++, typeof(RadzenNumeric<int?>));
+                                                                                   builder.AddAttribute(sequence++, "class", "w-100");
+                                                                                   builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Name), propName);
+                                                                                   builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Value), value);
+                                                                                   builder.AddAttribute(sequence++
+                                                                                                      , nameof(RadzenNumeric<int?>.ValueChanged)
+                                                                                                      , EventCallback.Factory.Create<int?>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
 
+                                                                                   if (isReadOnly)
+                                                                                       builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Disabled), true);
+                                                                                   if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
+                                                                                       builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
 
-            if (isReadOnly)
-                builder.AddAttribute(sequence++, nameof(RadzenNumeric<int?>.Disabled), true);
-            if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
-                builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
+                                                                                   AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
+                                                                                   builder.CloseComponent();
+                                                                               }
+                                                                               else if (property.PropertyType == typeof(decimal)
+                                                                                     || property.PropertyType == typeof(decimal?))
+                                                                               {
+                                                                                   var value = GetDecimalValue(propertyName: propName);
+                                                                                   builder.OpenComponent(sequence++, typeof(RadzenNumeric<decimal?>));
+                                                                                   builder.AddAttribute(sequence++, "class", "w-100");
+                                                                                   builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Name), propName);
+                                                                                   builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Value), value);
+                                                                                   builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Culture), CultureInfo.CurrentCulture);
+                                                                                   builder.AddAttribute(sequence++
+                                                                                                      , nameof(RadzenNumeric<decimal?>.ValueChanged)
+                                                                                                      , EventCallback.Factory.Create<decimal?>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
 
-            AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
-            builder.CloseComponent();
-        }
-        else if (property.PropertyType == typeof(decimal) || property.PropertyType == typeof(decimal?))
-        {
-            var value = GetDecimalValue(propertyName: propName);
-            builder.OpenComponent(sequence++, typeof(RadzenNumeric<decimal?>));
-            builder.AddAttribute(sequence++, "class", "w-100");
-            builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Name), propName);
-            builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Value), value);
-            builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Culture), CultureInfo.CurrentCulture);
-            builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.ValueChanged),
-                                 EventCallback.Factory.Create<decimal?>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
+                                                                                   if (isReadOnly)
+                                                                                       builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Disabled), true);
+                                                                                   if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
+                                                                                       builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
 
-            if (isReadOnly)
-                builder.AddAttribute(sequence++, nameof(RadzenNumeric<decimal?>.Disabled), true);
-            if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
-                builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
+                                                                                   AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
+                                                                                   builder.CloseComponent();
+                                                                               }
+                                                                               else if (property.PropertyType == typeof(bool)
+                                                                                     || property.PropertyType == typeof(bool?))
+                                                                               {
+                                                                                   var value = GetBoolValue(propertyName: propName);
 
-            AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
-            builder.CloseComponent();
-        }
-        else if (property.PropertyType == typeof(bool) || property.PropertyType == typeof(bool?))
-        {
-            var value = GetBoolValue(propertyName: propName);
+                                                                                   builder.OpenComponent(sequence++, typeof(RadzenCheckBox<bool?>));
+                                                                                   builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.Name), propName);
+                                                                                   builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.Value), value);
+                                                                                   builder.AddAttribute(sequence++
+                                                                                                      , nameof(RadzenCheckBox<bool?>.ValueChanged)
+                                                                                                      , EventCallback.Factory.Create<bool?>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
 
-            builder.OpenComponent(sequence++, typeof(RadzenCheckBox<bool?>));
-            builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.Name), propName);
-            builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.Value), value);
-            builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.ValueChanged),
-                                 EventCallback.Factory.Create<bool?>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
+                                                                                   if (isReadOnly)
+                                                                                       builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.Disabled), true);
+                                                                                   if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
+                                                                                       builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
 
-            if (isReadOnly)
-                builder.AddAttribute(sequence++, nameof(RadzenCheckBox<bool?>.Disabled), true);
-            if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
-                builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
+                                                                                   AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
+                                                                                   builder.CloseComponent();
+                                                                               }
+                                                                               else if (property.PropertyType == typeof(DateTime)
+                                                                                     || property.PropertyType == typeof(DateTime?))
+                                                                               {
+                                                                                   var value = GetDateTimeValue(propertyName: propName);
 
-            AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
-            builder.CloseComponent();
-        }
-        else if (property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?))
-        {
-            var value = GetDateTimeValue(propertyName: propName);
+                                                                                   builder.OpenComponent(sequence++, typeof(RadzenDatePicker<DateTime?>));
+                                                                                   builder.AddAttribute(sequence++, "class", "w-100");
+                                                                                   builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Name), propName);
+                                                                                   builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Value), value);
+                                                                                   builder.AddAttribute(sequence++
+                                                                                                      , nameof(RadzenDatePicker<DateTime?>.ValueChanged)
+                                                                                                      , EventCallback.Factory.Create<DateTime?>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
 
-            builder.OpenComponent(sequence++, typeof(RadzenDatePicker<DateTime?>));
-            builder.AddAttribute(sequence++, "class", "w-100");
-            builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Name), propName);
-            builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Value), value);
-            builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.ValueChanged),
-                                 EventCallback.Factory.Create<DateTime?>(this, val => SetValue(propertyName: propName, value: val, notifyChanges)));
+                                                                                   if (isReadOnly)
+                                                                                       builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Disabled), true);
+                                                                                   if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
+                                                                                       builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
 
-            if (isReadOnly)
-                builder.AddAttribute(sequence++, nameof(RadzenDatePicker<DateTime?>.Disabled), true);
-            if (!string.IsNullOrEmpty(fieldAttribute?.DataTestId))
-                builder.AddAttribute(sequence++, DataTestIdKey, fieldAttribute.DataTestId);
-
-            AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
-            builder.CloseComponent();
-        }
-    };
+                                                                                   AppendFormParameters(builder, fieldAttribute?.FormParameters, ref sequence);
+                                                                                   builder.CloseComponent();
+                                                                               }
+                                                                           };
 
     private static void AppendFormParameters(RenderTreeBuilder builder, string[]? formParameters, ref int sequence)
     {
         foreach (string parameter in formParameters ?? [])
         {
             int equalIndex = parameter.IndexOf('=', StringComparison.InvariantCultureIgnoreCase);
-            if (equalIndex > 0 && equalIndex < parameter.Length - 1)
+            if (equalIndex > 0
+             && equalIndex < parameter.Length - 1)
             {
                 string paramName = parameter[..equalIndex];
                 string paramValue = parameter[++equalIndex..];
@@ -311,43 +331,70 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     private RenderFragment RenderFormComponent(object? value, UIFormField attribute, PropertyInfo property)
     {
         var propName = property.Name;
+        var isReadOnly = IsReadOnly(property, attribute);
         return builder =>
-        {
-            try
-            {
-                if (attribute.FormComponent == null)
-                {
-                    return;
-                }
-                int sequence = 0;
+               {
+                   try
+                   {
+                       if (attribute.FormComponent == null)
+                       {
+                           return;
+                       }
+                       int sequence = 0;
 
-                if (ShouldShowLabel(attribute))
-                {
-                    // Add label for component
-                    builder.OpenComponent<RadzenLabel>(sequence++);
-                    builder.AddAttribute(sequence++, "Component", attribute.Name);
-                    builder.AddAttribute(sequence, "Text", localizer.GetString(attribute.Name));
-                    builder.CloseComponent();
-                }
+                       if (ShouldShowLabel(attribute))
+                       {
+                           // Add label for component
+                           builder.OpenComponent<RadzenLabel>(sequence++);
+                           builder.AddAttribute(sequence++, "Component", attribute.Name);
+                           builder.AddAttribute(sequence, "Text", localizer.GetString(attribute.Name));
+                           builder.CloseComponent();
+                       }
 
-                // Add custom component
-                sequence = 0;
-                builder.OpenComponent(sequence: sequence++, componentType: attribute.FormComponent);
-                builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
-                builder.AddAttribute(sequence++, "ValueChanged", EventCallback.Factory.Create(this, val =>
-                                                                                                        SetValue(propertyName: propName, value: val, attribute.ShouldNotifyChanges)));
+                       // Add custom component
+                       sequence = 0;
+                       builder.OpenComponent(sequence: sequence++, componentType: attribute.FormComponent);
+                       builder.AddAttribute(sequence: sequence++, name: "Value", value: value);
+                       builder.AddAttribute(sequence++
+                                          , "ValueChanged"
+                                          , EventCallback.Factory.Create(this
+                                                                       , val =>
+                                                                             SetValue(propertyName: propName, value: val, attribute.ShouldNotifyChanges)));
 
-                if (!string.IsNullOrEmpty(attribute?.DataTestId))
-                    builder.AddAttribute(sequence++, nameof(attribute.DataTestId), attribute.DataTestId);
+                       if (isReadOnly)
+                           builder.AddAttribute(sequence++, "Disabled", true);
+                       if (!string.IsNullOrEmpty(attribute?.DataTestId))
+                           builder.AddAttribute(sequence++, nameof(attribute.DataTestId), attribute.DataTestId);
 
-                AppendFormParameters(builder, attribute?.FormParameters, ref sequence);
-                builder.CloseComponent();
-            }
-            catch (Exception ex) when (ex is ArgumentException or InvalidOperationException)
-            {
-                builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
-            }
-        };
+                       AppendFormParameters(builder, attribute?.FormParameters, ref sequence);
+                       builder.CloseComponent();
+                   }
+                   catch (Exception ex) when (ex is ArgumentException or InvalidOperationException)
+                   {
+                       builder.AddMarkupContent(sequence: 0, markupContent: $"<span class=\"text-danger\">Error: {ex.Message}</span>");
+                   }
+               };
+    }
+
+    private static bool IsReadOnly(PropertyInfo property, UIFormField? fieldAttribute)
+    {
+        // If UIFormField.ReadOnly is set, always treat as read-only
+        if (fieldAttribute?.ReadOnly == true)
+            return true;
+
+        // If property has no setter, treat as read-only
+        var setMethod = property.SetMethod;
+        if (setMethod == null)
+            return true;
+
+        // If setter is init-only (C# 9+), treat as read-only
+        // Init-only setters have a metadata token with IsInitOnly flag
+        // Reflection does not expose this directly, so we check for 'init' via metadata
+        // This works in .NET 5+ (C# 9+)
+        if (setMethod.ReturnParameter.GetRequiredCustomModifiers().Any(m => m.FullName == "System.Runtime.CompilerServices.IsExternalInit"))
+            return true;
+
+        return false;
     }
 
     private string GetStringValue(string propertyName)
@@ -362,7 +409,8 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     private int? GetIntValue(string propertyName)
     {
-        if (formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
+        if (formValues.TryGetValue(key: propertyName, value: out var value)
+         && value != null)
         {
             return Convert.ToInt32(value: value, CultureInfo.InvariantCulture);
         }
@@ -372,7 +420,8 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     private decimal? GetDecimalValue(string propertyName)
     {
-        if (formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
+        if (formValues.TryGetValue(key: propertyName, value: out var value)
+         && value != null)
         {
             return Convert.ToDecimal(value: value, CultureInfo.InvariantCulture);
         }
@@ -382,7 +431,8 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     private bool? GetBoolValue(string propertyName)
     {
-        if (formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
+        if (formValues.TryGetValue(key: propertyName, value: out var value)
+         && value != null)
         {
             return Convert.ToBoolean(value: value, CultureInfo.InvariantCulture);
         }
@@ -392,7 +442,8 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     private DateTime? GetDateTimeValue(string propertyName)
     {
-        if (formValues.TryGetValue(key: propertyName, value: out var value) && value != null)
+        if (formValues.TryGetValue(key: propertyName, value: out var value)
+         && value != null)
         {
             return Convert.ToDateTime(value: value, CultureInfo.InvariantCulture);
         }
@@ -403,6 +454,7 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     private void SetValue(string propertyName, object? value, bool shouldNotifyChange = false)
     {
         formValues[key: propertyName] = value;
+        AddValidationErrors(propertyName, value);
         if (shouldNotifyChange)
         {
             NotifyPropertyChanged(propertyName: propertyName, value: value);
@@ -424,15 +476,107 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
         }
     }
 
-    private static PropertyInfo[] GetPropertiesWithUiFormField()
+    private bool IsFieldVisible(PropertyInfo property)
+    {
+        var attr = property.GetCustomAttribute<UIFormField>();
+        if (attr == null)
+        {
+            return true;
+        }
+
+        // If no condition is set, show by default
+        if (string.IsNullOrWhiteSpace(attr.VisibleWhenProperty))
+        {
+            return true;
+        }
+
+        if (Model is null)
+        {
+            return true;
+        }
+
+        var conditionProp = typeof(TModel).GetProperty(attr.VisibleWhenProperty);
+        if (conditionProp == null)
+        {
+            // If specified property doesn't exist, default to show to avoid breaking existing UIs
+            return true;
+        }
+
+        var value = conditionProp.GetValue(Model);
+        bool result;
+
+        if (attr.VisibleWhenEquals is null)
+        {
+            // No explicit comparison value; if bool, require true, otherwise require non-null
+            if (value is bool b)
+            {
+                result = b;
+            }
+            else
+            {
+                result = value != null;
+            }
+        }
+        else
+        {
+            var target = attr.VisibleWhenEquals;
+            var valueString = value?.ToString() ?? "null";
+            result = string.Equals(valueString, target, StringComparison.OrdinalIgnoreCase);
+        }
+
+        if (attr.InvertCondition)
+        {
+            result = !result;
+        }
+
+        return result;
+    }
+
+    private PropertyInfo[] GetPropertiesWithUiFormField()
     {
         return typeof(TModel).GetProperties()
-            .Where(predicate: p => p.GetCustomAttribute<UIFormField>() != null)
-            .ToArray();
+                             .Where(predicate: p => p.GetCustomAttribute<UIFormField>() != null)
+                             .Where(IsFieldVisible)
+                             .ToArray();
     }
 
     private static bool ShouldShowLabel(UIFormField? formField)
         => formField?.FormParameters == null
         || !formField.FormParameters.Contains("DisplayLabel=false", StringComparer.InvariantCultureIgnoreCase);
 
+    private void AddValidationErrors(string propertyName, object? value)
+    {
+        if (Model is not FormModel model)
+            return;
+
+        var property = typeof(TModel).GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+        if (property is null)
+            return;
+
+        var hasValidators = property
+                            .GetCustomAttributes(inherit: true)
+                            .Any(attr => attr.GetType().IsSubclassOf(typeof(ValidationAttribute)));
+
+        if (!hasValidators)
+            return;
+
+        model.RemoveException(propertyName);
+
+        var results = new List<ValidationResult>();
+
+        LocalizedString displayName = localizer[name: property.GetCustomAttribute<UIFormField>()?.Name ?? propertyName];
+        var context = new ValidationContext(instance: model)
+                      {
+                          MemberName = propertyName
+                        , DisplayName = displayName
+                      };
+        _ = Validator.TryValidateProperty(value: value, validationContext: context, validationResults: results);
+
+        var messages = results
+                       .Where(predicate: x => !string.IsNullOrWhiteSpace(value: x.ErrorMessage))!
+                       .Select(selector: x => x.ErrorMessage!)
+                       .ToList();
+
+        model.AddExceptions(propertyName, messages);
+    }
 }

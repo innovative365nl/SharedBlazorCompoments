@@ -12,12 +12,14 @@
 }
 
 ::deep .rz-stack {
-    height: clamp(var(--min-height, 0px), 100vh, var(--max-height, 100vh));
+    height: clamp(var(--min-height, 0px), 100vh, var(--max-height, 110vh));
 }
 
 /* Table head */
+::deep .rz-data-grid .rz-grid-table thead th,
 ::deep .rz-grid-table thead th {
-    background: var(--inn-grid-background-color);
+    color: var(--inn-grid-header-color);
+    background: var(--inn-grid-header-background-color, #fff);
     border-bottom: unset;
 }
 
@@ -42,8 +44,8 @@
     font-weight: var(--inn-grid-header-font-weight);
 }
 
-::deep .rz-grid-table thead th div {
-    background: var(--inn-grid-background-color);
+::deep .rz-grid-table thead th > div {
+    background: var(--inn-grid-header-background-color, #fff);
 }
 
 ::deep .rz-column-title-content {
@@ -55,10 +57,12 @@
 }
 
 /* Table body */
+::deep .rz-grid-table tbody > tr:not(.rz-expanded-row-content):nth-child(2n+1) > td,
 ::deep .rz-grid-table-striped tbody > tr:not(.rz-expanded-row-content):nth-child(2n+1) > td {
     background-color: var(--inn-grid-row-odd-background-color);
 }
 
+::deep .rz-grid-table tbody > tr:not(.rz-expanded-row-content):nth-child(2n) > td,
 ::deep .rz-grid-table-striped tbody > tr:not(.rz-expanded-row-content):nth-child(2n) > td {
     background-color: var(--inn-grid-row-even-background-color);
 }
@@ -73,9 +77,18 @@
     cursor: pointer;
 }
 
-::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight .rz-cell-data {
+::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight .rz-cell-data,
+::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight > td {
     color: var(--inn-grid-selected-color);
     font-weight: var(--inn-grid-selected-font-weight);
+    background: var(--inn-grid-selected-background-color);
+}
+
+::deep .rz-selectable tbody tr.rz-data-row.rz-state-focused > td {
+    background-color: var(--inn-grid-row-focus-background-color);
+    color: var(--inn-grid-row-focus-color);
+    border-top: 1px solid var(--inn-grid-row-focus-border-color);
+    border-bottom: 1px solid var(--inn-grid-row-focus-border-color);
 }
 
 ::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight div {
@@ -103,6 +116,10 @@
     background-color: unset;
 }
 
+::deep .rz-selectable tbody tr.rz-data-row.rz-state-highlight > td.rz-frozen-cell.rz-frozen-cell-left:before, .rz-selectable tbody tr.rz-data-row.rz-state-highlight > td.rz-frozen-cell.rz-frozen-cell-left-inner:before {
+    background-color: unset;
+}
+
 ::deep .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left:after,
 ::deep .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell-left-inner:after,
 ::deep .rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell-left:after,
@@ -111,6 +128,16 @@
 }
 
 /* Frozen grid column */
+.rz-grid-table tbody > tr:nth-child(odd) > td.rz-frozen-cell,
+.rz-grid-table-striped tbody > tr:nth-child(odd) > td.rz-frozen-cell {
+    background-color: var(--inn-grid-row-odd-background-color);
+}
+
+.rz-grid-table tbody > tr:nth-child(even) > td.rz-frozen-cell,
+.rz-grid-table-striped tbody > tr:nth-child(even) > td.rz-frozen-cell {
+    background-color: var(--inn-grid-row-even-background-color);
+}
+
 ::deep .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell:before,
 .rz-selectable tbody tr.rz-data-row td.rz-frozen-cell:after,
 .rz-selectable tbody tr.rz-data-row .rz-cell-data.rz-frozen-cell:before,
@@ -143,27 +170,38 @@
 ::deep .rz-pager-first,
 ::deep .rz-pager-prev,
 ::deep .rz-pager-next,
-::deep .rz-pager-last {
+::deep .rz-pager-last,
+::deep .rz-pager-element,
+::deep .rz-button-lg {
+    padding: .6rem;
     border-radius: var(--inn-button-border-radius);
     min-width: var(--inn-button-width);
     height: var(--inn-button-height);
-}
-
-::deep .rz-pager-element,
-::deep .rz-button-lg {
-    min-width: var(--inn-button-width);
-    min-height: var(--inn-button-height);
-}
-
-::deep .rz-pager-element,
-::deep .rz-button-lg.rz-button-icon-only {
-    padding: var(--inn-pager-numeric-button-selected-padding);
+    line-height: 1;
     align-content: center;
 }
 
-::deep .rz-pager-element,
-::deep .rz-button-lg {
-    padding: var(--inn-pager-numeric-button-selected-padding);
-    min-width: var(--inn-button-width);
-    min-height: var(--inn-button-height);
+::deep .rz-pager-element:hover, .rz-pager-page:hover {
+    background-color: var(--inn-pager-numeric-button-hover-background-color);
+    color: var(--inn-pager-numeric-button-hover-color);
 }
+
+::deep .rz-pager-page.rz-state-active {
+    color: var(--inn-pager-numeric-button-selected-color);
+    background-color: var(--inn-pager-numeric-button-selected-background-color);
+    border: var(--inn-pager-numeric-button-selected-border);
+    padding: .6rem;
+}
+
+::deep .rz-pager-page.rz-state-active:hover {
+    color: var(--inn-pager-numeric-button-selected-hover-color);
+    background-color: var(--inn-pager-numeric-button-selected-hover-background-color);
+}
+
+::deep .rz-state-disabled.rz-pager-element:hover,
+::deep .rz-button.rz-state-disabled:hover {
+    color: inherit;
+    background: none;
+}
+
+
