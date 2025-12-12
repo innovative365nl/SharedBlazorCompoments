@@ -163,7 +163,11 @@
     --inn-grid-row-odd-background-color: #fff;
     --inn-grid-row-even-background-color: var(--inn-gray-50);
     --inn-grid-selected-color: var(--inn-primary);
+    --inn-grid-selected-background-color: unset;
     --inn-grid-filter-color: var(--inn-gray-500);
+    --inn-grid-row-focus-background-color: unset;
+    --inn-grid-row-focus-color: var(--inn-gray-900);
+    --inn-grid-row-focus-border-color: var(--inn-gray-900);
     --inn-grid-header-filter-icon-hover-color: var(--inn-gray-600);
     --inn-grid-sort-icon-color: var(--inn-gray-500);
 
