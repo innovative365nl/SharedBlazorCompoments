@@ -19,17 +19,17 @@
 }
 
 .innovative-alert-error {
-    color: var(--inn-alert-danger-text-color, var(--inn-gray-900));
+    color: var(--inn-alert-danger-color, var(--inn-gray-900));
     background: var(--inn-alert-danger-background-color, var(--inn-danger-lighter));
 }
 
 .innovative-alert-error .innovative-alert-close {
-    color: var(--inn-alert-danger-close-text-color, var(--inn-gray-900));
+    color: var(--inn-alert-danger-close-color, var(--inn-gray-900));
     background: var(--inn-alert-danger-close-background-color, var(--inn-danger-light));
 }
 
 .innovative-alert-error .innovative-alert-close:hover {
-    color: var(--inn-alert-danger-close-text-color, var(--inn-gray-900));
+    color: var(--inn-alert-danger-close-color, var(--inn-gray-900));
     background: var(--inn-alert-danger-close-hover-background-color, var(--inn-gray-200));
 }
 
@@ -39,17 +39,17 @@
 }
 
 .innovative-alert-success {
-    color: var(--inn-alert-success-text-color, var(--inn-gray-900));
+    color: var(--inn-alert-success-color, var(--inn-gray-900));
     background: var(--inn-alert-success-background-color, var(--inn-success-lighter));
 }
 
 .innovative-alert-success .innovative-alert-close {
-    color: var(--inn-alert-success-close-text-color, var(--inn-gray-900));
+    color: var(--inn-alert-success-close-color, var(--inn-gray-900));
     background: var(--inn-alert-success-close-background-color, var(--inn-success-light));
 }
 
 .innovative-alert-success .innovative-alert-close:hover {
-    color: var(--inn-alert-success-close-text-color, var(--inn-gray-900));
+    color: var(--inn-alert-success-close-color, var(--inn-gray-900));
     background: var(--inn-alert-success-close-hover-background-color, var(--inn-gray-200));
 }
 
@@ -59,17 +59,17 @@
 }
 
 .innovative-alert-warning {
-    color: var(--inn-alert-warning-text-color, var(--inn-gray-900));
+    color: var(--inn-alert-warning-color, var(--inn-gray-900));
     background: var(--inn-alert-warning-background-color, var(--inn-warning-lighter));
 }
 
 .innovative-alert-warning .innovative-alert-close {
-    color: var(--inn-alert-warning-close-text-color, var(--inn-gray-900));
+    color: var(--inn-alert-warning-close-color, var(--inn-gray-900));
     background: var(--inn-alert-warning-close-background-color, var(--inn-warning-light));
 }
 
 .innovative-alert-warning .innovative-alert-close:hover {
-    color: var(--inn-alert-warning-close-text-color, var(--inn-gray-900));
+    color: var(--inn-alert-warning-close-color, var(--inn-gray-900));
     background: var(--inn-alert-warning-close-hover-background-color, var(--inn-gray-200));
 }
 
@@ -79,17 +79,17 @@
 }
 
 .innovative-alert-info {
-    color: var(--inn-alert-info-text-color, var(--inn-gray-900));
+    color: var(--inn-alert-info-color, var(--inn-gray-900));
     background: var(--inn-alert-info-background-color, var(--inn-info-lighter));
 }
 
 .innovative-alert-info .innovative-alert-close {
-    color: var(--inn-alert-info-close-text-color, var(--inn-gray-900));
+    color: var(--inn-alert-info-close-color, var(--inn-gray-900));
     background: var(--inn-alert-info-close-background-color, var(--inn-info-light));
 }
 
 .innovative-alert-info .innovative-alert-close:hover {
-    color: var(--inn-alert-info-close-text-color, var(--inn-gray-900));
+    color: var(--inn-alert-info-close-color, var(--inn-gray-900));
     background: var(--inn-alert-info-close-hover-background-color, var(--inn-gray-200));
 }
 
