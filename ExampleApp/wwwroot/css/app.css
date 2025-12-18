@@ -91,21 +91,21 @@
 
     /* Component Colors */
     /* Button */
-    --inn-button-base-text-color: var(--inn-gray-900);
+    --inn-button-base-color: var(--inn-gray-900);
     --inn-button-base-background-color: var(--inn-gray-100);
     --inn-button-base-hover-color: var(--inn-gray-900);
     --inn-button-base-hover-background-color: var(--inn-gray-200);
-    --inn-button-primary-text-color: var(--inn-gray-50);
+    --inn-button-primary-color: var(--inn-gray-50);
     --inn-button-primary-background-color: var(--inn-primary);
-    --inn-button-primary-hover-text-color: var(--inn-gray-50);
+    --inn-button-primary-hover-color: var(--inn-gray-50);
     --inn-button-primary-hover-background-color: var(--inn-primary-dark);
-    --inn-button-secondary-text-color: var(--inn-gray-50);
+    --inn-button-secondary-color: var(--inn-gray-50);
     --inn-button-secondary-background-color: var(--inn-secondary);
-    --inn-button-secondary-hover-text-color: var(--inn-gray-50);
+    --inn-button-secondary-hover-color: var(--inn-gray-50);
     --inn-button-secondary-hover-background-color: var(--inn-secondary-dark);
-    --inn-button-danger-text-color: var(--inn-danger-darker);
+    --inn-button-danger-color: var(--inn-danger-darker);
     --inn-button-danger-background-color: var(--inn-danger-lighter);
-    --inn-button-danger-hover-text-color: var(--inn-danger-darker);
+    --inn-button-danger-hover-color: var(--inn-danger-darker);
     --inn-button-danger-hover-background-color: var(--inn-danger-light);
 
     /* Input */
@@ -185,27 +185,27 @@
 
     /* Alert */
     --inn-alert-danger-icon-color: var(--inn-danger);
-    --inn-alert-danger-text-color: var(--inn-gray-900);
+    --inn-alert-danger-color: var(--inn-gray-900);
     --inn-alert-danger-background-color: var(--inn-danger-lighter);
-    --inn-alert-danger-close-text-color: var(--inn-gray-900);
+    --inn-alert-danger-close-color: var(--inn-gray-900);
     --inn-alert-danger-close-background-color: var(--inn-danger-light);
     --inn-alert-danger-close-hover-background-color: var(--inn-gray-200);
     --inn-alert-success-icon-color: var(--inn-success);
-    --inn-alert-success-text-color: var(--inn-gray-900);
+    --inn-alert-success-color: var(--inn-gray-900);
     --inn-alert-success-background-color: var(--inn-success-lighter);
-    --inn-alert-success-close-text-color: var(--inn-gray-900);
+    --inn-alert-success-close-color: var(--inn-gray-900);
     --inn-alert-success-close-background-color: var(--inn-success-light);
     --inn-alert-success-close-hover-background-color: var(--inn-gray-200);
     --inn-alert-warning-icon-color: var(--inn-warning);
-    --inn-alert-warning-text-color: var(--inn-gray-900);
+    --inn-alert-warning-color: var(--inn-gray-900);
     --inn-alert-warning-background-color: var(--inn-warning-lighter);
-    --inn-alert-warning-close-text-color: var(--inn-gray-900);
+    --inn-alert-warning-close-color: var(--inn-gray-900);
     --inn-alert-warning-close-background-color: var(--inn-warning-light);
     --inn-alert-warning-close-hover-background-color: var(--inn-gray-200);
     --inn-alert-info-icon-color: var(--inn-info);
-    --inn-alert-info-text-color: var(--inn-gray-900);
+    --inn-alert-info-color: var(--inn-gray-900);
     --inn-alert-info-background-color: var(--inn-info-lighter);
-    --inn-alert-info-close-text-color: var(--inn-gray-900);
+    --inn-alert-info-close-color: var(--inn-gray-900);
     --inn-alert-info-close-background-color: var(--inn-info-light);
     --inn-alert-info-close-hover-background-color: var(--inn-gray-200);
 

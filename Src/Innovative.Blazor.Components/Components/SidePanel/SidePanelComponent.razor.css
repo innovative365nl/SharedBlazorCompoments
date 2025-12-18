@@ -62,12 +62,12 @@
 }
 
 .sidepanel-icon-button .material-symbols-outlined {
-    color: var(--inn-button-base-text-color);
+    color: var(--inn-button-base-color);
     font-size: var(--inn-icon-font-size);
 }
 
 .sidepanel-icon-button:hover  .material-symbols-outlined {
-    color: var(--inn-button-base-text-color);
+    color: var(--inn-button-base-color);
 }
 
 .sidepanel-actions ::deep .sidepanel-icon-button .rz-button-box .material-symbols-outlined,
@@ -77,7 +77,7 @@
 
 /* Primary button */
 ::deep .rz-button.rz-primary.rz-shade-default {
-    color: var(--inn-button-primary-text-color, var(--inn-gray-50));
+    color: var(--inn-button-primary-color, var(--inn-gray-50));
     background-color: var(--inn-button-primary-background-color, var(--inn-primary));
     box-shadow: var(--inn-button-shadow);
 }
@@ -94,16 +94,16 @@
     outline-offset: var(--inn-focus-outline-offset);
 }
 ::deep .rz-button.rz-primary.rz-shade-default .material-symbols-outlined {
-    color: var(--inn-button-primary-text-color, var(--inn-gray-50));
+    color: var(--inn-button-primary-color, var(--inn-gray-50));
     font-size: var(--inn-icon-font-size);
 }
 ::deep .rz-button.rz-primary.rz-shade-default:hover .material-symbols-outlined {
-    color: var(--inn-button-primary-hover-text-color, var(--inn-gray-50));
+    color: var(--inn-button-primary-hover-color, var(--inn-gray-50));
 }
 
 /* Secondary button */
 ::deep .rz-button.rz-secondary.rz-shade-default {
-    color: var(--inn-button-secondary-text-color, var(--inn-gray-50));
+    color: var(--inn-button-secondary-color, var(--inn-gray-50));
     background-color: var(--inn-button-secondary-background-color, var(--inn-secondary));
     box-shadow: var(--inn-button-shadow);
 }
@@ -120,17 +120,17 @@
     outline-offset: var(--inn-focus-outline-offset);
 }
 ::deep .rz-button.rz-secondary.rz-shade-default .material-symbols-outlined {
-    color: var(--inn-button-secondary-text-color, var(--inn-gray-50));
+    color: var(--inn-button-secondary-color, var(--inn-gray-50));
     font-size: var(--inn-icon-font-size);
 }
 ::deep .rz-button.rz-secondary.rz-shade-default:hover .material-symbols-outlined {
-    color: var(--inn-button-secondary-hover-text-color, var(--inn-gray-50));
+    color: var(--inn-button-secondary-hover-color, var(--inn-gray-50));
 }
 
 /* Danger button */
 ::deep .rz-button.rz-danger.rz-shade-default {
     background-color: var(--inn-button-danger-background-color, var(--inn-danger-lighter));
-    color: var(--inn-button-danger-text-color, var(--inn-danger-darker));
+    color: var(--inn-button-danger-color, var(--inn-danger-darker));
     box-shadow: var(--inn-button-shadow);
 }
 ::deep .rz-button.rz-danger.rz-shade-default:hover {
@@ -147,11 +147,11 @@
     outline-offset: var(--inn-focus-outline-offset);
 }
 ::deep .rz-button.rz-danger.rz-shade-default .material-symbols-outlined {
-    color: var(--inn-button-danger-text-color, var(--inn-danger-darker));
+    color: var(--inn-button-danger-color, var(--inn-danger-darker));
     font-size: var(--inn-icon-font-size);
 }
 ::deep .rz-button.rz-danger.rz-shade-default:hover .material-symbols-outlined {
-    color: var(--inn-button-danger-hover-text-color, var(--inn-danger-darker));
+    color: var(--inn-button-danger-hover-color, var(--inn-danger-darker));
 }
 
 ::deep .rz-pager-element,
