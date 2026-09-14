@@ -16,6 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Direct reference only to lift bunit's vulnerable transitive AngleSharp; not used by the tests themselves. -->
+    <PackageReference Include="AngleSharp" />
     <PackageReference Include="bunit" />
     <PackageReference Include="coverlet.collector" PrivateAssets="all" />
     <PackageReference Include="FluentAssertions" />
@@ -34,7 +36,8 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <NoWarn>$(NoWarn);CA1707;</NoWarn>
+    <!-- CA1873 fires on the Moq Verify expression trees for ILogger.Log; those are assertions, not logging call sites. -->
+    <NoWarn>$(NoWarn);CA1707;CA1873;</NoWarn>
   </PropertyGroup>
 
 </Project>

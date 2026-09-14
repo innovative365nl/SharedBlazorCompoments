@@ -10,13 +10,15 @@
     <PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.0"/>
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.0"/>
     <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.0"/>
-    <PackageVersion Include="Microsoft.Kiota.Abstractions" Version="1.21.0"/>
+    <PackageVersion Include="Microsoft.Kiota.Abstractions" Version="1.22.2"/>
     <PackageVersion Include="Microsoft.NET.ILLink.Tasks" Version="10.0.0"/>
     <PackageVersion Include="Microsoft.NET.Sdk.WebAssembly.Pack" Version="10.0.0"/>
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <!-- 3rd party Packages -->
     <PackageVersion Include="Radzen.Blazor" Version="8.3.8"/>
     <!-- Testing Packages -->
+    <!-- Pinned above bunit's transitive 1.2.0, which carries the mXSS advisory GHSA-pgww-w46g-26qg (fixed in 1.5.0). -->
+    <PackageVersion Include="AngleSharp" Version="1.8.1" />
     <PackageVersion Include="Bogus" Version="35.6.5" />
     <PackageVersion Include="bunit" Version="1.40.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
