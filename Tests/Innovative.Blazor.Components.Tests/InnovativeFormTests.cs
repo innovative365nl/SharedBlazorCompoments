@@ -142,6 +142,78 @@ public class InnovativeFormTests : LocalizedTestBase
     }
 
     [Fact]
+    public void When_ParametersAreSetAgain_ItShouldKeepTheEditedFormValues()
+    {
+        // A re-render of the side panel (outside click, dialog, parent StateHasChanged) sets the
+        // parameters again. That must not throw away what the user typed, because form values are
+        // only written back to the model on submit.
+        // Arrange
+        var model = new TestFormModel
+                    {
+                        StringProperty = "Test"
+                      , IntProperty = 42
+                      , BoolProperty = true
+                      , DateProperty = new DateTime(2023, 1, 1)
+                      , CustomAction = (x) => Debug.WriteLine(x)
+                    };
+
+        var component = new InnovativeForm<TestFormModel>(LocalizerFactoryMock.Object)
+                        {
+                            Model = model
+                          , ParentDialog = dialogMock.Object
+                        };
+
+        component.CallOnParametersSet();
+
+        var testDate = new DateTime(2023, 5, 5);
+        component.SetFormValue(nameof(model.StringProperty), "Updated");
+        component.SetFormValue(nameof(model.IntProperty), 100);
+        component.SetFormValue(nameof(model.BoolProperty), false);
+        component.SetFormValue(nameof(model.DateProperty), testDate);
+
+        // Act
+        component.CallOnParametersSet();
+
+        // Assert
+        Assert.Equal("Updated", component.GetFormValue(nameof(model.StringProperty)));
+        Assert.Equal(100, component.GetFormValue(nameof(model.IntProperty)));
+        Assert.Equal(false, component.GetFormValue(nameof(model.BoolProperty)));
+        Assert.Equal(testDate, component.GetFormValue(nameof(model.DateProperty)));
+    }
+
+    [Fact]
+    public async Task When_OnFormReset_ItShouldRestoreTheFormValuesFromTheModel()
+    {
+        // Arrange
+        var model = new TestFormModel
+                    {
+                        StringProperty = "Test"
+                      , IntProperty = 42
+                      , BoolProperty = true
+                      , DateProperty = new DateTime(2023, 1, 1)
+                      , CustomAction = (x) => Debug.WriteLine(x)
+                    };
+
+        var component = new InnovativeForm<TestFormModel>(LocalizerFactoryMock.Object)
+                        {
+                            Model = model
+                          , ParentDialog = dialogMock.Object
+                        };
+
+        component.CallOnParametersSet();
+        component.SetFormValue(nameof(model.StringProperty), "Updated");
+        component.SetFormValue(nameof(model.IntProperty), 100);
+
+        // Act
+        await component.OnFormReset()
+                       .ConfigureAwait(true);
+
+        // Assert
+        Assert.Equal(model.StringProperty, component.GetFormValue(nameof(model.StringProperty)));
+        Assert.Equal(model.IntProperty, component.GetFormValue(nameof(model.IntProperty)));
+    }
+
+    [Fact]
     public void OrganizePropertiesByGroupsGroupsPropertiesCorrectly()
     {
         // Arrange
