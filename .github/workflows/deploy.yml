@@ -217,10 +217,20 @@ jobs:
         with:
           dotnet-version: ${{ needs.GetVersions.outputs.dotnetversion }}
 
+      # Exchanges the workflow's OIDC token for an API key that is valid for one hour,
+      # so no long-lived NUGET_API_KEY secret has to be stored or rotated. Requires a
+      # trusted publishing policy on nuget.org matching this repository and deploy.yml.
+      # Requested here rather than earlier in the job because of that one-hour lifetime.
+      - name: NuGet login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        id: nuget_login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: Publish NuGet packages
         run: >
           dotnet nuget push "nuget-packages/**/*.nupkg"
-          --api-key ${{ secrets.NUGET_API_KEY }}
+          --api-key ${{ steps.nuget_login.outputs.NUGET_API_KEY }}
           --source ${{ env.PACKAGE_SOURCE_URL }}
           --skip-duplicate
   # ============================================================
