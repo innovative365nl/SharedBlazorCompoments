@@ -18,6 +18,9 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     private readonly Dictionary<string, object?> formValues = new Dictionary<string, object?>();
     private readonly IInnovativeStringLocalizer localizer;
 
+    // The model instance formValues was last seeded from, so a re-render never discards user input.
+    private object? seededModel;
+
     public InnovativeForm(IInnovativeStringLocalizerFactory localizerFactory)
     {
         Debug.Assert(localizerFactory != null, $"{nameof(localizerFactory)} is null!");
@@ -67,19 +70,29 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
     protected override void OnParametersSet()
     {
         if (ParentDialog != null
-         && Model is FormModel model)
+         && Model is FormModel)
         {
             ParentDialog.SetFormComponent(this);
 
-            if (!model.Exceptions.Any())
+            // Editing happens in formValues; the model is only written back on submit.
+            // Seeding therefore has to happen once per model instance: any later re-render
+            // (an outside click, a dialog opening, a parent StateHasChanged) would otherwise
+            // reset every field the user has typed back to the model values.
+            if (!ReferenceEquals(objA: seededModel, objB: Model))
             {
-                foreach (var prop in GetPropertiesWithUiFormField())
-                {
-                    formValues[key: prop.Name] = prop.GetValue(obj: Model);
-                }
+                SeedFormValuesFromModel();
+                seededModel = Model;
             }
 
             OrganizePropertiesByGroups();
+        }
+    }
+
+    private void SeedFormValuesFromModel()
+    {
+        foreach (var prop in GetPropertiesWithUiFormField())
+        {
+            formValues[key: prop.Name] = prop.GetValue(obj: Model);
         }
     }
 
@@ -122,6 +135,10 @@ public partial class InnovativeForm<TModel> : ComponentBase, IFormComponent
 
     private void ResetToOriginalValues()
     {
+        // Cancel is the one place that deliberately throws away the edits, so restore the
+        // model values explicitly instead of relying on the next OnParametersSet.
+        SeedFormValuesFromModel();
+
         foreach (var property in GetPropertiesWithUiFormField())
         {
             var fieldAttribute = property.GetCustomAttribute<UIFormField>();
