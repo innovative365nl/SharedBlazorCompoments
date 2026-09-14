@@ -20,7 +20,7 @@
     <!-- Pinned above bunit's transitive 1.2.0, which carries the mXSS advisory GHSA-pgww-w46g-26qg (fixed in 1.5.0). -->
     <PackageVersion Include="AngleSharp" Version="1.8.1" />
     <PackageVersion Include="Bogus" Version="35.6.5" />
-    <PackageVersion Include="bunit" Version="1.40.0" />
+    <PackageVersion Include="bunit" Version="2.11.3" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <PackageVersion Include="FluentAssertions" Version="8.10.0" />
     <PackageVersion Include="Moq" Version="4.20.72" />
