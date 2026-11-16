@@ -21,8 +21,14 @@ public partial class CultureSelector(NavigationManager navManager, IJSRuntime js
             if (Equals(CultureInfo.CurrentCulture, value))
                 return;
 
-            var js = (IJSInProcessRuntime)jsRuntime;
-            js.InvokeVoid("exampleAppCulture.set", value.Name);
+            try
+            {
+                var js = (IJSInProcessRuntime)jsRuntime;
+                js.InvokeVoid("exampleAppCulture.set", value.Name);
+            }
+            catch (JSException)
+            {
+            }
             navManager.NavigateTo(navManager.Uri, true);
         }
     }

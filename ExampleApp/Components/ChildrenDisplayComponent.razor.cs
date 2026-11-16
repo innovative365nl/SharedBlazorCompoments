@@ -30,7 +30,7 @@ public partial class ChildrenDisplayComponent : CustomComponent<IEnumerable<Chil
         {
             return name;
         }
-        int spaceIndex = name.IndexOf(value: ' ', startIndex: maxDisplayChars);
+        int spaceIndex = name.IndexOf(value: ' ', startIndex: maxDisplayChars, comparisonType: StringComparison.Ordinal);
         return spaceIndex == -1
                    ? $"{name[..maxDisplayChars]}&hellip;"
                    : $"{name[..spaceIndex]}&hellip;";

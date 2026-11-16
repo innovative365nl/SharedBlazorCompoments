@@ -69,7 +69,5 @@ public partial class ExampleDialogService1(IInnovativeSidePanelService sidePanel
         await sidePanelService
               .OpenInDisplayMode(model: person, showDelete: true, dataTestId: "12345678900987654321") // person is passed by reference so after save
               .ConfigureAwait(continueOnCapturedContext: true);                                       // you'll have the updated model
-
-        StateHasChanged();
     }
 }

@@ -16,7 +16,7 @@ namespace Innovative.Blazor.Components.Components;
 /// It supports sorting, filtering, formatting, auto translation, and custom components.
 /// </summary>
 /// <typeparam name="TItem"></typeparam>
-public partial class InnovativeGrid<TItem> : ComponentBase
+public partial class InnovativeGrid<TItem> : ComponentBase where TItem : notnull
 {
     private const int MaxPageSize = 20;
 

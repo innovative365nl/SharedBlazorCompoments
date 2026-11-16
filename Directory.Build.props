@@ -13,7 +13,7 @@
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
     <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
     <ReportAnalyzer>true</ReportAnalyzer>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <VersionPrefix>0.18.0</VersionPrefix>
   </PropertyGroup>
 
